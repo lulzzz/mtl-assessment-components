@@ -22,8 +22,7 @@
         "paths": {
             "@material/*": ["node_modules/@material/*"],
             "@polymer/*": ["node_modules/@polymer/*"],
-            "lit-html/*": ["node_modules/lit-html/*"],
-            "custom-element-tester/*": ["node_modules/custom-element-tester/*"]
+            "lit-html/*": ["node_modules/lit-html/*"]
         },
         "plugins": [
             {
