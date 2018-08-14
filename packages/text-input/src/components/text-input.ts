@@ -1,7 +1,5 @@
 import { html, LitElement } from '@polymer/lit-element/lit-element';
 import { TemplateResult } from 'lit-html/lit-html';
-// @ts-ignore
-import { MDCTextField } from '@material/textfield/index';
 
 export class TextInput extends LitElement {
     public placeholder: string = 'enter some text';
@@ -28,10 +26,6 @@ export class TextInput extends LitElement {
             <div class="mdc-notched-outline__idle"></div>
         </div>
         `;
-    }
-
-    protected _didRender(): void {
-        new MDCTextField(this.shadowRoot.querySelector('.mdc-text-field'));
     }
 }
 
