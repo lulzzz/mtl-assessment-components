@@ -10,7 +10,7 @@
     "prepare": "npm run build",
     "sass": "node-sass src/sass -r -o dist/css",
     "sass-watch": "node-sass src/sass -r -o dist/css -w",
-    "test": "custom-element-tester -d"
+    "test": "lit-element-tester dist/components/text-input.js"
   },
   "keywords": [],
   "author": "Dominique Rochefort <dominique.rochefort@hmhco.com>",
@@ -23,7 +23,7 @@
   "devDependencies": {
     "@types/aphrodite": "^0.5.11",
     "chai": "^4.1.2",
-    "custom-element-tester": "latest",
+    "@hmh/lit-element-tester": "latest",
     "mocha": "^5.2.0",
     "node-sass": "^4.9.3",
     "source-map-support": "^0.5.8",
