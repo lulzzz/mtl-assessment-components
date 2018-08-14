@@ -14,7 +14,7 @@ export class TextInput extends LitElement {
 
     protected _render({ placeholder, value }: TextInput): TemplateResult {
         return html`
-        <link rel="stylesheet" type="text/css" href="../../node_modules/@material/textfield/dist/mdc.textfield.css">
+        <link rel="stylesheet" type="text/css" href="/node_modules/@material/textfield/dist/mdc.textfield.css">
         <link rel="stylesheet" type="text/css" href="/dist/css/text-input.css">
         <div class="mdc-text-field mdc-text-field--outlined">
             <input type="text" id="tf-outlined" class="mdc-text-field__input" value="${value}" placeholder="${placeholder}">

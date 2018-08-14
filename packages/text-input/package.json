@@ -5,6 +5,7 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
+    "start": "polyserve -o",
     "build": "tsc -p src",
     "prepare": "npm run build; npm run sass",
     "sass": "node-sass src/sass -r -o dist/css",
