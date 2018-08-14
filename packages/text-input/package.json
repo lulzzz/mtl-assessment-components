@@ -21,7 +21,6 @@
     "lit-html": "^0.10.2"
   },
   "devDependencies": {
-    "@types/aphrodite": "^0.5.11",
     "chai": "^4.1.2",
     "@hmh/lit-element-tester": "latest",
     "mocha": "^5.2.0",
