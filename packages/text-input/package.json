@@ -1,0 +1,32 @@
+{
+  "name": "@hmh/text-input",
+  "version": "0.1.0",
+  "description": "Text Input Component",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc -p src",
+    "watch": "tsc -p src -w",
+    "prepare": "npm run build",
+    "sass": "node-sass src/sass -r -o dist/css",
+    "sass-watch": "node-sass src/sass -r -o dist/css -w",
+    "test": "custom-element-tester -d"
+  },
+  "keywords": [],
+  "author": "Dominique Rochefort <dominique.rochefort@hmhco.com>",
+  "license": "ISC",
+  "dependencies": {
+    "@material/textfield": "^0.38.1",
+    "@polymer/lit-element": "^0.5.2",
+    "lit-html": "^0.10.2"
+  },
+  "devDependencies": {
+    "@types/aphrodite": "^0.5.11",
+    "chai": "^4.1.2",
+    "custom-element-tester": "latest",
+    "mocha": "^5.2.0",
+    "node-sass": "^4.9.3",
+    "source-map-support": "^0.5.8",
+    "typescript": "^3.0.1"
+  }
+}
