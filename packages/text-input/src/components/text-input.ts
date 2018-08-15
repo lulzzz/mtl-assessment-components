@@ -1,11 +1,9 @@
-import { ComponentBase, html, TemplateResult } from '@hmh/component-base/dist/components/component-base';
-import { FeedbackMixin } from '@hmh/component-base/dist/components/feedback-mixin';
-import { PersistenceMixin } from '@hmh/component-base/dist/components/persistence-mixin';
+import { ComponentBase, Feedback, html, Persistence, TemplateResult } from '@hmh/component-base/dist/index';
 
 // @ts-ignore : no type definition available
 import { MDCTextField } from '@material/textfield/index.js';
 
-export class TextInput extends ComponentBase implements FeedbackMixin, PersistenceMixin {
+export class TextInput extends ComponentBase implements Feedback, Persistence {
     public feedbackText: string;
     public placeholder: string = 'enter some text';
     public value: string = '';
