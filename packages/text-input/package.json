@@ -1,33 +1,32 @@
 {
-  "name": "@hmh/text-input",
-  "version": "0.1.0",
-  "description": "Assessment System Text Input Component",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
-  "scripts": {
-    "start": "polyserve -o",
-    "build": "tsc -p src",
-    "prepare": "npm run build; npm run sass",
-    "sass": "node-sass src/sass -r -o dist/css",
-    "sass-watch": "node-sass src/sass -r -o dist/css -w",
-    "watch": "npm run prepare; concurrently --names 'build,sass' -c 'bgBlue,bgMagenta' 'npm run build -- -w' 'npm run sass -- -w'",
-    "test": "lit-element-tester dist/components/text-input.js"
-  },
-  "keywords": [],
-  "author": "Dominique Rochefort <dominique.rochefort@hmhco.com>",
-  "license": "ISC",
-  "dependencies": {
-    "@material/textfield": "latest",
-    "@polymer/lit-element": "latest",
-    "lit-html": "latest"
-  },
-  "devDependencies": {
-    "@hmh/lit-element-tester": "latest",
-    "chai": "^4.1.2",
-    "concurrently": "^3.6.1",
-    "mocha": "^5.2.0",
-    "node-sass": "^4.9.3",
-    "source-map-support": "^0.5.8",
-    "typescript": "^3.0.1"
-  }
+    "name": "@hmh/text-input",
+    "version": "0.1.0",
+    "description": "Assessment System Text Input Component",
+    "main": "dist/index.js",
+    "types": "dist/index.d.ts",
+    "scripts": {
+        "start": "polyserve -o",
+        "build": "tsc -p src",
+        "prepare": "npm run build; npm run sass",
+        "sass": "node-sass src/sass -r -o dist/css",
+        "sass-watch": "node-sass src/sass -r -o dist/css -w",
+        "watch": "npm run prepare; concurrently --names 'build,sass' -c 'bgBlue,bgMagenta' 'npm run build -- -w' 'npm run sass -- -w'",
+        "test": "lit-element-tester dist/components/text-input.js"
+    },
+    "keywords": [],
+    "author": "Dominique Rochefort <dominique.rochefort@hmhco.com>",
+    "license": "ISC",
+    "dependencies": {
+        "@hmh/component-base": "latest",
+        "@material/textfield": "latest"
+    },
+    "devDependencies": {
+        "@hmh/lit-element-tester": "latest",
+        "chai": "^4.1.2",
+        "concurrently": "^3.6.1",
+        "mocha": "^5.2.0",
+        "node-sass": "^4.9.3",
+        "source-map-support": "^0.5.8",
+        "typescript": "latest"
+    }
 }
