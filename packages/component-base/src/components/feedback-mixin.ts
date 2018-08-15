@@ -1,4 +1,1 @@
-export abstract class FeedbackMixin {
-
-
-}
+export abstract class FeedbackMixin {}

@@ -1,10 +1,9 @@
-import { LitElement } from '@polymer/lit-element/lit-element';
-import { html, TemplateResult } from 'lit-html/lit-html';
+import { ComponentBase,  html, TemplateResult } from '@hmh/component-base/dist/components/component-base';
 
 // @ts-ignore
 import { MDCTextField } from '@material/textfield/index';
 
-export class TextInput extends LitElement {
+export class TextInput extends ComponentBase {
     public placeholder: string = 'enter some text';
     public value: string = '';
     public shadowRoot: ShadowRoot;
