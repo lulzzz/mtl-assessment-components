@@ -1,25 +1,32 @@
-import { ComponentBase,  html, TemplateResult } from '@hmh/component-base/dist/components/component-base';
+import { ComponentBase, html, TemplateResult } from '@hmh/component-base/dist/components/component-base';
+import { FeedbackMixin } from '@hmh/component-base/dist/components/feedback-mixin';
+import { PersistenceMixin } from '@hmh/component-base/dist/components/persistence-mixin';
 
-// @ts-ignore
-import { MDCTextField } from '@material/textfield/index';
+// @ts-ignore : no type definition available
+import { MDCTextField } from '@material/textfield/index.js';
 
-export class TextInput extends ComponentBase {
+export class TextInput extends ComponentBase implements FeedbackMixin, PersistenceMixin {
+    public feedbackText: string;
     public placeholder: string = 'enter some text';
     public value: string = '';
-    public shadowRoot: ShadowRoot;
-    private textField: any;
-
-    //FeedbackMixin
-    foo: (x: number) => number;
 
     static get properties(): { [key: string]: string | object } {
         return {
+            feedbackText: String,
             placeholder: String,
             value: String
         };
     }
 
-    protected _render({ placeholder, value }: TextInput): TemplateResult {
+    public showFeedback(): void {
+        this.feedbackText = 'some feedback';
+    }
+
+    public _firstRendered(): void {
+        new MDCTextField(this.shadowRoot.querySelector('.mdc-text-field'));
+    }
+
+    protected _render({ feedbackText, placeholder, value }: TextInput): TemplateResult {
         return html`
         <link rel="stylesheet" type="text/css" href="/node_modules/@material/textfield/dist/mdc.textfield.css">
         <link rel="stylesheet" type="text/css" href="/dist/css/text-input.css">
@@ -32,13 +39,8 @@ export class TextInput extends ComponentBase {
             </div>
             <div class="mdc-notched-outline__idle"></div>
         </div>
+        <span>${feedbackText}</span>
         `;
-    }
-
-    protected _didRender(): void {
-        if (!this.textField) {
-            this.textField = new MDCTextField(this.shadowRoot.querySelector('.mdc-text-field'));
-        }
     }
 }
 
