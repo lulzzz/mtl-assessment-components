@@ -12,6 +12,8 @@ npx lerna ls
 npx lerna run test
 # build all packages
 npx lerna run build
+# watch all packages for code changes
+npx lerna run watch --parallel
 ```
 
 For details on available commands, check the [lerna documentation](https://github.com/lerna/lerna).
