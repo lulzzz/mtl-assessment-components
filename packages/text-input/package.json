@@ -1,7 +1,7 @@
 {
   "name": "@hmh/text-input",
   "version": "0.1.0",
-  "description": "Text Input Component",
+  "description": "Assessment System Text Input Component",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
@@ -17,9 +17,10 @@
   "author": "Dominique Rochefort <dominique.rochefort@hmhco.com>",
   "license": "ISC",
   "dependencies": {
-    "@material/textfield": "^0.38.1",
-    "@polymer/lit-element": "^0.5.2",
-    "lit-html": "^0.10.2"
+    "@hmh/component-base": "latest",
+    "@material/textfield": "latest",
+    "@polymer/lit-element": "latest",
+    "lit-html": "latest"
   },
   "devDependencies": {
     "@hmh/lit-element-tester": "latest",

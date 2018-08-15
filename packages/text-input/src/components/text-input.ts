@@ -1,9 +1,17 @@
-import { html, LitElement } from '@polymer/lit-element/lit-element';
-import { TemplateResult } from 'lit-html/lit-html';
+import { LitElement } from '@polymer/lit-element/lit-element';
+import { html, TemplateResult } from 'lit-html/lit-html';
+
+// @ts-ignore
+import { MDCTextField } from '@material/textfield/index';
 
 export class TextInput extends LitElement {
     public placeholder: string = 'enter some text';
     public value: string = '';
+    public shadowRoot: ShadowRoot;
+    private textField: any;
+
+    //FeedbackMixin
+    foo: (x: number) => number;
 
     static get properties(): { [key: string]: string | object } {
         return {
@@ -12,7 +20,15 @@ export class TextInput extends LitElement {
         };
     }
 
+    protected _shouldRender(props: TextInput): boolean {
+        // @ts-ignore
+        console.log('PROPS', props, this._root, this.localName);
+        return !!props;
+    }
+
     protected _render({ placeholder, value }: TextInput): TemplateResult {
+        console.log('RENDERING', placeholder, value);
+
         return html`
         <link rel="stylesheet" type="text/css" href="/node_modules/@material/textfield/dist/mdc.textfield.css">
         <link rel="stylesheet" type="text/css" href="/dist/css/text-input.css">
@@ -26,6 +42,12 @@ export class TextInput extends LitElement {
             <div class="mdc-notched-outline__idle"></div>
         </div>
         `;
+    }
+
+    protected _didRender(): void {
+        if (!this.textField) {
+            this.textField = new MDCTextField(this.shadowRoot.querySelector('.mdc-text-field'));
+        }
     }
 }
 

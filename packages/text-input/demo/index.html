@@ -9,7 +9,7 @@
 <body>
     <h3>Themes in <i>The Tempest</i></h3>
     <p>The great and striking
-        <text-input value="peculiarity"></text-input> of this play is that its action lies wholly in the ideal world. It
+        <text-input></text-input> of this play is that its action lies wholly in the ideal world. It
         differs, therefore, from every other work of Shakespeare in the
         <text-input value="character"></text-input> of its mediation. Our poet, in most of his dramas, portrays the real
         world, and exhibits man as acting from clear
@@ -17,6 +17,37 @@
         reverses his procedure; from beginning to end the chief instrumentalities of the poem are external; its conflicts
         and solutions are brought about by powers seemingly beyond human might and intelligence.
     </p>
+
+
+    <!-- basic usage -->
+    <text-input placeholder="" default="" expected="peculiarity">
+    </text-input>
+
+    <!-- advanced usage, same as above -->
+    <text-input placeholder="" default="">
+        <response-item value="peculiarity"></response-item>
+    </text-input>
+
+    <!-- advanced usage, multiple answers -->
+    <text-input placeholder="" default="">
+        <response-item value="peculiarity" strategy="exact-match" score="4">
+            <feedback-item type="positive">
+                <b>Congrats!</b>
+            </feedback-item>
+        </response-item>
+        <response-item>
+            <feedback-item type="negative" >
+                <b>Try again</b>
+            </feedback-item>
+            <feedback-item type="negative">
+                <b>Almost there</b>
+            </feedback-item>
+            <feedback-item type="negative">
+                <b>Oups</b>
+            </feedback-item>
+        </response-item>
+    </text-input>
+
 </body>
 
 </html>

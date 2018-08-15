@@ -1,0 +1,52 @@
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <!-- encoding must be set for mocha's special characters to render properly -->
+    <link rel="stylesheet" href="../node_modules/mocha/mocha.css" />
+    <link rel="stylesheet" href="runner.css">
+
+    <script src="../node_modules/@hmh/lit-element-tester/dist/browser/util.js"></script>
+    <script src="../node_modules/source-map-support/browser-source-map-support.js"></script>
+    <script src="../node_modules/mocha/mocha.js"></script>
+    <script src="../node_modules/chai/chai.js"></script>
+    <script>
+        /* global mocha, sourceMapSupport */
+        sourceMapSupport.install();
+        mocha.setup('bdd');
+    </script>
+    <script type="module" src="../dist/components/text-input.js">
+    </script>
+</head>
+
+<body>
+    <!-- test fixtures -->
+    <template id="default">
+        <text-input>Enter some text</text-input>
+    </template>
+    
+    <template id="paragraph">
+        <p>The great and striking
+            <text-input value="peculiarity"></text-input> of this play is that its action lies wholly in the ideal world.
+            It differs, therefore, from every other work of Shakespeare in the
+            <text-input value="character"></text-input> of its mediation. Our poet, in most of his dramas, portrays the real
+            world, and exhibits man as acting from clear
+            <text-input value="conscious"></text-input> motives, and not from supernatural influences. But here he completely
+            reverses his procedure; from beginning to end the chief instrumentalities of the poem are external; its conflicts
+            and solutions are brought about by powers seemingly beyond human might and intelligence.
+        </p>
+    </template>
+
+    <div id="mocha">
+        <!-- test results are displayed here -->
+    </div>
+
+    <div id="stage">
+        <!-- elements under tests are displayed here -->
+    </div>
+
+    <script type="module" src="../dist/unit/text-input.spec.js">
+    </script>
+</body>
+
+</html>
