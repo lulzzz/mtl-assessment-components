@@ -20,15 +20,7 @@ export class TextInput extends LitElement {
         };
     }
 
-    protected _shouldRender(props: TextInput): boolean {
-        // @ts-ignore
-        console.log('PROPS', props, this._root, this.localName);
-        return !!props;
-    }
-
     protected _render({ placeholder, value }: TextInput): TemplateResult {
-        console.log('RENDERING', placeholder, value);
-
         return html`
         <link rel="stylesheet" type="text/css" href="/node_modules/@material/textfield/dist/mdc.textfield.css">
         <link rel="stylesheet" type="text/css" href="/dist/css/text-input.css">
