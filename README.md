@@ -7,13 +7,13 @@ Individual custom elements are found in `packages/*`.
 
 ```shell
 # list all available packages
-npx lerna ls
+npm run list
 # run unit tests for all packages
-npx lerna run test
+npm test
 # build all packages
-npx lerna run build
-# watch all packages for code changes
-npx lerna run watch --parallel
+npm run build
+# publish all packages
+npm run publish
 ```
 
 For details on available commands, check the [lerna documentation](https://github.com/lerna/lerna).
