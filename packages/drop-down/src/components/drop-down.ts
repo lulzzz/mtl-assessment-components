@@ -1,7 +1,6 @@
 import { ComponentBase, html, TemplateResult } from '@hmh/component-base/dist/components/component-base';
 import { FeedbackMixin } from '@hmh/component-base/dist/components/feedback-mixin';
 import { PersistenceMixin } from '@hmh/component-base/dist/components/persistence-mixin';
-
 // @ts-ignore : no type definition available
 import { MDCSelect } from '@material/select/index.js';
 
@@ -23,8 +22,7 @@ export class DropDown extends ComponentBase implements FeedbackMixin, Persistenc
     }
 
     public _firstRendered(): void {
-        // run js here
-        const select = new MDCSelect(document.querySelector('.mdc-select'));
+        const select = new MDCSelect(this.shadowRoot.querySelector('.mdc-select'));
         select.listen('change', () => {
           alert(`Selected option at index ${select.selectedIndex} with value "${select.value}"`);
         });
@@ -32,6 +30,7 @@ export class DropDown extends ComponentBase implements FeedbackMixin, Persistenc
 
     protected _render({ feedbackText, placeholder, value }: DropDown): TemplateResult {
         return html`
+        <link rel="stylesheet" type="text/css" href="/node_modules/@material/select/dist/mdc.select.css">
         <div class="mdc-select">
         <select class="mdc-select__native-control">
           <option value="" disabled selected></option>
