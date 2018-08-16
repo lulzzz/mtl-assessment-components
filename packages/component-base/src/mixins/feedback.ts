@@ -3,5 +3,7 @@
  */
 export abstract class Feedback {
     abstract feedbackText: string;
-    abstract showFeedback(): void;
+    showFeedback(): void {
+        console.log('show feedback from the mixin is called');
+    };
 }
