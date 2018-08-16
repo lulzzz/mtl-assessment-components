@@ -1,14 +1,13 @@
-import { ComponentBase, html, TemplateResult } from '@hmh/component-base/dist/components/component-base';
-import { FeedbackMixin } from '@hmh/component-base/dist/components/feedback-mixin';
-import { PersistenceMixin } from '@hmh/component-base/dist/components/persistence-mixin';
+import { applyMixins, ComponentBase, Feedback, html, Persistence, TemplateResult } from '@hmh/component-base/dist/index';
+import { MDCTextField } from '@material/textfield/index';
 
-// @ts-ignore : no type definition available
-import { MDCTextField } from '@material/textfield/index.js';
-
-export class TextInput extends ComponentBase implements FeedbackMixin, PersistenceMixin {
+export class TextInput extends ComponentBase implements Feedback, Persistence {
     public feedbackText: string;
     public placeholder: string = 'enter some text';
     public value: string = '';
+
+    // declare mixins properties to satisfy the typescript compiler
+    public showFeedback: () => void;
 
     static get properties(): { [key: string]: string | object } {
         return {
@@ -16,10 +15,6 @@ export class TextInput extends ComponentBase implements FeedbackMixin, Persisten
             placeholder: String,
             value: String
         };
-    }
-
-    public showFeedback(): void {
-        this.feedbackText = 'some feedback';
     }
 
     public _firstRendered(): void {
@@ -43,5 +38,7 @@ export class TextInput extends ComponentBase implements FeedbackMixin, Persisten
         `;
     }
 }
+
+applyMixins(TextInput, [Feedback, Persistence]);
 
 customElements.define('text-input', TextInput);
