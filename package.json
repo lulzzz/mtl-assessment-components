@@ -3,7 +3,9 @@
     "private": true,
     "scripts": {
         "build": "lerna run build",
+        "list": "lerna ls",
         "publish": "lerna publish --registry http://npm.tribalnova.com --no-verify-access",
+        "test": "lerna run test",
         "watch": "lerna run watch --parallel"
     },
     "devDependencies": {
