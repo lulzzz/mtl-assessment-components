@@ -5,15 +5,11 @@ import { PersistenceMixin } from '@hmh/component-base/dist/components/persistenc
 import { MDCSelect } from '@material/select/index.js';
 
 export class DropDown extends ComponentBase implements FeedbackMixin, PersistenceMixin {
-    public feedbackText: string;
-    public placeholder: string = 'enter some text';
-    public value: string = '';
+    public values: string = '';
 
     static get properties(): { [key: string]: string | object } {
         return {
-            feedbackText: String,
-            placeholder: String,
-            value: String
+            values: String
         };
     }
 
@@ -28,20 +24,23 @@ export class DropDown extends ComponentBase implements FeedbackMixin, Persistenc
         });
     }
 
-    protected _render({ feedbackText, placeholder, value }: DropDown): TemplateResult {
+    protected _render({ values }: DropDown): TemplateResult {
+
+        const valuesArr = values.split(',');
+        //TODO: loop
         return html`
         <link rel="stylesheet" type="text/css" href="/node_modules/@material/select/dist/mdc.select.css">
         <div class="mdc-select">
         <select class="mdc-select__native-control">
           <option value="" disabled selected></option>
-          <option value="grains">
-            Bread, Cereal, Rice, and Pasta
+          <option value=${valuesArr[0]}>
+            ${valuesArr[1]}
           </option>
-          <option value="vegetables">
-            Vegetables
+          <option value=${valuesArr[2]}>
+            ${valuesArr[3]}
           </option>
-          <option value="fruit">
-            Fruit
+          <option value=${valuesArr[4]}>
+            ${valuesArr[5]}
           </option>
         </select>
         <label class="mdc-floating-label">Pick a Food Group</label>
