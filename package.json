@@ -1,6 +1,11 @@
 {
     "name": "root",
     "private": true,
+    "scripts": {
+        "build": "lerna run build",
+        "publish": "lerna publish --registry http://npm.tribalnova.com --no-verify-access",
+        "watch": "lerna run watch --parallel"
+    },
     "devDependencies": {
         "lerna": "^3.0.4"
     }
