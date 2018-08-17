@@ -2,31 +2,32 @@ import { applyMixins, ComponentBase, Feedback, html, Persistence, TemplateResult
 import { MDCTextField } from '@material/textfield/index';
 
 export class TextInput extends ComponentBase implements Feedback, Persistence {
-    public feedbackText: string;
-    public placeholder: string = 'Enter text';
+    public feedbackText: string = '';
+    public placeholder: string = '';
     public value: string = '';
 
     // declare mixins properties to satisfy the typescript compiler
     public showFeedback: () => void;
 
     static get properties(): { [key: string]: string | object } {
-        return {
+        return Object.assign(ComponentBase.baseProperties, {
             feedbackText: String,
             placeholder: String,
             value: String
-        };
+        });
     }
 
     public _firstRendered(): void {
         MDCTextField.attachTo(this.shadowRoot.querySelector('.mdc-text-field'));
     }
 
-    protected _render({ feedbackText, placeholder, value }: TextInput): TemplateResult {
+    protected _render({ disabled, feedbackText, placeholder, value }: TextInput): TemplateResult {
         return html`
         <link rel="stylesheet" type="text/css" href="/node_modules/@material/textfield/dist/mdc.textfield.css">
         <link rel="stylesheet" type="text/css" href="/dist/css/text-input.css">
-        <div class="mdc-text-field mdc-text-field--outlined">
+        <div class$="mdc-text-field mdc-text-field--outlined ${disabled ? 'mdc-text-field--disabled' : ''}">
             <input 
+                disabled=${disabled}
                 type="text" 
                 id="tf-outlined" 
                 class="mdc-text-field__input" 
@@ -48,7 +49,7 @@ export class TextInput extends ComponentBase implements Feedback, Persistence {
         this.enableAccessibility();
     }
 
-    public onInputChange(evt: Event): void {
+    private onInputChange(evt: Event): void {
         evt.stopPropagation();
         this.value = (evt.target as HTMLInputElement).value;
 
