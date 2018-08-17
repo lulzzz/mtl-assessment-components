@@ -32,7 +32,7 @@ export class TextInput extends ComponentBase implements Feedback, Persistence {
                 class="mdc-text-field__input" 
                 value="${value}" 
                 placeholder="${placeholder}" 
-                on-change="${(e: Event) => this.onInputChange(e)}">
+                on-change="${(evt: Event) => this.onInputChange(evt)}" />
             <div class="mdc-notched-outline">
                 <svg>
                 <path class="mdc-notched-outline__path"/>
@@ -50,7 +50,6 @@ export class TextInput extends ComponentBase implements Feedback, Persistence {
 
     public onInputChange(evt: Event): void {
         evt.stopPropagation();
-        console.log('HEY', (evt.target as HTMLInputElement).value);
         this.value = (evt.target as HTMLInputElement).value;
 
         this.dispatchEvent(
