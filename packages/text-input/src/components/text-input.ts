@@ -17,10 +17,6 @@ export class TextInput extends ComponentBase implements Feedback, Persistence {
         });
     }
 
-    public _firstRendered(): void {
-        MDCTextField.attachTo(this.shadowRoot.querySelector('.mdc-text-field'));
-    }
-
     protected _render({ disabled, feedbackText, placeholder, value }: TextInput): TemplateResult {
         return html`
         <link rel="stylesheet" type="text/css" href="/node_modules/@material/textfield/dist/mdc.textfield.css">
@@ -46,6 +42,7 @@ export class TextInput extends ComponentBase implements Feedback, Persistence {
     }
 
     protected _didRender(): void {
+        MDCTextField.attachTo(this.shadowRoot.querySelector('.mdc-text-field'));
         this.enableAccessibility();
     }
 

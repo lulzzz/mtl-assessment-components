@@ -1,5 +1,5 @@
 import { TextInput } from '../components/text-input';
-import { checkComponentDOM, inputValue } from './test-helpers';
+import { checkComponentDOM, inputValue, isDisabled } from './test-helpers';
 const expect: any = chai.expect;
 const tagName: string = 'text-input';
 
@@ -54,6 +54,42 @@ describe(`<${tagName}>`, (): void => {
             });
             inputValue(el, 'Toronto');
         });
+    });
+
+    it('should toggle disabled state', async (): Promise<void> => {
+        withSnippet('default');
+        const el: TextInput = document.querySelector('text-input') as any;
+        await el.renderComplete;
+        checkComponentDOM(el);
+        inputValue(el, 'Ottawa');
+        await el.renderComplete;
+        checkComponentDOM(el, { value: 'Ottawa' });
+        el.setAttribute('disabled', 'disabled');
+        await el.renderComplete;
+        expect(isDisabled(el)).to.be.true;
+        checkComponentDOM(el, { value: 'Ottawa', disabled: true });
+        el.removeAttribute('disabled');
+        await el.renderComplete;
+        expect(isDisabled(el)).to.be.false;
+        inputValue(el, 'London');
+        await el.renderComplete;
+        checkComponentDOM(el, { value: 'London' });
+    });
+
+    it('should allow to change the value programmatically', async (): Promise<void> => {
+        withSnippet('default');
+        const el: TextInput = document.querySelector('text-input') as any;
+        await el.renderComplete;
+        checkComponentDOM(el);
+        el.value = 'Calgary';
+        await el.renderComplete;
+        checkComponentDOM(el, { value: 'Calgary' });
+        el.value = 'Edmonton';
+        await el.renderComplete;
+        checkComponentDOM(el, { value: 'Edmonton' });
+        el.value = '';
+        await el.renderComplete;
+        checkComponentDOM(el);
     });
 
     it('should render within a paragraph', async (): Promise<void> => {
