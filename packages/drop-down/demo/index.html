@@ -9,7 +9,19 @@
 <body>
     <h3>Drop Down Demo</h3>
     <!-- basic usage -->
-    <drop-down values="item1, label1, item2, label2, item3, label3">
+    <drop-down>
+        <slot name='options'>
+            <option value="" disabled selected/>
+            <option value="1">
+                one
+            </option>
+            <option value="2">
+                two
+            </option>
+            <option value="3">
+                three
+            </option>
+        </slot>
     </drop-down>
 </body>
 
