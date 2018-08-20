@@ -21,9 +21,6 @@ export class DropDown extends ComponentBase implements PersistenceMixin {
         select.listen('change', () => {
           alert(`Selected option at index ${select.selectedIndex} with value "${select.value}"`);
         });
-
-        const dropdown = this.shadowRoot.querySelectorAll('option');
-        console.log('dropdown:', dropdown);
     }
 
     protected _render({ values }: DropDown): TemplateResult {
@@ -40,7 +37,9 @@ export class DropDown extends ComponentBase implements PersistenceMixin {
 
     /**
      * Update the UI whenever nodes are added or removed from the slot
-     *
+     * Adding options to select here because slots aren't suppoerted for select elements:
+     * https://github.com/vuejs/vue/issues/1962
+     * 
      * @param event
      */
     private slotChanged(event: Event): void {
@@ -52,13 +51,11 @@ export class DropDown extends ComponentBase implements PersistenceMixin {
             if (nodes) {
                 this.count = nodes.length;
                 for (const el of nodes as HTMLElement[]) {
-                    console.log('element', el);
                     select.appendChild(el);
                 }
             }
         }
     }
-    
 }
 
 customElements.define('drop-down', DropDown);
