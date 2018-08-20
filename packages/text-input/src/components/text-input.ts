@@ -10,11 +10,12 @@ export class TextInput extends ComponentBase implements Feedback, Persistence {
     public showFeedback: () => void;
 
     static get properties(): { [key: string]: string | object } {
-        return Object.assign(ComponentBase.baseProperties, {
+        return {
+            ...ComponentBase.baseProperties,
             feedbackText: String,
             placeholder: String,
             value: String
-        });
+        };
     }
 
     protected _render({ disabled, feedbackText, placeholder, value }: TextInput): TemplateResult {
