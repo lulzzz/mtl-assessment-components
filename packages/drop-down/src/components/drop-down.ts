@@ -1,4 +1,4 @@
-import { ComponentBase, html, TemplateResult } from '@hmh/component-base/dist/components/component-base';
+import { ComponentBase, html, TemplateResult } from '@hmh/component-base/dist/index';
 import { PersistenceMixin } from '@hmh/component-base/dist/components/persistence-mixin';
 // @ts-ignore : no type definition available
 import { MDCSelect } from '@material/select/index.js';
@@ -30,8 +30,8 @@ export class DropDown extends ComponentBase implements PersistenceMixin {
         return html`
         <link rel="stylesheet" type="text/css" href="/node_modules/@material/select/dist/mdc.select.css">
         <div class="mdc-select">
-            <select class="mdc-select__native-control"/>
-            <slot name="options" on-slotchange="${(e: Event) => this.slotChanged(e)}"/>
+            <select class="mdc-select__native-control"></select>
+            <slot name="options" on-slotchange="${(e: Event) => this.slotChanged(e)}"></slot>
         <label class="mdc-floating-label">Pick a Food Group</label>
         <div class="mdc-line-ripple"></div>
       </div>
@@ -46,20 +46,19 @@ export class DropDown extends ComponentBase implements PersistenceMixin {
     private slotChanged(event: Event): void {
         console.log('slot changed');
         const slot: HTMLSlotElement = event.srcElement as HTMLSlotElement;
+        const select: HTMLSelectElement = this.shadowRoot.querySelector('select');
         if (slot) {
             const nodes: Node[] = slot.assignedNodes();
             if (nodes) {
                 this.count = nodes.length;
                 for (const el of nodes as HTMLElement[]) {
-                    const option: HTMLOptionElement = el.querySelector('option');
-                    if (option) {
-                        //el.querySelector('img').style.height = 'inherit';
-                        console.log('option');
-                    }
+                    console.log('element', el);
+                    select.appendChild(el);
                 }
             }
         }
     }
+    
 }
 
 customElements.define('drop-down', DropDown);
