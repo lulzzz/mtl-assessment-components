@@ -26,12 +26,16 @@ export class DropDown extends ComponentBase implements PersistenceMixin {
     protected _render({ values }: DropDown): TemplateResult {
         return html`
         <link rel="stylesheet" type="text/css" href="/node_modules/@material/select/dist/mdc.select.css">
-        <div class="mdc-select">
-            <select class="mdc-select__native-control"></select>
-            <slot name="options" on-slotchange="${(e: Event) => this.slotChanged(e)}"></slot>
-        <label class="mdc-floating-label">Pick a Food Group</label>
-        <div class="mdc-line-ripple"></div>
-      </div>
+            <div class="mdc-select mdc-select--outlined">
+                <select class="mdc-select__native-control"></select>
+                <div class="mdc-notched-outline">
+                    <svg>
+                    <path class="mdc-notched-outline__path"></path>
+                    </svg>
+                </div>
+                <div class="mdc-notched-outline__idle"></div>
+                <slot name="options" on-slotchange="${(e: Event) => this.slotChanged(e)}"></slot>
+             </div>
         `;
     }
 
@@ -43,7 +47,6 @@ export class DropDown extends ComponentBase implements PersistenceMixin {
      * @param event
      */
     private slotChanged(event: Event): void {
-        console.log('slot changed');
         const slot: HTMLSlotElement = event.srcElement as HTMLSlotElement;
         const select: HTMLSelectElement = this.shadowRoot.querySelector('select');
         if (slot) {
