@@ -22,10 +22,22 @@
 <body>
     <!-- test fixtures -->
     <template id="default">
-        <text-input>Enter some text</text-input>
+        <text-input></text-input>
+    </template>
+
+    <template id="disabled">
+        <text-input disabled></text-input>
+    </template>
+
+    <template id="prefilled">
+        <text-input value="Tokyo"></text-input>
+    </template>
+
+    <template id="readonly">
+        <text-input value="Hong Kong" disabled></text-input>
     </template>
     
-    <template id="paragraph">
+    <template id="three">
         <p>The great and striking
             <text-input value="peculiarity"></text-input> of this play is that its action lies wholly in the ideal world.
             It differs, therefore, from every other work of Shakespeare in the
