@@ -1,0 +1,37 @@
+{
+    "compileOnSave": true,
+    "compilerOptions": {
+        "baseUrl": "../",
+        "declaration": true,
+        "rootDir": "./",
+        "outDir": "../dist",
+        "target": "esnext",
+        "module": "esnext",
+        "experimentalDecorators": true,
+        "emitDecoratorMetadata": true,
+        "noImplicitAny": true,
+        "noImplicitReturns": true,
+        "noUnusedLocals": true,
+        "noUnusedParameters": false,
+        "removeComments": true,
+        "skipLibCheck": true,
+        "preserveConstEnums": true,
+        "sourceMap": true,
+        "pretty": true,
+        "lib": ["esnext", "dom"],
+        "paths": {
+            "@hmh/*": ["node_modules/@hmh/*"],
+            "@material/*": ["node_modules/@material/*"],
+            "@polymer/*": ["node_modules/@polymer/*"],
+            "lit-html/*": ["node_modules/lit-html/*"]
+        },
+        "plugins": [
+            {
+                "name": "typescript-styled-plugin",
+                "validate": false
+            }
+        ]
+    },
+    "include": ["../src/**/*.ts", "../typings.d.ts"],
+    "exclude": ["node_modules"]
+}
