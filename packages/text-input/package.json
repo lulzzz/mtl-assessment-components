@@ -18,8 +18,10 @@
     "author": "Dominique Rochefort <dominique.rochefort@hmhco.com>",
     "license": "ISC",
     "dependencies": {
-        "@hmh/component-base": "latest",
-        "@material/textfield": "latest"
+        "@hmh/component-base": "0.0.5",
+        "@material/textfield": "latest",
+        "@polymer/lit-element": "^0.5.2",
+        "lit-html": "^0.10.2"
     },
     "devDependencies": {
         "@hmh/lit-element-tester": "latest",
@@ -28,6 +30,7 @@
         "mocha": "^5.2.0",
         "node-sass": "^4.9.3",
         "source-map-support": "^0.5.8",
-        "typescript": "latest"
+        "typescript": "^3.0.1",
+        "typescript-styled-plugin": "^0.10.0"
     }
 }
