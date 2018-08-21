@@ -2,6 +2,7 @@
     "name": "root",
     "private": true,
     "scripts": {
+        "bootstrap": "lerna bootstrap",
         "build": "lerna run build",
         "list": "lerna ls",
         "publish": "lerna publish --registry http://npm.tribalnova.com --no-verify-access",
