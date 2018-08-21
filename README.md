@@ -8,6 +8,8 @@ Individual custom elements are found in `packages/*`.
 ```shell
 # list all available packages
 npm run list
+# install all dependencies
+npm run bootstrap
 # watch for changes on all packages
 npm run watch
 # run unit tests for all packages
