@@ -10,6 +10,6 @@
         "watch": "lerna run watch --parallel"
     },
     "devDependencies": {
-        "lerna": "^3.0.4"
+        "lerna": "latest"
     }
 }
