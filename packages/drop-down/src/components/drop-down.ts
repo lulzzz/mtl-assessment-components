@@ -49,7 +49,6 @@ export class DropDown extends ComponentBase implements Feedback {
         if (slot) {
             const nodes: Node[] = slot.assignedNodes();
             if (nodes) {
-                this.count = nodes.length;
                 for (const el of nodes as HTMLElement[]) {
                     select.appendChild(el);
                 }
