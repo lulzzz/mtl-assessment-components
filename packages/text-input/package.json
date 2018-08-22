@@ -1,6 +1,6 @@
 {
     "name": "@hmh/text-input",
-    "version": "0.0.5",
+    "version": "0.0.6",
     "description": "Assessment System Text Input Component",
     "main": "dist/index.js",
     "types": "dist/index.d.ts",
@@ -28,6 +28,7 @@
         "mocha": "^5.2.0",
         "node-sass": "^4.9.3",
         "source-map-support": "^0.5.8",
-        "typescript": "latest"
+        "typescript": "^3.0.1",
+        "typescript-styled-plugin": "^0.10.0"
     }
 }
