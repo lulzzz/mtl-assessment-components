@@ -18,10 +18,10 @@
     "author": "Dominique Rochefort <dominique.rochefort@hmhco.com>",
     "license": "ISC",
     "dependencies": {
-        "@hmh/component-base": "0.0.5",
+        "@hmh/component-base": "latest",
         "@material/textfield": "latest",
-        "@polymer/lit-element": "^0.5.2",
-        "lit-html": "^0.10.2"
+        "@polymer/lit-element": "latest",
+        "lit-html": "latest"
     },
     "devDependencies": {
         "@hmh/lit-element-tester": "latest",
