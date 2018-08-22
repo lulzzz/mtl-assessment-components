@@ -19,9 +19,7 @@
     "license": "ISC",
     "dependencies": {
         "@hmh/component-base": "latest",
-        "@material/textfield": "latest",
-        "@polymer/lit-element": "latest",
-        "lit-html": "latest"
+        "@material/textfield": "latest"
     },
     "devDependencies": {
         "@hmh/lit-element-tester": "latest",
