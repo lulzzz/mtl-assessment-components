@@ -1,1 +1,3 @@
-li { list-style-type: none }
+.option-item:hover, .option-item:focus {
+    background-color:lightblue; 
+}

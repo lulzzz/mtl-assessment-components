@@ -32,7 +32,13 @@ export class DropDown extends ComponentBase implements Persistence {
 
         <link rel="stylesheet" type="text/css" href="/dist/css/drop-down.css">
         <div class="dropdown">
-            <button class="dropbtn" on-click="${(evt: Event) => this.onDropDownClicked()}">Dropdown</button>
+            <div class="buttons-container">
+                <button class="dropbtn" on-click="${(evt: Event) => this.onDropDownClicked()}">Dropdown</button>
+                <div class="nav-buttons-container">
+                    <button class="nav-button" on-click="${(evt: Event) => this.onDropDownClicked()}">&#8593</button>
+                    <button class="nav-button" on-click="${(evt: Event) => this.onDropDownClicked()}">&#8595</button>
+                </div>
+            </div>
             <div id="myDropdown" class="dropdown-content">
                 <slot name="options" class="options" on-click="${(evt: MouseEvent) => this.onItemClicked(evt, evt.target as HTMLElement)}"> </slot>
             </div>
