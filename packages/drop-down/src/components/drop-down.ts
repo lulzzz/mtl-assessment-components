@@ -1,25 +1,22 @@
-import { ComponentBase, html, TemplateResult } from '@hmh/component-base/dist/index';
-import { PersistenceMixin } from '@hmh/component-base/dist/components/persistence-mixin';
-// @ts-ignore : no type definition available
+import { ComponentBase, html, TemplateResult, Feedback, applyMixins } from '@hmh/component-base/dist/index';
 import { MDCSelect } from '@material/select/index.js';
 
-export class DropDown extends ComponentBase implements PersistenceMixin {
+export class DropDown extends ComponentBase implements Feedback {
+    public feedbackText: string;
     public values: string = '';
+    public showFeedback: () => void;
 
     static get properties(): { [key: string]: string | object } {
         return {
+            ...ComponentBase.baseProperties,
             values: String
         };
-    }
-
-    public showFeedback(): void {
-        this.feedbackText = 'some feedback';
     }
 
     public _firstRendered(): void {
         const select = new MDCSelect(this.shadowRoot.querySelector('.mdc-select'));
         select.listen('change', () => {
-          alert(`Selected option at index ${select.selectedIndex} with value "${select.value}"`);
+            alert(`Selected option at index ${select.selectedIndex} with value "${select.value}"`);
         });
     }
 
@@ -43,7 +40,7 @@ export class DropDown extends ComponentBase implements PersistenceMixin {
      * Update the UI whenever nodes are added or removed from the slot
      * Adding options to select here because slots aren't suppoerted for select elements:
      * https://github.com/vuejs/vue/issues/1962
-     * 
+     *
      * @param event
      */
     private slotChanged(event: Event): void {
@@ -52,7 +49,6 @@ export class DropDown extends ComponentBase implements PersistenceMixin {
         if (slot) {
             const nodes: Node[] = slot.assignedNodes();
             if (nodes) {
-                this.count = nodes.length;
                 for (const el of nodes as HTMLElement[]) {
                     select.appendChild(el);
                 }
@@ -60,5 +56,7 @@ export class DropDown extends ComponentBase implements PersistenceMixin {
         }
     }
 }
+
+applyMixins(DropDown, [Feedback]);
 
 customElements.define('drop-down', DropDown);

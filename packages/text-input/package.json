@@ -1,6 +1,6 @@
 {
     "name": "@hmh/text-input",
-    "version": "0.0.4",
+    "version": "0.0.7",
     "description": "Assessment System Text Input Component",
     "main": "dist/index.js",
     "types": "dist/index.d.ts",
@@ -11,7 +11,8 @@
         "sass": "node-sass src/sass -r -o dist/css",
         "sass-watch": "node-sass src/sass -r -o dist/css -w",
         "watch": "npm run prepare; concurrently --names 'build,sass' -c 'bgBlue,bgMagenta' 'npm run build -- -w' 'npm run sass -- -w'",
-        "test": "lit-element-tester dist/components/text-input.js"
+        "test": "lit-element-tester dist/components/text-input.js",
+        "test-dev": "lit-element-tester -d"
     },
     "keywords": [],
     "author": "Dominique Rochefort <dominique.rochefort@hmhco.com>",
@@ -27,6 +28,7 @@
         "mocha": "^5.2.0",
         "node-sass": "^4.9.3",
         "source-map-support": "^0.5.8",
-        "typescript": "latest"
+        "typescript": "^3.0.1",
+        "typescript-styled-plugin": "^0.10.0"
     }
 }
