@@ -4,26 +4,31 @@
     <meta charset="utf-8">
     <link rel="stylesheet" href="index.css">
     <script type="module" src="../dist/components/text-input.js"></script>
+    <script type="module" src="../node_modules/@hmh/response-validation/dist/components/response-validation.js"></script>
 </head>
 
 <body>
     <h3>Themes in <i>The Tempest</i></h3>
     <p>The great and striking
-        <text-input></text-input> of this play is that its action lies wholly in the ideal world. It differs, therefore,
-        from every other work of Shakespeare in the
-        <text-input id="char" value="character"></text-input> of its mediation. Our poet, in most of his dramas, portrays the real
-        world, and exhibits man as acting from clear
-        <text-input value="conscious"></text-input> motives, and not from supernatural influences. But here he completely
-        reverses his procedure; from beginning to end the chief instrumentalities of the poem are external; its conflicts
-        and solutions are brought about by powers seemingly beyond human might and intelligence.
-    </p>
-    </p>
-    <p>This is a normal <input type="text" /> which is accessible
-    </p>
 
-    <script>
-        document.getElementById('char').addEventListener('change', (e) => console.log('INPUT CHANGED', e.detail));
-    </script>
+        <text-input id="char">
+            <response-validation expected="compromise" score="4" strategy="fuzzyMatch">
+                <div hidden>Good</div>
+                <div hidden>Wooot!</div>
+            </response-validation>
+
+            <response-validation expected="concession" score="3" feedbackType="neutral" strategy="exactMatch">
+                <div hidden>Alright!</div>
+            </response-validation>
+
+            <response-validation score="0" feedback="negative" strategy="exactMatch">
+                <div hidden>Try again</div>
+                <div hidden>Oups, still not good</div>
+                <div hidden>Too bad!</div>
+            </response-validation>
+        </text-input>
+        made by Shakespeare.
+    </p>
 </body>
 
 </html>

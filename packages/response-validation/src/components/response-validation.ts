@@ -18,9 +18,9 @@ export interface FeedbackMessage {
 }
 
 export class ResponseValidation extends ComponentBase<string> {
-    public matches: string = '';
+    public expected: string = '';
+    public feedbackType: FeedbackType;
     public score: number = 0;
-    public feedbackType: FeedbackType = FeedbackType.NEGATIVE;
     public strategy: Strategy = Strategy.MATH_EQUIVALENT;
 
     private feedbackItems: HTMLElement[] = [];
@@ -29,7 +29,8 @@ export class ResponseValidation extends ComponentBase<string> {
     static get properties(): { [key: string]: string | object } {
         return {
             ...ComponentBase.baseProperties,
-            matches: String,
+            expected: String,
+            feedbackType: String,
             score: Number,
             strategy: String
         };
@@ -38,9 +39,9 @@ export class ResponseValidation extends ComponentBase<string> {
     public match(response: string): boolean {
         switch (this.strategy) {
             case Strategy.EXACT_MATCH:
-                return response === this.matches;
+                return response === this.expected;
             case Strategy.FUZZY_MATCH:
-                return response.toLowerCase() === this.matches.toLowerCase();
+                return response.toLowerCase() === this.expected.toLowerCase();
             default:
                 return false;
         }
@@ -55,10 +56,11 @@ export class ResponseValidation extends ComponentBase<string> {
 
         this.attempts++;
         let message: string = '';
-        if (this.attempts > this.feedbackItems.length) {
+        if (this.attempts >= this.feedbackItems.length) {
             message = this.feedbackItems[this.feedbackItems.length - 1].innerHTML;
+        } else {
+            message = this.feedbackItems[this.attempts - 1].innerHTML;
         }
-        message = this.feedbackItems[this.attempts - 1].innerHTML;
 
         return { type, message };
     }
@@ -68,17 +70,20 @@ export class ResponseValidation extends ComponentBase<string> {
     }
 
     protected _render(): TemplateResult {
-        return html`<slot name="feedback" on-slotchange="${(evt: Event) => this.onSlotChanged(evt)}"></slot>`;
+        return html`<slot on-slotchange="${(evt: Event) => this.onSlotChanged(evt)}"></slot>`;
     }
 
     private onSlotChanged(event: Event) {
+        event.stopPropagation();
         const slot: HTMLSlotElement = event.srcElement as HTMLSlotElement;
         if (slot) {
             const nodes: Node[] = slot.assignedNodes();
             if (nodes) {
                 const feedbackItems: HTMLElement[] = [];
                 for (const el of nodes as HTMLElement[]) {
-                    feedbackItems.push(el);
+                    if (el && el.tagName) {
+                        feedbackItems.push(el);
+                    }
                 }
                 this.feedbackItems = feedbackItems;
             }

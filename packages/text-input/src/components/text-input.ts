@@ -1,7 +1,7 @@
-import { applyMixins, ComponentBase, Feedback, html, Persistence, TemplateResult } from '@hmh/component-base/dist/index';
+import { applyMixins, ComponentBase, Feedback, html, TemplateResult } from '@hmh/component-base/dist/index';
 import { MDCTextField } from '@material/textfield/index';
 
-export class TextInput extends ComponentBase<string> implements Feedback, Persistence {
+export class TextInput extends ComponentBase<string> implements Feedback {
     public feedbackText: string = '';
     public placeholder: string = '';
     public value: string = '';
@@ -39,6 +39,7 @@ export class TextInput extends ComponentBase<string> implements Feedback, Persis
             <div class="mdc-notched-outline__idle"></div>
         </div>
         <span>${feedbackText}</span>
+        <slot on-slotchange="${(evt: Event) => this.onSlotChanged(evt)}"></slot>
         `;
     }
 
@@ -67,8 +68,28 @@ export class TextInput extends ComponentBase<string> implements Feedback, Persis
         this.setAttribute('aria-placeholder', this.placeholder);
         this.setAttribute('aria-label', this.value || this.placeholder);
     }
+
+    private onSlotChanged(event: Event) {
+        event.stopPropagation();
+
+        console.log('slot changed');
+        const slot: HTMLSlotElement = event.srcElement as HTMLSlotElement;
+        if (slot) {
+            const nodes: Node[] = slot.assignedNodes();
+            if (nodes) {
+                const feedbackItems: HTMLElement[] = [];
+                for (const el of nodes as HTMLElement[]) {
+                    if (el && el.tagName) {
+                        console.log('TEXT_INPUT', el);
+                        feedbackItems.push(el);
+                    }
+                }
+                this.feedbackItems = feedbackItems;
+            }
+        }
+    }
 }
 
-applyMixins(TextInput, [Feedback, Persistence]);
+applyMixins(TextInput, [Feedback]);
 
 customElements.define('text-input', TextInput);

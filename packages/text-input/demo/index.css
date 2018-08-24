@@ -5,3 +5,11 @@
 p {
     line-height: 2rem;
 }
+
+text-input {
+    display: inline;
+}
+
+[slot] {
+    display: none;
+}

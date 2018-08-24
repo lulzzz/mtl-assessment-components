@@ -19,6 +19,7 @@
     "license": "ISC",
     "dependencies": {
         "@hmh/component-base": "latest",
+        "@hmh/response-validation": "0.0.8",
         "@material/textfield": "latest"
     },
     "devDependencies": {
