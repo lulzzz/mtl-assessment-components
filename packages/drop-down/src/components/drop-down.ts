@@ -21,7 +21,7 @@ export class DropDown extends ComponentBase implements Persistence {
         if (eventTarget.hasAttribute('slot')) {
             this.values = eventTarget.getAttribute('value');
             eventTarget.setAttribute('aria-selected', 'true');
-            console.log('this.values:', this.values);
+             // role="button" aria-pressed="false" 
             this.shadowRoot.querySelector('.dropbtn').innerHTML = eventTarget.innerHTML;
             this.onDropDownClicked();
         } else {
@@ -46,10 +46,27 @@ export class DropDown extends ComponentBase implements Persistence {
                 </div>
             </div>
             <div id="myDropdown" class="dropdown-content">
-                <slot name="options" role="option" class="options" on-click="${(evt: MouseEvent) => this.onItemClicked(evt, evt.target as HTMLElement)}"> </slot>
+                <slot name="options" class="options" 
+                on-click="${(evt: MouseEvent) => this.onItemClicked(evt, evt.target as HTMLElement)}"
+                on-slotchange="${(evt: Event) => this.onSlotChanged(evt)}"> </slot>
             </div>
         </div>
         `;
+    }
+
+    private onSlotChanged(evt: Event) : any {
+        const slot: HTMLSlotElement = evt.srcElement as HTMLSlotElement;
+        if (slot) {
+            const nodes: Node[] = slot.assignedNodes();
+            if (nodes) {
+                var index: number = 1;
+                for (const el of nodes as HTMLElement[]) {
+                    el.setAttribute('tabindex', String(index));
+                    el.setAttribute('role', 'button');
+                    index++;
+                }
+            }
+        }
     }
 
     private enableAccessibility(): void {
