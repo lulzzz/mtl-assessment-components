@@ -1,7 +1,7 @@
 import { ComponentBase, html, TemplateResult, Feedback, applyMixins } from '@hmh/component-base/dist/index';
 import { MDCSelect } from '@material/select/index.js';
 
-export class DropDown extends ComponentBase implements Feedback {
+export class DropDown extends ComponentBase<string> implements Feedback {
     public feedbackText: string;
     public values: string = '';
     public showFeedback: () => void;

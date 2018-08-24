@@ -1,7 +1,7 @@
 import { applyMixins, ComponentBase, Feedback, html, Persistence, TemplateResult } from '@hmh/component-base/dist/index';
 import { MDCTextField } from '@material/textfield/index';
 
-export class TextInput extends ComponentBase implements Feedback, Persistence {
+export class TextInput extends ComponentBase<string> implements Feedback, Persistence {
     public feedbackText: string = '';
     public placeholder: string = '';
     public value: string = '';
