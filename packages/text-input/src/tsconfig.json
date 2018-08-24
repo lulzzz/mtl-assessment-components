@@ -22,8 +22,8 @@
         "paths": {
             "@hmh/*": ["node_modules/@hmh/*"],
             "@material/*": ["node_modules/@material/*"],
-            "@polymer/*": ["node_modules/@polymer/*"],
-            "lit-html/*": ["node_modules/lit-html/*"]
+            "@polymer/*": ["node_modules/@hmh/component-base/node_modules/@polymer/*"],
+            "lit-html/*": ["node_modules/@hmh/component-base/node_modules/lit-html/*"]
         },
         "plugins": [
             {
