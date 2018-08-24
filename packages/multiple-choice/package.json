@@ -1,7 +1,7 @@
 {
-    "name": "@hmh/text-input",
+    "name": "@hmh/multiple-choice",
     "version": "0.0.6",
-    "description": "Assessment System Text Input Component",
+    "description": "Assessment System Multiple Choice Component",
     "main": "dist/index.js",
     "types": "dist/index.d.ts",
     "scripts": {
@@ -11,14 +11,15 @@
         "sass": "node-sass src/sass -r -o dist/css",
         "sass-watch": "node-sass src/sass -r -o dist/css -w",
         "watch": "npm run prepare; concurrently --names 'build,sass' -c 'bgBlue,bgMagenta' 'npm run build -- -w' 'npm run sass -- -w'",
-        "test": "lit-element-tester dist/components/text-input.js",
-        "test-dev": "lit-element-tester -d"
+        "test": "lit-element-tester dist/components/multiple-choice.js"
     },
     "keywords": [],
-    "author": "Dominique Rochefort <dominique.rochefort@hmhco.com>",
+    "author": "Alexandra Djamen <alexandra.djamen@hmhco.com>",
     "license": "ISC",
     "dependencies": {
         "@hmh/component-base": "latest",
+        "@material/form-field": "latest",
+        "@material/checkbox": "latest",
         "@material/radio": "latest"
     },
     "devDependencies": {
@@ -28,7 +29,6 @@
         "mocha": "^5.2.0",
         "node-sass": "^4.9.3",
         "source-map-support": "^0.5.8",
-        "typescript": "^3.0.1",
-        "typescript-styled-plugin": "^0.10.0"
+        "typescript": "latest"
     }
 }

@@ -1,0 +1,4 @@
+{
+    "npm": true,
+    "entrypoint": "demo/index.html"
+}
