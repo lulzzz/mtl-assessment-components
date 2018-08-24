@@ -84,7 +84,6 @@ export class TextInput extends ComponentBase<string> implements Feedback {
                         feedbackItems.push(el);
                     }
                 }
-                this.feedbackItems = feedbackItems;
             }
         }
     }
