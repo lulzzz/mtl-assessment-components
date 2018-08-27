@@ -1,62 +1,72 @@
-import { ComponentBase, html, TemplateResult, Feedback, applyMixins } from '@hmh/component-base/dist/index';
-import { MDCSelect } from '@material/select/index.js';
+import { ComponentBase, html, TemplateResult } from '@hmh/component-base/dist/index';
 
-export class DropDown extends ComponentBase implements Feedback {
-    public feedbackText: string;
+export class DropDown extends ComponentBase {
     public values: string = '';
-    public showFeedback: () => void;
+    public open: boolean;
 
     static get properties(): { [key: string]: string | object } {
         return {
             ...ComponentBase.baseProperties,
-            values: String
+            values: String,
+            open: Boolean
         };
     }
 
-    public _firstRendered(): void {
-        const select = new MDCSelect(this.shadowRoot.querySelector('.mdc-select'));
-        select.listen('change', () => {
-            alert(`Selected option at index ${select.selectedIndex} with value "${select.value}"`);
-        });
+    private onDropDownClicked(): void {
+        this.open = !this.open;
     }
 
-    protected _render({ values }: DropDown): TemplateResult {
+    private onItemClicked(event: MouseEvent, eventTarget: HTMLElement): void {
+        if (eventTarget.hasAttribute('slot')) {
+            this.values = eventTarget.getAttribute('value');
+            eventTarget.setAttribute('aria-selected', 'true');
+            this.shadowRoot.querySelector('.dropbtn').innerHTML = eventTarget.innerHTML;
+            this.onDropDownClicked();
+        } else {
+            this.onItemClicked(event, eventTarget.parentNode as HTMLElement)
+        }
+    }
+
+    protected _didRender(): void {
+        this.enableAccessibility();
+    }
+
+    protected _render({ open, values }: DropDown): TemplateResult {
         return html`
-        <link rel="stylesheet" type="text/css" href="/node_modules/@material/select/dist/mdc.select.css">
-            <div class="mdc-select mdc-select--outlined">
-                <select class="mdc-select__native-control"></select>
-                <div class="mdc-notched-outline">
-                    <svg>
-                    <path class="mdc-notched-outline__path"></path>
-                    </svg>
-                </div>
-                <div class="mdc-notched-outline__idle"></div>
-                <slot name="options" on-slotchange="${(e: Event) => this.slotChanged(e)}"></slot>
-             </div>
+        <link rel="stylesheet" type="text/css" href="/dist/css/drop-down.css">
+        
+        <div class="dropdown">
+            <div class="buttons-container">
+                <button class="dropbtn" on-click="${(evt: Event) => this.onDropDownClicked()}">Dropdown</button>
+                <button class="nav-button" on-click="${(evt: Event) => this.onDropDownClicked()}">&#8595;</button>
+            </div>
+            <div id="myDropdown" class$="dropdown-content ${open ? 'show' : ''}">
+                <slot name="options" class="options" 
+                on-click="${(evt: MouseEvent) => this.onItemClicked(evt, evt.target as HTMLElement)}"
+                on-slotchange="${(evt: Event) => this.onSlotChanged(evt)}"> </slot>
+            </div>
+        </div>
         `;
     }
 
-    /**
-     * Update the UI whenever nodes are added or removed from the slot
-     * Adding options to select here because slots aren't suppoerted for select elements:
-     * https://github.com/vuejs/vue/issues/1962
-     *
-     * @param event
-     */
-    private slotChanged(event: Event): void {
-        const slot: HTMLSlotElement = event.srcElement as HTMLSlotElement;
-        const select: HTMLSelectElement = this.shadowRoot.querySelector('select');
+    private onSlotChanged(evt: Event) : any {
+        const slot: HTMLSlotElement = evt.srcElement as HTMLSlotElement;
         if (slot) {
             const nodes: Node[] = slot.assignedNodes();
             if (nodes) {
-                for (const el of nodes as HTMLElement[]) {
-                    select.appendChild(el);
-                }
+                nodes.forEach((el: HTMLElement, index: number) => {
+                    el.setAttribute('tabindex', String(++index));
+                    el.setAttribute('role', 'button');
+                });
             }
         }
     }
-}
 
-applyMixins(DropDown, [Feedback]);
+    private enableAccessibility(): void {
+        this.setAttribute('role', 'popupbutton');
+        this.setAttribute('aria-haspopup', 'true');
+        this.setAttribute('aria-label', this.shadowRoot.querySelector('.dropbtn').innerHTML);
+    }
+}
 
 customElements.define('drop-down', DropDown);
