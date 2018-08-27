@@ -1,20 +1,29 @@
-# Assessment System Drop Down Component
+# Assessment System Multiple Choice Component
 
 ## Usage
 
 ```html
-<!-- basic usage -->
-<drop-down placeholder="" default="">
-    <answer-option>one</answer-option>
-    <answer-option>two</answer-option>
-    <answer-option type="correct">three</answer-option>
-</drop-down>
+<!-- single answer usage -->
+<multiple-choice>
+    <div slot="option" id="000-1">three</div>
+    <div slot="option" id="000-2">five</div>
+    <div slot="option" id="000-3">six</div>
+    <div slot="option" id="000-4">eleven</div>
+</multiple-choice>
+<!-- multiple answer usage -->
+<multiple-choice  mode="multiple" >
+    <div slot="option" id="000-1">three</div>
+    <div slot="option" id="000-2">five</div>
+    <div slot="option" id="000-3">six</div>
+    <div slot="option" id="000-4">eleven</div>
+</multiple-choice>
 
 <!-- with feedback -->
-<drop-down placeholder="" default="">
-    <answer-option>one</answer-option>
-    <answer-option>two</answer-option>
-    <answer-option type="correct">three</answer-option>
+<multiple-choice placeholder="" default="">
+    <div slot="option" id="000-1">three</div>
+    <div slot="option" id="000-2">five</div>
+    <div slot="option" id="000-3">six</div>
+    <div slot="option" id="000-4">eleven</div>
     <feedback-item type="negative" strategy="sequential">
         <b>Try again</b>
     </feedback-item>
@@ -27,8 +36,7 @@
     <feedback-item type="positive" strategy="sequential">
         <b>Congrats</b> dude!
     </feedback-item>
-</drop-down>
-
+</multiple-choice>
 ```
 
 ## Demo page
