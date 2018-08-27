@@ -1,4 +1,4 @@
-export { ComponentBase, html, TemplateResult } from './components/base';
+export { ComponentBase, html, repeat, TemplateResult, unsafeHTML } from './components/base';
 export { Persistence } from './mixins/persistence';
 export { Feedback } from './mixins/feedback';
 /**
