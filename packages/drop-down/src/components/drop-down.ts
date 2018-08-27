@@ -34,14 +34,12 @@ export class DropDown extends ComponentBase {
 
     protected _render({ values }: DropDown): TemplateResult {
         return html`
-        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
         <link rel="stylesheet" type="text/css" href="/dist/css/drop-down.css">
-
+        
         <div class="dropdown">
             <div class="buttons-container">
                 <button class="dropbtn" on-click="${(evt: Event) => this.onDropDownClicked()}">Dropdown</button>
-                <div class="nav-buttons-container">
-                <button class="nav-button material-icons" on-click="${(evt: Event) => this.onDropDownClicked()}">arrow_drop_down</button>
+                <button class="nav-button" on-click="${(evt: Event) => this.onDropDownClicked()}">&#8595;</button>
             </div>
             <div id="myDropdown" class$="dropdown-content ${this.open ? 'show' : ''}">
                 <slot name="options" class="options" 
@@ -51,16 +49,15 @@ export class DropDown extends ComponentBase {
         </div>
         `;
     }
-    // mdc-select-dd-arrow-svg-bg_
+
     private onSlotChanged(evt: Event) : any {
         const slot: HTMLSlotElement = evt.srcElement as HTMLSlotElement;
         if (slot) {
             const nodes: Node[] = slot.assignedNodes();
             if (nodes) {
                 nodes.forEach((el: HTMLElement, index: number) => {
-                    el.setAttribute('tabindex', String(index));
+                    el.setAttribute('tabindex', String(++index));
                     el.setAttribute('role', 'button');
-                    ++index;
                 });
             }
         }
