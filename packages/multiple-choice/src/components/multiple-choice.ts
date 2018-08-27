@@ -26,44 +26,45 @@ export class MultipleChoice extends ComponentBase implements Feedback {
            items,
            (item: HTMLElement) => item.id,
            (item: HTMLElement) => html`
-           <div hidden class="mdc-form-field">
-               ${
-                   mode === 'multiple'
-                       ? html`
-                       <div class="mdc-checkbox" on-click="${(evt: MouseEvent) => this.onItemClicked(evt, item.id)}">
-                       <input type="checkbox" class="mdc-checkbox__native-control" id="${item.id}"/>
-                       <div class="mdc-checkbox__background">
-                         <svg class="mdc-checkbox__checkmark"
-                              viewBox="0 0 24 24">
-                           <path class="mdc-checkbox__checkmark-path"
-                                 fill="none"
-                                 d="M1.73,12.91 8.1,19.28 22.79,4.59"/>
-                         </svg>
-                         <div class="mdc-checkbox__mixedmark"></div>
-                       </div>
-                     </div>
-                       `
-                       : html`
-                       <div class="mdc-radio" on-click="${(evt: MouseEvent) => this.onItemClicked(evt, item.id)}">
-                        <input class="mdc-radio__native-control" type="radio" id="${item.id}" name="options">
-                        <div class="mdc-radio__background">
-                        <div class="mdc-radio__outer-circle"></div>
-                        <div class="mdc-radio__inner-circle"></div>
-                        </div>
-                    </div>`
-               }<label for$="${item.id}"> ${unsafeHTML(item.innerHTML)} </label>
-       </div>`
+            <div hidden class="mdc-form-field"> ${mode === 'multiple' ? this.renderCheckbox(item) : this.renderRadioButton(item)}
+                <label for$="${item.id}"> ${unsafeHTML(item.innerHTML)} </label>
+            </div>`
        )}
         <slot name="options" on-slotchange="${(e: Event) => this.slotChanged(e)}" ></slot>
     </main>
         `;
     }
-
+    private renderCheckbox(item: HTMLElement): TemplateResult {
+        return html`
+        <div class="mdc-checkbox" on-click="${(evt: MouseEvent) => this.onItemClicked(evt, item.id)}">
+        <input type="checkbox" class="mdc-checkbox__native-control" id="${item.id}"/>
+        <div class="mdc-checkbox__background">
+          <svg class="mdc-checkbox__checkmark"
+               viewBox="0 0 24 24">
+            <path class="mdc-checkbox__checkmark-path"
+                  fill="none"
+                  d="M1.73,12.91 8.1,19.28 22.79,4.59"/>
+          </svg>
+          <div class="mdc-checkbox__mixedmark"></div>
+        </div>
+      </div>
+        `;
+    }
+    private renderRadioButton(item: HTMLElement): TemplateResult {
+        return html`
+        <div class="mdc-radio" on-click="${(evt: MouseEvent) => this.onItemClicked(evt, item.id)}">
+         <input class="mdc-radio__native-control" type="radio" id="${item.id}" name="options">
+         <div class="mdc-radio__background">
+         <div class="mdc-radio__outer-circle"></div>
+         <div class="mdc-radio__inner-circle"></div>
+         </div>
+     </div>`;
+    }
     /**
      * @param event
      */
     private onItemClicked(event: MouseEvent, id: string): void {
-        alert('clicked on id: ' + id);
+        console.log('clicked on id:', id);
     }
 
     /**
