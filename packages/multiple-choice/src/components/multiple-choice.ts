@@ -15,7 +15,7 @@ export class MultipleChoice extends ComponentBase implements Feedback {
         };
     }
 
-    protected _render({ mode, items, values }: MultipleChoice): TemplateResult {
+    protected _render({ mode, items }: MultipleChoice): TemplateResult {
         return html`
         <link rel="stylesheet" type="text/css" href="/node_modules/@material/radio/dist/mdc.radio.css">
         <link rel="stylesheet" type="text/css" href="/node_modules/@material/form-field/dist/mdc.form-field.css">
@@ -30,8 +30,8 @@ export class MultipleChoice extends ComponentBase implements Feedback {
                ${
                    mode === 'multiple'
                        ? html`
-                       <div class="mdc-checkbox">
-                       <input type="checkbox" class="mdc-checkbox__native-control" id="checkbox-1"/>
+                       <div class="mdc-checkbox" on-click="${(evt: MouseEvent) => this.onItemClicked(evt, item.id)}">
+                       <input type="checkbox" class="mdc-checkbox__native-control" id="${item.id}"/>
                        <div class="mdc-checkbox__background">
                          <svg class="mdc-checkbox__checkmark"
                               viewBox="0 0 24 24">
@@ -44,26 +44,29 @@ export class MultipleChoice extends ComponentBase implements Feedback {
                      </div>
                        `
                        : html`
-                       <div class="mdc-radio">
+                       <div class="mdc-radio" on-click="${(evt: MouseEvent) => this.onItemClicked(evt, item.id)}">
                         <input class="mdc-radio__native-control" type="radio" id="${item.id}" name="options">
                         <div class="mdc-radio__background">
                         <div class="mdc-radio__outer-circle"></div>
                         <div class="mdc-radio__inner-circle"></div>
                         </div>
                     </div>`
-               }<label for="${item.id}"><div>${unsafeHTML(item.innerHTML)} </div></label>
+               }<label for$="${item.id}"> ${unsafeHTML(item.innerHTML)} </label>
        </div>`
        )}
-        <slot name="options" on-slotchange="${(e: Event) => this.slotChanged(e)}"></slot>
+        <slot name="options" on-slotchange="${(e: Event) => this.slotChanged(e)}" ></slot>
     </main>
         `;
     }
 
     /**
-     * Update the UI whenever nodes are added or removed from the slot
-     * Adding options to select here because slots aren't suppoerted for select elements:
-     * https://github.com/vuejs/vue/issues/1962
-     *
+     * @param event
+     */
+    private onItemClicked(event: MouseEvent, id: string): void {
+        alert('clicked on id: ' + id);
+    }
+
+    /**
      * @param event
      */
     private slotChanged(event: Event): void {
