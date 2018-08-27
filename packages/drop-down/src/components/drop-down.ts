@@ -1,8 +1,7 @@
 import { ComponentBase, html, TemplateResult } from '@hmh/component-base/dist/index';
-import { Persistence } from '@hmh/component-base/dist/mixins/persistence';
 // @ts-ignore : no type definition available
 
-export class DropDown extends ComponentBase implements Persistence {
+export class DropDown extends ComponentBase {
     public values: string = '';
 
     static get properties(): { [key: string]: string | object } {
