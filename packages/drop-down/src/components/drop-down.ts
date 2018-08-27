@@ -1,5 +1,4 @@
 import { ComponentBase, html, TemplateResult } from '@hmh/component-base/dist/index';
-// @ts-ignore : no type definition available
 
 export class DropDown extends ComponentBase {
     public values: string = '';
@@ -32,7 +31,7 @@ export class DropDown extends ComponentBase {
         this.enableAccessibility();
     }
 
-    protected _render({ values }: DropDown): TemplateResult {
+    protected _render({ open, values }: DropDown): TemplateResult {
         return html`
         <link rel="stylesheet" type="text/css" href="/dist/css/drop-down.css">
         
@@ -41,7 +40,7 @@ export class DropDown extends ComponentBase {
                 <button class="dropbtn" on-click="${(evt: Event) => this.onDropDownClicked()}">Dropdown</button>
                 <button class="nav-button" on-click="${(evt: Event) => this.onDropDownClicked()}">&#8595;</button>
             </div>
-            <div id="myDropdown" class$="dropdown-content ${this.open ? 'show' : ''}">
+            <div id="myDropdown" class$="dropdown-content ${open ? 'show' : ''}">
                 <slot name="options" class="options" 
                 on-click="${(evt: MouseEvent) => this.onItemClicked(evt, evt.target as HTMLElement)}"
                 on-slotchange="${(evt: Event) => this.onSlotChanged(evt)}"> </slot>
