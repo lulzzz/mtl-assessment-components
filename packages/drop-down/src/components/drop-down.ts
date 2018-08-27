@@ -3,24 +3,24 @@ import { ComponentBase, html, TemplateResult } from '@hmh/component-base/dist/in
 
 export class DropDown extends ComponentBase {
     public values: string = '';
+    public open: boolean;
 
     static get properties(): { [key: string]: string | object } {
         return {
-            values: String
+            ...ComponentBase.baseProperties,
+            values: String,
+            open: Boolean
         };
     }
 
     private onDropDownClicked(): void {
-        const dropDown = this.shadowRoot.getElementById('myDropdown')
-        dropDown.classList.toggle("show");
-        dropDown.focus();
+        this.open = !this.open;
     }
 
     private onItemClicked(event: MouseEvent, eventTarget: HTMLElement): void {
         if (eventTarget.hasAttribute('slot')) {
             this.values = eventTarget.getAttribute('value');
             eventTarget.setAttribute('aria-selected', 'true');
-             // role="button" aria-pressed="false" 
             this.shadowRoot.querySelector('.dropbtn').innerHTML = eventTarget.innerHTML;
             this.onDropDownClicked();
         } else {
@@ -44,7 +44,7 @@ export class DropDown extends ComponentBase {
                     <button class="nav-button" on-click="${(evt: Event) => this.onDropDownClicked()}">&#8595</button>
                 </div>
             </div>
-            <div id="myDropdown" class="dropdown-content">
+            <div id="myDropdown" class$="dropdown-content ${this.open ? 'show' : ''}">
                 <slot name="options" class="options" 
                 on-click="${(evt: MouseEvent) => this.onItemClicked(evt, evt.target as HTMLElement)}"
                 on-slotchange="${(evt: Event) => this.onSlotChanged(evt)}"> </slot>
