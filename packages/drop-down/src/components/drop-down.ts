@@ -58,12 +58,11 @@ export class DropDown extends ComponentBase {
         if (slot) {
             const nodes: Node[] = slot.assignedNodes();
             if (nodes) {
-                var index: number = 1;
-                for (const el of nodes as HTMLElement[]) {
+                nodes.forEach((el: HTMLElement, index: number) => {
                     el.setAttribute('tabindex', String(index));
                     el.setAttribute('role', 'button');
-                    index++;
-                }
+                    ++index;
+                });
             }
         }
     }
