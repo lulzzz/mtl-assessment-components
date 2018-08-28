@@ -1,4 +1,11 @@
 import { ComponentBase, html, TemplateResult, Feedback, applyMixins, repeat, unsafeHTML } from '@hmh/component-base/dist/index';
+/**
+ * `<multiple-choice>`
+ * In typical use, use `<multiple-choice>`
+ * @param mode
+ * @demo ./demo/index.html
+ *
+ */
 export class MultipleChoice extends ComponentBase implements Feedback {
     private items: HTMLElement[] = [];
     private mode: string;

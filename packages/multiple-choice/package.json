@@ -10,13 +10,15 @@
         "prepare": "npm run build; npm run sass",
         "sass": "node-sass src/sass -r -o dist/css",
         "sass-watch": "node-sass src/sass -r -o dist/css -w",
-        "watch": "npm run prepare; concurrently --names 'build,sass' -c 'bgBlue,bgMagenta' 'npm run build -- -w' 'npm run sass -- -w'",
-        "test": "lit-element-tester dist/components/multiple-choice.js"
+        "watch": "npm run prepare; concurrently --names 'build,sass' -c 'bgBlue,bgMagenta' 'npm run build -- -w' 'npm run sass -- -w' 'npm-watch'",
+        "test": "lit-element-tester dist/components/multiple-choice.js",
+        "_generateDocs": "polymer analyze ./dist/components/ > ./dist/components/analysis.json"
     },
     "keywords": [],
     "author": "Alexandra Djamen <alexandra.djamen@hmhco.com>",
     "license": "ISC",
     "dependencies": {
+        "@polymer/polymer": "latest",
         "@hmh/component-base": "latest",
         "@material/form-field": "latest",
         "@material/checkbox": "latest",
@@ -28,7 +30,15 @@
         "concurrently": "^3.6.1",
         "mocha": "^5.2.0",
         "node-sass": "^4.9.3",
+        "npm-watch": "latest",
         "source-map-support": "^0.5.8",
-        "typescript": "latest"
+        "typescript": "latest",
+        "polymer-cli": "latest",
+        "@webcomponents/webcomponentsjs": "^2.0.2",
+        "@polymer/iron-component-page": "next",
+        "@polymer/iron-demo-helpers": "latest"
+    },
+    "watch": {
+        "_generateDocs": "src/components/**/*.*"
     }
 }

@@ -74,6 +74,13 @@ describe(`<${tagName}> single mode`, (): void => {
 
         expect(value).to.be.true;
     });
+});
+describe(`<${tagName}> multiple mode`, (): void => {
+    it('multiple should render as expected', (): void => {
+        withSnippet('multiple');
+        const value: boolean = true;
+        expect(value).to.be.true;
+    });
     it('should be able to click added option', async (): Promise<void> => {
         withSnippet('multiple');
         const value: boolean = true;
@@ -89,13 +96,6 @@ describe(`<${tagName}> single mode`, (): void => {
         expect(checkbox.checked).to.be.false;
         label.click();
         expect(checkbox.checked).to.be.true;
-    });
-});
-describe(`<${tagName}> multiple mode`, (): void => {
-    it('multiple should render as expected', (): void => {
-        withSnippet('multiple');
-        const value: boolean = true;
-        expect(value).to.be.true;
     });
 });
 
