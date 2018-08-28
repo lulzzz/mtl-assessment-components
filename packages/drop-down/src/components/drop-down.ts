@@ -19,12 +19,25 @@ export class DropDown extends ComponentBase {
     private onItemClicked(event: MouseEvent, eventTarget: HTMLElement): void {
         if (eventTarget.hasAttribute('slot')) {
             this.values = eventTarget.getAttribute('value');
+            this.deselectAllItems();
             eventTarget.setAttribute('aria-selected', 'true');
             this.shadowRoot.querySelector('.dropbtn').innerHTML = eventTarget.innerHTML;
             this.onDropDownClicked();
         } else {
             this.onItemClicked(event, eventTarget.parentNode as HTMLElement)
         }
+    }
+
+    private deselectAllItems() {
+        const slot = this.shadowRoot.querySelector('slot') as HTMLSlotElement;
+        if (slot) {
+            const nodes: Node[] = slot.assignedNodes();
+            if (nodes) {
+                nodes.forEach((el: HTMLElement, index: number) => {
+                    el.setAttribute('aria-selected', 'false');
+                });
+            }
+        }       
     }
 
     protected _didRender(): void {
@@ -40,7 +53,7 @@ export class DropDown extends ComponentBase {
                 <button class="dropbtn" on-click="${(evt: Event) => this.onDropDownClicked()}">Dropdown</button>
                 <button class="nav-button" on-click="${(evt: Event) => this.onDropDownClicked()}">&#8595;</button>
             </div>
-            <div id="myDropdown" class$="dropdown-content ${open ? 'show' : ''}">
+            <div class$="dropdown-content ${open ? 'show' : 'hide'}">
                 <slot name="options" class="options" 
                 on-click="${(evt: MouseEvent) => this.onItemClicked(evt, evt.target as HTMLElement)}"
                 on-slotchange="${(evt: Event) => this.onSlotChanged(evt)}"> </slot>
