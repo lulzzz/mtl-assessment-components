@@ -1,26 +1,26 @@
 import { ComponentBase, html, TemplateResult, Feedback, applyMixins, repeat, unsafeHTML } from '@hmh/component-base/dist/index';
 /**
  * `<multiple-choice>`
- * In typical use, use `<multiple-choice>`
+ * In typical use, use `<multiple-choice> if single correct answer, and <multiple-choice mode="multiple"> if multiple correct answer`
  * @param mode
  * @demo ./demo/index.html
  *
  */
 export class MultipleChoice extends ComponentBase implements Feedback {
-    private items: HTMLElement[] = [];
-    private mode: string;
-    public feedbackText: string;
-    public values: string = '';
-    public showFeedback: () => void;
-
     static get properties(): { [key: string]: string | object } {
         return {
             ...ComponentBase.baseProperties,
+            /* The multiple choice answer options */
             items: Array,
-            mode: String,
-            values: String
+            /** The mode of muliple choice: ie single or multiple **/
+            mode: String
         };
     }
+
+    private items: HTMLElement[] = [];
+    private mode: string;
+    public feedbackText: string;
+    public showFeedback: () => void;
 
     protected _render({ mode, items }: MultipleChoice): TemplateResult {
         return html`
@@ -41,6 +41,11 @@ export class MultipleChoice extends ComponentBase implements Feedback {
     </main>
         `;
     }
+    /**
+     * Renders a checkbox
+     *
+     * @return {TemplateResult} checkbox template
+     */
     private renderCheckbox(item: HTMLElement): TemplateResult {
         return html`
         <div class="mdc-checkbox" on-click="${(evt: MouseEvent) => this.onItemClicked(evt, item.id)}">
@@ -56,6 +61,12 @@ export class MultipleChoice extends ComponentBase implements Feedback {
         </div>
       </div>`;
     }
+
+    /**
+     * Renders a radio button
+     *
+     * @return {TemplateResult} radio button template
+     */
     private renderRadioButton(item: HTMLElement): TemplateResult {
         return html`
         <div class="mdc-radio" on-click="${(evt: MouseEvent) => this.onItemClicked(evt, item.id)}">
@@ -66,8 +77,11 @@ export class MultipleChoice extends ComponentBase implements Feedback {
          </div>
      </div>`;
     }
+
     /**
-     * @param event
+     * Fired when item is clicked
+     * @param {MouseEvent} event
+     * @param {string} id
      */
     private onItemClicked(event: MouseEvent, id: string): void {
         event.stopPropagation();
@@ -75,7 +89,8 @@ export class MultipleChoice extends ComponentBase implements Feedback {
     }
 
     /**
-     * @param event
+     * Fired on slot change
+     * @param {Event} event
      */
     private slotChanged(event: Event): void {
         const items: HTMLElement[] = [];
