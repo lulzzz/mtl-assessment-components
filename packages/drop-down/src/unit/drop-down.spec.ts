@@ -15,10 +15,18 @@ describe(`<${tagName}>`, (): void => {
     it('should open contents on button clicked', async (): Promise<void> => {
         withSnippet('default');
         const el: DropDown = document.querySelector('drop-down') as any;
-        const shadowRoot = el.shadowRoot;   
-        const dropButton = shadowRoot.querySelector('.dropbtn');
-        clickElement(dropButton);
+        const shadowRoot = el.shadowRoot;
+        clickElement(shadowRoot.querySelector('.dropbtn'));
         const content = shadowRoot.querySelector('.dropdown-content');
+        const display = window.getComputedStyle(content).getPropertyValue("display");
+        expect(display).to.equal('block');
+    });
+
+    it('should open contents on navigation (arrow) button clicked', async (): Promise<void> => {
+        withSnippet('default');
+        const el: DropDown = document.querySelector('drop-down') as any;
+        clickElement(el.shadowRoot.querySelector('.nav-button'));
+        const content = el.shadowRoot.querySelector('.dropdown-content');
         const display = window.getComputedStyle(content).getPropertyValue("display");
         expect(display).to.equal('block');
     });
@@ -51,6 +59,15 @@ describe(`<${tagName}>`, (): void => {
         expect(el.value).to.equal(options[0].getAttribute('value'));
     });
 
+    it('should update the UI to reflect selected option content when a selection is made', async (): Promise<void> => {
+        withSnippet('values-one-two-three');
+        let el: DropDown = document.querySelector('drop-down') as any;
+        const options = getOptions(el);
+        clickElement(options[0]);
+        await el.renderComplete;
+        expect(el.shadowRoot.querySelector('.dropbtn').innerHTML).to.equal(options[0].innerHTML);
+    });
+
     it('should allow for HTML as option content', async (): Promise<void> => {
         withSnippet('values-one-two-three');
         let el: DropDown = document.querySelector('drop-down') as any;
@@ -58,11 +75,9 @@ describe(`<${tagName}>`, (): void => {
         expect(options[0].innerHTML.includes('<b>')).to.equal(true);
     });
 
-
     it('should dispatch change event when a selection is made', async (): Promise<void> => {
         withSnippet('values-one-two-three');
         let el: DropDown = document.querySelector('drop-down') as any;
-        await el.renderComplete;
 
         await new Promise(resolve => {
             el.addEventListener('change', (evt: CustomEvent) => {
@@ -74,8 +89,6 @@ describe(`<${tagName}>`, (): void => {
             clickElement(options[0]);
         });
     });
-
-
 });
 
 mocha.run();
