@@ -1,13 +1,13 @@
 import { ComponentBase, html, TemplateResult } from '@hmh/component-base/dist/index';
 
 export class DropDown extends ComponentBase {
-    public values: string = '';
+    public value: string = '';
     public open: boolean;
 
     static get properties(): { [key: string]: string | object } {
         return {
             ...ComponentBase.baseProperties,
-            values: String,
+            value: String,
             open: Boolean
         };
     }
@@ -18,7 +18,7 @@ export class DropDown extends ComponentBase {
 
     private onItemClicked(event: MouseEvent, eventTarget: HTMLElement): void {
         if (eventTarget.hasAttribute('slot')) {
-            this.values = eventTarget.getAttribute('value');
+            this.value = eventTarget.getAttribute('value');
             this.deselectAllItems();
             eventTarget.setAttribute('aria-selected', 'true');
             this.shadowRoot.querySelector('.dropbtn').innerHTML = eventTarget.innerHTML;
@@ -44,11 +44,11 @@ export class DropDown extends ComponentBase {
         this.enableAccessibility();
     }
 
-    protected _render({ open, values }: DropDown): TemplateResult {
+    protected _render({ open, value }: DropDown): TemplateResult {
         return html`
         <link rel="stylesheet" type="text/css" href="/dist/css/drop-down.css">
         
-        <div class="dropdown">
+        <div class="dropdown" value="${value}">
             <div class="buttons-container">
                 <button class="dropbtn" on-click="${(evt: Event) => this.onDropDownClicked()}">Dropdown</button>
                 <button class="nav-button" on-click="${(evt: Event) => this.onDropDownClicked()}">&#8595;</button>
@@ -79,6 +79,7 @@ export class DropDown extends ComponentBase {
         this.setAttribute('role', 'popupbutton');
         this.setAttribute('aria-haspopup', 'true');
         this.setAttribute('aria-label', this.shadowRoot.querySelector('.dropbtn').innerHTML);
+        this.setAttribute('value', this.value);
     }
 }
 

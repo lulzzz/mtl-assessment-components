@@ -15,7 +15,11 @@ export function checkAccessibilityparams(el: DropDown, params: { [key: string]: 
     expect(el.getAttribute('aria-label')).to.equal(shadowRoot.querySelector('.dropbtn').innerHTML);
 }
 
-export function clickElement(el: any): void {
-    const event: Event = new Event('click');
+export function clickElement(el: HTMLElement): void {
+    var event = new MouseEvent('click', {
+        view: window,
+        bubbles: true,
+        cancelable: true
+    });
     el.dispatchEvent(event);
 }
