@@ -44,19 +44,19 @@ describe(`<${tagName}>`, (): void => {
         withSnippet('values-one-two-three');
         let el: DropDown = document.querySelector('drop-down') as any;
         const options = getOptions(el);
-        clickElement(options[0]);
-        expect(options[0].getAttribute('aria-selected')).to.equal('true');
+        clickElement(options[2]);
+        expect(options[0].getAttribute('aria-selected')).to.equal('false');
         expect(options[1].getAttribute('aria-selected')).to.equal('false');
-        expect(options[2].getAttribute('aria-selected')).to.equal('false');
+        expect(options[2].getAttribute('aria-selected')).to.equal('true');
     });
 
     it('should change value when a selection is made', async (): Promise<void> => {
         withSnippet('values-one-two-three');
         let el: DropDown = document.querySelector('drop-down') as any;
         const options = getOptions(el);
-        clickElement(options[0]);
+        clickElement(options[1]);
         await el.renderComplete;
-        expect(el.value).to.equal(options[0].getAttribute('value'));
+        expect(el.value).to.equal(options[1].getAttribute('value'));
     });
 
     it('should update the UI to reflect selected option content when a selection is made', async (): Promise<void> => {
@@ -81,12 +81,12 @@ describe(`<${tagName}>`, (): void => {
 
         await new Promise(resolve => {
             el.addEventListener('change', (evt: CustomEvent) => {
-                expect(evt.detail.value).to.equal('one');
+                expect(evt.detail.value).to.equal('two');
                 resolve();
             });
 
             const options = getOptions(el);
-            clickElement(options[0]);
+            clickElement(options[1]);
         });
     });
 });
