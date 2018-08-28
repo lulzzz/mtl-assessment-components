@@ -15,6 +15,19 @@ export function checkAccessibilityparams(el: DropDown, params: { [key: string]: 
     expect(el.getAttribute('aria-label')).to.equal(shadowRoot.querySelector('.dropbtn').innerHTML);
 }
 
+export function getOptions(el: DropDown): any {
+    const shadowRoot = el.shadowRoot;   
+    const slot = shadowRoot.querySelector('slot') as HTMLSlotElement;
+    const nodes: Node[] = slot.assignedNodes();
+    const result: Array<HTMLElement> = [];
+
+    nodes.forEach((node) => {
+        result.push(node as HTMLElement);
+    });
+
+    return result;
+}
+
 export function clickElement(el: HTMLElement): void {
     var event = new MouseEvent('click', {
         view: window,

@@ -1,12 +1,12 @@
 import { DropDown } from "../components/drop-down";
-import { checkComponentDOM, clickElement } from './test-helpers';
+import { checkComponentDOM, clickElement, getOptions } from './test-helpers';
 
 const tagName: string = 'drop-down';
 const expect: any = chai.expect;
 
 describe(`<${tagName}>`, (): void => {
     it('should render default state', async (): Promise<void> => {
-        withSnippet('default');
+        withSnippet('values-one-two-three');
         const el: DropDown = document.querySelector('drop-down') as any;
         await el.renderComplete;
         checkComponentDOM(el);
@@ -26,32 +26,56 @@ describe(`<${tagName}>`, (): void => {
     it('should contain the expected option values', async (): Promise<void> => {
         withSnippet('values-one-two-three');
         const el: DropDown = document.querySelector('drop-down') as any;
-        const shadowRoot = el.shadowRoot;   
-        const slot = shadowRoot.querySelector('slot') as HTMLSlotElement;
-        if (slot) {
-            const nodes: Node[] = slot.assignedNodes();  
-            const optionOne = nodes[0] as HTMLElement;
-            const optionTwo = nodes[1] as HTMLElement;
-            const optionThree = nodes[2] as HTMLElement;
-            expect(optionOne.getAttribute('value')).to.equal('one');
-            expect(optionTwo.getAttribute('value')).to.equal('two');
-            expect(optionThree.getAttribute('value')).to.equal('three');
-        } 
+        const options = getOptions(el);
+        expect(options[0].getAttribute('value')).to.equal('one');
+        expect(options[1].getAttribute('value')).to.equal('two');
+        expect(options[2].getAttribute('value')).to.equal('three');
+    });
+
+    it('should set aria-selected correctly when a selection is made', async (): Promise<void> => {
+        withSnippet('values-one-two-three');
+        let el: DropDown = document.querySelector('drop-down') as any;
+        const options = getOptions(el);
+        clickElement(options[0]);
+        expect(options[0].getAttribute('aria-selected')).to.equal('true');
+        expect(options[1].getAttribute('aria-selected')).to.equal('false');
+        expect(options[2].getAttribute('aria-selected')).to.equal('false');
     });
 
     it('should change value when a selection is made', async (): Promise<void> => {
         withSnippet('values-one-two-three');
         let el: DropDown = document.querySelector('drop-down') as any;
-        const shadowRoot = el.shadowRoot;   
-        const slot = shadowRoot.querySelector('slot') as HTMLSlotElement;
-        if (slot) {
-            const nodes: Node[] = slot.assignedNodes();  
-            const optionOne = nodes[0] as HTMLElement;
-            clickElement(optionOne);
-            await el.renderComplete;
-            expect(el.getAttribute('value')).to.equal(optionOne.getAttribute('value'));
-        } 
+        const options = getOptions(el);
+        clickElement(options[0]);
+        await el.renderComplete;
+        expect(el.value).to.equal(options[0].getAttribute('value'));
     });
+
+    it('should allow for HTML as option content', async (): Promise<void> => {
+        withSnippet('values-one-two-three');
+        let el: DropDown = document.querySelector('drop-down') as any;
+        const options = getOptions(el);
+        expect(options[0].innerHTML.includes('<b>')).to.equal(true);
+    });
+
+
+    it('should dispatch change event when a selection is made', async (): Promise<void> => {
+        withSnippet('values-one-two-three');
+        let el: DropDown = document.querySelector('drop-down') as any;
+        await el.renderComplete;
+
+        await new Promise(resolve => {
+            el.addEventListener('change', (evt: CustomEvent) => {
+                expect(evt.detail.value).to.equal('one');
+                resolve();
+            });
+
+            const options = getOptions(el);
+            clickElement(options[0]);
+        });
+    });
+
+
 });
 
 mocha.run();

@@ -2,7 +2,7 @@ import { ComponentBase, html, TemplateResult } from '@hmh/component-base/dist/in
 
 export class DropDown extends ComponentBase {
     public value: string = '';
-    public open: boolean;
+    public open: boolean = false;
 
     static get properties(): { [key: string]: string | object } {
         return {
@@ -23,9 +23,19 @@ export class DropDown extends ComponentBase {
             eventTarget.setAttribute('aria-selected', 'true');
             this.shadowRoot.querySelector('.dropbtn').innerHTML = eventTarget.innerHTML;
             this.onDropDownClicked();
+
+            this.dispatchEvent(
+                new CustomEvent('change', {
+                    bubbles: true,
+                    composed: true,
+                    detail: {
+                        value: this.value
+                    }
+                })
+            );       
         } else {
             this.onItemClicked(event, eventTarget.parentNode as HTMLElement)
-        }
+        } 
     }
 
     private deselectAllItems() {
@@ -42,6 +52,7 @@ export class DropDown extends ComponentBase {
 
     protected _didRender(): void {
         this.enableAccessibility();
+        this.setAttribute('value', this.value);
     }
 
     protected _render({ open, value }: DropDown): TemplateResult {
@@ -79,7 +90,6 @@ export class DropDown extends ComponentBase {
         this.setAttribute('role', 'popupbutton');
         this.setAttribute('aria-haspopup', 'true');
         this.setAttribute('aria-label', this.shadowRoot.querySelector('.dropbtn').innerHTML);
-        this.setAttribute('value', this.value);
     }
 }
 
