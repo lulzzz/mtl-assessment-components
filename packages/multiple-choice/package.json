@@ -12,7 +12,7 @@
         "sass-watch": "node-sass src/sass -r -o dist/css -w",
         "watch": "npm run prepare; concurrently --names 'build,sass' -c 'bgBlue,bgMagenta' 'npm run build -- -w' 'npm run sass -- -w' 'npm-watch'",
         "test": "lit-element-tester dist/components/multiple-choice.js",
-        "_generateDocs": "polymer analyze ./dist/components/ > ./dist/components/analysis.json"
+        "_generateDocs": "polymer analyze ./dist/components/multiple-choice.js > ./dist/components/analysis.json"
     },
     "keywords": [],
     "author": "Alexandra Djamen <alexandra.djamen@hmhco.com>",
