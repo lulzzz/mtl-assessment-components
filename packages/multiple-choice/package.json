@@ -10,8 +10,9 @@
         "prepare": "npm run build; npm run sass",
         "sass": "node-sass src/sass -r -o dist/css",
         "sass-watch": "node-sass src/sass -r -o dist/css -w",
-        "watch": "npm run prepare; concurrently --names 'build,sass' -c 'bgBlue,bgMagenta' 'npm run build -- -w' 'npm run sass -- -w'",
-        "test": "lit-element-tester dist/components/multiple-choice.js"
+        "watch": "npm run prepare; concurrently --names 'build,sass' -c 'bgBlue,bgMagenta' 'npm run build -- -w' 'npm run sass -- -w' 'npm-watch'",
+        "test": "lit-element-tester dist/components/multiple-choice.js",
+        "_generateDocs": "polymer analyze ./dist/components/multiple-choice.js > ./dist/components/analysis.json"
     },
     "keywords": [],
     "author": "Alexandra Djamen <alexandra.djamen@hmhco.com>",
@@ -20,16 +21,24 @@
         "@hmh/component-base": "latest",
         "@material/checkbox": "latest",
         "@material/form-field": "latest",
-        "@material/radio": "latest"
+        "@material/radio": "latest",
+        "@polymer/polymer": "latest"
     },
     "devDependencies": {
         "@hmh/lit-element-tester": "latest",
+        "@polymer/iron-component-page": "next",
+        "@polymer/iron-demo-helpers": "latest",
+        "@webcomponents/webcomponentsjs": "^2.0.2",
         "chai": "^4.1.2",
         "concurrently": "^4.0.1",
         "mocha": "^5.2.0",
         "node-sass": "^4.9.3",
-        "source-map-support": "^0.5.9",
+        "npm-watch": "latest",
+        "polymer-cli": "latest",
+        "source-map-support": "^0.5.8",
         "typescript": "latest"
     },
-    "gitHead": "bcd0e93c78068dcdd5af96e8611bebc569aae7b3"
+    "watch": {
+        "_generateDocs": "src/components/**/*.*"
+    }
 }
