@@ -23,12 +23,12 @@ export class DropDown extends ComponentBase<string> {
             this.shadowRoot.querySelector('.dropbtn').innerHTML = eventTarget.innerHTML;
             this.onDropDownClicked();
         } else {
-            this.onItemClicked(event, eventTarget.parentNode as HTMLElement)
+            this.onItemClicked(event, eventTarget.parentNode as HTMLElement);
         }
     }
 
     protected _didRender(): void {
-        this.enableAccessibility();
+        this._enableAccessibility();
     }
 
     protected _render({ open, values }: DropDown): TemplateResult {
@@ -43,13 +43,13 @@ export class DropDown extends ComponentBase<string> {
             <div id="myDropdown" class$="dropdown-content ${open ? 'show' : ''}">
                 <slot name="options" class="options" 
                 on-click="${(evt: MouseEvent) => this.onItemClicked(evt, evt.target as HTMLElement)}"
-                on-slotchange="${(evt: Event) => this.onSlotChanged(evt)}"> </slot>
+                on-slotchange="${(evt: Event) => this._onSlotChanged(evt)}"> </slot>
             </div>
         </div>
         `;
     }
 
-    private onSlotChanged(evt: Event) : any {
+    private _onSlotChanged(evt: Event): any {
         const slot: HTMLSlotElement = evt.srcElement as HTMLSlotElement;
         if (slot) {
             const nodes: Node[] = slot.assignedNodes();
@@ -62,7 +62,7 @@ export class DropDown extends ComponentBase<string> {
         }
     }
 
-    private enableAccessibility(): void {
+    private _enableAccessibility(): void {
         this.setAttribute('role', 'popupbutton');
         this.setAttribute('aria-haspopup', 'true');
         this.setAttribute('aria-label', this.shadowRoot.querySelector('.dropbtn').innerHTML);
