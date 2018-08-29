@@ -1,6 +1,6 @@
 {
     "name": "@hmh/component-base",
-    "version": "0.0.7",
+    "version": "0.0.8",
     "description": "Assessment System Component Base Classes",
     "main": "dist/index.js",
     "types": "dist/index.d.ts",
