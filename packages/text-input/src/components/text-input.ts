@@ -1,11 +1,11 @@
-import { applyMixins, ComponentBase, Feedback, html, Persistence, TemplateResult } from '@hmh/component-base/dist/index';
+import { applyMixins, ComponentBase, Feedback, html, TemplateResult } from '@hmh/component-base/dist/index';
 import { MDCTextField } from '@material/textfield/index';
 
 /**
  * `<text-input>`
  * @demo ./demo/index.html
  */
-export class TextInput extends ComponentBase implements Feedback, Persistence {
+export class TextInput extends ComponentBase implements Feedback {
     public feedbackText: string = '';
     public placeholder: string = '';
     public value: string = '';
@@ -73,6 +73,6 @@ export class TextInput extends ComponentBase implements Feedback, Persistence {
     }
 }
 
-applyMixins(TextInput, [Feedback, Persistence]);
+applyMixins(TextInput, [Feedback]);
 
 customElements.define('text-input', TextInput);
