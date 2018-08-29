@@ -1,6 +1,6 @@
 {
     "name": "@hmh/multiple-choice",
-    "version": "0.0.0",
+    "version": "0.0.11",
     "description": "Assessment System Multiple Choice Component",
     "main": "dist/index.js",
     "types": "dist/index.d.ts",
@@ -18,17 +18,18 @@
     "license": "ISC",
     "dependencies": {
         "@hmh/component-base": "latest",
-        "@material/form-field": "latest",
         "@material/checkbox": "latest",
+        "@material/form-field": "latest",
         "@material/radio": "latest"
     },
     "devDependencies": {
         "@hmh/lit-element-tester": "latest",
         "chai": "^4.1.2",
-        "concurrently": "^3.6.1",
+        "concurrently": "^4.0.1",
         "mocha": "^5.2.0",
         "node-sass": "^4.9.3",
-        "source-map-support": "^0.5.8",
+        "source-map-support": "^0.5.9",
         "typescript": "latest"
-    }
+    },
+    "gitHead": "bcd0e93c78068dcdd5af96e8611bebc569aae7b3"
 }

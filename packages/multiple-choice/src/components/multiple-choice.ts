@@ -39,16 +39,15 @@ export class MultipleChoice extends ComponentBase implements Feedback {
         <div class="mdc-checkbox" on-click="${(evt: MouseEvent) => this.onItemClicked(evt, item.id)}">
         <input type="checkbox" class="mdc-checkbox__native-control" id="${item.id}"/>
         <div class="mdc-checkbox__background">
-          <svg class="mdc-checkbox__checkmark"
+            <svg class="mdc-checkbox__checkmark"
                viewBox="0 0 24 24">
             <path class="mdc-checkbox__checkmark-path"
                   fill="none"
                   d="M1.73,12.91 8.1,19.28 22.79,4.59"/>
-          </svg>
-          <div class="mdc-checkbox__mixedmark"></div>
+            </svg>
+            <div class="mdc-checkbox__mixedmark"></div>
         </div>
-      </div>
-        `;
+      </div>`;
     }
     private renderRadioButton(item: HTMLElement): TemplateResult {
         return html`
@@ -64,6 +63,7 @@ export class MultipleChoice extends ComponentBase implements Feedback {
      * @param event
      */
     private onItemClicked(event: MouseEvent, id: string): void {
+        event.stopPropagation();
         console.log('clicked on id:', id);
     }
 
