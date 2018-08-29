@@ -1,0 +1,44 @@
+{
+    "name": "@hmh/multiple-choice",
+    "version": "0.0.11",
+    "description": "Assessment System Multiple Choice Component",
+    "main": "dist/index.js",
+    "types": "dist/index.d.ts",
+    "scripts": {
+        "start": "polyserve -o",
+        "build": "tsc -p src",
+        "prepare": "npm run build; npm run sass",
+        "sass": "node-sass src/sass -r -o dist/css",
+        "sass-watch": "node-sass src/sass -r -o dist/css -w",
+        "watch": "npm run prepare; concurrently --names 'build,sass' -c 'bgBlue,bgMagenta' 'npm run build -- -w' 'npm run sass -- -w' 'npm-watch'",
+        "test": "lit-element-tester dist/components/multiple-choice.js",
+        "_generateDocs": "polymer analyze ./dist/components/multiple-choice.js > ./dist/components/analysis.json"
+    },
+    "keywords": [],
+    "author": "Alexandra Djamen <alexandra.djamen@hmhco.com>",
+    "license": "ISC",
+    "dependencies": {
+        "@hmh/component-base": "latest",
+        "@material/checkbox": "latest",
+        "@material/form-field": "latest",
+        "@material/radio": "latest",
+        "@polymer/polymer": "latest"
+    },
+    "devDependencies": {
+        "@hmh/lit-element-tester": "latest",
+        "@polymer/iron-component-page": "next",
+        "@polymer/iron-demo-helpers": "latest",
+        "@webcomponents/webcomponentsjs": "^2.0.2",
+        "chai": "^4.1.2",
+        "concurrently": "^4.0.1",
+        "mocha": "^5.2.0",
+        "node-sass": "^4.9.3",
+        "npm-watch": "latest",
+        "polymer-cli": "latest",
+        "source-map-support": "^0.5.8",
+        "typescript": "latest"
+    },
+    "watch": {
+        "_generateDocs": "src/components/**/*.*"
+    }
+}

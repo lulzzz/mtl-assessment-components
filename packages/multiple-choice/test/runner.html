@@ -15,17 +15,33 @@
         sourceMapSupport.install();
         mocha.setup('bdd');
     </script>
-    <script type="module" src="../dist/components/drop-down.js">
+    <script type="module" src="../dist/components/multiple-choice.js">
     </script>
 </head>
 
 <body>
     <!-- test fixtures -->
     <template id="default">
-        <drop-down>
-        </drop-down>
+        <multiple-choice></multiple-choice>
     </template>
-    
+
+    <template id="single">
+        <multiple-choice>
+            <div hidden slot="options" id="1">Option 1</div>
+            <div hidden slot="options" id="2">Option 2</div>
+            <div hidden slot="options" id="3">Option 3</div>
+        </multiple-choice>
+
+    </template>
+    <template id="multiple">
+        <multiple-choice mode="multiple">
+            <div hidden slot="options" id="1">Option 1</div>
+            <div hidden slot="options" id="2">Option 2</div>
+            <div hidden slot="options" id="3">Option 3</div>
+        </multiple-choice>
+
+    </template>
+
     <div id="mocha">
         <!-- test results are displayed here -->
     </div>
@@ -34,8 +50,7 @@
         <!-- elements under tests are displayed here -->
     </div>
 
-    <script type="module" src="../dist/unit/drop-down.spec.js">
-    </script>
+    <script type="module" src="../dist/unit/multiple-choice.spec.js"></script>
 </body>
 
 </html>

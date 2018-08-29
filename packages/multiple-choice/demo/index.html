@@ -1,0 +1,52 @@
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="index.css">
+    <script type="module" src="../dist/components/multiple-choice.js"></script>
+</head>
+
+<body>
+    <h3>Multiple Choice Demo</h3>
+    <!-- basic usage -->
+    <h4>How many fingers do you have?</h4>
+    <multiple-choice>
+        <div hidden slot="options" id="000-1">three</div>
+        <div hidden slot="options" id="000-2">
+            <a href="https://www.w3schools.com/html/">Visit our HTML tutorial</a>
+        </div>
+        <div hidden slot="options" id="000-3">
+            <table style="width:100%">
+                <tr>
+                    <th>Firstname</th>
+                    <th>Lastname</th>
+                    <th>Age</th>
+                </tr>
+                <tr>
+                    <td>Jill</td>
+                    <td>Smith</td>
+                    <td>50</td>
+                </tr>
+                <tr>
+                    <td>Eve</td>
+                    <td>Jackson</td>
+                    <td>94</td>
+                </tr>
+            </table>
+        </div>
+        <div hidden slot="options" id="000-4">eleven
+            <img src="https://upload.wikimedia.org/wikipedia/commons/a/ac/Approve_icon.svg" alt="HTML tutorial" style="width:42px;height:42px;border:0;">
+        </div>
+    </multiple-choice>
+
+    <h4>Which of these producers make Dub Techno?</h4>
+    <multiple-choice mode="multiple">
+        <div hidden slot="options" id="000-1">Moritz Von Oswald</div>
+        <div hidden slot="options" id="000-2">Aviici</div>
+        <div hidden slot="options" id="000-3">David August</div>
+        <div hidden slot="options" id="000-4">Philogresz</div>
+    </multiple-choice>
+
+</body>
+
+</html>
