@@ -1,6 +1,6 @@
 {
     "name": "@hmh/text-input",
-    "version": "0.0.7",
+    "version": "0.0.10",
     "description": "Assessment System Text Input Component",
     "main": "dist/index.js",
     "types": "dist/index.d.ts",
@@ -24,11 +24,12 @@
     "devDependencies": {
         "@hmh/lit-element-tester": "latest",
         "chai": "^4.1.2",
-        "concurrently": "^3.6.1",
+        "concurrently": "^4.0.1",
         "mocha": "^5.2.0",
         "node-sass": "^4.9.3",
-        "source-map-support": "^0.5.8",
+        "source-map-support": "^0.5.9",
         "typescript": "^3.0.1",
         "typescript-styled-plugin": "^0.10.0"
-    }
+    },
+    "gitHead": "bcd0e93c78068dcdd5af96e8611bebc569aae7b3"
 }

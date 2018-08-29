@@ -1,6 +1,6 @@
 {
     "name": "@hmh/component-base",
-    "version": "0.0.7",
+    "version": "0.0.10",
     "description": "Assessment System Component Base Classes",
     "main": "dist/index.js",
     "types": "dist/index.d.ts",
@@ -21,10 +21,11 @@
     "devDependencies": {
         "@hmh/lit-element-tester": "latest",
         "chai": "^4.1.2",
-        "concurrently": "^3.6.1",
+        "concurrently": "^4.0.1",
         "mocha": "^5.2.0",
         "node-sass": "^4.9.3",
-        "source-map-support": "^0.5.8",
+        "source-map-support": "^0.5.9",
         "typescript": "latest"
-    }
+    },
+    "gitHead": "bcd0e93c78068dcdd5af96e8611bebc569aae7b3"
 }
