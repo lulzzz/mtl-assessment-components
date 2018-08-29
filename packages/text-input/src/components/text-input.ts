@@ -1,5 +1,6 @@
 import { applyMixins, ComponentBase, Feedback, html, TemplateResult } from '@hmh/component-base/dist/index';
 import { MDCTextField } from '@material/textfield/index';
+import { ResponseValidation, FeedbackMessage } from '@hmh/response-validation/dist/components/response-validation';
 
 /**
  * `<text-input>`
@@ -11,9 +12,8 @@ export class TextInput extends ComponentBase<string> implements Feedback {
     public value: string = '';
 
     // declare mixins properties to satisfy the typescript compiler
-    public showFeedback: () => void;
-
-    public feedbackItems: HTMLElement[];
+    public _getFeedback: (value: string) => FeedbackMessage;
+    public _responseValidationElements: ResponseValidation[];
 
     static get properties(): { [key: string]: string | object } {
         return {
@@ -23,6 +23,11 @@ export class TextInput extends ComponentBase<string> implements Feedback {
             value: String
         };
     }
+
+    public getFeedback(): FeedbackMessage{
+        return this._getFeedback(this.getValue());
+    }
+
 
     protected _render({ disabled, feedbackText, placeholder, value }: TextInput): TemplateResult {
         return html`
@@ -81,12 +86,11 @@ export class TextInput extends ComponentBase<string> implements Feedback {
         if (slot) {
             const nodes: Node[] = slot.assignedNodes();
             if (nodes) {
-                const feedbackItems: HTMLElement[] = [];
-                for (const el of nodes as HTMLElement[]) {
-                    console.log('TEXT_INPUT', el);
-                    feedbackItems.push(el);
+                const responseValidationElements: ResponseValidation[] = [];
+                for (const el of nodes as ResponseValidation[]) {
+                    responseValidationElements.push(el);
                 }
-                this.feedbackItems = feedbackItems;
+                this._responseValidationElements = responseValidationElements;
             }
         }
     }

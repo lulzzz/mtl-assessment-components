@@ -10,7 +10,8 @@
 <body>
     <h3>Complete the following proverb</h3>
     <p>What you don't get with a nice
-        <text-input id="char">
+        <text-input>
+
             <response-validation slot="feedback" expected="smile" score="4" strategy="fuzzyMatch">
                 <span>Good</span>
                 <span>Wooot!</span>
@@ -25,6 +26,7 @@
                 <span>Oups, still not good</span>
                 <span>Too bad!</span>
             </response-validation>
+            
         </text-input>
         , you won't get with a grim one.
     </p>
