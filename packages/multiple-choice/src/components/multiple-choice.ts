@@ -6,7 +6,7 @@ import { ComponentBase, html, TemplateResult, Feedback, applyMixins, repeat, uns
  * @demo ./demo/index.html
  *
  */
-export class MultipleChoice extends ComponentBase implements Feedback {
+export class MultipleChoice extends ComponentBase<string> implements Feedback {
     static get properties(): { [key: string]: string | object } {
         return {
             ...ComponentBase.baseProperties,
