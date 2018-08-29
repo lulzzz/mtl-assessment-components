@@ -1,6 +1,6 @@
 {
     "name": "@hmh/component-base",
-    "version": "0.0.14",
+    "version": "0.0.15",
     "description": "Assessment System Component Base Classes",
     "main": "dist/index.js",
     "types": "dist/index.d.ts",
@@ -15,7 +15,7 @@
     "author": "Dominique Rochefort <dominique.rochefort@hmhco.com>",
     "license": "ISC",
     "dependencies": {
-        "@hmh/response-validation": "0.0.14",
+        "@hmh/response-validation": "^0.0.15",
         "@polymer/lit-element": "0.5.2",
         "lit-html": "0.10.0"
     },
