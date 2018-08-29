@@ -69,10 +69,11 @@ describe(`<${tagName}>`, (): void => {
     });
 
     it('should allow for HTML as option content', async (): Promise<void> => {
-        withSnippet('values-one-two-three');
+        withSnippet('html');
         let el: DropDown = document.querySelector('drop-down') as any;
         const options = getOptions(el);
-        expect(options[0].innerHTML.includes('<b>')).to.equal(true);
+        expect(options[0].innerHTML.includes('https://ebird.org/content/atlasva/wp-content/uploads/sites/68/Picture-286-1024x768.jpg')).to.equal(true);
+        expect(options[1].innerHTML.includes('<b>')).to.equal(true);
     });
 
     it('should dispatch change event when a selection is made', async (): Promise<void> => {

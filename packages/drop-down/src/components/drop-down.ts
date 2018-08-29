@@ -19,7 +19,7 @@ export class DropDown extends ComponentBase {
     private onItemClicked(event: MouseEvent, eventTarget: HTMLElement): void {
         if (eventTarget.hasAttribute('slot')) {
             this.value = eventTarget.getAttribute('value');
-            this.deselectAllItems();
+            this.clearAriaSelection();
             eventTarget.setAttribute('aria-selected', 'true');
             this.shadowRoot.querySelector('.dropbtn').innerHTML = eventTarget.innerHTML;
             this.onDropDownClicked();
@@ -38,7 +38,7 @@ export class DropDown extends ComponentBase {
         } 
     }
 
-    private deselectAllItems() {
+    private clearAriaSelection() {
         const slot = this.shadowRoot.querySelector('slot') as HTMLSlotElement;
         if (slot) {
             const nodes: Node[] = slot.assignedNodes();
