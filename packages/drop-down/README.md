@@ -4,7 +4,7 @@
 
 ```html
 <!-- basic usage -->
-    <drop-down class="myDropdown">
+    <drop-down>
         <div value="one" slot="options" class="option-item">
             one
         </div>

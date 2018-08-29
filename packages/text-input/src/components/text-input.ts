@@ -1,6 +1,10 @@
 import { applyMixins, ComponentBase, Feedback, html, TemplateResult } from '@hmh/component-base/dist/index';
 import { MDCTextField } from '@material/textfield/index';
 
+/**
+ * `<text-input>`
+ * @demo ./demo/index.html
+ */
 export class TextInput extends ComponentBase<string> implements Feedback {
     public feedbackText: string = '';
     public placeholder: string = '';
@@ -25,7 +29,7 @@ export class TextInput extends ComponentBase<string> implements Feedback {
         <link rel="stylesheet" type="text/css" href="/node_modules/@material/textfield/dist/mdc.textfield.css">
         <link rel="stylesheet" type="text/css" href="/dist/css/text-input.css">
         <div class$="mdc-text-field mdc-text-field--outlined ${disabled ? 'mdc-text-field--disabled' : ''}">
-            <input 
+            <input
                 disabled=${disabled}
                 type="text" 
                 id="tf-outlined" 
