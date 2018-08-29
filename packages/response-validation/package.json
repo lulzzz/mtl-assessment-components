@@ -29,5 +29,6 @@
         "source-map-support": "^0.5.8",
         "typescript": "^3.0.1",
         "typescript-styled-plugin": "^0.10.0"
-    }
+    },
+    "gitHead": "46c55ffb7bd89660b51c9161d7387b94c31d3425"
 }
