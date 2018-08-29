@@ -1,7 +1,7 @@
 {
-    "name": "@hmh/drop-down",
+    "name": "@hmh/response-validation",
     "version": "0.0.14",
-    "description": "Assessment System Drop Down Component",
+    "description": "Assessment System Response Validation Component",
     "main": "dist/index.js",
     "types": "dist/index.d.ts",
     "scripts": {
@@ -11,23 +11,23 @@
         "sass": "node-sass src/sass -r -o dist/css",
         "sass-watch": "node-sass src/sass -r -o dist/css -w",
         "watch": "npm run prepare; concurrently --names 'build,sass' -c 'bgBlue,bgMagenta' 'npm run build -- -w' 'npm run sass -- -w'",
-        "test": "lit-element-tester dist/components/drop-down.js"
+        "test": "lit-element-tester dist/components/text-input.js",
+        "test-dev": "lit-element-tester -d"
     },
     "keywords": [],
-    "author": "Christopher Morris <christopher.morris@hmhco.com>",
+    "author": "Dominique Rochefort <dominique.rochefort@hmhco.com>",
     "license": "ISC",
     "dependencies": {
-        "@hmh/component-base": "^0.0.14",
-        "@material/select": "^0.39.0"
+        "@hmh/component-base": "latest"
     },
     "devDependencies": {
         "@hmh/lit-element-tester": "latest",
         "chai": "^4.1.2",
-        "concurrently": "^4.0.1",
+        "concurrently": "^3.6.1",
         "mocha": "^5.2.0",
         "node-sass": "^4.9.3",
-        "source-map-support": "^0.5.9",
-        "typescript": "latest"
-    },
-    "gitHead": "bcd0e93c78068dcdd5af96e8611bebc569aae7b3"
+        "source-map-support": "^0.5.8",
+        "typescript": "^3.0.1",
+        "typescript-styled-plugin": "^0.10.0"
+    }
 }

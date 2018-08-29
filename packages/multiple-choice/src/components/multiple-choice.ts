@@ -6,23 +6,23 @@ import { ComponentBase, html, TemplateResult, Feedback, applyMixins, repeat, uns
  * @demo ./demo/index.html
  *
  */
-export class MultipleChoice extends ComponentBase implements Feedback {
+export class MultipleChoice extends ComponentBase<string> implements Feedback {
     static get properties(): { [key: string]: string | object } {
         return {
             ...ComponentBase.baseProperties,
             /* The multiple choice answer options */
             items: Array,
             /** The mode of muliple choice: ie single or multiple **/
-            mode: String
+            multiple: Boolean
         };
     }
 
     private items: HTMLElement[] = [];
-    private mode: string;
+    private multiple: boolean;
     public feedbackText: string;
     public showFeedback: () => void;
 
-    protected _render({ mode, items }: MultipleChoice): TemplateResult {
+    protected _render({ items, multiple }: MultipleChoice): TemplateResult {
         return html`
         <link rel="stylesheet" type="text/css" href="/node_modules/@material/radio/dist/mdc.radio.css">
         <link rel="stylesheet" type="text/css" href="/node_modules/@material/form-field/dist/mdc.form-field.css">
@@ -33,7 +33,7 @@ export class MultipleChoice extends ComponentBase implements Feedback {
            items,
            (item: HTMLElement) => item.id,
            (item: HTMLElement) => html`
-            <div hidden class="mdc-form-field"> ${mode === 'multiple' ? this._renderCheckbox(item) : this._renderRadioButton(item)}
+            <div hidden class="mdc-form-field"> ${multiple ? this._renderCheckbox(item) : this._renderRadioButton(item)}
                 <label for$="${item.id}"> ${unsafeHTML(item.innerHTML)} </label>
             </div>`
        )}

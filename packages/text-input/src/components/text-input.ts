@@ -5,13 +5,15 @@ import { MDCTextField } from '@material/textfield/index';
  * `<text-input>`
  * @demo ./demo/index.html
  */
-export class TextInput extends ComponentBase implements Feedback {
+export class TextInput extends ComponentBase<string> implements Feedback {
     public feedbackText: string = '';
     public placeholder: string = '';
     public value: string = '';
 
     // declare mixins properties to satisfy the typescript compiler
     public showFeedback: () => void;
+
+    public feedbackItems: HTMLElement[];
 
     static get properties(): { [key: string]: string | object } {
         return {
@@ -29,11 +31,11 @@ export class TextInput extends ComponentBase implements Feedback {
         <div class$="mdc-text-field mdc-text-field--outlined ${disabled ? 'mdc-text-field--disabled' : ''}">
             <input
                 disabled=${disabled}
-                type="text"
-                id="tf-outlined"
-                class="mdc-text-field__input"
-                value="${value}"
-                placeholder="${placeholder}"
+                type="text" 
+                id="tf-outlined" 
+                class="mdc-text-field__input" 
+                value="${value}" 
+                placeholder="${placeholder}" 
                 on-change="${(evt: Event) => this._onInputChange(evt)}" />
             <div class="mdc-notched-outline">
                 <svg>
@@ -43,6 +45,7 @@ export class TextInput extends ComponentBase implements Feedback {
             <div class="mdc-notched-outline__idle"></div>
         </div>
         <span>${feedbackText}</span>
+        <slot name="feedback" on-slotchange="${(evt: Event) => this._onSlotChanged(evt)}"></slot>
         `;
     }
 
@@ -70,6 +73,22 @@ export class TextInput extends ComponentBase implements Feedback {
         this.setAttribute('role', 'textbox');
         this.setAttribute('aria-placeholder', this.placeholder);
         this.setAttribute('aria-label', this.value || this.placeholder);
+    }
+
+    private _onSlotChanged(event: Event) {
+        console.log('slot changed');
+        const slot: HTMLSlotElement = event.srcElement as HTMLSlotElement;
+        if (slot) {
+            const nodes: Node[] = slot.assignedNodes();
+            if (nodes) {
+                const feedbackItems: HTMLElement[] = [];
+                for (const el of nodes as HTMLElement[]) {
+                    console.log('TEXT_INPUT', el);
+                    feedbackItems.push(el);
+                }
+                this.feedbackItems = feedbackItems;
+            }
+        }
     }
 }
 

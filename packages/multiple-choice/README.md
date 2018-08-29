@@ -11,7 +11,7 @@
     <div slot="option" id="000-4">eleven</div>
 </multiple-choice>
 <!-- multiple answer usage -->
-<multiple-choice  mode="multiple" >
+<multiple-choice multiple >
     <div slot="option" id="000-1">three</div>
     <div slot="option" id="000-2">five</div>
     <div slot="option" id="000-3">six</div>

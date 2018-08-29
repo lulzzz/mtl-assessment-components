@@ -6,10 +6,6 @@ p {
     line-height: 2rem;
 }
 
-text-input {
-    display: inline;
-}
-
-[slot] {
+response-validation > * {
     display: none;
 }

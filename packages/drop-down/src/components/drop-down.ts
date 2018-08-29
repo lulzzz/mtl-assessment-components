@@ -1,7 +1,7 @@
 import { ComponentBase, html, TemplateResult } from '@hmh/component-base/dist/index';
 
-export class DropDown extends ComponentBase {
-    public value: string = '';
+export class DropDown extends ComponentBase<string> {
+    public values: string = '';
     public open: boolean = false;
 
     static get properties(): { [key: string]: string | object } {
@@ -49,7 +49,7 @@ export class DropDown extends ComponentBase {
     }
 
     protected _didRender(): void {
-        this.enableAccessibility();
+        this._enableAccessibility();
         this.setAttribute('value', this.value);
     }
 
@@ -65,13 +65,13 @@ export class DropDown extends ComponentBase {
             <div class="dropdown-content" hidden="${!open}">
                 <slot name="options" class="options" 
                 on-click="${(evt: MouseEvent) => this.onItemClicked(evt, evt.target as HTMLElement)}"
-                on-slotchange="${(evt: Event) => this.onSlotChanged(evt)}"> </slot>
+                on-slotchange="${(evt: Event) => this._onSlotChanged(evt)}"> </slot>
             </div>
         </div>
         `;
     }
 
-    private onSlotChanged(evt: Event) : any {
+    private _onSlotChanged(evt: Event): any {
         const slot: HTMLSlotElement = evt.srcElement as HTMLSlotElement;
         if (slot) {
             const nodes: Node[] = slot.assignedNodes();
@@ -84,7 +84,7 @@ export class DropDown extends ComponentBase {
         }
     }
 
-    private enableAccessibility(): void {
+    private _enableAccessibility(): void {
         this.setAttribute('role', 'popupbutton');
         this.setAttribute('aria-haspopup', 'true');
         this.setAttribute('aria-label', this.shadowRoot.querySelector('.dropbtn').innerHTML);
