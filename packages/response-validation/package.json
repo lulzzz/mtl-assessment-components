@@ -1,6 +1,6 @@
 {
     "name": "@hmh/response-validation",
-    "version": "0.0.12",
+    "version": "0.0.13",
     "description": "Assessment System Response Validation Component",
     "main": "dist/index.js",
     "types": "dist/index.d.ts",
