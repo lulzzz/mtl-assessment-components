@@ -49,7 +49,7 @@ export class DropDown extends ComponentBase<string> {
     }
 
     protected _didRender(): void {
-        this.enableAccessibility();
+        this._enableAccessibility();
         this.setAttribute('value', this.value);
     }
 
