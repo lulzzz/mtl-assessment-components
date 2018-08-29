@@ -1,6 +1,6 @@
 {
     "name": "@hmh/response-validation",
-    "version": "0.0.14",
+    "version": "0.1.1",
     "description": "Assessment System Response Validation Component",
     "main": "dist/index.js",
     "types": "dist/index.d.ts",
@@ -29,5 +29,6 @@
         "source-map-support": "^0.5.8",
         "typescript": "^3.0.1",
         "typescript-styled-plugin": "^0.10.0"
-    }
+    },
+    "gitHead": "5e39cbea99c111a8e33650d70ba9d61d7c95167e"
 }

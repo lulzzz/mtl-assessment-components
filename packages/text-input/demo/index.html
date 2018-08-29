@@ -3,6 +3,7 @@
 <head>
     <meta charset="utf-8">
     <link rel="stylesheet" href="index.css">
+    <link rel="stylesheet" type="text/css" href="/node_modules/@material/button/dist/mdc.button.css">
     <script type="module" src="../dist/components/text-input.js"></script>
     <script type="module" src="../node_modules/@hmh/response-validation/dist/components/response-validation.js"></script>
 </head>
@@ -10,7 +11,8 @@
 <body>
     <h3>Complete the following proverb</h3>
     <p>What you don't get with a nice
-        <text-input id="char">
+        <text-input>
+
             <response-validation slot="feedback" expected="smile" score="4" strategy="fuzzyMatch">
                 <span>Good</span>
                 <span>Wooot!</span>
@@ -25,9 +27,21 @@
                 <span>Oups, still not good</span>
                 <span>Too bad!</span>
             </response-validation>
+
         </text-input>
         , you won't get with a grim one.
     </p>
+    <div id="feedback">Feedback will appear here</div>
+
+    <button id="button" class="mdc-button">Validate</button>
+
+    <script>
+        document.getElementById('button').addEventListener('click', () => {
+            document.getElementById('feedback').innerText = JSON.stringify(document.querySelector('text-input').getFeedback());
+        })
+
+    </script>
 </body>
+
 
 </html>

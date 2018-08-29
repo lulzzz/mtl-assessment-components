@@ -37,6 +37,11 @@ export class ResponseValidation extends ComponentBase<string> {
     }
 
     public match(response: string): boolean {
+        if (!this.expected) {
+            // catch-all clause
+            return true;
+        }
+
         switch (this.strategy) {
             case Strategy.EXACT_MATCH:
                 return response === this.expected;
