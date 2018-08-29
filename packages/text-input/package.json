@@ -34,6 +34,7 @@
         "mocha": "^5.2.0",
         "node-sass": "^4.9.3",
         "npm-watch": "latest",
+        "polymer-cli": "latest",
         "polyserve": "^0.27.12",
         "source-map-support": "^0.5.9",
         "typescript": "^3.0.1",
