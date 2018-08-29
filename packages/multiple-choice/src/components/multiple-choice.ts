@@ -1,4 +1,6 @@
 import { ComponentBase, html, TemplateResult, Feedback, applyMixins, repeat, unsafeHTML } from '@hmh/component-base/dist/index';
+import { ResponseValidation, FeedbackMessage } from '@hmh/response-validation/dist/components/response-validation';
+
 /**
  * `<multiple-choice>`
  * In typical use, use `<multiple-choice> if single correct answer, and <multiple-choice mode="multiple"> if multiple correct answer`
@@ -20,7 +22,10 @@ export class MultipleChoice extends ComponentBase<string> implements Feedback {
     private items: HTMLElement[] = [];
     private multiple: boolean;
     public feedbackText: string;
-    public showFeedback: () => void;
+
+    // declare mixins properties to satisfy the typescript compiler
+    public _getFeedback: (value: string) => FeedbackMessage;
+    public _responseValidationElements: ResponseValidation[];
 
     protected _render({ items, multiple }: MultipleChoice): TemplateResult {
         return html`
