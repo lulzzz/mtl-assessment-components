@@ -64,7 +64,7 @@ export class DropDown extends ComponentBase {
                 <button class="dropbtn" on-click="${(evt: Event) => this.onDropDownClicked()}">Dropdown</button>
                 <button class="nav-button" on-click="${(evt: Event) => this.onDropDownClicked()}">&#8595;</button>
             </div>
-            <div class$="dropdown-content ${open ? 'show' : 'hide'}">
+            <div class="dropdown-content" hidden="${!open}">
                 <slot name="options" class="options" 
                 on-click="${(evt: MouseEvent) => this.onItemClicked(evt, evt.target as HTMLElement)}"
                 on-slotchange="${(evt: Event) => this.onSlotChanged(evt)}"> </slot>

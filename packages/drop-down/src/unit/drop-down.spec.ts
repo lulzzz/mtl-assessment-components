@@ -17,6 +17,7 @@ describe(`<${tagName}>`, (): void => {
         const el: DropDown = document.querySelector('drop-down') as any;
         const shadowRoot = el.shadowRoot;
         clickElement(shadowRoot.querySelector('.dropbtn'));
+        await el.renderComplete;
         const content = shadowRoot.querySelector('.dropdown-content');
         const display = window.getComputedStyle(content).getPropertyValue("display");
         expect(display).to.equal('block');
@@ -26,6 +27,7 @@ describe(`<${tagName}>`, (): void => {
         withSnippet('default');
         const el: DropDown = document.querySelector('drop-down') as any;
         clickElement(el.shadowRoot.querySelector('.nav-button'));
+        await el.renderComplete;
         const content = el.shadowRoot.querySelector('.dropdown-content');
         const display = window.getComputedStyle(content).getPropertyValue("display");
         expect(display).to.equal('block');
