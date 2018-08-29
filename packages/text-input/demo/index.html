@@ -8,25 +8,26 @@
 </head>
 
 <body>
-    <h3>Themes in <i>The Tempest</i></h3>
+    <h3>Complete the following proverb</h3>
+    <p>What you don't get with a nice
+        <text-input id="char">
+            <response-validation slot="feedback" expected="smile" score="4" strategy="fuzzyMatch">
+                <span>Good</span>
+                <span>Wooot!</span>
+            </response-validation>
 
-    <text-input id="char">
-        <response-validation slot="feedback" expected="compromise" score="4" strategy="fuzzyMatch">
-            <div>Good</div>
-            <div>Wooot!</div>
-        </response-validation>
+            <response-validation slot="feedback" expected="grin" score="1" feedbackType="neutral" strategy="exactMatch">
+                <span>Almost</span>
+            </response-validation>
 
-        <response-validation slot="feedback" expected="concession" score="3" feedbackType="neutral" strategy="exactMatch">
-            <div>Alright!</div>
-        </response-validation>
-
-        <response-validation slot="feedback" score="0" feedback="negative" strategy="exactMatch">
-            <div>Try again</div>
-            <div>Oups, still not good</div>
-            <div>Too bad!</div>
-        </response-validation>
-    </text-input>
-
+            <response-validation slot="feedback" score="0" feedback="negative" strategy="exactMatch">
+                <span>Try again</span>
+                <span>Oups, still not good</span>
+                <span>Too bad!</span>
+            </response-validation>
+        </text-input>
+        , you won't get with a grim one.
+    </p>
 </body>
 
 </html>

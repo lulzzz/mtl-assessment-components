@@ -23,3 +23,10 @@
 ```shell
 npm start
 ```
+
+## Important notice
+
+Both `<div>` and `<span>` are supported to define option items.
+
+* Use `<div>` for block-level interactions.
+* Use `<span>` for inline interactions. Interactions that are inlined within paragraphs, don't support slotting divs.
