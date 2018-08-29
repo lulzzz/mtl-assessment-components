@@ -70,7 +70,10 @@ export class ResponseValidation extends ComponentBase<string> {
     }
 
     protected _render(): TemplateResult {
-        return html`<slot on-slotchange="${(evt: Event) => this.onSlotChanged(evt)}"></slot>`;
+        return html`
+            <link rel="stylesheet" type="text/css" href="/dist/css/response-validation.css">
+            <slot on-slotchange="${(evt: Event) => this.onSlotChanged(evt)}"></slot>
+        `;
     }
 
     private onSlotChanged(event: Event) {
