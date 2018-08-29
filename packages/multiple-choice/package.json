@@ -1,6 +1,6 @@
 {
     "name": "@hmh/multiple-choice",
-    "version": "0.0.0",
+    "version": "0.0.7",
     "description": "Assessment System Multiple Choice Component",
     "main": "dist/index.js",
     "types": "dist/index.d.ts",
@@ -18,25 +18,25 @@
     "author": "Alexandra Djamen <alexandra.djamen@hmhco.com>",
     "license": "ISC",
     "dependencies": {
-        "@polymer/polymer": "latest",
         "@hmh/component-base": "latest",
-        "@material/form-field": "latest",
         "@material/checkbox": "latest",
-        "@material/radio": "latest"
+        "@material/form-field": "latest",
+        "@material/radio": "latest",
+        "@polymer/polymer": "latest"
     },
     "devDependencies": {
         "@hmh/lit-element-tester": "latest",
+        "@polymer/iron-component-page": "next",
+        "@polymer/iron-demo-helpers": "latest",
+        "@webcomponents/webcomponentsjs": "^2.0.2",
         "chai": "^4.1.2",
         "concurrently": "^3.6.1",
         "mocha": "^5.2.0",
         "node-sass": "^4.9.3",
         "npm-watch": "latest",
-        "source-map-support": "^0.5.8",
-        "typescript": "latest",
         "polymer-cli": "latest",
-        "@webcomponents/webcomponentsjs": "^2.0.2",
-        "@polymer/iron-component-page": "next",
-        "@polymer/iron-demo-helpers": "latest"
+        "source-map-support": "^0.5.8",
+        "typescript": "latest"
     },
     "watch": {
         "_generateDocs": "src/components/**/*.*"
