@@ -1,6 +1,6 @@
 import { ComponentBase, html, TemplateResult } from '@hmh/component-base/dist/index';
 
-export class DropDown extends ComponentBase {
+export class DropDown extends ComponentBase<string> {
     public values: string = '';
     public open: boolean;
 
