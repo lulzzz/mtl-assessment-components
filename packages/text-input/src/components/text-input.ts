@@ -9,6 +9,8 @@ export class TextInput extends ComponentBase implements Feedback {
     // declare mixins properties to satisfy the typescript compiler
     public showFeedback: () => void;
 
+    private feedbackItems: HTMLElement[];
+
     static get properties(): { [key: string]: string | object } {
         return {
             ...ComponentBase.baseProperties,
@@ -39,7 +41,7 @@ export class TextInput extends ComponentBase implements Feedback {
             <div class="mdc-notched-outline__idle"></div>
         </div>
         <span>${feedbackText}</span>
-        <slot on-slotchange="${(evt: Event) => this.onSlotChanged(evt)}"></slot>
+        <slot name="feedback" on-slotchange="${(evt: Event) => this.onSlotChanged(evt)}"></slot>
         `;
     }
 
@@ -70,8 +72,6 @@ export class TextInput extends ComponentBase implements Feedback {
     }
 
     private onSlotChanged(event: Event) {
-        event.stopPropagation();
-
         console.log('slot changed');
         const slot: HTMLSlotElement = event.srcElement as HTMLSlotElement;
         if (slot) {
@@ -79,11 +79,10 @@ export class TextInput extends ComponentBase implements Feedback {
             if (nodes) {
                 const feedbackItems: HTMLElement[] = [];
                 for (const el of nodes as HTMLElement[]) {
-                    if (el && el.tagName) {
-                        console.log('TEXT_INPUT', el);
-                        feedbackItems.push(el);
-                    }
+                    console.log('TEXT_INPUT', el);
+                    feedbackItems.push(el);
                 }
+                this.feedbackItems = feedbackItems;
             }
         }
     }

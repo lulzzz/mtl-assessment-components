@@ -9,26 +9,23 @@
 
 <body>
     <h3>Themes in <i>The Tempest</i></h3>
-    <p>The great and striking
 
-        <text-input id="char">
-            <response-validation expected="compromise" score="4" strategy="fuzzyMatch">
-                <div hidden>Good</div>
-                <div hidden>Wooot!</div>
-            </response-validation>
+    <text-input id="char">
+        <response-validation slot="feedback" expected="compromise" score="4" strategy="fuzzyMatch">
+            <div>Good</div>
+            <div>Wooot!</div>
+        </response-validation>
 
-            <response-validation expected="concession" score="3" feedbackType="neutral" strategy="exactMatch">
-                <div hidden>Alright!</div>
-            </response-validation>
+        <response-validation slot="feedback" expected="concession" score="3" feedbackType="neutral" strategy="exactMatch">
+            <div>Alright!</div>
+        </response-validation>
 
-            <response-validation score="0" strategy="exactMatch">
-                <div hidden>Try again</div>
-                <div hidden>Oups, still not good</div>
-                <div hidden>Too bad!</div>
-            </response-validation>
-        </text-input>
-        made by Shakespeare.
-    </p>
+        <response-validation slot="feedback" score="0" feedback="negative" strategy="exactMatch">
+            <div>Try again</div>
+            <div>Oups, still not good</div>
+            <div>Too bad!</div>
+        </response-validation>
+    </text-input>
 
 </body>
 
