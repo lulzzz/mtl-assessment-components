@@ -33,9 +33,7 @@ export class DropDown extends ComponentBase {
                     }
                 })
             );       
-        } else {
-            this.onItemClicked(event, eventTarget.parentNode as HTMLElement)
-        } 
+        }
     }
 
     private clearAriaSelection() {
