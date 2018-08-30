@@ -34,13 +34,36 @@
 
         </drop-down>
 
-        <div id="feedback">Feedback will appear here</div>
+        <div id="feedback"></div>
 
         <button id="feedback-button" class="mdc-button">Validate</button>
     
         <script>
             document.getElementById('feedback-button').addEventListener('click', () => {
-                document.getElementById('feedback').innerText = JSON.stringify(document.querySelector('drop-down').getFeedback());
+                const dropDownElement = document.querySelector('drop-down');
+                const feedback = dropDownElement.getFeedback();
+                const feedbackElement = document.getElementById('feedback');
+                
+                feedbackElement.classList.remove('feedback-negative-background');
+                feedbackElement.classList.remove('feedback-positive-background');
+                feedbackElement.classList.remove('feedback-neutral-background');
+
+                dropDownElement.classList.remove('feedback-negative-border');
+                dropDownElement.classList.remove('feedback-positive-border');
+                dropDownElement.classList.remove('feedback-neutral-border');
+
+                if (feedback.type === 'negative') {
+                    feedbackElement.classList.add('feedback-negative-background');
+                    dropDownElement.classList.add('feedback-negative-border');
+                } else if (feedback.type === "positive") {
+                    feedbackElement.classList.add('feedback-positive-background');
+                    dropDownElement.classList.add('feedback-positive-border');
+                } else if (feedback.type === "neutral") {
+                    feedbackElement.classList.add('feedback-neutral-background');
+                    dropDownElement.classList.add('feedback-neutral-border');
+                }
+
+                feedbackElement.innerText = JSON.stringify(feedback.message);
             })
         </script>
 </body>

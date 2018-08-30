@@ -1,3 +1,37 @@
 ::slotted(.feedback){
     display: none;
 }
+
+#feedback {
+    width: 168px;
+}
+
+drop-down {
+    border-style: solid;
+    border-width: 4px;
+    border-color: transparent;
+}
+
+.feedback-negative-background {
+    background-color: var(--feedback-negative-color,red);
+}
+
+.feedback-positive-background {
+    background-color: var(--feedback-positive-color,green);
+}
+
+.feedback-neutral-background {
+    background-color: var(--feedback-neutral-color,yellow);
+}
+
+.feedback-negative-border {
+    border-color: var(--feedback-negative-color,red);
+}
+
+.feedback-positive-border {
+    border-color: var(--feedback-positive-color,green);
+}
+
+.feedback-neutral-border {
+    border-color: var(--feedback-neutral-color,yellow);
+}
