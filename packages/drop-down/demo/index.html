@@ -23,7 +23,11 @@
             </div>
 
             <response-validation slot="feedback" expected="one" score="4" strategy="exactMatch">
-                <span>Good</span>
+                <span>Correct</span>
+            </response-validation>
+
+            <response-validation slot="feedback" expected="two" score="2" feedbackType="neutral" strategy="exactMatch">
+                <span>Almost Correct</span>
             </response-validation>
 
             <response-validation slot="feedback" score="0" feedback="negative" strategy="exactMatch">
@@ -41,16 +45,13 @@
         <script>
             document.getElementById('feedback-button').addEventListener('click', () => {
                 const dropDownElement = document.querySelector('drop-down');
-                const feedback = dropDownElement.getFeedback();
                 const feedbackElement = document.getElementById('feedback');
+                const feedback = dropDownElement.getFeedback();
                 
-                feedbackElement.classList.remove('feedback-negative-background');
-                feedbackElement.classList.remove('feedback-positive-background');
-                feedbackElement.classList.remove('feedback-neutral-background');
-
-                dropDownElement.classList.remove('feedback-negative-border');
-                dropDownElement.classList.remove('feedback-positive-border');
-                dropDownElement.classList.remove('feedback-neutral-border');
+                feedbackElement.classList.remove('feedback-negative-background', 'feedback-positive-background', 'feedback-neutral-background');
+                dropDownElement.classList.remove('feedback-negative-border', 'feedback-positive-border', 'feedback-neutral-border');
+                
+                console.log('feedback.type: ',feedback.type);
 
                 if (feedback.type === 'negative') {
                     feedbackElement.classList.add('feedback-negative-background');
