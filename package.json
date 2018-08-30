@@ -4,6 +4,7 @@
     "scripts": {
         "bootstrap": "lerna bootstrap",
         "build": "lerna run build",
+        "linkall": "lerna link --force-local",
         "list": "lerna ls",
         "publish": "lerna publish --registry http://npm.tribalnova.com --no-verify-access",
         "test": "lerna run test",
