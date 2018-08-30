@@ -84,7 +84,7 @@ export class TextInput extends ComponentBase<string> implements Feedback {
         console.log('slot changed');
         const slot: HTMLSlotElement = event.srcElement as HTMLSlotElement;
         if (slot) {
-            const nodes: Node[] = slot.assignedNodes();
+            const nodes: ResponseValidation[] = slot.assignedNodes() as any[];
             if (nodes) {
                 const responseValidationElements: ResponseValidation[] = [];
                 for (const el of nodes as ResponseValidation[]) {
