@@ -15,10 +15,12 @@ npm install
 npm run bootstrap
 # build all packages
 npm run build
-# symlink together all packages that are dependencies of each other
-npm run linkall
 # watch for changes on all packages
 npm run watch
+# symlink together all packages that are dependencies of each other
+npm run linkall
+# delete node_modules directories for all packages
+npm run clean
 ```
 
 ## Publish of new version of the packages
