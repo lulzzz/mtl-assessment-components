@@ -1,28 +1,40 @@
-import { ComponentBase, html, TemplateResult } from '@hmh/component-base/dist/index';
+import { applyMixins, ComponentBase, html, TemplateResult, Feedback } from '@hmh/component-base/dist/index';
+import { ResponseValidation, FeedbackMessage } from '@hmh/response-validation/dist/components/response-validation';
 
 /**
  * `<drop-down>`
  * A drop down menu that supports embedded HTML within its option elements.
  * @demo ./demo/index.html
  */
-export class DropDown extends ComponentBase<string> {
+export class DropDown extends ComponentBase<string> implements Feedback {
+    public feedbackText: string = '';
     public values: string = '';
     public open: boolean = false;
-    
+
+    // declare mixins properties to satisfy the typescript compiler
+    public _getFeedback: (value: string) => FeedbackMessage;
+    public _responseValidationElements: ResponseValidation[];
+
     /**
      * value - is currently selected option value.
      * open - is the drop down open.
+     * feedbackText
      * 
      * @returns string
      */
     static get properties(): { [key: string]: string | object } {
         return {
             ...ComponentBase.baseProperties,
+            feedbackText: String,
             value: String,
             open: Boolean
         };
     }
     
+    public getFeedback(): FeedbackMessage{
+        return this._getFeedback(this.getValue());
+    }
+
     /**
      * Called when the drop down menu is clicked on.
      * Sets the menu state to open.
@@ -98,6 +110,21 @@ export class DropDown extends ComponentBase<string> {
         }
     }
 
+    private _onFeedbackSlotChanged(evt: Event): void {
+        const slot: HTMLSlotElement = evt.srcElement as HTMLSlotElement;
+
+        if (slot) {
+            const nodes: ResponseValidation[] = slot.assignedNodes() as any[];
+            if (nodes) {
+                const responseValidationElements: ResponseValidation[] = [];
+                for (const el of nodes as ResponseValidation[]) {
+                    responseValidationElements.push(el);
+                }
+                this._responseValidationElements = responseValidationElements;
+            }
+        }
+    }
+
     /**
      * Sets various accessibility attributes.
      * 
@@ -126,7 +153,7 @@ export class DropDown extends ComponentBase<string> {
      * @param  {DropDown} value} - the value of the element (value of the currently selected option)
      * @returns TemplateResult
      */
-    protected _render({ open, value }: DropDown): TemplateResult {
+    protected _render({ open, value, feedbackText }: DropDown): TemplateResult {
         return html`
         <link rel="stylesheet" type="text/css" href="/dist/css/drop-down.css">
         
@@ -141,8 +168,11 @@ export class DropDown extends ComponentBase<string> {
                 on-slotchange="${(evt: Event) => this._onSlotChanged(evt)}"> </slot>
             </div>
         </div>
-        `;
+        <span>${feedbackText}</span>
+        <slot name="feedback" on-slotchange="${(evt: Event) => this._onFeedbackSlotChanged(evt)}"></slot>`;
     }
 }
+
+applyMixins(DropDown, [Feedback]);
 
 customElements.define('drop-down', DropDown);
