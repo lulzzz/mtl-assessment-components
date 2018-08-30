@@ -13,7 +13,7 @@
         "noImplicitReturns": true,
         "noUnusedLocals": true,
         "noUnusedParameters": false,
-        "removeComments": true,
+        "removeComments": false,
         "skipLibCheck": true,
         "preserveConstEnums": true,
         "sourceMap": true,
