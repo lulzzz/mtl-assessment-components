@@ -133,7 +133,7 @@ export class DropDown extends ComponentBase<string> implements Feedback {
     private _enableAccessibility(): void {
         this.setAttribute('role', 'popupbutton');
         this.setAttribute('aria-haspopup', 'true');
-        this.setAttribute('aria-label', this.shadowRoot.querySelector('.dropbtn').innerHTML);
+        this.setAttribute('aria-label', this.shadowRoot.querySelector('.drop-button').innerHTML);
     }
 
     /**
