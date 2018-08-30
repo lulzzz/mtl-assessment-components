@@ -1,5 +1,5 @@
 /* Dropdown Button */
-.dropbtn {
+.drop-button {
     background-color: #fff;
     color: #000;
     font-size: 16px;
@@ -51,4 +51,8 @@
 
 ::slotted(.option-item:hover){
     background-color: var(--option-hover-color,lightblue);
+}
+
+.feedback-values {
+    display: none;
 }

@@ -59,7 +59,7 @@ export class DropDown extends ComponentBase<string> implements Feedback {
             // for accessibility (screen readers)
             eventTarget.setAttribute('aria-selected', 'true');
             // set the menu's UI to the content of the currently selected item
-            this.shadowRoot.querySelector('.dropbtn').innerHTML = eventTarget.innerHTML;
+            this.shadowRoot.querySelector('.drop-button').innerHTML = eventTarget.innerHTML;
             this._onDropDownClicked();
 
             this.dispatchEvent(
@@ -159,7 +159,7 @@ export class DropDown extends ComponentBase<string> implements Feedback {
         
         <div class="dropdown" value="${value}">
             <div class="buttons-container">
-                <button class="dropbtn" on-click="${(evt: Event) => this._onDropDownClicked()}">Dropdown</button>
+                <button class="drop-button" on-click="${(evt: Event) => this._onDropDownClicked()}">Dropdown</button>
                 <button class="nav-button" on-click="${(evt: Event) => this._onDropDownClicked()}">&#8595;</button>
             </div>
             <div class="dropdown-content" hidden="${!open}">
@@ -169,7 +169,7 @@ export class DropDown extends ComponentBase<string> implements Feedback {
             </div>
         </div>
         <span>${feedbackText}</span>
-        <slot name="feedback" on-slotchange="${(evt: Event) => this._onFeedbackSlotChanged(evt)}"></slot>`;
+        <slot name="feedback" class="feedback-values" on-slotchange="${(evt: Event) => this._onFeedbackSlotChanged(evt)}"></slot>`;
     }
 }
 
