@@ -3,6 +3,8 @@
 <head>
     <meta charset="utf-8">
     <link rel="stylesheet" href="index.css">
+    <link rel="stylesheet" type="text/css" href="/node_modules/@material/button/dist/mdc.button.css">
+    <script type="module" src="../node_modules/@hmh/response-validation/dist/components/response-validation.js"></script>
     <script type="module" src="../dist/components/multiple-choice.js"></script>
 </head>
 
@@ -23,7 +25,7 @@
                     <th>Age</th>
                 </tr>
                 <tr>
-                    <td>Jill</td>
+                    <td>Jill</td>›
                     <td>Smith</td>
                     <td>50</td>
                 </tr>
@@ -37,6 +39,22 @@
         <div hidden slot="options" id="000-4">eleven
             <img src="https://upload.wikimedia.org/wikipedia/commons/a/ac/Approve_icon.svg" alt="HTML tutorial" style="width:42px;height:42px;border:0;">
         </div>
+
+        <response-validation hidden slot="feedback" expected="000-1" score="4" strategy="exactMatch">
+            <span>Good</span>
+            <span>Wooot!</span>
+        </response-validation>
+
+        <response-validation hidden slot="feedback" expected="000-3" score="1" feedbackType="neutral" strategy="exactMatch">
+            <span>Almost</span>
+        </response-validation>
+
+        <response-validation hidden slot="feedback" score="0" feedback="negative" strategy="exactMatch">
+            <span>Try again</span>
+            <span>Oups, still not good</span>
+            <span>Too bad!</span>
+        </response-validation>
+
     </multiple-choice>
 
     <h4>Which of these producers make Dub Techno?</h4>
@@ -45,8 +63,44 @@
         <div hidden slot="options" id="000-2">Aviici</div>
         <div hidden slot="options" id="000-3">David August</div>
         <div hidden slot="options" id="000-4">Philogresz</div>
+
+        <response-validation hidden slot="feedback" expected="000-1|000-3" score="4" strategy="exactMatch">
+            <span>Good</span>
+            <span>Wooot!</span>
+        </response-validation>
+
+        <response-validation hidden slot="feedback" expected="000-1" score="2" strategy="exactMatch">
+            <span>Good</span>
+            <span>Wooot!</span>
+        </response-validation>
+
+        <response-validation hidden slot="feedback" expected="000-3" score="2" feedbackType="neutral" strategy="exactMatch">
+            <span>Almost</span>
+        </response-validation>
+
+        <response-validation hidden slot="feedback" score="0" feedback="negative" strategy="exactMatch">
+            <span>Try again</span>
+            <span>Oups, still not good</span>
+            <span>Too bad!</span>
+        </response-validation>
+
     </multiple-choice>
 
+
+
+    <div id="feedback">Feedback will appear here</div>
+
+    <button id="button" class="mdc-button">Validate</button>
+
+    <script>
+
+        document.getElementById('button').addEventListener('click', () => {
+            let feedback = '';
+            document.querySelectorAll('multiple-choice').forEach((x) => feedback += (JSON.stringify(x.getFeedback())) + '\n');
+            document.getElementById('feedback').innerText = feedback;
+        })
+
+    </script>
 </body>
 
 </html>

@@ -22,10 +22,15 @@ export class MultipleChoice extends ComponentBase<string> implements Feedback {
     private items: HTMLElement[] = [];
     private multiple: boolean;
     public feedbackText: string;
+    public value: string = '';
 
     // declare mixins properties to satisfy the typescript compiler
     public _getFeedback: (value: string) => FeedbackMessage;
     public _responseValidationElements: ResponseValidation[];
+
+    public getFeedback(): FeedbackMessage {
+        return this._getFeedback(this.getValue());
+    }
 
     protected _render({ items, multiple }: MultipleChoice): TemplateResult {
         return html`
@@ -43,6 +48,8 @@ export class MultipleChoice extends ComponentBase<string> implements Feedback {
             </div>`
        )}
         <slot name="options" on-slotchange="${(e: Event) => this._slotChanged(e)}" ></slot>
+        <slot name="feedback" on-slotchange="${(e: Event) => this._feedbackSlotChanged(e)}"></slot>
+
     </main>
         `;
     }
@@ -90,7 +97,7 @@ export class MultipleChoice extends ComponentBase<string> implements Feedback {
      */
     private _onItemClicked(event: MouseEvent, id: string): void {
         event.stopPropagation();
-        console.log('clicked on id:', id);
+        this.value = id;
     }
 
     /**
@@ -109,6 +116,23 @@ export class MultipleChoice extends ComponentBase<string> implements Feedback {
             }
         }
         this.items = items;
+    }
+    /**
+     * Fired on slot change
+     * @param {Event} event
+     */
+    private _feedbackSlotChanged(event: Event): void {
+        const slot: HTMLSlotElement = event.srcElement as HTMLSlotElement;
+        if (slot) {
+            const nodes: Node[] = slot.assignedNodes();
+            if (nodes) {
+                const responseValidationElements: ResponseValidation[] = [];
+                for (const el of nodes as ResponseValidation[]) {
+                    responseValidationElements.push(el);
+                }
+                this._responseValidationElements = responseValidationElements;
+            }
+        }
     }
 }
 
