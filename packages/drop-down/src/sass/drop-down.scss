@@ -1,3 +1,11 @@
+.body {
+    font-family: var(--font-family,Roboto);
+}
+
+::slotted {
+    font-family: var(--font-family,Roboto);
+}
+
 /* Dropdown Button */
 .drop-button {
     background-color: #fff;
@@ -55,4 +63,34 @@
 
 .feedback-values {
     display: none;
+}
+
+.container {
+    display: inline-flex;
+    border-style: solid;
+    border-color: transparent;
+}
+
+.feedback-negative-border {
+    border-color: var(--feedback-negative-color,red);
+}
+
+.feedback-positive-border {
+    border-color: var(--feedback-positive-color,green);
+}
+
+.feedback-neutral-border {
+    border-color: var(--feedback-neutral-color,yellow);
+}
+
+.feedback-negative-background {
+    background-color: var(--feedback-negative-color,red);
+}
+
+.feedback-positive-background {
+    background-color: var(--feedback-positive-color,green);
+}
+
+.feedback-neutral-background {
+    background-color: var(--feedback-neutral-color,yellow);
 }

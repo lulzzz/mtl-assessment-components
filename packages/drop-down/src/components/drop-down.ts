@@ -7,7 +7,7 @@ import { ResponseValidation, FeedbackMessage } from '@hmh/response-validation/di
  * @demo ./demo/index.html
  */
 export class DropDown extends ComponentBase<string> implements Feedback {
-    public feedbackText: string = '';
+    public feedbackMessage: FeedbackMessage;
     public values: string = '';
     public open: boolean = false;
 
@@ -25,7 +25,7 @@ export class DropDown extends ComponentBase<string> implements Feedback {
     static get properties(): { [key: string]: string | object } {
         return {
             ...ComponentBase.baseProperties,
-            feedbackText: String,
+            feedbackMessage: Object,
             value: String,
             open: Boolean
         };
@@ -33,6 +33,10 @@ export class DropDown extends ComponentBase<string> implements Feedback {
     
     public getFeedback(): FeedbackMessage{
         return this._getFeedback(this.getValue());
+    }
+
+    public showFeedback(): void {
+        this.feedbackMessage = this.getFeedback();
     }
 
     /**
@@ -153,23 +157,49 @@ export class DropDown extends ComponentBase<string> implements Feedback {
      * @param  {DropDown} value} - the value of the element (value of the currently selected option)
      * @returns TemplateResult
      */
-    protected _render({ open, value, feedbackText }: DropDown): TemplateResult {
+    protected _render({ open, value, feedbackMessage }: DropDown): TemplateResult {
         return html`
         <link rel="stylesheet" type="text/css" href="/dist/css/drop-down.css">
         
-        <div class="dropdown" value="${value}">
-            <div class="buttons-container">
-                <button class="drop-button" on-click="${(evt: Event) => this._onDropDownClicked()}">Dropdown</button>
-                <button class="nav-button" on-click="${(evt: Event) => this._onDropDownClicked()}">&#8595;</button>
+        <div class$="container ${this._getContainerClass(feedbackMessage)}">
+            <div class="dropdown" value="${value}">
+                <div class="buttons-container">
+                    <button class="drop-button" on-click="${(evt: Event) => this._onDropDownClicked()}">Dropdown</button>
+                    <button class="nav-button" on-click="${(evt: Event) => this._onDropDownClicked()}">&#8595;</button>
+                </div>
+                <div class="dropdown-content" hidden="${!open}">
+                    <slot name="options" class="options" 
+                    on-click="${(evt: MouseEvent) => this._onItemClicked(evt.target as HTMLElement)}"
+                    on-slotchange="${(evt: Event) => this._onSlotChanged(evt)}"> </slot>
+                </div>
             </div>
-            <div class="dropdown-content" hidden="${!open}">
-                <slot name="options" class="options" 
-                on-click="${(evt: MouseEvent) => this._onItemClicked(evt.target as HTMLElement)}"
-                on-slotchange="${(evt: Event) => this._onSlotChanged(evt)}"> </slot>
-            </div>
+
+            <span class$="${this._getFeedbackClass(feedbackMessage)}">${ feedbackMessage ? feedbackMessage.message : ''}</span>
+
         </div>
-        <span>${feedbackText}</span>
         <slot name="feedback" class="feedback-values" on-slotchange="${(evt: Event) => this._onFeedbackSlotChanged(evt)}"></slot>`;
+    }
+
+    private _getContainerClass(feedbackMessage: FeedbackMessage) : String {
+        let result = '';
+
+        if (feedbackMessage) {
+            result = feedbackMessage.type === 'positive' ? 'feedback-positive-border' : feedbackMessage.type === 'negative' ? 'feedback-negative-border'      
+                : 'feedback-neutral-border';
+        }
+
+        return result;
+    }
+
+    private _getFeedbackClass(feedbackMessage: FeedbackMessage) : String {
+        let result = '';
+
+        if (feedbackMessage) {
+            result = feedbackMessage.type === 'positive' ? 'feedback-positive-background' : feedbackMessage.type === 'negative' ? 'feedback-negative-background'      
+                : 'feedback-neutral-background';
+        }
+
+        return result;
     }
 }
 

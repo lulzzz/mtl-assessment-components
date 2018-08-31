@@ -35,3 +35,7 @@ drop-down {
 .feedback-neutral-border {
     border-color: var(--feedback-neutral-color,yellow);
 }
+
+#feedback-button {
+    display: block;
+}
