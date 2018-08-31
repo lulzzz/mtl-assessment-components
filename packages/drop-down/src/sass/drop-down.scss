@@ -83,14 +83,26 @@
     border-color: var(--feedback-neutral-color,yellow);
 }
 
+.feedback-message {
+    justify-content: center;
+    align-items: center;
+    padding-left: 5px;
+    padding-right: 5px;
+    display: flex;
+}
+
 .feedback-negative-background {
     background-color: var(--feedback-negative-color,red);
 }
 
 .feedback-positive-background {
     background-color: var(--feedback-positive-color,green);
+    justify-content: center;
+    align-items: center;
 }
 
 .feedback-neutral-background {
     background-color: var(--feedback-neutral-color,yellow);
+    justify-content: center;
+    align-items: center;
 }

@@ -174,7 +174,7 @@ export class DropDown extends ComponentBase<string> implements Feedback {
                 </div>
             </div>
 
-            <span class$="${this._getFeedbackClass(feedbackMessage)}">${ feedbackMessage ? feedbackMessage.message : ''}</span>
+            <span class$="feedback-message ${this._getFeedbackClass(feedbackMessage)}">${ feedbackMessage ? feedbackMessage.message : ''}</span>
 
         </div>
         <slot name="feedback" class="feedback-values" on-slotchange="${(evt: Event) => this._onFeedbackSlotChanged(evt)}"></slot>`;
