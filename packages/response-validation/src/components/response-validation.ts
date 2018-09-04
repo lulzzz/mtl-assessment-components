@@ -6,22 +6,16 @@ export enum FeedbackType {
     NEUTRAL = 'neutral'
 }
 
-export enum Strategy {
-    EXACT_MATCH = 'exactMatch',
-    FUZZY_MATCH = 'fuzzyMatch',
-    MATH_EQUIVALENT = 'mathEquivalent'
-}
-
 export interface FeedbackMessage {
     type: FeedbackType;
     message: string;
+    score: number;
 }
 
 export class ResponseValidation extends ComponentBase<string> {
     public expected: string = '';
     public feedbackType: FeedbackType;
     public score: number = 0;
-    public strategy: Strategy = Strategy.MATH_EQUIVALENT;
 
     private feedbackItems: HTMLElement[] = [];
     private attempts: number = 0;
@@ -36,25 +30,9 @@ export class ResponseValidation extends ComponentBase<string> {
         };
     }
 
-    public match(response: string): boolean {
-        if (!this.expected) {
-            // catch-all clause
-            return true;
-        }
-
-        switch (this.strategy) {
-            case Strategy.EXACT_MATCH:
-                return response === this.expected;
-            case Strategy.FUZZY_MATCH:
-                return response.toLowerCase() === this.expected.toLowerCase();
-            default:
-                return false;
-        }
-    }
-
     public getFeedbackMessage(): FeedbackMessage {
         let type: FeedbackType = this.feedbackType;
-
+        let score = this.score;
         if (!this.feedbackType) {
             type = this.score > 0 ? FeedbackType.POSITIVE : FeedbackType.NEGATIVE;
         }
@@ -67,7 +45,7 @@ export class ResponseValidation extends ComponentBase<string> {
             message = this.feedbackItems[this.attempts - 1].innerHTML;
         }
 
-        return { type, message };
+        return { type, message, score };
     }
 
     public reset(): void {

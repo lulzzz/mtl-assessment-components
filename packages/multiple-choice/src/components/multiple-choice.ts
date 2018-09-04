@@ -1,4 +1,4 @@
-import { ComponentBase, html, TemplateResult, Feedback, applyMixins, repeat, unsafeHTML } from '@hmh/component-base/dist/index';
+import { ComponentBase, html, TemplateResult, Feedback, applyMixins, repeat, unsafeHTML, Strategy } from '@hmh/component-base/dist/index';
 import { ResponseValidation, FeedbackMessage } from '@hmh/response-validation/dist/components/response-validation';
 
 /**
@@ -8,49 +8,85 @@ import { ResponseValidation, FeedbackMessage } from '@hmh/response-validation/di
  * @demo ./demo/index.html
  *
  */
-export class MultipleChoice extends ComponentBase<string> implements Feedback {
+export class MultipleChoice extends ComponentBase<Set<string>> implements Feedback {
     static get properties(): { [key: string]: string | object } {
         return {
             ...ComponentBase.baseProperties,
             /* The multiple choice answer options */
             items: Array,
             /** The mode of muliple choice: ie single or multiple **/
-            multiple: Boolean
+            multiple: Boolean,
+            testMap: Object
         };
     }
 
     private items: HTMLElement[] = [];
+    private testMap: Map<string, FeedbackMessage>;
     private multiple: boolean;
     public feedbackText: string;
-    public value: string = '';
+    public value: Set<string> = new Set();
 
     // declare mixins properties to satisfy the typescript compiler
-    public _getFeedback: (value: string) => FeedbackMessage;
+    public _getFeedback: (value: any) => FeedbackMessage;
     public _responseValidationElements: ResponseValidation[];
+    public match: (el: ResponseValidation, response: any) => boolean = (el, response) => {
+        console.log('overriden here!', response);
+        if (!el.expected) {
+            // catch-all clause
+            return true;
+        }
+        switch (el.strategy) {
+            case Strategy.EXACT_MATCH:
+                return response === el.expected;
+            case Strategy.FUZZY_MATCH:
+                return response.toLowerCase() === el.expected.toLowerCase();
+            default:
+                return false;
+        }
+    };
 
     public getFeedback(): FeedbackMessage {
-        return this._getFeedback(this.getValue());
+        const feedbackMap = this._getFeedback(this.getValue());
+        //  this.testMap = feedbackMap;
+        return feedbackMap;
+        /*
+        if (values.size === 0) {
+            return new Map();
+        }
+        let feedback: Map<string, FeedbackMessage> = new Map();
+        for (const value of values) {
+            for (const el of this._responseValidationElements) {
+                if (el.match(value)) {
+                    feedback.set(el.expected, el.getFeedbackMessage());
+                    break;
+                }
+            }
+        }
+        if (feedback.size === 0) throw new Error('missing default response-validation');
+
+        return feedback;*/
     }
 
-    protected _render({ items, multiple }: MultipleChoice): TemplateResult {
+    protected _render({ items, multiple, testMap }: MultipleChoice): TemplateResult {
         return html`
         <link rel="stylesheet" type="text/css" href="/node_modules/@material/radio/dist/mdc.radio.css">
         <link rel="stylesheet" type="text/css" href="/node_modules/@material/form-field/dist/mdc.form-field.css">
         <link rel="stylesheet" type="text/css" href="/node_modules/@material/checkbox/dist/mdc.checkbox.css">
         <link rel="stylesheet" type="text/css" href="/dist/css/multiple-choice.css">
-    <main>
+    <div class="positive">
+        <div>Feedback</div>
        ${repeat(
            items,
            (item: HTMLElement) => item.id,
            (item: HTMLElement) => html`
-            <div hidden class="mdc-form-field"> ${multiple ? this._renderCheckbox(item) : this._renderRadioButton(item)}
+            <div hidden class="mdc-form-field" > ${multiple ? this._renderCheckbox(item) : this._renderRadioButton(item)}
                 <label for$="${item.id}"> ${unsafeHTML(item.innerHTML)} </label>
             </div>`
        )}
         <slot name="options" on-slotchange="${(e: Event) => this._slotChanged(e)}" ></slot>
         <slot name="feedback" on-slotchange="${(e: Event) => this._feedbackSlotChanged(e)}"></slot>
 
-    </main>
+    </div>
         `;
     }
     /**
@@ -60,7 +96,7 @@ export class MultipleChoice extends ComponentBase<string> implements Feedback {
      */
     private _renderCheckbox(item: HTMLElement): TemplateResult {
         return html`
-        <div class="mdc-checkbox" on-click="${(evt: MouseEvent) => this._onItemClicked(evt, item.id)}">
+        <div class="mdc-checkbox" on-click="${(evt: MouseEvent) => this._onItemClicked(evt, item.id, 'check')}">
         <input type="checkbox" class="mdc-checkbox__native-control" id="${item.id}"/>
         <div class="mdc-checkbox__background">
             <svg class="mdc-checkbox__checkmark"
@@ -81,7 +117,7 @@ export class MultipleChoice extends ComponentBase<string> implements Feedback {
      */
     private _renderRadioButton(item: HTMLElement): TemplateResult {
         return html`
-        <div class="mdc-radio" on-click="${(evt: MouseEvent) => this._onItemClicked(evt, item.id)}">
+        <div class="mdc-radio" on-click="${(evt: Event) => this._onItemClicked(evt, item.id, 'radio')}">
          <input class="mdc-radio__native-control" type="radio" id="${item.id}" name="options">
          <div class="mdc-radio__background">
          <div class="mdc-radio__outer-circle"></div>
@@ -92,12 +128,17 @@ export class MultipleChoice extends ComponentBase<string> implements Feedback {
 
     /**
      * Fired when item is clicked
-     * @param {MouseEvent} event
+     * @param {Event} event
      * @param {string} id
      */
-    private _onItemClicked(event: MouseEvent, id: string): void {
+    private _onItemClicked(event: Event, id: string, element: string): void {
         event.stopPropagation();
-        this.value = id;
+        if (element === 'radio') {
+            this.values = new Set();
+            this.values.add(id);
+        } else {
+            event.target.checked ? this.value.add(id) : this.value.delete(id);
+        }
     }
 
     /**

@@ -12,7 +12,7 @@
     <h3>Multiple Choice Demo</h3>
     <!-- basic usage -->
     <h4>How many fingers do you have?</h4>
-    <multiple-choice>
+    <multiple-choice id="multiple1">
         <div hidden slot="options" id="000-1">three</div>
         <div hidden slot="options" id="000-2">
             <a href="https://www.w3schools.com/html/">Visit our HTML tutorial</a>
@@ -56,29 +56,26 @@
         </response-validation>
 
     </multiple-choice>
+    <div id="feedback1">Feedback will appear here</div>
+
 
     <h4>Which of these producers make Dub Techno?</h4>
-    <multiple-choice multiple>
+    <multiple-choice multiple id="multiple2">
         <div hidden slot="options" id="000-1">Moritz Von Oswald</div>
         <div hidden slot="options" id="000-2">Aviici</div>
         <div hidden slot="options" id="000-3">David August</div>
         <div hidden slot="options" id="000-4">Philogresz</div>
-
-        <response-validation hidden slot="feedback" expected="000-1|000-3" score="4" strategy="exactMatch">
-            <span>Good</span>
-            <span>Wooot!</span>
-        </response-validation>
 
         <response-validation hidden slot="feedback" expected="000-1" score="2" strategy="exactMatch">
             <span>Good</span>
             <span>Wooot!</span>
         </response-validation>
 
-        <response-validation hidden slot="feedback" expected="000-3" score="2" feedbackType="neutral" strategy="exactMatch">
+        <response-validation hidden slot="feedback" expected="000-4" score="2" feedbackType="neutral" strategy="exactMatch">
             <span>Almost</span>
         </response-validation>
 
-        <response-validation hidden slot="feedback" score="0" feedback="negative" strategy="exactMatch">
+        <response-validation hidden slot="feedback" score="-1" feedback="negative" strategy="exactMatch">
             <span>Try again</span>
             <span>Oups, still not good</span>
             <span>Too bad!</span>
@@ -88,16 +85,24 @@
 
 
 
-    <div id="feedback">Feedback will appear here</div>
+    <div id="feedback2">Feedback will appear here</div>
 
     <button id="button" class="mdc-button">Validate</button>
 
     <script>
 
         document.getElementById('button').addEventListener('click', () => {
-            let feedback = '';
-            document.querySelectorAll('multiple-choice').forEach((x) => feedback += (JSON.stringify(x.getFeedback())) + '\n');
-            document.getElementById('feedback').innerText = feedback;
+            document.getElementById('multiple1').getFeedback();
+            document.getElementById('multiple2').getFeedback();
+
+
+            //  let score1 = 0;
+            //  document.getElementById('multiple1').getFeedback().forEach((x) => score1 += x.score);
+            // let score2 = 0;
+            // document.getElementById('multiple2').getFeedback().forEach((x) => score2 += x.score);
+            document.getElementById('feedback1').innerText = JSON.stringify(document.getElementById('multiple1').getFeedback());
+            document.getElementById('feedback2').innerText = JSON.stringify(document.getElementById('multiple2').getFeedback());
+
         })
 
     </script>
