@@ -25,7 +25,7 @@
                     <th>Age</th>
                 </tr>
                 <tr>
-                    <td>Jill</td>›
+                    <td>Jill</td>
                     <td>Smith</td>
                     <td>50</td>
                 </tr>
@@ -65,7 +65,16 @@
         <div hidden slot="options" id="000-2">Aviici</div>
         <div hidden slot="options" id="000-3">David August</div>
         <div hidden slot="options" id="000-4">Philogresz</div>
-
+        <response-validation hidden slot="feedback" expected="000-2" score="0" feedback="negative" strategy="exactMatch">
+            <span>Try again</span>
+            <span>Oups, still not good</span>
+            <span>Too bad!</span>
+        </response-validation>
+        <response-validation hidden slot="feedback" expected="000-3" score="0" feedback="negative" strategy="exactMatch">
+            <span>Try again</span>
+            <span>Oups, still not good</span>
+            <span>Too bad!</span>
+        </response-validation>
         <response-validation hidden slot="feedback" expected="000-1" score="2" strategy="exactMatch">
             <span>Good</span>
             <span>Wooot!</span>
@@ -75,11 +84,7 @@
             <span>Almost</span>
         </response-validation>
 
-        <response-validation hidden slot="feedback" score="-1" feedback="negative" strategy="exactMatch">
-            <span>Try again</span>
-            <span>Oups, still not good</span>
-            <span>Too bad!</span>
-        </response-validation>
+
 
     </multiple-choice>
 

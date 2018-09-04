@@ -16,65 +16,48 @@ export class MultipleChoice extends ComponentBase<Set<string>> implements Feedba
             items: Array,
             /** The mode of muliple choice: ie single or multiple **/
             multiple: Boolean,
-            testMap: Object
+            feedbackType: String
         };
     }
 
     private items: HTMLElement[] = [];
-    private testMap: Map<string, FeedbackMessage>;
     private multiple: boolean;
-    public feedbackText: string;
+    private feedbackType: string;
+    public feedbackText: string = '';
     public value: Set<string> = new Set();
 
     // declare mixins properties to satisfy the typescript compiler
-    public _getFeedback: (value: any) => FeedbackMessage;
+    public _getFeedback: (value: Set<string>) => FeedbackMessage;
     public _responseValidationElements: ResponseValidation[];
-    public match: (el: ResponseValidation, response: any) => boolean = (el, response) => {
-        console.log('overriden here!', response);
+    public match: (el: ResponseValidation, response: Set<string>) => boolean = (el, response) => {
         if (!el.expected) {
             // catch-all clause
             return true;
         }
         switch (el.strategy) {
             case Strategy.EXACT_MATCH:
-                return response === el.expected;
+                return response.has(el.expected);
             case Strategy.FUZZY_MATCH:
-                return response.toLowerCase() === el.expected.toLowerCase();
+                return response.has(el.expected);
             default:
                 return false;
         }
+        return false;
     };
 
     public getFeedback(): FeedbackMessage {
-        const feedbackMap = this._getFeedback(this.getValue());
-        //  this.testMap = feedbackMap;
-        return feedbackMap;
-        /*
-        if (values.size === 0) {
-            return new Map();
-        }
-        let feedback: Map<string, FeedbackMessage> = new Map();
-        for (const value of values) {
-            for (const el of this._responseValidationElements) {
-                if (el.match(value)) {
-                    feedback.set(el.expected, el.getFeedbackMessage());
-                    break;
-                }
-            }
-        }
-        if (feedback.size === 0) throw new Error('missing default response-validation');
-
-        return feedback;*/
+        const feedback = this._getFeedback(this.getValue());
+        this.feedbackType = feedback.type;
+        return feedback;
     }
 
-    protected _render({ items, multiple, testMap }: MultipleChoice): TemplateResult {
+    protected _render({ items, multiple, feedbackType }: MultipleChoice): TemplateResult {
         return html`
         <link rel="stylesheet" type="text/css" href="/node_modules/@material/radio/dist/mdc.radio.css">
         <link rel="stylesheet" type="text/css" href="/node_modules/@material/form-field/dist/mdc.form-field.css">
         <link rel="stylesheet" type="text/css" href="/node_modules/@material/checkbox/dist/mdc.checkbox.css">
         <link rel="stylesheet" type="text/css" href="/dist/css/multiple-choice.css">
-    <div class="positive">
-        <div>Feedback</div>
+    <div class$="${feedbackType}">
        ${repeat(
            items,
            (item: HTMLElement) => item.id,
@@ -134,8 +117,8 @@ export class MultipleChoice extends ComponentBase<Set<string>> implements Feedba
     private _onItemClicked(event: Event, id: string, element: string): void {
         event.stopPropagation();
         if (element === 'radio') {
-            this.values = new Set();
-            this.values.add(id);
+            this.value = new Set();
+            this.value.add(id);
         } else {
             event.target.checked ? this.value.add(id) : this.value.delete(id);
         }
