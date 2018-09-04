@@ -15,4 +15,19 @@ export abstract class Feedback {
 
         throw new Error('missing default response-validation');
     }
+
+    private _onFeedbackSlotChanged(evt: Event): void {
+        const slot: HTMLSlotElement = evt.srcElement as HTMLSlotElement;
+
+        if (slot) {
+            const nodes: ResponseValidation[] = slot.assignedNodes() as any[];
+            if (nodes) {
+                const responseValidationElements: ResponseValidation[] = [];
+                for (const el of nodes as ResponseValidation[]) {
+                    responseValidationElements.push(el);
+                }
+                this._responseValidationElements = responseValidationElements;
+            }
+        }
+    }
 }
