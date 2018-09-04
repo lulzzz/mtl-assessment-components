@@ -16,7 +16,7 @@ export abstract class Feedback {
         throw new Error('missing default response-validation');
     }
 
-    private _onFeedbackSlotChanged(evt: Event): void {
+    public _onFeedbackSlotChanged(evt: Event): void {
         const slot: HTMLSlotElement = evt.srcElement as HTMLSlotElement;
 
         if (slot) {
