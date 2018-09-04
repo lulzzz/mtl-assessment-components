@@ -155,7 +155,7 @@ export class DropDown extends ComponentBase<string> implements Feedback {
             <div class="dropdown" value="${value}">
                 <div class="buttons-container">
                     <button class="drop-button" on-click="${(evt: Event) => this._onDropDownClicked()}">Dropdown</button>
-                    <button class="nav-button" on-click="${(evt: Event) => this._onDropDownClicked()}">&#8595;</button>
+                    <button class="nav-button" on-click="${(evt: Event) => this._onDropDownClicked()}">${ open ? html`&uarr;` : html`&darr;` }</button>
                 </div>
                 <div class="dropdown-content" hidden="${!open}">
                     <slot name="options" class="options" 
