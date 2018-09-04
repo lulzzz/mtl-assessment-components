@@ -14,6 +14,7 @@ export class DropDown extends ComponentBase<string> implements Feedback {
     // declare mixins properties to satisfy the typescript compiler
     public _getFeedback: (value: string) => FeedbackMessage;
     public _responseValidationElements: ResponseValidation[];
+    public _onFeedbackSlotChanged: any;
 
     /**
      * value - is currently selected option value.
@@ -33,6 +34,10 @@ export class DropDown extends ComponentBase<string> implements Feedback {
     
     public getFeedback(): FeedbackMessage{
         return this._getFeedback(this.getValue());
+    }
+
+    public onFeedbackSlotChanged(evt: any) {
+        return this._onFeedbackSlotChanged(evt)
     }
 
     public showFeedback(): void {
@@ -110,21 +115,6 @@ export class DropDown extends ComponentBase<string> implements Feedback {
                     el.setAttribute('tabindex', String(++index));
                     el.setAttribute('role', 'button');
                 });
-            }
-        }
-    }
-
-    private _onFeedbackSlotChanged(evt: Event): void {
-        const slot: HTMLSlotElement = evt.srcElement as HTMLSlotElement;
-
-        if (slot) {
-            const nodes: ResponseValidation[] = slot.assignedNodes() as any[];
-            if (nodes) {
-                const responseValidationElements: ResponseValidation[] = [];
-                for (const el of nodes as ResponseValidation[]) {
-                    responseValidationElements.push(el);
-                }
-                this._responseValidationElements = responseValidationElements;
             }
         }
     }
