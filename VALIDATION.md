@@ -87,6 +87,18 @@ We have different ways to approach response validation:
         <span>Good</span>
     </response-validation>
 
+    <response-validation slot="feedback" expected="[(1,4),(4,6)]" strategy="exactMatch" score="3" feedbackType="neutral" >
+        <span>Nope!</span>
+    </response-validation>
+
+    <response-validation slot="feedback" expected="2" score="5" strategy="contains">
+        <span>Good</span>
+    </response-validation>
+
+    <response-validation slot="feedback" expected="4" score="5" strategy="contains">
+        <span>Good</span>
+    </response-validation>
+
     <response-validation slot="feedback" score="0">
         <span>Try again</span>
         <span>You got it wrong</span>
