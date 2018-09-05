@@ -3,7 +3,9 @@
 <head>
     <meta charset="utf-8">
     <link rel="stylesheet" href="index.css">
+    <link rel="stylesheet" type="text/css" href="/node_modules/@material/button/dist/mdc.button.css">
     <script type="module" src="../dist/components/drop-down.js"></script>
+    <script type="module" src="../node_modules/@hmh/response-validation/dist/components/response-validation.js"></script>
 </head>
 
 <body>
@@ -19,7 +21,30 @@
             <div value="three" slot="options" class="option-item">
                 three
             </div>
+
+            <response-validation slot="feedback" expected="one" score="4" strategy="exactMatch">
+                <span>Correct</span>
+            </response-validation>
+
+            <response-validation slot="feedback" expected="two" score="2" feedbackType="neutral" strategy="exactMatch">
+                <span>Almost Correct</span>
+            </response-validation>
+
+            <response-validation slot="feedback" score="0" feedback="negative" strategy="exactMatch">
+                <span>Try again</span>
+                <span>Oups, still not good</span>
+                <span>Too bad!</span>
+            </response-validation>
+
         </drop-down>
+
+        <button id="feedback-button" class="mdc-button">Validate</button>
+
+        <script>
+            document.getElementById('feedback-button').addEventListener('click', () => {
+                document.querySelector('drop-down').showFeedback();
+            })
+        </script>
 </body>
 
 </html>

@@ -1,5 +1,13 @@
+.body {
+    font-family: var(--font-family,Roboto);
+}
+
+::slotted {
+    font-family: var(--font-family,Roboto);
+}
+
 /* Dropdown Button */
-.dropbtn {
+.drop-button {
     background-color: #fff;
     color: #000;
     font-size: 16px;
@@ -51,4 +59,50 @@
 
 ::slotted(.option-item:hover){
     background-color: var(--option-hover-color,lightblue);
+}
+
+.feedback-values {
+    display: none;
+}
+
+.container {
+    display: inline-flex;
+    border-style: solid;
+    border-color: transparent;
+}
+
+.feedback-negative-border {
+    border-color: var(--feedback-negative-color,red);
+}
+
+.feedback-positive-border {
+    border-color: var(--feedback-positive-color,green);
+}
+
+.feedback-neutral-border {
+    border-color: var(--feedback-neutral-color,yellow);
+}
+
+.feedback-message {
+    justify-content: center;
+    align-items: center;
+    padding-left: 5px;
+    padding-right: 5px;
+    display: flex;
+}
+
+.feedback-negative-background {
+    background-color: var(--feedback-negative-color,red);
+}
+
+.feedback-positive-background {
+    background-color: var(--feedback-positive-color,green);
+    justify-content: center;
+    align-items: center;
+}
+
+.feedback-neutral-background {
+    background-color: var(--feedback-neutral-color,yellow);
+    justify-content: center;
+    align-items: center;
 }

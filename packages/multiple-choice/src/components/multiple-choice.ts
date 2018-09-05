@@ -148,7 +148,7 @@ export class MultipleChoice extends ComponentBase<Set<string>> implements Feedba
     private _feedbackSlotChanged(event: Event): void {
         const slot: HTMLSlotElement = event.srcElement as HTMLSlotElement;
         if (slot) {
-            const nodes: Node[] = slot.assignedNodes();
+            const nodes: any[] = slot.assignedNodes();
             if (nodes) {
                 const responseValidationElements: ResponseValidation[] = [];
                 for (const el of nodes as ResponseValidation[]) {
