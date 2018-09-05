@@ -36,3 +36,7 @@ export function clickElement(el: HTMLElement): void {
     });
     el.dispatchEvent(event);
 }
+
+export function getLastValueAdded(el: DropDown): string {
+    return [...el.value].pop();
+}

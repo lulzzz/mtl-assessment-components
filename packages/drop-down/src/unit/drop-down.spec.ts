@@ -1,5 +1,5 @@
 import { DropDown } from "../components/drop-down";
-import { checkComponentDOM, clickElement, getOptions } from './test-helpers';
+import { checkComponentDOM, clickElement, getOptions, getLastValueAdded } from './test-helpers';
 
 const tagName: string = 'drop-down';
 const expect: any = chai.expect;
@@ -58,7 +58,7 @@ describe(`<${tagName}>`, (): void => {
         const options = getOptions(el);
         clickElement(options[1]);
         await el.renderComplete;
-        expect(el.value).to.equal(options[1].getAttribute('value'));
+        expect(getLastValueAdded(el)).to.equal(options[1].getAttribute('value'));
     });
 
     it('should update the UI to reflect selected option content when a selection is made', async (): Promise<void> => {
@@ -67,7 +67,7 @@ describe(`<${tagName}>`, (): void => {
         const options = getOptions(el);
         clickElement(options[0]);
         await el.renderComplete;
-        expect(el.shadowRoot.querySelector('.dropbtn').innerHTML).to.equal(options[0].innerHTML);
+        expect(el.shadowRoot.querySelector('.dropbtn').innerHTML).to.equal(options[0].innerHTML.trim());
     });
 
     it('should allow for HTML as option content', async (): Promise<void> => {

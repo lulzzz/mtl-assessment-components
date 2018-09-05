@@ -8,18 +8,21 @@ import { ComponentBase, html, TemplateResult } from '@hmh/component-base/dist/in
 export class DropDown extends ComponentBase<Set<string>> {
     public value: Set<string> = new Set;
     public open: boolean = false;
+    public multiple: boolean = false;
     private defaultTitle = 'Dropdown';
     
     /**
      * value - is currently selected option value.
      * open - is the drop down open.
+     * multiple = is this muli select?
      * 
      * @returns string
      */                      
     static get properties(): { [key: string]: string | object } {
         return {
             ...ComponentBase.baseProperties,
-            open: Boolean
+            open: Boolean,
+            multiple: Boolean
         };
     }
     
@@ -42,22 +45,17 @@ export class DropDown extends ComponentBase<Set<string>> {
      */
     private _onItemClicked(eventTarget: HTMLElement): void {
         if (eventTarget.hasAttribute('slot')) {
-            this._clearAriaSelection();
-
             const selectedValue = eventTarget.getAttribute('value');
-            if (this.value.has(selectedValue)) {
-                this.value.delete(selectedValue);
-                eventTarget.classList.remove('selected');
+
+            if (this.multiple && this.value.has(selectedValue)) {
+                this._deselectElement(selectedValue, eventTarget);
             } else {
-                this.value.add(selectedValue);
-                // for accessibility (screen readers)
-                eventTarget.setAttribute('aria-selected', 'true');
-                eventTarget.classList.add('selected');
+                this._selectElement(selectedValue, eventTarget);
             }
             
             // set the menu's UI to the content of the last selected item
             const lastValueAdded = this.getLastValueAdded();
-            this.shadowRoot.querySelector('.dropbtn').innerHTML = lastValueAdded ? lastValueAdded : this.defaultTitle ;
+            this.shadowRoot.querySelector('.dropbtn').innerHTML = lastValueAdded ? lastValueAdded : this.defaultTitle;
             this._onDropDownClicked();
 
             this.dispatchEvent(
@@ -68,8 +66,26 @@ export class DropDown extends ComponentBase<Set<string>> {
                         value: this.value
                     }
                 })
-            );       
+            );
         }
+    }
+
+    private _selectElement(selectedValue: string, eventTarget: HTMLElement) : void {
+        if (this.multiple) {
+            eventTarget.classList.add('selected');
+        } else {
+            this._clearAriaSelections();
+            this.value.clear();
+        }
+
+        eventTarget.setAttribute('aria-selected', 'true');
+        this.value.add(selectedValue);
+    }
+
+    private _deselectElement(selectedValue: string, eventTarget: HTMLElement) : void {
+        this.value.delete(selectedValue);
+        eventTarget.classList.remove('selected');
+        eventTarget.setAttribute('aria-selected', 'false');
     }
 
     /**
@@ -77,7 +93,7 @@ export class DropDown extends ComponentBase<Set<string>> {
      * 
      * @returns void
      */
-    private _clearAriaSelection(): void {
+    private _clearAriaSelections(): void {
         const slot = this.shadowRoot.querySelector('slot') as HTMLSlotElement;
         if (slot) {
             const nodes: Node[] = slot.assignedNodes();
@@ -137,10 +153,10 @@ export class DropDown extends ComponentBase<Set<string>> {
      * The template to render.
      * 
      * @param  {} {open - is the drop down open or not
-     * @param  {DropDown} value} - the value of the element (value of the currently selected option)
+     * @param  {DropDown} value} - the value of the element (value of the currently selected option(s))
      * @returns TemplateResult
      */
-    protected _render({ open, value }: DropDown): TemplateResult {
+    protected _render({ open, value, multiple }: DropDown): TemplateResult {
         return html`
         <link rel="stylesheet" type="text/css" href="/dist/css/drop-down.css">
         

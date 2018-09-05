@@ -8,18 +8,33 @@
 
 <body>
     <h3>Drop Down Demo</h3>
-    <!-- basic usage -->
-        <drop-down>
-            <div value="one" slot="options" class="option-item">
-                one
-            </div>
-            <div value="two" slot="options" class="option-item">
-                two
-            </div>
-            <div value="three" slot="options" class="option-item">
-                three
-            </div>
-        </drop-down>
+        <!-- basic usage -->
+        <div class='container'>
+            <drop-down>
+                <div value="one" slot="options" class="option-item">
+                    one
+                </div>
+                <div value="two" slot="options" class="option-item">
+                    two
+                </div>
+                <div value="three" slot="options" class="option-item">
+                    three
+                </div>
+            </drop-down>
+            
+            <!-- multiple -->
+            <drop-down multiple>
+                <div value="one" slot="options" class="option-item">
+                    one
+                </div>
+                <div value="two" slot="options" class="option-item">
+                    two
+                </div>
+                <div value="three" slot="options" class="option-item">
+                    three
+                </div>
+            </drop-down>
+        </div>
 </body>
 
 </html>
