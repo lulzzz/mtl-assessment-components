@@ -12,20 +12,20 @@ export function checkAccessibilityparams(el: DropDown, params: { [key: string]: 
     const shadowRoot = el.shadowRoot;
     expect(el.getAttribute('role')).to.equal('popupbutton');
     expect(el.getAttribute('aria-haspopup')).to.equal('true');
-    expect(el.getAttribute('aria-label')).to.equal(shadowRoot.querySelector('.dropbtn').innerHTML);
+    expect(el.getAttribute('aria-label')).to.equal(shadowRoot.querySelector('.drop-button').innerHTML);
 }
 
 export function getOptions(el: DropDown): any {
     const shadowRoot = el.shadowRoot;   
     const slot = shadowRoot.querySelector('slot') as HTMLSlotElement;
     const nodes: Node[] = slot.assignedNodes();
-    const result: Array<HTMLElement> = [];
+    const results: Array<HTMLElement> = [];
 
     nodes.forEach((node) => {
-        result.push(node as HTMLElement);
+        results.push(node as HTMLElement);
     });
 
-    return result;
+    return results;
 }
 
 export function clickElement(el: HTMLElement): void {

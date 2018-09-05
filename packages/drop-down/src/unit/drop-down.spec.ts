@@ -16,7 +16,7 @@ describe(`<${tagName}>`, (): void => {
         withSnippet('default');
         const el: DropDown = document.querySelector('drop-down') as any;
         const shadowRoot = el.shadowRoot;
-        clickElement(shadowRoot.querySelector('.dropbtn'));
+        clickElement(shadowRoot.querySelector('.drop-button'));
         await el.renderComplete;
         const content = shadowRoot.querySelector('.dropdown-content');
         const display = window.getComputedStyle(content).getPropertyValue("display");
@@ -67,7 +67,7 @@ describe(`<${tagName}>`, (): void => {
         const options = getOptions(el);
         clickElement(options[0]);
         await el.renderComplete;
-        expect(el.shadowRoot.querySelector('.dropbtn').innerHTML).to.equal(options[0].innerHTML.trim());
+        expect(el.shadowRoot.querySelector('.drop-button').innerHTML).to.equal(options[0].innerHTML.trim());
     });
 
     it('should allow for HTML as option content', async (): Promise<void> => {
@@ -81,6 +81,7 @@ describe(`<${tagName}>`, (): void => {
     it('should dispatch change event when a selection is made', async (): Promise<void> => {
         withSnippet('values-one-two-three');
         let el: DropDown = document.querySelector('drop-down') as any;
+        await el.renderComplete;
 
         await new Promise(resolve => {
             el.addEventListener('change', (evt: CustomEvent) => {
