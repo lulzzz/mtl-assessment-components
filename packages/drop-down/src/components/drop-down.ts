@@ -73,9 +73,8 @@ export class DropDown extends ComponentBase<Set<string>> implements Feedback{
                 this._selectElement(selectedValue, eventTarget);
             }
             
-            // set the menu's UI to the content of the last selected item
-            const lastValueAdded = this.getLastValueAdded();
-            this.shadowRoot.querySelector('.drop-button').innerHTML = lastValueAdded ? lastValueAdded : this.defaultTitle;
+            const strValue = [...this.value].toString();
+            this.shadowRoot.querySelector('.drop-button').innerHTML = strValue ? strValue : this.defaultTitle;
             this._onDropDownClicked();
 
             this.dispatchEvent(
