@@ -6,6 +6,12 @@
     display: inline-flex;
 }
 
+.drop-down-container {
+    display: inline-flex;
+    flex-direction: column;
+    padding: 4px;
+}
+
 #feedback-button {
     display: block;
 }

@@ -9,57 +9,86 @@
 </head>
 
 <body>
-    <h3>Drop Down Demo</h3>
+    <h2>Drop Down Demo</h3>
         <!-- basic usage -->
         <div class='container'>
-            <drop-down>
-                <div value="one" slot="options" class="option-item">
-                    one
-                </div>
-                <div value="two" slot="options" class="option-item">
-                    two
-                </div>
-                <div value="three" slot="options" class="option-item">
-                    three
-                </div>
+            
+            <div class='drop-down-container'>
+                <h4> Simple Drop Down </h4>
+                <drop-down id="drop-down1">
+                    <div value="one" slot="options" class="option-item">
+                        one
+                    </div>
+                    <div value="two" slot="options" class="option-item">
+                        two
+                    </div>
+                    <div value="three" slot="options" class="option-item">
+                        three
+                    </div>
 
-                <response-validation slot="feedback" expected="one" score="4" strategy="exactMatch">
-                    <span>Correct</span>
-                </response-validation>
-            
-                <response-validation slot="feedback" expected="two" score="2" feedbackType="neutral" strategy="exactMatch">
-                    <span>Almost Correct</span>
-                </response-validation>
-            
-                <response-validation slot="feedback" score="0" feedback="negative" strategy="exactMatch">
-                    <span>Try again</span>
-                    <span>Oups, still not good</span>
-                    <span>Too bad!</span>
-                </response-validation>
+                    <response-validation slot="feedback" expected="one" score="4" strategy="exactMatch">
+                        <span>Correct</span>
+                    </response-validation>
+                
+                    <response-validation slot="feedback" expected="two" score="2" feedbackType="neutral" strategy="exactMatch">
+                        <span>Almost Correct</span>
+                    </response-validation>
+                
+                    <response-validation slot="feedback" score="0" feedback="negative" strategy="exactMatch">
+                        <span>Try again</span>
+                        <span>Oups, still not good</span>
+                        <span>Too bad!</span>
+                    </response-validation>
+                </drop-down>
 
-            </drop-down>
-            
-            <!-- multiple -->
-            <drop-down multiple>
-                <div value="one" slot="options" class="option-item">
-                    one
-                </div>
-                <div value="two" slot="options" class="option-item">
-                    two
-                </div>
-                <div value="three" slot="options" class="option-item">
-                    three
-                </div>
-            </drop-down>
+                <button id="feedback-button1" class="mdc-button">Validate</button>
+
+                <script>        
+                    document.getElementById('feedback-button1').addEventListener('click', () => {
+                        document.querySelector('#drop-down1').showFeedback();
+                    })
+                </script>
+            </div>
+
+            <div class='drop-down-container'>
+                <!-- multiple -->
+                <h4> Drop Down Multiple </h4>
+                <drop-down multiple id="drop-down2">
+                    <div value="one" slot="options" class="option-item">
+                        one
+                    </div>
+                    <div value="two" slot="options" class="option-item">
+                        two
+                    </div>
+                    <div value="three" slot="options" class="option-item">
+                        three
+                    </div>
+
+                    <response-validation slot="feedback" expected="one" score="4" strategy="exactMatch">
+                        <span>Correct</span>
+                    </response-validation>
+                
+                    <response-validation slot="feedback" expected="two" score="2" feedbackType="neutral" strategy="exactMatch">
+                        <span>Almost Correct</span>
+                    </response-validation>
+                
+                    <response-validation slot="feedback" score="0" feedback="negative" strategy="exactMatch">
+                        <span>Try again</span>
+                        <span>Oups, still not good</span>
+                        <span>Too bad!</span>
+                    </response-validation>
+
+                </drop-down>
+
+                <button id="feedback-button2" class="mdc-button">Validate</button>
+
+                <script>        
+                    document.getElementById('feedback-button2').addEventListener('click', () => {
+                        document.querySelector('#drop-down2').showFeedback();
+                    })
+                </script>
+            </div>
         </div>
-
-        <button id="feedback-button" class="mdc-button">Validate</button>
-
-        <script>
-            document.getElementById('feedback-button').addEventListener('click', () => {
-                document.querySelector('drop-down').showFeedback();
-            })
-        </script>
 </body>
 
 </html>
