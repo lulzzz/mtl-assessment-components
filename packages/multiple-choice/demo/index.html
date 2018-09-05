@@ -61,30 +61,35 @@
 
     <h4>Which of these producers make Dub Techno?</h4>
     <multiple-choice multiple id="multiple2">
-        <div hidden slot="options" id="000-1">Moritz Von Oswald</div>
-        <div hidden slot="options" id="000-2">Aviici</div>
-        <div hidden slot="options" id="000-3">David August</div>
-        <div hidden slot="options" id="000-4">Philogresz</div>
-        <response-validation hidden slot="feedback" expected="000-2" score="0" feedback="negative" strategy="exactMatch">
+        <div hidden slot="options" id="000-1-b">Moritz Von Oswald</div>
+        <div hidden slot="options" id="000-2-b">Aviici</div>
+        <div hidden slot="options" id="000-3-b">David August</div>
+        <div hidden slot="options" id="000-4-b">Philogresz</div>
+        <response-validation hidden slot="feedback" expected="000-2-b" score="0" feedback="negative" strategy="exactMatch">
             <span>Try again</span>
             <span>Oups, still not good</span>
             <span>Too bad!</span>
         </response-validation>
-        <response-validation hidden slot="feedback" expected="000-3" score="0" feedback="negative" strategy="exactMatch">
+        <response-validation hidden slot="feedback" expected="000-3-b" score="0" feedback="negative" strategy="exactMatch">
             <span>Try again</span>
             <span>Oups, still not good</span>
             <span>Too bad!</span>
         </response-validation>
-        <response-validation hidden slot="feedback" expected="000-1" score="2" strategy="exactMatch">
+        <response-validation hidden slot="feedback" expected="000-1-b|000-4-b" score="3" strategy="exactMatch">
+            <span>Good</span>
+            <span>Wooot!</span>
+        </response-validation>
+        <response-validation hidden slot="feedback" expected="000-1-b" score="2" strategy="exactMatch">
             <span>Good</span>
             <span>Wooot!</span>
         </response-validation>
 
-        <response-validation hidden slot="feedback" expected="000-4" score="2" feedbackType="neutral" strategy="exactMatch">
+        <response-validation hidden slot="feedback" expected="000-4-b" score="1" feedbackType="neutral" strategy="exactMatch">
             <span>Almost</span>
         </response-validation>
-
-
+        <response-validation hidden slot="feedback" score="0" feedbackType="negative">
+            <span>Almost</span>
+        </response-validation>
 
     </multiple-choice>
 

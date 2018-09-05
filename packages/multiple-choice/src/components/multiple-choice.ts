@@ -30,19 +30,26 @@ export class MultipleChoice extends ComponentBase<Set<string>> implements Feedba
     public _getFeedback: (value: Set<string>) => FeedbackMessage;
     public _responseValidationElements: ResponseValidation[];
     public match: (el: ResponseValidation, response: Set<string>) => boolean = (el, response) => {
-        if (!el.expected) {
+        if (!el.getExpected()) {
             // catch-all clause
             return true;
         }
         switch (el.strategy) {
             case Strategy.EXACT_MATCH:
-                return response.has(el.expected);
+                let equals: boolean = response.size === el.getExpected().size;
+                response.forEach((r: any) => {
+                    equals = equals && el.getExpected().has(r);
+                });
+                return equals;
             case Strategy.FUZZY_MATCH:
-                return response.has(el.expected);
+                equals = true;
+                response.forEach((r: any) => {
+                    equals = equals || el.getExpected().has(r);
+                });
+                return equals;
             default:
                 return false;
         }
-        return false;
     };
 
     public getFeedback(): FeedbackMessage {
@@ -120,7 +127,7 @@ export class MultipleChoice extends ComponentBase<Set<string>> implements Feedba
             this.value = new Set();
             this.value.add(id);
         } else {
-            event.target.checked ? this.value.add(id) : this.value.delete(id);
+            (event.target as HTMLInputElement).checked ? this.value.add(id) : this.value.delete(id);
         }
     }
 
@@ -148,10 +155,10 @@ export class MultipleChoice extends ComponentBase<Set<string>> implements Feedba
     private _feedbackSlotChanged(event: Event): void {
         const slot: HTMLSlotElement = event.srcElement as HTMLSlotElement;
         if (slot) {
-            const nodes: Node[] = slot.assignedNodes();
+            const nodes: ResponseValidation[] = slot.assignedNodes() as any[];
             if (nodes) {
                 const responseValidationElements: ResponseValidation[] = [];
-                for (const el of nodes as ResponseValidation[]) {
+                for (const el of nodes) {
                     responseValidationElements.push(el);
                 }
                 this._responseValidationElements = responseValidationElements;

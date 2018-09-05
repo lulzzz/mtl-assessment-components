@@ -22,15 +22,23 @@ export abstract class Feedback {
         throw new Error('missing default response-validation');
     }
     public match(el: ResponseValidation, response: any): boolean {
-        if (!el.expected) {
+        if (!el.getExpected()) {
             // catch-all clause
             return true;
         }
         switch (el.strategy) {
             case Strategy.EXACT_MATCH:
-                return response === el.expected;
+                let equals: boolean = response.size === el.getExpected().size;
+                response.forEach((r: any) => {
+                    equals = equals && el.getExpected().has(r);
+                });
+                return equals;
             case Strategy.FUZZY_MATCH:
-                return response.toLowerCase() === el.expected.toLowerCase();
+                equals = true;
+                response.forEach((r: any) => {
+                    equals = equals || el.getExpected().has(r);
+                });
+                return equals;
             default:
                 return false;
         }

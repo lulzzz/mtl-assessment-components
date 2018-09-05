@@ -1,4 +1,5 @@
 import { ComponentBase, html, TemplateResult } from '@hmh/component-base/dist/index';
+import { BADHINTS } from 'dns';
 
 export enum FeedbackType {
     POSITIVE = 'positive',
@@ -13,7 +14,7 @@ export interface FeedbackMessage {
 }
 
 export class ResponseValidation extends ComponentBase<string> {
-    public expected: string = '';
+    private expected: string = '';
     public feedbackType: FeedbackType;
     public score: number = 0;
 
@@ -29,7 +30,9 @@ export class ResponseValidation extends ComponentBase<string> {
             strategy: String
         };
     }
-
+    getExpected(): Set<string> {
+        return this.expected !== '' ? new Set(this.expected.split('|')) : null; //TODO: fix
+    }
     public getFeedbackMessage(): FeedbackMessage {
         let type: FeedbackType = this.feedbackType;
         let score = this.score;
