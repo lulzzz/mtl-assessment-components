@@ -19,7 +19,8 @@
     "license": "ISC",
     "dependencies": {
         "@hmh/component-base": "^0.0.15",
-        "@material/select": "^0.39.0"
+        "@material/select": "^0.39.0",
+        "@material/button": "latest"
     },
     "devDependencies": {
         "@hmh/lit-element-tester": "latest",

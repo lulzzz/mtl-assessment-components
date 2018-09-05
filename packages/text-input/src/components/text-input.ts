@@ -14,6 +14,7 @@ export class TextInput extends ComponentBase<string> implements Feedback {
     // declare mixins properties to satisfy the typescript compiler
     public _getFeedback: (value: string) => FeedbackMessage;
     public _responseValidationElements: ResponseValidation[];
+    public _onFeedbackSlotChanged: any;
 
     static get properties(): { [key: string]: string | object } {
         return {
@@ -50,7 +51,7 @@ export class TextInput extends ComponentBase<string> implements Feedback {
             <div class="mdc-notched-outline__idle"></div>
         </div>
         <span>${feedbackText}</span>
-        <slot name="feedback" on-slotchange="${(evt: Event) => this._onSlotChanged(evt)}"></slot>
+        <slot name="feedback" on-slotchange="${(evt: Event) => this._onFeedbackSlotChanged(evt)}"></slot>
         `;
     }
 
@@ -78,21 +79,6 @@ export class TextInput extends ComponentBase<string> implements Feedback {
         this.setAttribute('role', 'textbox');
         this.setAttribute('aria-placeholder', this.placeholder);
         this.setAttribute('aria-label', this.value || this.placeholder);
-    }
-
-    private _onSlotChanged(event: Event) {
-        console.log('slot changed');
-        const slot: HTMLSlotElement = event.srcElement as HTMLSlotElement;
-        if (slot) {
-            const nodes: ResponseValidation[] = slot.assignedNodes() as any[];
-            if (nodes) {
-                const responseValidationElements: ResponseValidation[] = [];
-                for (const el of nodes as ResponseValidation[]) {
-                    responseValidationElements.push(el);
-                }
-                this._responseValidationElements = responseValidationElements;
-            }
-        }
     }
 }
 

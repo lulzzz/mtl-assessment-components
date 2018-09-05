@@ -1,20 +1,27 @@
-import { ComponentBase, html, TemplateResult } from '@hmh/component-base/dist/index';
+import { applyMixins, ComponentBase, html, TemplateResult, Feedback } from '@hmh/component-base/dist/index';
+import { ResponseValidation, FeedbackMessage } from '@hmh/response-validation/dist/components/response-validation';
 
 /**
  * `<drop-down>`
  * A drop down menu that supports embedded HTML within its option elements.
  * @demo ./demo/index.html
  */
-export class DropDown extends ComponentBase<Set<string>> {
+export class DropDown extends ComponentBase<Set<string>> implements Feedback{
     public value: Set<string> = new Set;
     public open: boolean = false;
     public multiple: boolean = false;
     private defaultTitle = 'Dropdown';
-    
+    private feedbackMessage: FeedbackMessage;
+
+    // declare mixins properties to satisfy the typescript compiler
+    public _getFeedback: (value: string) => FeedbackMessage;
+    public _responseValidationElements: ResponseValidation[];
+    public _onFeedbackSlotChanged: any;
+
     /**
-     * value - is currently selected option value.
      * open - is the drop down open.
      * multiple = is this muli select?
+     * feedbackMessage
      * 
      * @returns string
      */                      
@@ -22,10 +29,23 @@ export class DropDown extends ComponentBase<Set<string>> {
         return {
             ...ComponentBase.baseProperties,
             open: Boolean,
-            multiple: Boolean
+            multiple: Boolean,
+            feedbackMessage: Object
         };
     }
     
+    public getFeedback(): FeedbackMessage{
+        return this._getFeedback(this.getLastValueAdded()); // TODO: getFeedback should take an array?
+    }
+
+    public onFeedbackSlotChanged(evt: any) {
+        return this._onFeedbackSlotChanged(evt)
+    }
+
+    public showFeedback(): void {
+        this.feedbackMessage = this.getFeedback();
+    }
+
     /**
      * Called when the drop down menu is clicked on.
      * Sets the menu state to open.
@@ -55,7 +75,7 @@ export class DropDown extends ComponentBase<Set<string>> {
             
             // set the menu's UI to the content of the last selected item
             const lastValueAdded = this.getLastValueAdded();
-            this.shadowRoot.querySelector('.dropbtn').innerHTML = lastValueAdded ? lastValueAdded : this.defaultTitle;
+            this.shadowRoot.querySelector('.drop-button').innerHTML = lastValueAdded ? lastValueAdded : this.defaultTitle;
             this._onDropDownClicked();
 
             this.dispatchEvent(
@@ -132,7 +152,7 @@ export class DropDown extends ComponentBase<Set<string>> {
     private _enableAccessibility(): void {
         this.setAttribute('role', 'popupbutton');
         this.setAttribute('aria-haspopup', 'true');
-        this.setAttribute('aria-label', this.shadowRoot.querySelector('.dropbtn').innerHTML);
+        this.setAttribute('aria-label', this.shadowRoot.querySelector('.drop-button').innerHTML);
     }
 
     /**
@@ -156,23 +176,52 @@ export class DropDown extends ComponentBase<Set<string>> {
      * @param  {DropDown} value} - the value of the element (value of the currently selected option(s))
      * @returns TemplateResult
      */
-    protected _render({ open, value, multiple }: DropDown): TemplateResult {
+    protected _render({ open, value, multiple, feedbackMessage }: DropDown): TemplateResult {
         return html`
         <link rel="stylesheet" type="text/css" href="/dist/css/drop-down.css">
         
-        <div class="dropdown" value="${value}">
-            <div class="buttons-container">
-                <button class="dropbtn" on-click="${(evt: Event) => this._onDropDownClicked()}">${this.defaultTitle}</button>
-                <button class="nav-button" on-click="${(evt: Event) => this._onDropDownClicked()}">&#8595;</button>
+        <div class$="container ${this._getContainerClass(feedbackMessage)}">
+            <div class="dropdown" value="${value}">
+                <div class="buttons-container">
+                    <button class="drop-button" on-click="${(evt: Event) => this._onDropDownClicked()}">Dropdown</button>
+                    <button class="nav-button" on-click="${(evt: Event) => this._onDropDownClicked()}">${ open ? html`&uarr;` : html`&darr;` }</button>
+                </div>
+                <div class="dropdown-content" hidden="${!open}">
+                    <slot name="options" class="options" 
+                    on-click="${(evt: MouseEvent) => this._onItemClicked(evt.target as HTMLElement)}"
+                    on-slotchange="${(evt: Event) => this._onSlotChanged(evt)}"> </slot>
+                </div>
             </div>
-            <div class="dropdown-content" hidden="${!open}">
-                <slot name="options" class="options" 
-                on-click="${(evt: MouseEvent) => this._onItemClicked(evt.target as HTMLElement)}"
-                on-slotchange="${(evt: Event) => this._onSlotChanged(evt)}"> </slot>
-            </div>
+
+            <span class$="feedback-message ${this._getFeedbackClass(feedbackMessage)}">${ feedbackMessage ? feedbackMessage.message : ''}</span>
+
         </div>
-        `;
+        <slot name="feedback" class="feedback-values" on-slotchange="${(evt: Event) => this._onFeedbackSlotChanged(evt)}"></slot>`;
+    }
+
+    private _getContainerClass(feedbackMessage: FeedbackMessage) : String {
+        let result = '';
+
+        if (feedbackMessage) {
+            result = feedbackMessage.type === 'positive' ? 'feedback-positive-border' : feedbackMessage.type === 'negative' ? 'feedback-negative-border'      
+                : 'feedback-neutral-border';
+        }
+
+        return result;
+    }
+
+    private _getFeedbackClass(feedbackMessage: FeedbackMessage) : String {
+        let result = '';
+
+        if (feedbackMessage) {
+            result = feedbackMessage.type === 'positive' ? 'feedback-positive-background' : feedbackMessage.type === 'negative' ? 'feedback-negative-background'      
+                : 'feedback-neutral-background';
+        }
+
+        return result;
     }
 }
+
+applyMixins(DropDown, [Feedback]);
 
 customElements.define('drop-down', DropDown);

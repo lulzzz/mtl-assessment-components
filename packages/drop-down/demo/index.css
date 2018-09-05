@@ -5,3 +5,7 @@
 .container {
     display: inline-flex;
 }
+
+#feedback-button {
+    display: block;
+}
