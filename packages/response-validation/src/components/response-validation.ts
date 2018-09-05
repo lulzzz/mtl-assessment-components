@@ -1,5 +1,4 @@
 import { ComponentBase, html, TemplateResult } from '@hmh/component-base/dist/index';
-import { BADHINTS } from 'dns';
 
 export enum FeedbackType {
     POSITIVE = 'positive',
