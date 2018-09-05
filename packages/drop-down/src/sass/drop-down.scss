@@ -52,3 +52,7 @@
 ::slotted(.option-item:hover){
     background-color: var(--option-hover-color,lightblue);
 }
+
+::slotted(.selected){
+    background-color: var(--option-selected-color,lightblue);
+}

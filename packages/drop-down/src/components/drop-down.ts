@@ -5,20 +5,20 @@ import { ComponentBase, html, TemplateResult } from '@hmh/component-base/dist/in
  * A drop down menu that supports embedded HTML within its option elements.
  * @demo ./demo/index.html
  */
-export class DropDown extends ComponentBase<string> {
-    public values: string = '';
+export class DropDown extends ComponentBase<Set<string>> {
+    public value: Set<string> = new Set;
     public open: boolean = false;
+    private defaultTitle = 'Dropdown';
     
     /**
      * value - is currently selected option value.
      * open - is the drop down open.
      * 
      * @returns string
-     */
+     */                      
     static get properties(): { [key: string]: string | object } {
         return {
             ...ComponentBase.baseProperties,
-            value: String,
             open: Boolean
         };
     }
@@ -42,12 +42,22 @@ export class DropDown extends ComponentBase<string> {
      */
     private _onItemClicked(eventTarget: HTMLElement): void {
         if (eventTarget.hasAttribute('slot')) {
-            this.value = eventTarget.getAttribute('value');
             this._clearAriaSelection();
-            // for accessibility (screen readers)
-            eventTarget.setAttribute('aria-selected', 'true');
-            // set the menu's UI to the content of the currently selected item
-            this.shadowRoot.querySelector('.dropbtn').innerHTML = eventTarget.innerHTML;
+
+            const selectedValue = eventTarget.getAttribute('value');
+            if (this.value.has(selectedValue)) {
+                this.value.delete(selectedValue);
+                eventTarget.classList.remove('selected');
+            } else {
+                this.value.add(selectedValue);
+                // for accessibility (screen readers)
+                eventTarget.setAttribute('aria-selected', 'true');
+                eventTarget.classList.add('selected');
+            }
+            
+            // set the menu's UI to the content of the last selected item
+            const lastValueAdded = this.getLastValueAdded();
+            this.shadowRoot.querySelector('.dropbtn').innerHTML = lastValueAdded ? lastValueAdded : this.defaultTitle ;
             this._onDropDownClicked();
 
             this.dispatchEvent(
@@ -96,7 +106,7 @@ export class DropDown extends ComponentBase<string> {
                 });
             }
         }
-    }
+    }   
 
     /**
      * Sets various accessibility attributes.
@@ -116,9 +126,13 @@ export class DropDown extends ComponentBase<string> {
      */
     protected _didRender(): void {
         this._enableAccessibility();
-        this.setAttribute('value', this.value);
+        this.setAttribute('value', this.getLastValueAdded());
     }
     
+    private getLastValueAdded(): string {
+        return [...this.value].pop();
+    }
+
     /**
      * The template to render.
      * 
@@ -132,7 +146,7 @@ export class DropDown extends ComponentBase<string> {
         
         <div class="dropdown" value="${value}">
             <div class="buttons-container">
-                <button class="dropbtn" on-click="${(evt: Event) => this._onDropDownClicked()}">Dropdown</button>
+                <button class="dropbtn" on-click="${(evt: Event) => this._onDropDownClicked()}">${this.defaultTitle}</button>
                 <button class="nav-button" on-click="${(evt: Event) => this._onDropDownClicked()}">&#8595;</button>
             </div>
             <div class="dropdown-content" hidden="${!open}">
