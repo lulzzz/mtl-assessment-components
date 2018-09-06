@@ -1,4 +1,4 @@
-import { ComponentBase, html, TemplateResult } from '@hmh/component-base/dist/index';
+import { ComponentBase, html, TemplateResult, Strategy } from '@hmh/component-base/dist/index';
 
 export enum FeedbackType {
     POSITIVE = 'positive',
@@ -6,11 +6,6 @@ export enum FeedbackType {
     NEUTRAL = 'neutral'
 }
 
-export enum Strategy {
-    EXACT_MATCH = 'exactMatch',
-    FUZZY_MATCH = 'fuzzyMatch',
-    MATH_EQUIVALENT = 'mathEquivalent'
-}
 
 export interface FeedbackMessage {
     type: FeedbackType;
@@ -34,22 +29,6 @@ export class ResponseValidation extends ComponentBase<string> {
             score: Number,
             strategy: String
         };
-    }
-
-    public match(response: string): boolean {
-        if (!this.expected) {
-            // catch-all clause
-            return true;
-        }
-
-        switch (this.strategy) {
-            case Strategy.EXACT_MATCH:
-                return response === this.expected;
-            case Strategy.FUZZY_MATCH:
-                return response.toLowerCase() === this.expected.toLowerCase();
-            default:
-                return false;
-        }
     }
 
     public getFeedbackMessage(): FeedbackMessage {

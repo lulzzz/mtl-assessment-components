@@ -1,6 +1,6 @@
 export { ComponentBase, html, repeat, TemplateResult, unsafeHTML } from './components/base';
 export { Persistence } from './mixins/persistence';
-export { Feedback } from './mixins/feedback';
+export { Feedback, Strategy } from './mixins/feedback';
 /**
  * Apply Mixins Implementation to a Component
  *
