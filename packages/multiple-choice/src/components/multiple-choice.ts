@@ -26,6 +26,7 @@ export class MultipleChoice extends ComponentBase<Set<string>> implements Feedba
     public feedbackText: string = '';
     public value: Set<string> = new Set();
 
+
     // declare mixins properties to satisfy the typescript compiler
     public _getFeedback: (value: Set<string>) => FeedbackMessage;
     public _responseValidationElements: ResponseValidation[];
