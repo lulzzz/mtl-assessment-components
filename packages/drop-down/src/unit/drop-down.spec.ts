@@ -1,5 +1,5 @@
 import { DropDown } from "../components/drop-down";
-import { checkComponentDOM, clickElement, getOptions, getValue } from './test-helpers';
+import { checkComponentDOM, clickElement, getOptions} from './test-helpers';
 
 const tagName: string = 'drop-down';
 const expect: any = chai.expect;
@@ -71,7 +71,7 @@ describe(`<${tagName}>`, (): void => {
         const options = getOptions(el);
         clickElement(options[1]);
         await el.renderComplete;
-        expect(getValue(el).pop()).to.equal(options[1].getAttribute('value'));
+        expect(el.getValue()).to.have.deep.keys([options[1].getAttribute('value')]);
     });
 
     it('should change value when multiple selections are made', async (): Promise<void> => {
@@ -82,7 +82,7 @@ describe(`<${tagName}>`, (): void => {
         await el.renderComplete;
         clickElement(options[2]);
         await el.renderComplete;        
-        expect(getValue(el)).to.deep.equal(['one', 'three']);
+        expect(el.getValue()).to.have.deep.keys(['one', 'three']);
     });
 
     it('should update the UI to reflect selected option content when a selection is made', async (): Promise<void> => {

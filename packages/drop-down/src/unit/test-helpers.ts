@@ -36,8 +36,3 @@ export function clickElement(el: HTMLElement): void {
     });
     el.dispatchEvent(event);
 }
-
-/// get value as an array because Mocha doesn't seem to work wtth Sets
-export function getValue(el: DropDown): any {
-    return [...el.value];
-}
