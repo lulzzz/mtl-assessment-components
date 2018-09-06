@@ -37,6 +37,7 @@ export function clickElement(el: HTMLElement): void {
     el.dispatchEvent(event);
 }
 
-export function getLastValueAdded(el: DropDown): string {
-    return [...el.value].pop();
+/// get value as an array because Mocha doesn't seem to work wtth Sets
+export function getValue(el: DropDown): any {
+    return [...el.value];
 }

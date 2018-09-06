@@ -1,5 +1,5 @@
 import { DropDown } from "../components/drop-down";
-import { checkComponentDOM, clickElement, getOptions, getLastValueAdded } from './test-helpers';
+import { checkComponentDOM, clickElement, getOptions, getValue } from './test-helpers';
 
 const tagName: string = 'drop-down';
 const expect: any = chai.expect;
@@ -58,7 +58,7 @@ describe(`<${tagName}>`, (): void => {
         const options = getOptions(el);
         clickElement(options[1]);
         await el.renderComplete;
-        expect(getLastValueAdded(el)).to.equal(options[1].getAttribute('value'));
+        expect(getValue(el).pop()).to.equal(options[1].getAttribute('value'));
     });
 
     it('should update the UI to reflect selected option content when a selection is made', async (): Promise<void> => {
@@ -85,13 +85,25 @@ describe(`<${tagName}>`, (): void => {
 
         await new Promise(resolve => {
             el.addEventListener('change', (evt: CustomEvent) => {
-                // expect(evt.detail.value).to.equal('two');
+                expect(evt.detail.value.pop()).to.equal('two');
                 resolve();
             });
 
             const options = getOptions(el);
             clickElement(options[1]);
         });
+    });
+
+    it('should change value when a selection is made in multiple mode', async (): Promise<void> => {
+        withSnippet('values-one-two-three-multiple');
+        let el: DropDown = document.querySelector('drop-down') as any;
+        const options = getOptions(el);
+        clickElement(options[0]);
+        await el.renderComplete;
+        clickElement(options[1]);
+        await el.renderComplete;
+        expect(getValue(el)[0]).to.equal('one');
+        expect(getValue(el)[1]).to.equal('two');
     });
 });
 

@@ -82,7 +82,7 @@ export class DropDown extends ComponentBase<Set<string>> implements Feedback{
                     bubbles: true,
                     composed: true,
                     detail: {
-                        value: this.value
+                        value: [...this.value] // value as an array because mocha doesn't seen to work with Set
                     }
                 })
             );
