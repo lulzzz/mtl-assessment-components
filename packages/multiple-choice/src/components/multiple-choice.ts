@@ -23,6 +23,7 @@ export class MultipleChoice extends ComponentBase<string> implements Feedback {
     private multiple: boolean;
     public feedbackText: string;
     public _onFeedbackSlotChanged: any;
+    public match: any;
 
     // declare mixins properties to satisfy the typescript compiler
     public _getFeedback: (value: string) => FeedbackMessage;

@@ -15,6 +15,7 @@ export class DropDown extends ComponentBase<string> implements Feedback {
     public _getFeedback: (value: string) => FeedbackMessage;
     public _responseValidationElements: ResponseValidation[];
     public _onFeedbackSlotChanged: any;
+    public match: any;
 
     /**
      * value - is currently selected option value.
