@@ -4,6 +4,7 @@ import { ResponseValidation, FeedbackMessage } from '@hmh/response-validation/di
 /**
  * `<drop-down>`
  * A drop down menu that supports embedded HTML within its option elements.
+ * Currently uses Set for value to IDs will be unique
  * @demo ./demo/index.html
  */
 export class DropDown extends ComponentBase<Set<string>> implements Feedback{
@@ -34,14 +35,24 @@ export class DropDown extends ComponentBase<Set<string>> implements Feedback{
         };
     }
     
-    public getFeedback(): FeedbackMessage{
-        return this._getFeedback(this.getLastValueAdded()); // TODO: getFeedback should take an array?
+    /**
+     * gets the FeedbackMessage message object for the current value
+     * 
+     * @returns FeedbackMessage
+     */
+    public getFeedback(): FeedbackMessage {
+        return this._getFeedback([...this.value].pop()); // TODO: getFeedback should take an array?
     }
 
-    public onFeedbackSlotChanged(evt: any) {
+    public onFeedbackSlotChanged(evt: any): any {
         return this._onFeedbackSlotChanged(evt)
     }
 
+    /**
+     * Set the element feedbackMessage to update the rendered content
+     * 
+     * @returns void
+     */
     public showFeedback(): void {
         this.feedbackMessage = this.getFeedback();
     }
@@ -82,13 +93,20 @@ export class DropDown extends ComponentBase<Set<string>> implements Feedback{
                     bubbles: true,
                     composed: true,
                     detail: {
-                        value: [...this.value] // value as an array because mocha doesn't seen to work with Set
+                        value: [...this.value] // value as an array because mocha doesn't seen to work with Setgit 
                     }
                 })
             );
         }
     }
 
+    /**
+     * Select an options element. Behavior depends upon this.multiple
+     * 
+     * @param  {string} selectedValue
+     * @param  {HTMLElement} eventTarget
+     * @returns void
+     */
     private _selectElement(selectedValue: string, eventTarget: HTMLElement) : void {
         if (this.multiple) {
             eventTarget.classList.add('selected');
@@ -101,6 +119,13 @@ export class DropDown extends ComponentBase<Set<string>> implements Feedback{
         this.value.add(selectedValue);
     }
 
+    /**
+     * unselect an options element. Behavior depends upon this.multiple
+     * 
+     * @param  {string} selectedValue
+     * @param  {HTMLElement} eventTarget
+     * @returns void
+     */
     private _deselectElement(selectedValue: string, eventTarget: HTMLElement) : void {
         this.value.delete(selectedValue);
         eventTarget.classList.remove('selected');
@@ -161,13 +186,9 @@ export class DropDown extends ComponentBase<Set<string>> implements Feedback{
      */
     protected _didRender(): void {
         this._enableAccessibility();
-        this.setAttribute('value', this.getLastValueAdded());
+        this.setAttribute('value', [...this.value].toString());
     }
     
-    private getLastValueAdded(): string {
-        return [...this.value].pop();
-    }
-
     /**
      * The template to render.
      * 
@@ -198,6 +219,12 @@ export class DropDown extends ComponentBase<Set<string>> implements Feedback{
         <slot name="feedback" class="feedback-values" on-slotchange="${(evt: Event) => this._onFeedbackSlotChanged(evt)}"></slot>`;
     }
 
+    /**
+     * Get container class for UI depending upon feedbackMessage.type
+     * 
+     * @param  {FeedbackMessage} feedbackMessage
+     * @returns String
+     */
     private _getContainerClass(feedbackMessage: FeedbackMessage) : String {
         let result = '';
 
@@ -209,6 +236,12 @@ export class DropDown extends ComponentBase<Set<string>> implements Feedback{
         return result;
     }
 
+    /**
+     * Get feedback class for UI depending upon feedbackMessage.type
+     * 
+     * @param  {FeedbackMessage} feedbackMessage
+     * @returns String
+     */
     private _getFeedbackClass(feedbackMessage: FeedbackMessage) : String {
         let result = '';
 
