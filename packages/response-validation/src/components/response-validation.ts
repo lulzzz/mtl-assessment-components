@@ -33,6 +33,7 @@ export class ResponseValidation extends ComponentBase<string> {
     getExpected(): Set<string> {
         return this.expected !== '' ? new Set(this.expected.split('|')) : null; //TODO: fix
     }
+
     public getFeedbackMessage(): FeedbackMessage {
         let type: FeedbackType = this.feedbackType;
         const score = this.score;

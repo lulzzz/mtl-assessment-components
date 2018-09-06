@@ -7,7 +7,7 @@ import { ResponseValidation, FeedbackMessage } from '@hmh/response-validation/di
  * @demo ./demo/index.html
  */
 export class TextInput extends ComponentBase<string> implements Feedback {
-    public feedbackText: string = '';
+    public feedback: FeedbackMessage;
     public placeholder: string = '';
     public value: string = '';
 
@@ -15,28 +15,35 @@ export class TextInput extends ComponentBase<string> implements Feedback {
     public _getFeedback: (value: string) => FeedbackMessage;
     public _responseValidationElements: ResponseValidation[];
     public _onFeedbackSlotChanged: any;
+    public match: any;
 
     static get properties(): { [key: string]: string | object } {
         return {
             ...ComponentBase.baseProperties,
-            feedbackText: String,
+            feedback: Object,
             placeholder: String,
             value: String
         };
     }
 
-    public getFeedback(): FeedbackMessage{
+    public getFeedback(): FeedbackMessage {
         return this._getFeedback(this.getValue());
     }
 
+    public showFeedback(): void {
+        this.feedback = this.getFeedback();
+    }
 
-    protected _render({ disabled, feedbackText, placeholder, value }: TextInput): TemplateResult {
+    protected _render({ disabled, feedback, placeholder, value }: TextInput): TemplateResult {
+        const feedbackMessage: TemplateResult = feedback && feedback.message ? html`<div class="feedback-message"><div>${feedback.message}<div></div>` : html``;
+
         return html`
         <link rel="stylesheet" type="text/css" href="/node_modules/@material/textfield/dist/mdc.textfield.css">
         <link rel="stylesheet" type="text/css" href="/dist/css/text-input.css">
+        ${this._feedbackStyle}
         <div class$="mdc-text-field mdc-text-field--outlined ${disabled ? 'mdc-text-field--disabled' : ''}">
             <input
-                disabled=${disabled}
+                disabled="${disabled}"
                 type="text" 
                 id="tf-outlined" 
                 class="mdc-text-field__input" 
@@ -49,15 +56,40 @@ export class TextInput extends ComponentBase<string> implements Feedback {
                 </svg>
             </div>
             <div class="mdc-notched-outline__idle"></div>
+            ${feedbackMessage} 
         </div>
-        <span>${feedbackText}</span>
-        <slot name="feedback" on-slotchange="${(evt: Event) => this._onFeedbackSlotChanged(evt)}"></slot>
+
+        <slot hidden name="feedback" on-slotchange="${(evt: Event) => this._onFeedbackSlotChanged(evt)}"></slot>
         `;
     }
 
     protected _didRender(): void {
         MDCTextField.attachTo(this.shadowRoot.querySelector('.mdc-text-field'));
         this._enableAccessibility();
+    }
+
+    private get _feedbackStyle(): TemplateResult {
+        const feedbackColorMap = {
+            submitted: 'var(--submitted-color, gray)',
+            positive: 'var(--positive-color, green)',
+            negative: 'var(--negative-color, red)',
+            neutral: 'var(--neutral-color, yellow)'
+        };
+
+        if (!this.feedback) {
+            return html``;
+        }
+
+        const color = feedbackColorMap[this.feedback.type];
+        return html`<style>
+            .mdc-notched-outline__idle {
+                border: 2px solid ${color}!important;
+            }
+
+            .feedback-message {
+                background-color: ${color};
+            }
+        </style>`;
     }
 
     private _onInputChange(evt: Event): void {

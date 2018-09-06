@@ -59,10 +59,19 @@ export function checkAccessibilityparams(el: TextInput, params: { [key: string]:
         expect(el.getAttribute('aria-label')).to.equal(params.placeholder);
         expect(el.getAttribute('aria-placeholder')).to.equal(params.placeholder);
     }
-    
+
     if (params.placeholder) {
         expect(el.getAttribute('aria-placeholder')).to.equal(params.placeholder);
     } else if (params.placeholder) {
         expect(el.getAttribute('aria-placeholder')).to.equal('');
     }
+}
+
+export async function checkAnswer(el: TextInput, value: string): Promise<void> {
+    await el.renderComplete;
+    const input: HTMLInputElement = el.shadowRoot.querySelector('input');
+    input.value = value;
+    input.dispatchEvent(new Event('change'));
+    await el.renderComplete;
+    checkComponentDOM(el, { value });
 }

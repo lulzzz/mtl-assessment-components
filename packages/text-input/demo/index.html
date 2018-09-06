@@ -6,6 +6,13 @@
     <link rel="stylesheet" type="text/css" href="/node_modules/@material/button/dist/mdc.button.css">
     <script type="module" src="../dist/components/text-input.js"></script>
     <script type="module" src="../node_modules/@hmh/response-validation/dist/components/response-validation.js"></script>
+    <style>
+        text-input {
+            --positive-color: #46AB3B;
+            --negative-color: #D90719;
+            --neutral-color: #D4AB27;
+        }
+    </style>
 </head>
 
 <body>
@@ -31,15 +38,13 @@
         </text-input>
         , you won't get with a grim one.
     </p>
-    <div id="feedback">Feedback will appear here</div>
 
     <button id="button" class="mdc-button">Validate</button>
 
     <script>
         document.getElementById('button').addEventListener('click', () => {
-            document.getElementById('feedback').innerText = JSON.stringify(document.querySelector('text-input').getFeedback());
+            document.querySelector('text-input').showFeedback();
         })
-
     </script>
 </body>
 
