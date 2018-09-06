@@ -1,4 +1,4 @@
-import { ComponentBase, html, TemplateResult } from '@hmh/component-base/dist/index';
+import { ComponentBase, html, TemplateResult, Strategy } from '@hmh/component-base/dist/index';
 
 export enum FeedbackType {
     POSITIVE = 'positive',
@@ -6,22 +6,17 @@ export enum FeedbackType {
     NEUTRAL = 'neutral'
 }
 
-export enum Strategy {
-    EXACT_MATCH = 'exactMatch',
-    FUZZY_MATCH = 'fuzzyMatch',
-    MATH_EQUIVALENT = 'mathEquivalent'
-}
-
 export interface FeedbackMessage {
     type: FeedbackType;
     message: string;
+    score: number;
 }
 
 export class ResponseValidation extends ComponentBase<string> {
-    public expected: string = '';
+    private expected: string = '';
     public feedbackType: FeedbackType;
     public score: number = 0;
-    public strategy: Strategy = Strategy.MATH_EQUIVALENT;
+    public strategy: Strategy = Strategy.EXACT_MATCH;
 
     private feedbackItems: HTMLElement[] = [];
     private attempts: number = 0;
@@ -35,26 +30,13 @@ export class ResponseValidation extends ComponentBase<string> {
             strategy: String
         };
     }
-
-    public match(response: string): boolean {
-        if (!this.expected) {
-            // catch-all clause
-            return true;
-        }
-
-        switch (this.strategy) {
-            case Strategy.EXACT_MATCH:
-                return response === this.expected;
-            case Strategy.FUZZY_MATCH:
-                return response.toLowerCase() === this.expected.toLowerCase();
-            default:
-                return false;
-        }
+    getExpected(): Set<string> {
+        return this.expected !== '' ? new Set(this.expected.split('|')) : null; //TODO: fix
     }
 
     public getFeedbackMessage(): FeedbackMessage {
         let type: FeedbackType = this.feedbackType;
-
+        const score = this.score;
         if (!this.feedbackType) {
             type = this.score > 0 ? FeedbackType.POSITIVE : FeedbackType.NEGATIVE;
         }
@@ -67,7 +49,7 @@ export class ResponseValidation extends ComponentBase<string> {
             message = this.feedbackItems[this.attempts - 1].innerHTML;
         }
 
-        return { type, message };
+        return { type, message, score };
     }
 
     public reset(): void {

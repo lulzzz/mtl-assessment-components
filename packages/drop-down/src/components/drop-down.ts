@@ -18,6 +18,7 @@ export class DropDown extends ComponentBase<Set<string>> implements Feedback{
     public _getFeedback: (value: string) => FeedbackMessage;
     public _responseValidationElements: ResponseValidation[];
     public _onFeedbackSlotChanged: any;
+    public match: any;
 
     /**
      * open - is the drop down open.

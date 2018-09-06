@@ -20,6 +20,7 @@
     "dependencies": {
         "@hmh/component-base": "latest",
         "@hmh/response-validation": "latest",
+        "@material/button": "latest",
         "@material/checkbox": "latest",
         "@material/form-field": "latest",
         "@material/radio": "latest",

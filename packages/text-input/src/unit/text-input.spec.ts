@@ -1,5 +1,5 @@
 import { TextInput } from '../components/text-input';
-import { checkComponentDOM, inputValue, isDisabled } from './test-helpers';
+import { checkComponentDOM, inputValue, isDisabled, checkAnswer } from './test-helpers';
 const expect: any = chai.expect;
 const tagName: string = 'text-input';
 
@@ -102,6 +102,53 @@ describe(`<${tagName}>`, (): void => {
             expect(getComputedStyle(el).display).to.equal('inline');
             checkComponentDOM(el, { value: values.shift() });
         }
+    });
+});
+
+describe(`<${tagName}> validation and feedback`, (): void => {
+    it('should give positive feedback on right answer', async (): Promise<void> => {
+        withSnippet('feedback');
+        const el: TextInput = document.querySelector('text-input') as any;
+        await checkAnswer(el, 'smile');
+        el.showFeedback();
+        expect(el.feedback.type).to.equal('positive');
+    });
+
+    it('should give neutral feedback on neutral answer', async (): Promise<void> => {
+        withSnippet('feedback');
+        const el: TextInput = document.querySelector('text-input') as any;
+        await checkAnswer(el, 'grin');
+        el.showFeedback();
+        expect(el.feedback.type).to.equal('neutral');
+    });
+
+    it('should give negative feedback on wrong answer', async (): Promise<void> => {
+        withSnippet('feedback');
+        const el: TextInput = document.querySelector('text-input') as any;
+        await checkAnswer(el, 'some wrong answer');
+        el.showFeedback();
+        expect(el.feedback.type).to.equal('negative');
+    });
+
+    it('should give appropriate feedback message on each attempt', async (): Promise<void> => {
+        withSnippet('feedback');
+        const el: TextInput = document.querySelector('text-input') as any;
+        await checkAnswer(el, 'first atttempt');
+        el.showFeedback();
+        expect(el.feedback.type).to.equal('negative');
+        expect(el.feedback.message).to.equal('Try again');
+        await checkAnswer(el, 'second atttempt');
+        el.showFeedback();
+        expect(el.feedback.type).to.equal('negative');
+        expect(el.feedback.message).to.equal('Still not good');
+        await checkAnswer(el, 'third atttempt');
+        el.showFeedback();
+        expect(el.feedback.type).to.equal('negative');
+        expect(el.feedback.message).to.equal('Wrong answer');
+        await checkAnswer(el, 'smile');
+        el.showFeedback();
+        expect(el.feedback.type).to.equal('positive');
+        expect(el.feedback.message).to.equal('Good');
     });
 });
 

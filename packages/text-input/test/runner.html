@@ -15,8 +15,8 @@
         sourceMapSupport.install();
         mocha.setup('bdd');
     </script>
-    <script type="module" src="../dist/components/text-input.js">
-    </script>
+    <script type="module" src="../dist/components/text-input.js"></script>
+    <script type="module" src="../node_modules/@hmh/response-validation/dist/components/response-validation.js"></script>
 </head>
 
 <body>
@@ -36,7 +36,7 @@
     <template id="readonly">
         <text-input value="Hong Kong" disabled></text-input>
     </template>
-    
+
     <template id="three">
         <p>The great and striking
             <text-input value="peculiarity"></text-input> of this play is that its action lies wholly in the ideal world.
@@ -46,6 +46,30 @@
             <text-input value="conscious"></text-input> motives, and not from supernatural influences. But here he completely
             reverses his procedure; from beginning to end the chief instrumentalities of the poem are external; its conflicts
             and solutions are brought about by powers seemingly beyond human might and intelligence.
+        </p>
+    </template>
+
+    <template id="feedback">
+        <h3>Complete the following proverb</h3>
+        <p>What you don't get with a nice
+            <text-input>
+
+                <response-validation slot="feedback" expected="smile" score="4" strategy="fuzzyMatch">
+                    <span>Good</span>
+                </response-validation>
+
+                <response-validation slot="feedback" expected="grin" score="1" feedbackType="neutral" strategy="exactMatch">
+                    <span>Almost</span>
+                </response-validation>
+
+                <response-validation slot="feedback" score="0" feedback="negative" strategy="exactMatch">
+                    <span>Try again</span>
+                    <span>Still not good</span>
+                    <span>Wrong answer</span>
+                </response-validation>
+
+            </text-input>
+            , you won't get with a grim one.
         </p>
     </template>
 
