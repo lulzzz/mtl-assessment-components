@@ -1,4 +1,4 @@
-import { ComponentBase, html, TemplateResult, Feedback, applyMixins, repeat, unsafeHTML } from '@hmh/component-base/dist/index';
+import { ComponentBase, html, TemplateResult, Feedback, applyMixins, repeat, unsafeHTML, Strategy } from '@hmh/component-base/dist/index';
 import { ResponseValidation, FeedbackMessage } from '@hmh/response-validation/dist/components/response-validation';
 
 /**
@@ -8,44 +8,79 @@ import { ResponseValidation, FeedbackMessage } from '@hmh/response-validation/di
  * @demo ./demo/index.html
  *
  */
-export class MultipleChoice extends ComponentBase<string> implements Feedback {
+export class MultipleChoice extends ComponentBase<Set<string>> implements Feedback {
     static get properties(): { [key: string]: string | object } {
         return {
             ...ComponentBase.baseProperties,
             /* The multiple choice answer options */
             items: Array,
             /** The mode of muliple choice: ie single or multiple **/
-            multiple: Boolean
+            multiple: Boolean,
+            feedbackType: String
         };
     }
 
     private items: HTMLElement[] = [];
     private multiple: boolean;
-    public feedbackText: string;
-    public _onFeedbackSlotChanged: any;
-    public match: any;
+    private feedbackType: string;
+    public feedbackText: string = '';
+    public value: Set<string> = new Set();
+
 
     // declare mixins properties to satisfy the typescript compiler
-    public _getFeedback: (value: string) => FeedbackMessage;
+    public _getFeedback: (value: Set<string>) => FeedbackMessage;
     public _responseValidationElements: ResponseValidation[];
+    public match: (el: ResponseValidation, response: Set<string>) => boolean = (el, response) => {
+        if (!el.getExpected()) {
+            // catch-all clause
+            return true;
+        }
+        switch (el.strategy) {
+            case Strategy.EXACT_MATCH:
+                let equals: boolean = response.size === el.getExpected().size;
+                response.forEach((r: any) => {
+                    equals = equals && el.getExpected().has(r);
+                });
+                return equals;
+            case Strategy.FUZZY_MATCH:
+                equals = true;
+                response.forEach((r: any) => {
+                    equals = equals || el.getExpected().has(r);
+                });
+                return equals;
+            default:
+                return false;
+        }
+    };
 
-    protected _render({ items, multiple }: MultipleChoice): TemplateResult {
+    public getFeedback(): FeedbackMessage {
+        const feedback = this._getFeedback(this.getValue());
+        return feedback;
+    }
+
+    public showFeedback(): void {
+        this.feedbackType = this.getFeedback().type;
+    }
+
+    protected _render({ items, multiple, feedbackType }: MultipleChoice): TemplateResult {
         return html`
         <link rel="stylesheet" type="text/css" href="/node_modules/@material/radio/dist/mdc.radio.css">
         <link rel="stylesheet" type="text/css" href="/node_modules/@material/form-field/dist/mdc.form-field.css">
         <link rel="stylesheet" type="text/css" href="/node_modules/@material/checkbox/dist/mdc.checkbox.css">
         <link rel="stylesheet" type="text/css" href="/dist/css/multiple-choice.css">
-    <main>
+    <div class$="${feedbackType}">
        ${repeat(
            items,
            (item: HTMLElement) => item.id,
            (item: HTMLElement) => html`
-            <div hidden class="mdc-form-field"> ${multiple ? this._renderCheckbox(item) : this._renderRadioButton(item)}
+            <div hidden class="mdc-form-field" > ${multiple ? this._renderCheckbox(item) : this._renderRadioButton(item)}
                 <label for$="${item.id}"> ${unsafeHTML(item.innerHTML)} </label>
             </div>`
        )}
         <slot name="options" on-slotchange="${(e: Event) => this._slotChanged(e)}" ></slot>
-    </main>
+        <slot name="feedback" on-slotchange="${(e: Event) => this._feedbackSlotChanged(e)}"></slot>
+
+    </div>
         `;
     }
     /**
@@ -55,7 +90,7 @@ export class MultipleChoice extends ComponentBase<string> implements Feedback {
      */
     private _renderCheckbox(item: HTMLElement): TemplateResult {
         return html`
-        <div class="mdc-checkbox" on-click="${(evt: MouseEvent) => this._onItemClicked(evt, item.id)}">
+        <div class="mdc-checkbox" on-click="${(evt: MouseEvent) => this._onItemClicked(evt, item.id, 'check')}">
         <input type="checkbox" class="mdc-checkbox__native-control" id="${item.id}"/>
         <div class="mdc-checkbox__background">
             <svg class="mdc-checkbox__checkmark"
@@ -76,7 +111,7 @@ export class MultipleChoice extends ComponentBase<string> implements Feedback {
      */
     private _renderRadioButton(item: HTMLElement): TemplateResult {
         return html`
-        <div class="mdc-radio" on-click="${(evt: MouseEvent) => this._onItemClicked(evt, item.id)}">
+        <div class="mdc-radio" on-click="${(evt: Event) => this._onItemClicked(evt, item.id, 'radio')}">
          <input class="mdc-radio__native-control" type="radio" id="${item.id}" name="options">
          <div class="mdc-radio__background">
          <div class="mdc-radio__outer-circle"></div>
@@ -87,12 +122,17 @@ export class MultipleChoice extends ComponentBase<string> implements Feedback {
 
     /**
      * Fired when item is clicked
-     * @param {MouseEvent} event
+     * @param {Event} event
      * @param {string} id
      */
-    private _onItemClicked(event: MouseEvent, id: string): void {
+    private _onItemClicked(event: Event, id: string, element: string): void {
         event.stopPropagation();
-        console.log('clicked on id:', id);
+        if (element === 'radio') {
+            this.value = new Set();
+            this.value.add(id);
+        } else {
+            (event.target as HTMLInputElement).checked ? this.value.add(id) : this.value.delete(id);
+        }
     }
 
     /**
@@ -111,6 +151,23 @@ export class MultipleChoice extends ComponentBase<string> implements Feedback {
             }
         }
         this.items = items;
+    }
+    /**
+     * Fired on slot change
+     * @param {Event} event
+     */
+    private _feedbackSlotChanged(event: Event): void {
+        const slot: HTMLSlotElement = event.srcElement as HTMLSlotElement;
+        if (slot) {
+            const nodes: ResponseValidation[] = slot.assignedNodes() as any[];
+            if (nodes) {
+                const responseValidationElements: ResponseValidation[] = [];
+                for (const el of nodes) {
+                    responseValidationElements.push(el);
+                }
+                this._responseValidationElements = responseValidationElements;
+            }
+        }
     }
 }
 
