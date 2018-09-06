@@ -54,8 +54,11 @@ export class MultipleChoice extends ComponentBase<Set<string>> implements Feedba
 
     public getFeedback(): FeedbackMessage {
         const feedback = this._getFeedback(this.getValue());
-        this.feedbackType = feedback.type;
         return feedback;
+    }
+
+    public showFeedback(): void {
+        this.feedbackType = this.getFeedback().type;
     }
 
     protected _render({ items, multiple, feedbackType }: MultipleChoice): TemplateResult {

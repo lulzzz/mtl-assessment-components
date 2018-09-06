@@ -102,14 +102,9 @@
     <script>
 
         document.getElementById('button').addEventListener('click', () => {
-            document.getElementById('multiple1').getFeedback();
-            document.getElementById('multiple2').getFeedback();
+            document.getElementById('multiple1').showFeedback();
+            document.getElementById('multiple2').showFeedback();
 
-
-            //  let score1 = 0;
-            //  document.getElementById('multiple1').getFeedback().forEach((x) => score1 += x.score);
-            // let score2 = 0;
-            // document.getElementById('multiple2').getFeedback().forEach((x) => score2 += x.score);
             document.getElementById('feedback1').innerText = JSON.stringify(document.getElementById('multiple1').getFeedback());
             document.getElementById('feedback2').innerText = JSON.stringify(document.getElementById('multiple2').getFeedback());
 

@@ -1,4 +1,4 @@
-import { ComponentBase, html, TemplateResult } from '@hmh/component-base/dist/index';
+import { ComponentBase, html, TemplateResult, Strategy } from '@hmh/component-base/dist/index';
 
 export enum FeedbackType {
     POSITIVE = 'positive',
@@ -16,6 +16,7 @@ export class ResponseValidation extends ComponentBase<string> {
     private expected: string = '';
     public feedbackType: FeedbackType;
     public score: number = 0;
+    public strategy: Strategy = Strategy.EXACT_MATCH;
 
     private feedbackItems: HTMLElement[] = [];
     private attempts: number = 0;
@@ -34,7 +35,7 @@ export class ResponseValidation extends ComponentBase<string> {
     }
     public getFeedbackMessage(): FeedbackMessage {
         let type: FeedbackType = this.feedbackType;
-        let score = this.score;
+        const score = this.score;
         if (!this.feedbackType) {
             type = this.score > 0 ? FeedbackType.POSITIVE : FeedbackType.NEGATIVE;
         }
