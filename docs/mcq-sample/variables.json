@@ -1,0 +1,11 @@
+{
+    "question": { "en-US": "Which of the following cities are located in Africa?" },
+    "answers": [
+        { "id": "1", "label": "Durban" },
+        { "id": "2", "label": "Dallas" },
+        { "id": "3", "label": "Dakar" },
+        { "id": "4", "label": "Douala" },
+        { "id": "5", "label": "Dunkerque" },
+        { "id": "6", "label": "Doha" }
+    ]
+}
