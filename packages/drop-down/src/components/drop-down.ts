@@ -1,4 +1,4 @@
-import { applyMixins, ComponentBase, html, TemplateResult, Feedback } from '@hmh/component-base/dist/index';
+import { applyMixins, ComponentBase, html, TemplateResult, Feedback, Strategy } from '@hmh/component-base/dist/index';
 import { ResponseValidation, FeedbackMessage } from '@hmh/component-base/dist/components/response-validation';
 
 /**
@@ -8,18 +8,6 @@ import { ResponseValidation, FeedbackMessage } from '@hmh/component-base/dist/co
  * @demo ./demo/index.html
  */
 export class DropDown extends ComponentBase<Set<string>> implements Feedback{
-    public value: Set<string> = new Set;
-    public open: boolean = false;
-    public multiple: boolean = false;
-    private defaultTitle = 'Dropdown';
-    private feedbackMessage: FeedbackMessage;
-
-    // declare mixins properties to satisfy the typescript compiler
-    public _getFeedback: (value: string) => FeedbackMessage;
-    public _responseValidationElements: ResponseValidation[];
-    public _onFeedbackSlotChanged: any;
-    public match: any;
-
     /**
      * open - is the drop down open.
      * multiple = is this muli select?
@@ -35,6 +23,44 @@ export class DropDown extends ComponentBase<Set<string>> implements Feedback{
             feedbackMessage: Object
         };
     }
+
+
+    public value: Set<string> = new Set;
+    public open: boolean = false;
+    public multiple: boolean = false;
+    private defaultTitle = 'Dropdown';
+    private feedbackMessage: FeedbackMessage;
+
+    // declare mixins properties to satisfy the typescript compiler
+    public _getFeedback: (value: Set<string>) => FeedbackMessage;
+    public _responseValidationElements: ResponseValidation[];
+    public _onFeedbackSlotChanged: any;
+
+    public match: (el: ResponseValidation, response: Set<string>) => boolean = (el, response) => {
+
+        console.log('response:', response);
+
+        if (!el.getExpected()) {
+            // catch-all clause
+            return true;
+        }
+        switch (el.strategy) {
+            case Strategy.EXACT_MATCH:
+                let equals: boolean = response.size === el.getExpected().size;
+                response.forEach((r: any) => {
+                    equals = equals && el.getExpected().has(r);
+                });
+                return equals;
+            case Strategy.FUZZY_MATCH:
+                equals = true;
+                response.forEach((r: any) => {
+                    equals = equals || el.getExpected().has(r);
+                });
+                return equals;
+            default:
+                return false;
+        }
+    };
     
     /**
      * gets the FeedbackMessage message object for the current value
@@ -42,7 +68,7 @@ export class DropDown extends ComponentBase<Set<string>> implements Feedback{
      * @returns FeedbackMessage
      */
     public getFeedback(): FeedbackMessage {
-        return this._getFeedback([...this.value].pop()); // TODO: getFeedback should take an array?
+        return this._getFeedback(this.getValue());
     }
 
     public onFeedbackSlotChanged(evt: any): any {
