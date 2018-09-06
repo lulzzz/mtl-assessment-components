@@ -1,6 +1,6 @@
 import { applyMixins, ComponentBase, Feedback, html, TemplateResult } from '@hmh/component-base/dist/index';
 import { MDCTextField } from '@material/textfield/index';
-import { ResponseValidation, FeedbackMessage } from '@hmh/response-validation/dist/components/response-validation';
+import { ResponseValidation, FeedbackMessage } from '@hmh/component-base/dist/components/response-validation';
 
 /**
  * `<text-input>`
