@@ -42,7 +42,7 @@ describe(`<${tagName}>`, (): void => {
         expect(options[2].getAttribute('value')).to.equal('three');
     });
 
-    it('should set aria-selected correctly when a selection is made', async (): Promise<void> => {
+    it('should set aria-selected property correctly when a selection is made', async (): Promise<void> => {
         withSnippet('values-one-two-three');
         let el: DropDown = document.querySelector('drop-down') as any;
         const options = getOptions(el);
@@ -50,6 +50,19 @@ describe(`<${tagName}>`, (): void => {
         expect(options[0].getAttribute('aria-selected')).to.equal('false');
         expect(options[1].getAttribute('aria-selected')).to.equal('false');
         expect(options[2].getAttribute('aria-selected')).to.equal('true');
+    });
+
+    it('should set selected class correctly when selections are made in multiple mode', async (): Promise<void> => {
+        withSnippet('values-one-two-three-multiple');
+        let el: DropDown = document.querySelector('drop-down') as any;
+        const options = getOptions(el);
+        clickElement(options[1]);
+        await el.renderComplete;
+        clickElement(options[2]);
+        await el.renderComplete;
+        expect(options[0].classList.contains('selected')).to.equal(false);
+        expect(options[1].classList.contains('selected')).to.equal(true);
+        expect(options[2].classList.contains('selected')).to.equal(true);
     });
 
     it('should change value when a selection is made', async (): Promise<void> => {
@@ -61,6 +74,17 @@ describe(`<${tagName}>`, (): void => {
         expect(getValue(el).pop()).to.equal(options[1].getAttribute('value'));
     });
 
+    it('should change value when multiple selections are made', async (): Promise<void> => {
+        withSnippet('values-one-two-three-multiple');
+        let el: DropDown = document.querySelector('drop-down') as any;
+        const options = getOptions(el);
+        clickElement(options[0]);
+        await el.renderComplete;
+        clickElement(options[2]);
+        await el.renderComplete;        
+        expect(getValue(el)).to.deep.equal(['one', 'three']);
+    });
+
     it('should update the UI to reflect selected option content when a selection is made', async (): Promise<void> => {
         withSnippet('values-one-two-three');
         let el: DropDown = document.querySelector('drop-down') as any;
@@ -68,6 +92,19 @@ describe(`<${tagName}>`, (): void => {
         clickElement(options[0]);
         await el.renderComplete;
         expect(el.shadowRoot.querySelector('.drop-button').innerHTML).to.equal(options[0].innerHTML.trim());
+    });
+
+    it('should update the UI to reflect selected option content when selections are made in multiple mode', async (): Promise<void> => {
+        withSnippet('values-one-two-three-multiple');
+        let el: DropDown = document.querySelector('drop-down') as any;
+        const options = getOptions(el);
+        clickElement(options[0]);
+        await el.renderComplete;
+        clickElement(options[1]);
+        await el.renderComplete;
+        clickElement(options[2]);
+        await el.renderComplete;
+        expect(el.shadowRoot.querySelector('.drop-button').innerHTML).to.equal('one,two,three');
     });
 
     it('should allow for HTML as option content', async (): Promise<void> => {
@@ -92,18 +129,6 @@ describe(`<${tagName}>`, (): void => {
             const options = getOptions(el);
             clickElement(options[1]);
         });
-    });
-
-    it('should change value when a selection is made in multiple mode', async (): Promise<void> => {
-        withSnippet('values-one-two-three-multiple');
-        let el: DropDown = document.querySelector('drop-down') as any;
-        const options = getOptions(el);
-        clickElement(options[0]);
-        await el.renderComplete;
-        clickElement(options[1]);
-        await el.renderComplete;
-        expect(getValue(el)[0]).to.equal('one');
-        expect(getValue(el)[1]).to.equal('two');
     });
 });
 

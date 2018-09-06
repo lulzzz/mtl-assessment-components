@@ -15,7 +15,7 @@ export function checkAccessibilityparams(el: DropDown, params: { [key: string]: 
     expect(el.getAttribute('aria-label')).to.equal(shadowRoot.querySelector('.drop-button').innerHTML);
 }
 
-export function getOptions(el: DropDown): any {
+export function getOptions(el: DropDown): HTMLElement[] {
     const shadowRoot = el.shadowRoot;   
     const slot = shadowRoot.querySelector('slot') as HTMLSlotElement;
     const nodes: Node[] = slot.assignedNodes();
