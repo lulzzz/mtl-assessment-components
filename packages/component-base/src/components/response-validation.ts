@@ -1,4 +1,6 @@
-import { ComponentBase, html, TemplateResult, Strategy } from '@hmh/component-base/dist/index';
+import { ComponentBase, html, TemplateResult } from './base';
+import { Strategy } from '../mixins/feedback';
+
 
 export enum FeedbackType {
     POSITIVE = 'positive',

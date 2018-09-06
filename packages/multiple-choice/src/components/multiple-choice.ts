@@ -1,5 +1,5 @@
 import { ComponentBase, html, TemplateResult, Feedback, applyMixins, repeat, unsafeHTML, Strategy } from '@hmh/component-base/dist/index';
-import { ResponseValidation, FeedbackMessage } from '@hmh/response-validation/dist/components/response-validation';
+import { ResponseValidation, FeedbackMessage } from '@hmh/component-base/dist/components/response-validation';
 
 /**
  * `<multiple-choice>`
@@ -30,6 +30,8 @@ export class MultipleChoice extends ComponentBase<Set<string>> implements Feedba
     // declare mixins properties to satisfy the typescript compiler
     public _getFeedback: (value: Set<string>) => FeedbackMessage;
     public _responseValidationElements: ResponseValidation[];
+    public _onFeedbackSlotChanged: any;
+
     public match: (el: ResponseValidation, response: Set<string>) => boolean = (el, response) => {
         if (!el.getExpected()) {
             // catch-all clause

@@ -1,5 +1,5 @@
 import { applyMixins, ComponentBase, html, TemplateResult, Feedback } from '@hmh/component-base/dist/index';
-import { ResponseValidation, FeedbackMessage } from '@hmh/response-validation/dist/components/response-validation';
+import { ResponseValidation, FeedbackMessage } from '@hmh/component-base/dist/components/response-validation';
 
 /**
  * `<drop-down>`
