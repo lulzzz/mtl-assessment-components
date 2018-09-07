@@ -5,7 +5,7 @@
         "bootstrap": "lerna bootstrap",
         "build": "lerna run build",
         "clean": "lerna clean",
-        "linkall": "lerna link --force-local",
+        "link-all": "lerna link --force-local",
         "list": "lerna ls",
         "publish": "lerna publish --registry http://npm.tribalnova.com --no-verify-access",
         "test": "lerna run test",
