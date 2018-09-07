@@ -4,7 +4,7 @@ import { ResponseValidation, FeedbackMessage } from '@hmh/component-base/dist/co
 /**
  * `<drop-down>`
  * A drop down menu that supports embedded HTML within its option elements.
- * Currently uses Set for value to IDs will be unique
+ * Currently uses Set for value so option values must be unique.
  * @demo ./demo/index.html
  */
 export class DropDown extends ComponentBase<Set<string>> implements Feedback{
@@ -145,7 +145,7 @@ export class DropDown extends ComponentBase<Set<string>> implements Feedback{
     }
 
     /**
-     * unselect an options element. Behavior depends upon this.multiple
+     * Unselect an options element. Behavior depends upon this.multiple
      * 
      * @param  {string} selectedValue
      * @param  {HTMLElement} eventTarget
