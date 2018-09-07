@@ -4,12 +4,13 @@
     "scripts": {
         "bootstrap": "lerna bootstrap",
         "build": "lerna run build",
-        "clean": "lerna clean",
+        "clean": "lerna clean --yes",
         "link-all": "lerna link --force-local",
         "list": "lerna ls",
         "publish": "lerna publish --registry http://npm.tribalnova.com --no-verify-access",
         "test": "lerna run test",
-        "watch": "lerna run watch --parallel"
+        "watch": "lerna run watch --parallel",
+        "init": "npm run clean && npm run bootstrap && npm run link-all && npm run build"
     },
     "devDependencies": {
         "lerna": "latest"

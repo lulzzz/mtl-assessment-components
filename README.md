@@ -9,6 +9,13 @@ Individual custom elements are found in `packages/*`.
 ## Getting Started
 
 ```shell
+# clean initialization of all packages
+npm run init
+```
+
+Details for individual commands
+
+```shell
 # install the root dependencies
 npm install
 # install and link all dependencies for packages (bootstrap)
