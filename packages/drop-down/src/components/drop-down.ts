@@ -38,8 +38,6 @@ export class DropDown extends ComponentBase<Set<string>> implements Feedback{
 
     public match: (el: ResponseValidation, response: Set<string>) => boolean = (el, response) => {
 
-        console.log('response:', response);
-
         if (!el.getExpected()) {
             // catch-all clause
             return true;
@@ -72,7 +70,7 @@ export class DropDown extends ComponentBase<Set<string>> implements Feedback{
     }
 
     public onFeedbackSlotChanged(evt: any): any {
-        return this._onFeedbackSlotChanged(evt)
+        return this._onFeedbackSlotChanged(evt);
     }
 
     /**
@@ -120,7 +118,7 @@ export class DropDown extends ComponentBase<Set<string>> implements Feedback{
                     bubbles: true,
                     composed: true,
                     detail: {
-                        value: [...this.value] // value as an array because mocha doesn't seen to work with Setgit 
+                        value: [...this.value]
                     }
                 })
             );

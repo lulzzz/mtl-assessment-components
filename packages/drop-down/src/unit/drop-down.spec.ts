@@ -1,5 +1,5 @@
 import { DropDown } from "../components/drop-down";
-import { checkComponentDOM, clickElement, getOptions} from './test-helpers';
+import { checkComponentDOM, clickElement, getOptions, triggerValidation, selectOptions} from './test-helpers';
 
 const tagName: string = 'drop-down';
 const expect: any = chai.expect;
@@ -56,13 +56,21 @@ describe(`<${tagName}>`, (): void => {
         withSnippet('values-one-two-three-multiple');
         let el: DropDown = document.querySelector('drop-down') as any;
         const options = getOptions(el);
-        clickElement(options[1]);
-        await el.renderComplete;
-        clickElement(options[2]);
-        await el.renderComplete;
+        await selectOptions(options, [1,2]);
         expect(options[0].classList.contains('selected')).to.equal(false);
         expect(options[1].classList.contains('selected')).to.equal(true);
         expect(options[2].classList.contains('selected')).to.equal(true);
+    });
+
+    it('should deselect an item when the item is clicked twice in multiple mode', async (): Promise<void> => {
+        withSnippet('values-one-two-three-multiple');
+        let el: DropDown = document.querySelector('drop-down') as any;
+        const options = getOptions(el);
+        clickElement(options[0]);
+        await el.renderComplete;
+        expect(options[0].classList.contains('selected')).to.equal(true);
+        clickElement(options[0]);
+        expect(options[0].classList.contains('selected')).to.equal(false);
     });
 
     it('should change value when a selection is made', async (): Promise<void> => {
@@ -77,11 +85,7 @@ describe(`<${tagName}>`, (): void => {
     it('should change value when multiple selections are made', async (): Promise<void> => {
         withSnippet('values-one-two-three-multiple');
         let el: DropDown = document.querySelector('drop-down') as any;
-        const options = getOptions(el);
-        clickElement(options[0]);
-        await el.renderComplete;
-        clickElement(options[2]);
-        await el.renderComplete;        
+        await selectOptions(getOptions(el), [0,2]);
         expect(el.getValue()).to.have.deep.keys(['one', 'three']);
     });
 
@@ -97,13 +101,7 @@ describe(`<${tagName}>`, (): void => {
     it('should update the UI to reflect selected option content when selections are made in multiple mode', async (): Promise<void> => {
         withSnippet('values-one-two-three-multiple');
         let el: DropDown = document.querySelector('drop-down') as any;
-        const options = getOptions(el);
-        clickElement(options[0]);
-        await el.renderComplete;
-        clickElement(options[1]);
-        await el.renderComplete;
-        clickElement(options[2]);
-        await el.renderComplete;
+        await selectOptions(getOptions(el), [0,1,2]);
         expect(el.shadowRoot.querySelector('.drop-button').innerHTML).to.equal('one,two,three');
     });
 
@@ -129,6 +127,36 @@ describe(`<${tagName}>`, (): void => {
             const options = getOptions(el);
             clickElement(options[1]);
         });
+    });
+
+    it('should display correct feedback on correct answer', async (): Promise<void> => {
+        withSnippet('feedback');
+        let el: DropDown = document.querySelector('drop-down') as any;
+        await triggerValidation(el, 0);
+        const feedbackMessage = el.shadowRoot.querySelector('.feedback-message');
+        expect(feedbackMessage.classList.contains('feedback-positive-background')).to.equal(true);
+        const container = el.shadowRoot.querySelector('.container');
+        expect(container.classList.contains('feedback-positive-border')).to.equal(true);
+    });
+
+    it('should display neutral feedback on neutral (almost correct) answer', async (): Promise<void> => {
+        withSnippet('feedback');
+        let el: DropDown = document.querySelector('drop-down') as any;
+        await triggerValidation(el, 1);
+        const feedbackMessage = el.shadowRoot.querySelector('.feedback-message');
+        expect(feedbackMessage.classList.contains('feedback-neutral-background')).to.equal(true);
+        const container = el.shadowRoot.querySelector('.container');
+        expect(container.classList.contains('feedback-neutral-border')).to.equal(true);
+    }); 
+
+    it('should display incorrect feedback on incorrect answer', async (): Promise<void> => {
+        withSnippet('feedback');
+        let el: DropDown = document.querySelector('drop-down') as any;
+        await triggerValidation(el, 2)
+        const feedbackMessage = el.shadowRoot.querySelector('.feedback-message');
+        expect(feedbackMessage.classList.contains('feedback-negative-background')).to.equal(true);
+        const container = el.shadowRoot.querySelector('.container');
+        expect(container.classList.contains('feedback-negative-border')).to.equal(true);
     });
 });
 

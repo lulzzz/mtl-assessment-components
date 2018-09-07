@@ -36,3 +36,15 @@ export function clickElement(el: HTMLElement): void {
     });
     el.dispatchEvent(event);
 }
+
+export async function selectOptions(options: HTMLElement[], optionIndices: number[]){    
+    optionIndices.forEach((index: number) => {
+        clickElement(options[index]);
+    });
+}
+
+export async function triggerValidation(el: DropDown, optionIndex: number){
+    await selectOptions(getOptions(el), [optionIndex]);
+    el.showFeedback();
+    await el.renderComplete;
+}
