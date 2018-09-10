@@ -17,7 +17,7 @@
 }
 
 /* Dropdown button on hover & focus */
-.dropbtn:hover, .dropbtn:focus {
+.drop-button:hover, .drop-button:focus {
     background-color: #fff;
     border-color: #000;
 }
@@ -57,8 +57,18 @@
     float: right;
 }
 
+::slotted(.option-item){
+    border-style: solid;
+    border-color: transparent
+}
+
 ::slotted(.option-item:hover){
-    background-color: var(--option-hover-color,lightblue);
+    border-style: solid;
+    border-color: var(--option-hover-color, #BEE9F7);
+}
+
+::slotted(.selected){
+    background-color: var(--option-selected-color,lightblue);
 }
 
 .feedback-values {

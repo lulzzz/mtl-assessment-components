@@ -15,8 +15,8 @@
         sourceMapSupport.install();
         mocha.setup('bdd');
     </script>
-    <script type="module" src="../dist/components/drop-down.js">
-    </script>
+    <script type="module" src="../dist/components/drop-down.js"></script>
+    <script type="module" src="../node_modules/@hmh/component-base/dist/components/response-validation.js"></script>  
 </head>
 
 <body>
@@ -40,6 +40,20 @@
         </drop-down>
     </template>
 
+    <template id="values-one-two-three-multiple">
+            <drop-down multiple>
+                <div value="one" slot="options" class="option-item">
+                    one
+                </div>
+                <div value="two" slot="options" class="option-item">
+                    two
+                </div>
+                <div value="three" slot="options" class="option-item">
+                    three
+                </div>
+            </drop-down>
+    </template>
+
     <template id="html">
         <drop-down>
             <div value="one" slot="options" class="option-item">
@@ -51,6 +65,74 @@
         </drop-down>
     </template>
     
+    <template id="feedback">
+        <drop-down>
+            <div value="one" slot="options" class="option-item">
+                one
+            </div>
+            <div value="two" slot="options" class="option-item">
+                two
+            </div>
+            <div value="three" slot="options" class="option-item">
+                three
+            </div>
+
+            <response-validation slot="feedback" expected="one" score="4" strategy="exactMatch">
+                <span>Correct</span>
+            </response-validation>
+        
+            <response-validation slot="feedback" expected="two" score="2" feedbackType="neutral" strategy="exactMatch">
+                <span>Almost Correct</span>
+            </response-validation>
+        
+            <response-validation slot="feedback" score="0" feedback="negative" strategy="exactMatch">
+                <span>Try again</span>
+                <span>Oups, still not good</span>
+                <span>Too bad!</span>
+            </response-validation>
+
+        </drop-down>
+    </template>
+
+    <template id="feedback-fuzzy-stategy">
+        <drop-down>
+            <div value="one" slot="options" class="option-item">
+                one
+            </div>
+            <div value="two" slot="options" class="option-item">
+                two
+            </div>
+            <div value="three" slot="options" class="option-item">
+                three
+            </div>
+
+            <response-validation slot="feedback" expected="one" score="4" strategy="fuzzyMatch">
+                <span>Correct</span>
+            </response-validation>
+
+        </drop-down>
+    </template>
+
+    <template id="feedback-no-strategy">
+        <drop-down>
+            <div value="one" slot="options" class="option-item">
+                one
+            </div>
+            <div value="two" slot="options" class="option-item">
+                two
+            </div>
+            <div value="three" slot="options" class="option-item">
+                three
+            </div>
+
+            <response-validation class='target' slot="feedback" expected="one" score="4">
+                <span>Correct</span>
+            </response-validation>
+
+        </drop-down>
+    </template>    
+
+
     <div id="mocha">
         <!-- test results are displayed here -->
     </div>

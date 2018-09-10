@@ -12,20 +12,20 @@ export function checkAccessibilityparams(el: DropDown, params: { [key: string]: 
     const shadowRoot = el.shadowRoot;
     expect(el.getAttribute('role')).to.equal('popupbutton');
     expect(el.getAttribute('aria-haspopup')).to.equal('true');
-    expect(el.getAttribute('aria-label')).to.equal(shadowRoot.querySelector('.dropbtn').innerHTML);
+    expect(el.getAttribute('aria-label')).to.equal(shadowRoot.querySelector('.drop-button').innerHTML);
 }
 
-export function getOptions(el: DropDown): any {
+export function getOptions(el: DropDown): HTMLElement[] {
     const shadowRoot = el.shadowRoot;   
     const slot = shadowRoot.querySelector('slot') as HTMLSlotElement;
     const nodes: Node[] = slot.assignedNodes();
-    const result: Array<HTMLElement> = [];
+    const results: Array<HTMLElement> = [];
 
     nodes.forEach((node) => {
-        result.push(node as HTMLElement);
+        results.push(node as HTMLElement);
     });
 
-    return result;
+    return results;
 }
 
 export function clickElement(el: HTMLElement): void {
@@ -35,4 +35,30 @@ export function clickElement(el: HTMLElement): void {
         cancelable: true
     });
     el.dispatchEvent(event);
+}
+
+export function generateOnSlotChangeEvent(el: DropDown): CustomEvent {
+    const feedback: HTMLElement = el.shadowRoot.querySelector('.feedback') as any;
+
+    const evt = new CustomEvent('slotchange', {
+        bubbles: true,
+        composed: true,
+        detail: {
+            srcElement: feedback
+        }
+    })
+
+    return evt;
+}
+
+export async function selectOptions(options: HTMLElement[], optionIndices: number[]){    
+    optionIndices.forEach((index: number) => {
+        clickElement(options[index]);
+    });
+}
+
+export async function triggerValidation(el: DropDown, optionIndex: number){
+    await selectOptions(getOptions(el), [optionIndex]);
+    el.showFeedback();
+    await el.renderComplete;
 }
