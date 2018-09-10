@@ -57,8 +57,14 @@
     float: right;
 }
 
+::slotted(.option-item){
+    border-style: solid;
+    border-color: transparent
+}
+
 ::slotted(.option-item:hover){
-    background-color: var(--option-hover-color,lightblue);
+    border-style: solid;
+    border-color: var(--option-hover-color, #BEE9F7);
 }
 
 ::slotted(.selected){
