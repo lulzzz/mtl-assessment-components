@@ -30,6 +30,7 @@ export class DropDown extends ComponentBase<Set<string>> implements Feedback{
     public multiple: boolean = false;
     private defaultTitle = 'Dropdown';
     private feedbackMessage: FeedbackMessage;
+    private currentOptionIndex: number = -1;
 
     // declare mixins properties to satisfy the typescript compiler
     public _getFeedback: (value: Set<string>) => FeedbackMessage;
@@ -102,13 +103,24 @@ export class DropDown extends ComponentBase<Set<string>> implements Feedback{
     private _onItemClicked(eventTarget: HTMLElement): void {
         if (eventTarget.hasAttribute('slot')) {
             const selectedValue = eventTarget.getAttribute('value');
+            let select = false;
 
-            if (this.multiple && this.value.has(selectedValue)) {
+            if (!this.multiple) {
+                if (this.currentOptionIndex > -1) {
+                    this._deselectElement([...this.getValue()].pop(), this._getOptionElement(this.currentOptionIndex));
+                }
+
+                select = true;
+            } else if (this.multiple && this.value.has(selectedValue)) {
                 this._deselectElement(selectedValue, eventTarget);
             } else {
+                select = true;
+            }
+
+            if (select) {
                 this._selectElement(selectedValue, eventTarget);
             }
-            
+
             const strValue = [...this.value].toString();
             this.shadowRoot.querySelector('.drop-button').innerHTML = strValue ? strValue : this.defaultTitle;
 
@@ -132,15 +144,16 @@ export class DropDown extends ComponentBase<Set<string>> implements Feedback{
      * @returns void
      */
     private _selectElement(selectedValue: string, eventTarget: HTMLElement) : void {
-        if (this.multiple) {
-            eventTarget.classList.add('selected');
-        } else {
-            this._clearAriaSelections();
+        this._clearAriaSelections();
+        
+        if (!this.multiple) {
             this.value.clear();
         }
 
+        eventTarget.classList.add('selected');
         eventTarget.setAttribute('aria-selected', 'true');
         this.value.add(selectedValue);
+        this.currentOptionIndex = Number(eventTarget.getAttribute('index'));
     }
 
     /**
@@ -154,6 +167,11 @@ export class DropDown extends ComponentBase<Set<string>> implements Feedback{
         this.value.delete(selectedValue);
         eventTarget.classList.remove('selected');
         eventTarget.setAttribute('aria-selected', 'false');
+    }
+
+    private _getOptionElement(optionIndex: number) : HTMLElement {
+        const slot = this.shadowRoot.querySelector('slot') as HTMLSlotElement;
+        return slot.assignedNodes()[optionIndex] as HTMLElement;
     }
 
     /**
@@ -185,6 +203,7 @@ export class DropDown extends ComponentBase<Set<string>> implements Feedback{
             const nodes: Node[] = slot.assignedNodes();
             if (nodes) {
                 nodes.forEach((el: HTMLElement, index: number) => {
+                    el.setAttribute('index', String(index));
                     el.setAttribute('tabindex', String(++index));
                     el.setAttribute('role', 'button');
                 });
