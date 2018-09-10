@@ -10,7 +10,7 @@
         "prepubishOnly": "npm run build; npm run sass",
         "sass": "node-sass src/sass -r -o dist/css",
         "sass-watch": "node-sass src/sass -r -o dist/css -w",
-        "watch": "npm run prepare; concurrently --names 'build,sass' -c 'bgBlue,bgMagenta' 'npm run build -- -w' 'npm run sass -- -w' 'npm-watch'",
+        "watch": "npm run build; npm run sass; concurrently --names 'build,sass' -c 'bgBlue,bgMagenta' 'npm run build -- -w' 'npm run sass -- -w' 'npm-watch'",
         "test": "lit-element-tester dist/components/multiple-choice.js",
         "_generateDocs": "polymer analyze ./dist/components/multiple-choice.js > ./dist/components/analysis.json"
     },

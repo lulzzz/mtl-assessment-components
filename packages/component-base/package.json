@@ -8,7 +8,7 @@
         "start": "polyserve -o",
         "build": "tsc -p src",
         "prepubishOnly": "npm run build",
-        "watch": "npm run prepare; npm run build -- -w",
+        "watch": "npm run build; npm run build -- -w",
         "test": "lit-element-tester dist/components/text-input.js"
     },
     "keywords": [],
