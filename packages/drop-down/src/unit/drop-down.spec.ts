@@ -1,5 +1,7 @@
 import { DropDown } from "../components/drop-down";
-import { checkComponentDOM, clickElement, getOptions, triggerValidation, selectOptions} from './test-helpers';
+import { checkComponentDOM, clickElement, getOptions, triggerValidation, selectOptions, generateOnSlotChangeEvent} from './test-helpers';
+import { ResponseValidation } from "@hmh/component-base/dist/components/response-validation";
+import { Strategy } from "@hmh/component-base/dist/index";
 
 const tagName: string = 'drop-down';
 const expect: any = chai.expect;
@@ -50,6 +52,17 @@ describe(`<${tagName}>`, (): void => {
         expect(options[0].getAttribute('aria-selected')).to.equal('false');
         expect(options[1].getAttribute('aria-selected')).to.equal('false');
         expect(options[2].getAttribute('aria-selected')).to.equal('true');
+    });
+
+    it('should set selected class correctly when multiple selections are made in single mode', async (): Promise<void> => {
+        withSnippet('values-one-two-three');
+        let el: DropDown = document.querySelector('drop-down') as any;
+        const options = getOptions(el);
+        await selectOptions(options, [0]);
+        await selectOptions(options, [1]);
+        expect(options[0].classList.contains('selected')).to.equal(false);
+        expect(options[1].classList.contains('selected')).to.equal(true);
+        expect(options[2].classList.contains('selected')).to.equal(false);
     });
 
     it('should set selected class correctly when selections are made in multiple mode', async (): Promise<void> => {
@@ -139,6 +152,16 @@ describe(`<${tagName}>`, (): void => {
         expect(container.classList.contains('feedback-positive-border')).to.equal(true);
     });
 
+    it('should display correct feedback on correct answer with strategy fuzzyMatch', async (): Promise<void> => {
+        withSnippet('feedback-fuzzy-stategy');
+        let el: DropDown = document.querySelector('drop-down') as any;
+        await triggerValidation(el, 0);
+        const feedbackMessage = el.shadowRoot.querySelector('.feedback-message');
+        expect(feedbackMessage.classList.contains('feedback-positive-background')).to.equal(true);
+        const container = el.shadowRoot.querySelector('.container');
+        expect(container.classList.contains('feedback-positive-border')).to.equal(true);
+    });
+
     it('should display neutral feedback on neutral (almost correct) answer', async (): Promise<void> => {
         withSnippet('feedback');
         let el: DropDown = document.querySelector('drop-down') as any;
@@ -157,6 +180,25 @@ describe(`<${tagName}>`, (): void => {
         expect(feedbackMessage.classList.contains('feedback-negative-background')).to.equal(true);
         const container = el.shadowRoot.querySelector('.container');
         expect(container.classList.contains('feedback-negative-border')).to.equal(true);
+    });
+
+    it('match should default to false when no strategy with an implememtation is set', async (): Promise<void> => {
+        withSnippet('feedback-no-strategy');
+        const el: DropDown = document.querySelector('drop-down') as any;
+        await el.renderComplete;
+        await selectOptions(getOptions(el), [0]);
+        const rv: ResponseValidation = new ResponseValidation();
+        rv.strategy = Strategy.MATH_EQUIVALENT;
+        rv['expected'] = '1'; //hacky because expected is private
+        expect(el.match(rv, null)).to.equal(false);
+    });
+
+    it('should set _responseValidationElements in response to feedback slot change event', async (): Promise<void> => {
+        withSnippet('values-one-two-three');
+        const el: DropDown = document.querySelector('drop-down') as any;
+        el.onFeedbackSlotChanged(generateOnSlotChangeEvent(el));
+        await el.renderComplete;
+        expect(el._responseValidationElements).to.not.equal(null);
     });
 });
 

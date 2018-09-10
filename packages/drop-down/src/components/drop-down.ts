@@ -43,20 +43,27 @@ export class DropDown extends ComponentBase<Set<string>> implements Feedback{
             // catch-all clause
             return true;
         }
+
+        let equals: boolean = false;
+        console.log('el.strategy: ', el.strategy);
+
         switch (el.strategy) {
             case Strategy.EXACT_MATCH:
-                let equals: boolean = response.size === el.getExpected().size;
+                console.log('EXACT_MATCH: strategy');
+                equals = response.size === el.getExpected().size;
                 response.forEach((r: any) => {
                     equals = equals && el.getExpected().has(r);
                 });
                 return equals;
             case Strategy.FUZZY_MATCH:
+                console.log('FUZZY_MATCH: strategy');
                 equals = true;
                 response.forEach((r: any) => {
                     equals = equals || el.getExpected().has(r);
                 });
                 return equals;
             default:
+                console.log('default strategy');
                 return false;
         }
     };

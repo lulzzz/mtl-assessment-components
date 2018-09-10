@@ -94,6 +94,44 @@
         </drop-down>
     </template>
 
+    <template id="feedback-fuzzy-stategy">
+        <drop-down>
+            <div value="one" slot="options" class="option-item">
+                one
+            </div>
+            <div value="two" slot="options" class="option-item">
+                two
+            </div>
+            <div value="three" slot="options" class="option-item">
+                three
+            </div>
+
+            <response-validation slot="feedback" expected="one" score="4" strategy="fuzzyMatch">
+                <span>Correct</span>
+            </response-validation>
+
+        </drop-down>
+    </template>
+
+    <template id="feedback-no-strategy">
+        <drop-down>
+            <div value="one" slot="options" class="option-item">
+                one
+            </div>
+            <div value="two" slot="options" class="option-item">
+                two
+            </div>
+            <div value="three" slot="options" class="option-item">
+                three
+            </div>
+
+            <response-validation class='target' slot="feedback" expected="one" score="4">
+                <span>Correct</span>
+            </response-validation>
+
+        </drop-down>
+    </template>    
+
 
     <div id="mocha">
         <!-- test results are displayed here -->

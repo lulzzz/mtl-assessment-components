@@ -37,6 +37,20 @@ export function clickElement(el: HTMLElement): void {
     el.dispatchEvent(event);
 }
 
+export function generateOnSlotChangeEvent(el: DropDown): CustomEvent {
+    const feedback: HTMLElement = el.shadowRoot.querySelector('.feedback') as any;
+
+    const evt = new CustomEvent('slotchange', {
+        bubbles: true,
+        composed: true,
+        detail: {
+            srcElement: feedback
+        }
+    })
+
+    return evt;
+}
+
 export async function selectOptions(options: HTMLElement[], optionIndices: number[]){    
     optionIndices.forEach((index: number) => {
         clickElement(options[index]);
