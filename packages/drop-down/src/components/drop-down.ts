@@ -103,21 +103,18 @@ export class DropDown extends ComponentBase<Set<string>> implements Feedback{
     private _onItemClicked(eventTarget: HTMLElement): void {
         if (eventTarget.hasAttribute('slot')) {
             const selectedValue = eventTarget.getAttribute('value');
-            let select = false;
 
-            if (!this.multiple) {
+            if (this.multiple) {
+                if (this.value.has(selectedValue)) {
+                    this._deselectElement(selectedValue, eventTarget);
+                } else {
+                    this._selectElement(selectedValue, eventTarget);
+                }
+            } else {
                 if (this.currentOptionIndex > -1) {
                     this._deselectElement([...this.getValue()].pop(), this._getOptionElement(this.currentOptionIndex));
                 }
 
-                select = true;
-            } else if (this.multiple && this.value.has(selectedValue)) {
-                this._deselectElement(selectedValue, eventTarget);
-            } else {
-                select = true;
-            }
-
-            if (select) {
                 this._selectElement(selectedValue, eventTarget);
             }
 
