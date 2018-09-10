@@ -111,7 +111,6 @@ export class DropDown extends ComponentBase<Set<string>> implements Feedback{
             
             const strValue = [...this.value].toString();
             this.shadowRoot.querySelector('.drop-button').innerHTML = strValue ? strValue : this.defaultTitle;
-            this._onDropDownClicked();
 
             this.dispatchEvent(
                 new CustomEvent('change', {
