@@ -117,8 +117,7 @@ export default () => {
             await element.renderComplete;
 
             const feedback: FeedbackMessage = element.getFeedback();
-            expect(feedback.type).to.equal('positive');
-            expect(feedback.score).to.equal(1);
+            expect(feedback.type).to.equal('negative');
         });
     });
 };
