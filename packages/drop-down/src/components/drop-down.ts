@@ -28,7 +28,7 @@ export class DropDown extends ComponentBase<Set<string>> implements MultipleChoi
     public value: Set<string> = new Set;
     public open: boolean = false;
     public multiple: boolean = false;
-    private defaultTitle = 'Dropdown';
+    private defaultTitle = 'Select an option';
     public feedbackMessage: FeedbackMessage;
     
     // declare mixins properties to satisfy the typescript compiler
@@ -64,7 +64,6 @@ export class DropDown extends ComponentBase<Set<string>> implements MultipleChoi
      */
     _onItemClicked(event: Event, id: string): void {
         const eventTarget: HTMLElement = event.target as HTMLElement;
-        console.log('clicking in drop', eventTarget.hasAttribute('slot'));
         if (eventTarget.hasAttribute('slot')) {
             const selectedValue = id;
 
@@ -187,7 +186,7 @@ export class DropDown extends ComponentBase<Set<string>> implements MultipleChoi
         <div class$="container ${this._getContainerClass(feedbackMessage)}">
             <div class="dropdown" value="${value}">
                 <div class="buttons-container">
-                    <button class="drop-button" on-click="${(evt: Event) => this._onDropDownClicked()}">Dropdown</button>
+                    <button class="drop-button" on-click="${(evt: Event) => this._onDropDownClicked()}">${this.defaultTitle}</button>
                     <button class="nav-button" on-click="${(evt: Event) => this._onDropDownClicked()}">${ open ? html`&uarr;` : html`&darr;` }</button>
                 </div>
                 <div class="dropdown-content" hidden="${!open}">
