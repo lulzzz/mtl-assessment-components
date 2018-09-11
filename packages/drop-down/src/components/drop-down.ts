@@ -1,4 +1,4 @@
-import { applyMixins, ComponentBase, html, TemplateResult, Feedback, Strategy } from '@hmh/component-base/dist/index';
+import { applyMixins, ComponentBase, html, TemplateResult, Feedback, MultipleChoiceMixin } from '@hmh/component-base/dist/index';
 import { ResponseValidation, FeedbackMessage } from '@hmh/component-base/dist/components/response-validation';
 
 /**
@@ -7,7 +7,7 @@ import { ResponseValidation, FeedbackMessage } from '@hmh/component-base/dist/co
  * Currently uses Set for value so option values must be unique.
  * @demo ./demo/index.html
  */
-export class DropDown extends ComponentBase<Set<string>> implements Feedback{
+export class DropDown extends ComponentBase<Set<string>> implements Feedback, MultipleChoiceMixin{
     /**
      * open - is the drop down open.
      * multiple = is this muli select?
@@ -29,44 +29,18 @@ export class DropDown extends ComponentBase<Set<string>> implements Feedback{
     public open: boolean = false;
     public multiple: boolean = false;
     private defaultTitle = 'Dropdown';
-    private feedbackMessage: FeedbackMessage;
+    public feedbackMessage: FeedbackMessage;
     private currentOptionIndex: number = -1;
 
     // declare mixins properties to satisfy the typescript compiler
     public _getFeedback: (value: Set<string>) => FeedbackMessage;
     public _responseValidationElements: ResponseValidation[];
     public _onFeedbackSlotChanged: any;
+    public items: HTMLElement[] = [];
+    public _onSlotChanged: any;
+    public match: any;
+    public showFeedback: any;
 
-    public match: (el: ResponseValidation, response: Set<string>) => boolean = (el, response) => {
-
-        if (!el.getExpected()) {
-            // catch-all clause
-            return true;
-        }
-
-        let equals: boolean = false;
-        console.log('el.strategy: ', el.strategy);
-
-        switch (el.strategy) {
-            case Strategy.EXACT_MATCH:
-                console.log('EXACT_MATCH: strategy');
-                equals = response.size === el.getExpected().size;
-                response.forEach((r: any) => {
-                    equals = equals && el.getExpected().has(r);
-                });
-                return equals;
-            case Strategy.FUZZY_MATCH:
-                console.log('FUZZY_MATCH: strategy');
-                equals = true;
-                response.forEach((r: any) => {
-                    equals = equals || el.getExpected().has(r);
-                });
-                return equals;
-            default:
-                console.log('default strategy');
-                return false;
-        }
-    };
     
     /**
      * gets the FeedbackMessage message object for the current value
@@ -79,15 +53,6 @@ export class DropDown extends ComponentBase<Set<string>> implements Feedback{
 
     public onFeedbackSlotChanged(evt: any): any {
         return this._onFeedbackSlotChanged(evt);
-    }
-
-    /**
-     * Set the element feedbackMessage to update the rendered content
-     * 
-     * @returns void
-     */
-    public showFeedback(): void {
-        this.feedbackMessage = this.getFeedback();
     }
 
     /**
@@ -196,26 +161,6 @@ export class DropDown extends ComponentBase<Set<string>> implements Feedback{
     }
 
     /**
-     * Used to set tabindex and role to option items (for accessibility).
-     * 
-     * @param  {Event} evt
-     * @returns void
-     */
-    private _onSlotChanged(evt: Event): void {
-        const slot: HTMLSlotElement = evt.srcElement as HTMLSlotElement;
-        if (slot) {
-            const nodes: Node[] = slot.assignedNodes();
-            if (nodes) {
-                nodes.forEach((el: HTMLElement, index: number) => {
-                    el.setAttribute('index', String(index));
-                    el.setAttribute('tabindex', String(++index));
-                    el.setAttribute('role', 'button');
-                });
-            }
-        }
-    }   
-
-    /**
      * Sets various accessibility attributes.
      * 
      * @returns void
@@ -301,6 +246,6 @@ export class DropDown extends ComponentBase<Set<string>> implements Feedback{
     }
 }
 
-applyMixins(DropDown, [Feedback]);
+applyMixins(DropDown, [Feedback, MultipleChoiceMixin]);
 
 customElements.define('drop-down', DropDown);

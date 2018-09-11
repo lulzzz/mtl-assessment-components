@@ -22,13 +22,17 @@ export abstract class Feedback {
     }
     public match(el: ResponseValidation, response: any): boolean {
         console.log('MATCH', el, el.getExpected);
+
         if (!el.getExpected()) {
             // catch-all clause
             return true;
         }
+
+        let equals: boolean = false;
+
         switch (el.strategy) {
             case Strategy.EXACT_MATCH:
-                let equals: boolean = response.size === el.getExpected().size;
+                equals = response.size === el.getExpected().size;
                 response.forEach((r: any) => {
                     equals = equals && el.getExpected().has(r);
                 });
