@@ -1,7 +1,7 @@
 import { Strategy } from '../../dist/index';
 import { ResponseValidation, FeedbackMessage } from '../../dist/components/response-validation';
 
-export abstract class MultipleChoiceMixin /*implements Feedback*/ {
+export abstract class MultipleChoiceMixin {
     public _responseValidationElements: ResponseValidation[];
     public items: HTMLElement[] = [];
     public multiple: boolean;
