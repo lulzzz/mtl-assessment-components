@@ -21,7 +21,6 @@ export abstract class Feedback {
         throw new Error('missing default response-validation');
     }
     public match(el: ResponseValidation, response: any): boolean {
-        console.log('MATCH', el, el.getExpected);
 
         if (!el.getExpected()) {
             // catch-all clause
