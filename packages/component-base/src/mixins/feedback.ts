@@ -1,14 +1,11 @@
-import {
-    FeedbackMessage,
-    ResponseValidation
-} from '../components/response-validation';
+import { FeedbackMessage, ResponseValidation } from '../components/response-validation';
 /**
  * All components that have feedback must implement this mixin
  */
 export enum Strategy {
     EXACT_MATCH = 'exactMatch',
-        FUZZY_MATCH = 'fuzzyMatch',
-        MATH_EQUIVALENT = 'mathEquivalent'
+    FUZZY_MATCH = 'fuzzyMatch',
+    MATH_EQUIVALENT = 'mathEquivalent'
 }
 export abstract class Feedback {
     public abstract _responseValidationElements: ResponseValidation[];
@@ -26,21 +23,22 @@ export abstract class Feedback {
             // catch-all clause
             return true;
         }
+        let equals: boolean = false;
+
         switch (el.strategy) {
             case Strategy.EXACT_MATCH:
-                let equals: boolean = response.size === el.getExpected().size;
+                equals = response.size === el.getExpected().size;
                 response.forEach((r: any) => {
                     equals = equals && el.getExpected().has(r);
                 });
                 return equals;
             case Strategy.FUZZY_MATCH:
-                equals = true;
                 response.forEach((r: any) => {
                     equals = equals || el.getExpected().has(r);
                 });
                 return equals;
             default:
-                return false;
+                return equals;
         }
     }
     public _onFeedbackSlotChanged(evt: Event): void {

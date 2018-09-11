@@ -1,5 +1,6 @@
 import { ComponentBase, html, TemplateResult, Feedback, applyMixins, repeat, unsafeHTML, Strategy } from '@hmh/component-base/dist/index';
 import { ResponseValidation, FeedbackMessage } from '@hmh/component-base/dist/components/response-validation';
+import { cpus } from 'os';
 
 /**
  * `<multiple-choice>`
@@ -26,7 +27,6 @@ export class MultipleChoice extends ComponentBase<Set<string>> implements Feedba
     public feedbackText: string = '';
     public value: Set<string> = new Set();
 
-
     // declare mixins properties to satisfy the typescript compiler
     public _getFeedback: (value: Set<string>) => FeedbackMessage;
     public _responseValidationElements: ResponseValidation[];
@@ -37,21 +37,21 @@ export class MultipleChoice extends ComponentBase<Set<string>> implements Feedba
             // catch-all clause
             return true;
         }
+        let equals: boolean = false;
         switch (el.strategy) {
             case Strategy.EXACT_MATCH:
-                let equals: boolean = response.size === el.getExpected().size;
+                equals = response.size === el.getExpected().size;
                 response.forEach((r: any) => {
                     equals = equals && el.getExpected().has(r);
                 });
                 return equals;
             case Strategy.FUZZY_MATCH:
-                equals = true;
                 response.forEach((r: any) => {
                     equals = equals || el.getExpected().has(r);
                 });
                 return equals;
             default:
-                return false;
+                return equals;
         }
     };
 
