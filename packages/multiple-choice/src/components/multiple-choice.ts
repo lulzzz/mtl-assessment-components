@@ -1,4 +1,4 @@
-import { ComponentBase, html, TemplateResult, Feedback, applyMixins, repeat, unsafeHTML, Strategy } from '@hmh/component-base/dist/index';
+import { ComponentBase, html, TemplateResult, Feedback, applyMixins, repeat, unsafeHTML, MultipleChoiceMixin } from '@hmh/component-base/dist/index';
 import { ResponseValidation, FeedbackMessage } from '@hmh/component-base/dist/components/response-validation';
 
 /**
@@ -8,7 +8,7 @@ import { ResponseValidation, FeedbackMessage } from '@hmh/component-base/dist/co
  * @demo ./demo/index.html
  *
  */
-export class MultipleChoice extends ComponentBase<Set<string>> implements Feedback {
+export class MultipleChoice extends ComponentBase<Set<string>> implements Feedback, MultipleChoiceMixin {
     static get properties(): { [key: string]: string | object } {
         return {
             ...ComponentBase.baseProperties,
@@ -20,49 +20,22 @@ export class MultipleChoice extends ComponentBase<Set<string>> implements Feedba
         };
     }
 
-    private items: HTMLElement[] = [];
-    private multiple: boolean;
-    private feedbackType: string;
+    public multiple: boolean;
     public feedbackText: string = '';
     public value: Set<string> = new Set();
-
+    public feedbackMessage: FeedbackMessage;
+    private feedbackType: string;
 
     // declare mixins properties to satisfy the typescript compiler
-    public _getFeedback: (value: Set<string>) => FeedbackMessage;
-    public _responseValidationElements: ResponseValidation[];
-    public _onFeedbackSlotChanged: any;
-
-    public match: (el: ResponseValidation, response: Set<string>) => boolean = (el, response) => {
-        if (!el.getExpected()) {
-            // catch-all clause
-            return true;
-        }
-        switch (el.strategy) {
-            case Strategy.EXACT_MATCH:
-                let equals: boolean = response.size === el.getExpected().size;
-                response.forEach((r: any) => {
-                    equals = equals && el.getExpected().has(r);
-                });
-                return equals;
-            case Strategy.FUZZY_MATCH:
-                equals = true;
-                response.forEach((r: any) => {
-                    equals = equals || el.getExpected().has(r);
-                });
-                return equals;
-            default:
-                return false;
-        }
-    };
-
-    public getFeedback(): FeedbackMessage {
-        const feedback = this._getFeedback(this.getValue());
-        return feedback;
-    }
-
-    public showFeedback(): void {
-        this.feedbackType = this.getFeedback().type;
-    }
+    // declare mixins properties to satisfy the typescript compiler
+    public getFeedback:() => FeedbackMessage;
+    public showFeedback:() => void;
+    _getFeedback: (value: Set<string>) => FeedbackMessage;
+    _onFeedbackSlotChanged:(evt: Event) => void;
+    _onSlotChanged:(event: Event) => void;
+    match:(el: ResponseValidation, response: Set<string>) => boolean;
+    items: HTMLElement[] = [];
+    _responseValidationElements: ResponseValidation[];
 
     protected _render({ items, multiple, feedbackType }: MultipleChoice): TemplateResult {
         return html`
@@ -79,8 +52,8 @@ export class MultipleChoice extends ComponentBase<Set<string>> implements Feedba
                 <label for$="${item.id}"> ${unsafeHTML(item.innerHTML)} </label>
             </div>`
        )}
-        <slot name="options" on-slotchange="${(e: Event) => this._slotChanged(e)}" ></slot>
-        <slot name="feedback" on-slotchange="${(e: Event) => this._feedbackSlotChanged(e)}"></slot>
+        <slot name="options" on-slotchange="${(e: Event) => this._onSlotChanged(e)}" ></slot>
+        <slot name="feedback" on-slotchange="${(e: Event) => this._onFeedbackSlotChanged(e)}"></slot>
 
     </div>
         `;
@@ -127,52 +100,17 @@ export class MultipleChoice extends ComponentBase<Set<string>> implements Feedba
      * @param {Event} event
      * @param {string} id
      */
-    private _onItemClicked(event: Event, id: string, element: string): void {
+    _onItemClicked(event: Event, id: string, type?: string): void {
         event.stopPropagation();
-        if (element === 'radio') {
+        if (type === 'radio') {
             this.value = new Set();
             this.value.add(id);
         } else {
             (event.target as HTMLInputElement).checked ? this.value.add(id) : this.value.delete(id);
         }
     }
-
-    /**
-     * Fired on slot change
-     * @param {Event} event
-     */
-    private _slotChanged(event: Event): void {
-        const items: HTMLElement[] = [];
-        const slot: HTMLSlotElement = event.srcElement as HTMLSlotElement;
-        if (slot) {
-            const nodes: Node[] = slot.assignedNodes();
-            if (nodes) {
-                for (const el of nodes as HTMLElement[]) {
-                    items.push(el);
-                }
-            }
-        }
-        this.items = items;
-    }
-    /**
-     * Fired on slot change
-     * @param {Event} event
-     */
-    private _feedbackSlotChanged(event: Event): void {
-        const slot: HTMLSlotElement = event.srcElement as HTMLSlotElement;
-        if (slot) {
-            const nodes: ResponseValidation[] = slot.assignedNodes() as any[];
-            if (nodes) {
-                const responseValidationElements: ResponseValidation[] = [];
-                for (const el of nodes) {
-                    responseValidationElements.push(el);
-                }
-                this._responseValidationElements = responseValidationElements;
-            }
-        }
-    }
 }
 
-applyMixins(MultipleChoice, [Feedback]);
+applyMixins(MultipleChoice, [Feedback, MultipleChoiceMixin]);
 
 customElements.define('multiple-choice', MultipleChoice);

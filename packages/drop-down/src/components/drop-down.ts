@@ -7,7 +7,7 @@ import { ResponseValidation, FeedbackMessage } from '@hmh/component-base/dist/co
  * Currently uses Set for value so option values must be unique.
  * @demo ./demo/index.html
  */
-export class DropDown extends ComponentBase<Set<string>> implements Feedback, MultipleChoiceMixin{
+export class DropDown extends ComponentBase<Set<string>> implements MultipleChoiceMixin, Feedback{
     /**
      * open - is the drop down open.
      * multiple = is this muli select?
@@ -24,32 +24,22 @@ export class DropDown extends ComponentBase<Set<string>> implements Feedback, Mu
         };
     }
 
-
+    private currentOptionIndex: number = -1;
     public value: Set<string> = new Set;
     public open: boolean = false;
     public multiple: boolean = false;
     private defaultTitle = 'Dropdown';
     public feedbackMessage: FeedbackMessage;
-    private currentOptionIndex: number = -1;
-
-    // declare mixins properties to satisfy the typescript compiler
-    public _getFeedback: (value: Set<string>) => FeedbackMessage;
-    public _responseValidationElements: ResponseValidation[];
-    public _onFeedbackSlotChanged: any;
-    public items: HTMLElement[] = [];
-    public _onSlotChanged: any;
-    public match: any;
-    public showFeedback: any;
-
     
-    /**
-     * gets the FeedbackMessage message object for the current value
-     * 
-     * @returns FeedbackMessage
-     */
-    public getFeedback(): FeedbackMessage {
-        return this._getFeedback(this.getValue());
-    }
+    // declare mixins properties to satisfy the typescript compiler
+    public getFeedback:() => FeedbackMessage;
+    public showFeedback:() => void;
+    _getFeedback: (value: Set<string>) => FeedbackMessage;
+    _onFeedbackSlotChanged:(evt: Event) => void;
+    _onSlotChanged:(event: Event) => void;
+    match:(el: ResponseValidation, response: Set<string>) => boolean;
+    items: HTMLElement[] = [];
+    _responseValidationElements: ResponseValidation[];
 
     public onFeedbackSlotChanged(evt: any): any {
         return this._onFeedbackSlotChanged(evt);
@@ -72,9 +62,11 @@ export class DropDown extends ComponentBase<Set<string>> implements Feedback, Mu
      * @param  {HTMLElement} eventTarget
      * @returns void
      */
-    private _onItemClicked(eventTarget: HTMLElement): void {
+    _onItemClicked(event: Event, id: string): void {
+        const eventTarget: HTMLElement = event.target as HTMLElement;
+        console.log('clicking in drop', eventTarget.hasAttribute('slot'));
         if (eventTarget.hasAttribute('slot')) {
-            const selectedValue = eventTarget.getAttribute('value');
+            const selectedValue = id;
 
             if (this.multiple) {
                 if (this.value.has(selectedValue)) {
@@ -200,7 +192,7 @@ export class DropDown extends ComponentBase<Set<string>> implements Feedback, Mu
                 </div>
                 <div class="dropdown-content" hidden="${!open}">
                     <slot name="options" class="options" 
-                    on-click="${(evt: MouseEvent) => this._onItemClicked(evt.target as HTMLElement)}"
+                    on-click="${(evt: MouseEvent) => this._onItemClicked(evt, (evt.target as HTMLElement).getAttribute('value'))}"
                     on-slotchange="${(evt: Event) => this._onSlotChanged(evt)}"> </slot>
                 </div>
             </div>
@@ -246,6 +238,6 @@ export class DropDown extends ComponentBase<Set<string>> implements Feedback, Mu
     }
 }
 
-applyMixins(DropDown, [Feedback, MultipleChoiceMixin]);
+applyMixins(DropDown, [MultipleChoiceMixin, Feedback]);
 
 customElements.define('drop-down', DropDown);

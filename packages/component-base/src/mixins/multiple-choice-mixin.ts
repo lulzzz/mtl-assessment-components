@@ -12,7 +12,7 @@ export abstract class MultipleChoiceMixin /*implements Feedback*/ {
      * Fired on slot change
      * @param {Event} event
      */
-    public _onSlotChanged(event: Event): void {
+    _onSlotChanged(event: Event): void {
         const items: HTMLElement[] = [];
         const slot: HTMLSlotElement = event.srcElement as HTMLSlotElement;
         if (slot) {
@@ -31,7 +31,11 @@ export abstract class MultipleChoiceMixin /*implements Feedback*/ {
         this.items = items;
     }
 
-    public _getFeedback(value: any): FeedbackMessage {
+    getFeedback(): FeedbackMessage {
+        return this._getFeedback(this.getValue());
+    }
+
+    _getFeedback(value: any): FeedbackMessage {
         for (const el of this._responseValidationElements) {
             if (this.match(el, value)) {
                 return el.getFeedbackMessage();
@@ -40,34 +44,15 @@ export abstract class MultipleChoiceMixin /*implements Feedback*/ {
         throw new Error('missing default response-validation');
     }
 
-    public _onFeedbackSlotChanged(evt: Event): void {
-        const slot: HTMLSlotElement = evt.srcElement as HTMLSlotElement;
-        if (slot) {
-            const nodes: ResponseValidation[] = slot.assignedNodes() as any[];
-            if (nodes) {
-                const responseValidationElements: ResponseValidation[] = [];
-                for (const el of nodes as ResponseValidation[]) {
-                    responseValidationElements.push(el);
-                }
-                this._responseValidationElements = responseValidationElements;
-            }
-        }
-    }
-
-    public getValue() {
+    getValue(): Set<string> {
         return this.value;
     }
 
-    public getFeedback(): FeedbackMessage {
-        const feedback = this._getFeedback(this.getValue());
-        return feedback;
-    }
-
-    public showFeedback(): void {
+    showFeedback(): void {
         this.feedbackMessage = this.getFeedback();
     }
 
-    public match: (el: ResponseValidation, response: Set<string>) => boolean = (el, response) => {
+    match: (el: ResponseValidation, response: Set<string>) => boolean = (el, response) => {
         if (!el.getExpected()) {
             // catch-all clause
             return true;
@@ -92,4 +77,6 @@ export abstract class MultipleChoiceMixin /*implements Feedback*/ {
                 return false;
         }
     };
+
+    _onItemClicked: (event: Event, id: string, type?: string) => void;
 }
