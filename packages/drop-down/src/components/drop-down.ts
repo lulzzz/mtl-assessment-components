@@ -69,16 +69,21 @@ export class DropDown extends ComponentBase<Set<string>> implements MultipleChoi
 
             if (this.multiple) {
                 if (this.value.has(selectedValue)) {
+                    // deselect if clicking on an already selected item
                     this._deselectElement(selectedValue, eventTarget);
                 } else {
                     this._selectElement(selectedValue, eventTarget);
                 }
             } else {
+                // deslect whatever was perviously selected
                 if (this.currentOptionIndex > -1) {
                     this._deselectElement([...this.getValue()].pop(), this._getOptionElement(this.currentOptionIndex));
-                }
+                } 
 
-                this._selectElement(selectedValue, eventTarget);
+                // deselect (or don't re-select if clicking on already selected item )
+                if (this.currentOptionIndex != Number(eventTarget.getAttribute('index'))) {
+                    this._selectElement(selectedValue, eventTarget);
+                }
             }
 
             const strValue = [...this.value].toString();
