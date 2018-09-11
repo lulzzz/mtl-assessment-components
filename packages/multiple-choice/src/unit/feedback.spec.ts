@@ -1,6 +1,6 @@
 import { expect, tagName } from './constants.spec';
 import { MultipleChoice } from '../components/multiple-choice';
-import { FeedbackMessage, ResponseValidation } from '@hmh/component-base/dist/components/response-validation';
+import { FeedbackMessage } from '@hmh/component-base/dist/components/response-validation';
 
 export default () => {
     describe(`<${tagName}> feedback in single mode`, (): void => {

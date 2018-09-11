@@ -23,22 +23,22 @@ export abstract class Feedback {
             // catch-all clause
             return true;
         }
-        let equals: boolean = false;
+        let matches: boolean = false;
 
         switch (el.strategy) {
             case Strategy.EXACT_MATCH:
-                equals = response.size === el.getExpected().size;
+                matches = response.size === el.getExpected().size;
                 response.forEach((r: any) => {
-                    equals = equals && el.getExpected().has(r);
+                    matches = matches && el.getExpected().has(r);
                 });
-                return equals;
+                return matches;
             case Strategy.FUZZY_MATCH:
                 response.forEach((r: any) => {
-                    equals = equals || el.getExpected().has(r);
+                    matches = matches || el.getExpected().has(r);
                 });
-                return equals;
+                return matches;
             default:
-                return equals;
+                return matches;
         }
     }
     public _onFeedbackSlotChanged(evt: Event): void {
