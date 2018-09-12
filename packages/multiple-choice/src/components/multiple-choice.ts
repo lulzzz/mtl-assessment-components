@@ -26,32 +26,41 @@ export class MultipleChoice extends ComponentBase<Set<string>> implements Feedba
     public feedbackText: string = '';
     public value: Set<string> = new Set();
 
-
     // declare mixins properties to satisfy the typescript compiler
     public _getFeedback: (value: Set<string>) => FeedbackMessage;
     public _responseValidationElements: ResponseValidation[];
     public _onFeedbackSlotChanged: any;
 
+    protected _didRender(): void {
+        this._enableAccessibility();
+        this.setAttribute('value', [...this.value].toString());
+    }
+
+    /**
+     * Override the standard matching procedure
+     *
+     * @returns boolean
+     */
     public match: (el: ResponseValidation, response: Set<string>) => boolean = (el, response) => {
         if (!el.getExpected()) {
             // catch-all clause
             return true;
         }
+        let matches: boolean = false;
         switch (el.strategy) {
             case Strategy.EXACT_MATCH:
-                let equals: boolean = response.size === el.getExpected().size;
+                matches = response.size === el.getExpected().size;
                 response.forEach((r: any) => {
-                    equals = equals && el.getExpected().has(r);
+                    matches = matches && el.getExpected().has(r);
                 });
-                return equals;
+                return matches;
             case Strategy.FUZZY_MATCH:
-                equals = true;
                 response.forEach((r: any) => {
-                    equals = equals || el.getExpected().has(r);
+                    matches = matches || el.getExpected().has(r);
                 });
-                return equals;
+                return matches;
             default:
-                return false;
+                return matches;
         }
     };
 
@@ -75,7 +84,8 @@ export class MultipleChoice extends ComponentBase<Set<string>> implements Feedba
            items,
            (item: HTMLElement) => item.id,
            (item: HTMLElement) => html`
-            <div hidden class="mdc-form-field" > ${multiple ? this._renderCheckbox(item) : this._renderRadioButton(item)}
+            <div hidden class="mdc-form-field" >
+                ${multiple ? this._renderCheckbox(item) : this._renderRadioButton(item)}
                 <label for$="${item.id}"> ${unsafeHTML(item.innerHTML)} </label>
             </div>`
        )}
@@ -92,8 +102,8 @@ export class MultipleChoice extends ComponentBase<Set<string>> implements Feedba
      */
     private _renderCheckbox(item: HTMLElement): TemplateResult {
         return html`
-        <div class="mdc-checkbox" on-click="${(evt: MouseEvent) => this._onItemClicked(evt, item.id, 'check')}">
-        <input type="checkbox" class="mdc-checkbox__native-control" id="${item.id}"/>
+        <div class="mdc-checkbox" role="checkbox" on-click="${(evt: MouseEvent) => this._onItemClicked(evt, item.id, 'check')}">
+        <input type="checkbox" class="mdc-checkbox__native-control" id$="${item.id}"/>
         <div class="mdc-checkbox__background">
             <svg class="mdc-checkbox__checkmark"
                viewBox="0 0 24 24">
@@ -113,8 +123,8 @@ export class MultipleChoice extends ComponentBase<Set<string>> implements Feedba
      */
     private _renderRadioButton(item: HTMLElement): TemplateResult {
         return html`
-        <div class="mdc-radio" on-click="${(evt: Event) => this._onItemClicked(evt, item.id, 'radio')}">
-         <input class="mdc-radio__native-control" type="radio" id="${item.id}" name="options">
+        <div class="mdc-radio" role="radio" on-click="${(evt: Event) => this._onItemClicked(evt, item.id, 'radio')}">
+         <input class="mdc-radio__native-control" type="radio" id$="${item.id}" name="options">
          <div class="mdc-radio__background">
          <div class="mdc-radio__outer-circle"></div>
          <div class="mdc-radio__inner-circle"></div>
@@ -132,7 +142,10 @@ export class MultipleChoice extends ComponentBase<Set<string>> implements Feedba
         if (element === 'radio') {
             this.value = new Set();
             this.value.add(id);
+            (event.target as HTMLInputElement).setAttribute('aria-selected', 'true');
         } else {
+            (event.target as HTMLInputElement).setAttribute('aria-checked', `${(event.target as HTMLInputElement).checked}`);
+
             (event.target as HTMLInputElement).checked ? this.value.add(id) : this.value.delete(id);
         }
     }
@@ -170,6 +183,10 @@ export class MultipleChoice extends ComponentBase<Set<string>> implements Feedba
                 this._responseValidationElements = responseValidationElements;
             }
         }
+    }
+    private _enableAccessibility(): void {
+        this.setAttribute('aria-haspopup', 'true');
+        this.setAttribute('aria-label', this.innerHTML);
     }
 }
 
