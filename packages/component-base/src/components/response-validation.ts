@@ -60,7 +60,6 @@ export class ResponseValidation extends ComponentBase<string> {
 
     protected _render(): TemplateResult {
         return html`
-            <link rel="stylesheet" type="text/css" href="/dist/css/response-validation.css">
             <slot on-slotchange="${(evt: Event) => this.onSlotChanged(evt)}"></slot>
         `;
     }
