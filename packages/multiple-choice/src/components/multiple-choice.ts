@@ -1,4 +1,4 @@
-import { ComponentBase, html, TemplateResult, Feedback, applyMixins, repeat, unsafeHTML, MultipleChoiceMixin, Strategy } from '@hmh/component-base/dist/index';
+import { ComponentBase, html, TemplateResult, Feedback, applyMixins, repeat, unsafeHTML, MultipleChoiceMixin } from '@hmh/component-base/dist/index';
 import { ResponseValidation, FeedbackMessage } from '@hmh/component-base/dist/components/response-validation';
 
 /**
@@ -28,7 +28,7 @@ export class MultipleChoice extends ComponentBase<Set<string>> implements Feedba
     public _getFeedback: (value: Set<string>) => FeedbackMessage;
     public _responseValidationElements: ResponseValidation[];
     public _onFeedbackSlotChanged: any;
-
+    public match: (el: ResponseValidation, response: Set<string>) => boolean;
     public feedbackMessage: FeedbackMessage;
     private feedbackType: string;
     _onSlotChanged:(event: Event) => void;
@@ -39,33 +39,6 @@ export class MultipleChoice extends ComponentBase<Set<string>> implements Feedba
         this.setAttribute('value', [...this.value].toString());
     }
 
-    /**
-     * Override the standard matching procedure
-     *
-     * @returns boolean
-     */
-    public match: (el: ResponseValidation, response: Set<string>) => boolean = (el, response) => {
-        if (!el.getExpected()) {
-            // catch-all clause
-            return true;
-        }
-        let matches: boolean = false;
-        switch (el.strategy) {
-            case Strategy.EXACT_MATCH:
-                matches = response.size === el.getExpected().size;
-                response.forEach((r: any) => {
-                    matches = matches && el.getExpected().has(r);
-                });
-                return matches;
-            case Strategy.FUZZY_MATCH:
-                response.forEach((r: any) => {
-                    matches = matches || el.getExpected().has(r);
-                });
-                return matches;
-            default:
-                return matches;
-        }
-    };
 
     public getFeedback(): FeedbackMessage {
         const feedback = this._getFeedback(this.getValue());

@@ -17,14 +17,13 @@ export abstract class Feedback {
         }
         throw new Error('missing default response-validation');
     }
-    public match(el: ResponseValidation, response: any): boolean {
 
+    public match(el: ResponseValidation, response: any): boolean {
         if (!el.getExpected()) {
             // catch-all clause
             return true;
         }
         let matches: boolean = false;
-
         switch (el.strategy) {
             case Strategy.EXACT_MATCH:
                 matches = response.size === el.getExpected().size;
@@ -41,6 +40,7 @@ export abstract class Feedback {
                 return matches;
         }
     }
+    
     public _onFeedbackSlotChanged(evt: Event): void {
         const slot: HTMLSlotElement = evt.srcElement as HTMLSlotElement;
         if (slot) {

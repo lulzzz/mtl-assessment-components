@@ -31,6 +31,30 @@ export abstract class MultipleChoiceMixin {
         this.items = items;
     }
 
+    match: (el: ResponseValidation, response: Set<string>) => boolean = (el, response) => {
+        if (!el.getExpected()) {
+            // catch-all clause
+            return true;
+        }
+        let matches: boolean = false;
+        switch (el.strategy) {
+            case Strategy.EXACT_MATCH:
+                matches = response.size === el.getExpected().size;
+                response.forEach((r: any) => {
+                    matches = matches && el.getExpected().has(r);
+                });
+                return matches;
+            case Strategy.FUZZY_MATCH:
+                response.forEach((r: any) => {
+                    matches = matches || el.getExpected().has(r);
+                });
+                return matches;
+            default:
+                return matches;
+        }
+    };
+
+
     getFeedback(): FeedbackMessage {
         return this._getFeedback(this.getValue());
     }
@@ -51,32 +75,6 @@ export abstract class MultipleChoiceMixin {
     showFeedback(): void {
         this.feedbackMessage = this.getFeedback();
     }
-
-    match: (el: ResponseValidation, response: Set<string>) => boolean = (el, response) => {
-        if (!el.getExpected()) {
-            // catch-all clause
-            return true;
-        }
-
-        let equals: boolean = false;
-
-        switch (el.strategy) {
-            case Strategy.EXACT_MATCH:
-                equals = response.size === el.getExpected().size;
-                response.forEach((r: any) => {
-                    equals = equals && el.getExpected().has(r);
-                });
-                return equals;
-            case Strategy.FUZZY_MATCH:
-                equals = true;
-                response.forEach((r: any) => {
-                    equals = equals || el.getExpected().has(r);
-                });
-                return equals;
-            default:
-                return false;
-        }
-    };
 
     abstract _onItemClicked(event: Event, id: string, type?: string): any
 }
