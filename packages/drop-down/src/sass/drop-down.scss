@@ -57,17 +57,17 @@
     float: right;
 }
 
-::slotted(.option-item){
+.option-item {
     border-style: solid;
     border-color: transparent
 }
 
-::slotted(.option-item:hover){
+.option-item:hover {
     border-style: solid;
     border-color: var(--option-hover-color, #BEE9F7);
 }
 
-::slotted(.selected){
+.selected {
     background-color: var(--option-selected-color,lightblue);
 }
 

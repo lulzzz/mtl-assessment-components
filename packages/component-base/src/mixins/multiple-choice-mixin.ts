@@ -6,7 +6,6 @@ export abstract class MultipleChoiceMixin {
     public items: HTMLElement[] = [];
     public multiple: boolean;
     public feedbackMessage: FeedbackMessage;
-    public value: Set<string> = new Set();
 
     /**
      * Fired on slot change
@@ -67,10 +66,8 @@ export abstract class MultipleChoiceMixin {
         }
         throw new Error('missing default response-validation');
     }
-
-    getValue(): Set<string> {
-        return this.value;
-    }
+    
+    abstract getValue(): any;
 
     showFeedback(): void {
         this.feedbackMessage = this.getFeedback();
