@@ -68,7 +68,7 @@ export default () => {
     });
 
     describe(`<${tagName}> single mode`, (): void => {
-        it('single should render as expected', (): void => {
+        it('should render as expected', (): void => {
             withSnippet('single');
             const value: boolean = true;
 
@@ -77,7 +77,7 @@ export default () => {
     });
 
     describe(`<${tagName}> multiple mode`, (): void => {
-        it('multiple should render as expected', (): void => {
+        it('should render as expected', (): void => {
             withSnippet('multiple');
             const value: boolean = true;
             expect(value).to.be.true;

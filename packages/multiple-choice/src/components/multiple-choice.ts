@@ -103,7 +103,7 @@ export class MultipleChoice extends ComponentBase<Set<string>> implements Feedba
     private _renderCheckbox(item: HTMLElement): TemplateResult {
         return html`
         <div class="mdc-checkbox" role="checkbox" on-click="${(evt: MouseEvent) => this._onItemClicked(evt, item.id, 'check')}">
-        <input type="checkbox" class="mdc-checkbox__native-control" id="${item.id}"/>
+        <input type="checkbox" class="mdc-checkbox__native-control" id$="${item.id}"/>
         <div class="mdc-checkbox__background">
             <svg class="mdc-checkbox__checkmark"
                viewBox="0 0 24 24">
@@ -124,7 +124,7 @@ export class MultipleChoice extends ComponentBase<Set<string>> implements Feedba
     private _renderRadioButton(item: HTMLElement): TemplateResult {
         return html`
         <div class="mdc-radio" role="radio" on-click="${(evt: Event) => this._onItemClicked(evt, item.id, 'radio')}">
-         <input class="mdc-radio__native-control" type="radio" id="${item.id}" name="options">
+         <input class="mdc-radio__native-control" type="radio" id$="${item.id}" name="options">
          <div class="mdc-radio__background">
          <div class="mdc-radio__outer-circle"></div>
          <div class="mdc-radio__inner-circle"></div>

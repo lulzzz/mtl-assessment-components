@@ -37,7 +37,7 @@ export default () => {
             expect(feedback.type).to.equal('neutral');
             expect(feedback.score).to.equal(1);
         });
-        it('showFeedback() test', async (): Promise<void> => {
+        it('should show feedback', async (): Promise<void> => {
             withSnippet('single-feedback-1');
             const element: MultipleChoice = document.querySelector('multiple-choice') as any;
             await element.renderComplete;
