@@ -18,7 +18,7 @@
             <a href="https://www.w3schools.com/html/">Visit our HTML tutorial</a>
         </div>
         <div hidden slot="options" id="000-3">
-            <table style="width:100%">
+            <table style="width:100%" alt="A table">
                 <tr>
                     <th>Firstname</th>
                     <th>Lastname</th>
@@ -37,7 +37,7 @@
             </table>
         </div>
         <div hidden slot="options" id="000-4">eleven
-            <img src="https://upload.wikimedia.org/wikipedia/commons/a/ac/Approve_icon.svg" alt="HTML tutorial" style="width:42px;height:42px;border:0;">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/a/ac/Approve_icon.svg" alt="Check image" style="width:42px;height:42px;border:0;">
         </div>
 
         <response-validation hidden slot="feedback" expected="000-1" score="4" strategy="exactMatch">
@@ -92,10 +92,36 @@
         </response-validation>
 
     </multiple-choice>
-
-
-
     <div id="feedback2">Feedback will appear here</div>
+
+
+    <h4>Which of the following cities are located in Africa?</h4>
+    <multiple-choice multiple id="multiple3">
+        <div hidden slot="options" id="1">Durban</div>
+        <div hidden slot="options" id="2">Dallas</div>
+        <div hidden slot="options" id="3">Dakar</div>
+        <div hidden slot="options" id="4">Douala</div>
+        <div hidden slot="options" id="5">Dunkerque</div>
+        <div hidden slot="options" id="6">Doha</div>
+
+
+        <response-validation hidden slot="feedback" expected="1|3" score="10" strategy="exactMatch">
+            <span>Perfect</span>
+        </response-validation>
+
+        <response-validation hidden slot="feedback" expected="1" score="5" feedbackType="neutral" strategy="fuzzyMatch">
+            <span>Almost</span>
+        </response-validation>
+
+        <response-validation hidden slot="feedback" score="0" feedback="negative">
+            <span>Try again</span>
+            <span>Still not good</span>
+            <span>Wrong answer</span>
+        </response-validation>
+    </multiple-choice>
+    <div id="feedback3">Feedback will appear here</div>
+
+
 
     <button id="button" class="mdc-button">Validate</button>
 
@@ -104,9 +130,11 @@
         document.getElementById('button').addEventListener('click', () => {
             document.getElementById('multiple1').showFeedback();
             document.getElementById('multiple2').showFeedback();
+            document.getElementById('multiple3').showFeedback();
 
             document.getElementById('feedback1').innerText = JSON.stringify(document.getElementById('multiple1').getFeedback());
             document.getElementById('feedback2').innerText = JSON.stringify(document.getElementById('multiple2').getFeedback());
+            document.getElementById('feedback3').innerText = JSON.stringify(document.getElementById('multiple3').getFeedback());
 
         })
 

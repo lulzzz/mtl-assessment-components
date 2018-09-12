@@ -1,4 +1,4 @@
-import { ComponentBase, html, TemplateResult, Feedback, applyMixins, repeat, unsafeHTML, MultipleChoiceMixin } from '@hmh/component-base/dist/index';
+import { ComponentBase, html, TemplateResult, Feedback, applyMixins, repeat, unsafeHTML, MultipleChoiceMixin, Strategy } from '@hmh/component-base/dist/index';
 import { ResponseValidation, FeedbackMessage } from '@hmh/component-base/dist/components/response-validation';
 
 /**
@@ -23,19 +23,58 @@ export class MultipleChoice extends ComponentBase<Set<string>> implements Feedba
     public multiple: boolean;
     public feedbackText: string = '';
     public value: Set<string> = new Set();
-    public feedbackMessage: FeedbackMessage;
-    private feedbackType: string;
 
     // declare mixins properties to satisfy the typescript compiler
-    // declare mixins properties to satisfy the typescript compiler
-    public getFeedback:() => FeedbackMessage;
-    public showFeedback:() => void;
-    _getFeedback: (value: Set<string>) => FeedbackMessage;
-    _onFeedbackSlotChanged:(evt: Event) => void;
+    public _getFeedback: (value: Set<string>) => FeedbackMessage;
+    public _responseValidationElements: ResponseValidation[];
+    public _onFeedbackSlotChanged: any;
+
+    public feedbackMessage: FeedbackMessage;
+    private feedbackType: string;
     _onSlotChanged:(event: Event) => void;
-    match:(el: ResponseValidation, response: Set<string>) => boolean;
     items: HTMLElement[] = [];
-    _responseValidationElements: ResponseValidation[];
+
+    protected _didRender(): void {
+        this._enableAccessibility();
+        this.setAttribute('value', [...this.value].toString());
+    }
+
+    /**
+     * Override the standard matching procedure
+     *
+     * @returns boolean
+     */
+    public match: (el: ResponseValidation, response: Set<string>) => boolean = (el, response) => {
+        if (!el.getExpected()) {
+            // catch-all clause
+            return true;
+        }
+        let matches: boolean = false;
+        switch (el.strategy) {
+            case Strategy.EXACT_MATCH:
+                matches = response.size === el.getExpected().size;
+                response.forEach((r: any) => {
+                    matches = matches && el.getExpected().has(r);
+                });
+                return matches;
+            case Strategy.FUZZY_MATCH:
+                response.forEach((r: any) => {
+                    matches = matches || el.getExpected().has(r);
+                });
+                return matches;
+            default:
+                return matches;
+        }
+    };
+
+    public getFeedback(): FeedbackMessage {
+        const feedback = this._getFeedback(this.getValue());
+        return feedback;
+    }
+
+    public showFeedback(): void {
+        this.feedbackType = this.getFeedback().type;
+    }
 
     protected _render({ items, multiple, feedbackType }: MultipleChoice): TemplateResult {
         return html`
@@ -48,7 +87,8 @@ export class MultipleChoice extends ComponentBase<Set<string>> implements Feedba
            items,
            (item: HTMLElement) => item.id,
            (item: HTMLElement) => html`
-            <div hidden class="mdc-form-field" > ${multiple ? this._renderCheckbox(item) : this._renderRadioButton(item)}
+            <div hidden class="mdc-form-field" >
+                ${multiple ? this._renderCheckbox(item) : this._renderRadioButton(item)}
                 <label for$="${item.id}"> ${unsafeHTML(item.innerHTML)} </label>
             </div>`
        )}
@@ -65,8 +105,8 @@ export class MultipleChoice extends ComponentBase<Set<string>> implements Feedba
      */
     private _renderCheckbox(item: HTMLElement): TemplateResult {
         return html`
-        <div class="mdc-checkbox" on-click="${(evt: MouseEvent) => this._onItemClicked(evt, item.id, 'check')}">
-        <input type="checkbox" class="mdc-checkbox__native-control" id="${item.id}"/>
+        <div class="mdc-checkbox" role="checkbox" on-click="${(evt: MouseEvent) => this._onItemClicked(evt, item.id, 'check')}">
+        <input type="checkbox" class="mdc-checkbox__native-control" id$="${item.id}"/>
         <div class="mdc-checkbox__background">
             <svg class="mdc-checkbox__checkmark"
                viewBox="0 0 24 24">
@@ -86,8 +126,8 @@ export class MultipleChoice extends ComponentBase<Set<string>> implements Feedba
      */
     private _renderRadioButton(item: HTMLElement): TemplateResult {
         return html`
-        <div class="mdc-radio" on-click="${(evt: Event) => this._onItemClicked(evt, item.id, 'radio')}">
-         <input class="mdc-radio__native-control" type="radio" id="${item.id}" name="options">
+        <div class="mdc-radio" role="radio" on-click="${(evt: Event) => this._onItemClicked(evt, item.id, 'radio')}">
+         <input class="mdc-radio__native-control" type="radio" id$="${item.id}" name="options">
          <div class="mdc-radio__background">
          <div class="mdc-radio__outer-circle"></div>
          <div class="mdc-radio__inner-circle"></div>
@@ -105,10 +145,19 @@ export class MultipleChoice extends ComponentBase<Set<string>> implements Feedba
         if (type === 'radio') {
             this.value = new Set();
             this.value.add(id);
+            (event.target as HTMLInputElement).setAttribute('aria-selected', 'true');
         } else {
+            (event.target as HTMLInputElement).setAttribute('aria-checked', `${(event.target as HTMLInputElement).checked}`);
+
             (event.target as HTMLInputElement).checked ? this.value.add(id) : this.value.delete(id);
         }
     }
+
+    private _enableAccessibility(): void {
+        this.setAttribute('aria-haspopup', 'true');
+        this.setAttribute('aria-label', this.innerHTML);
+    }
+    
 }
 
 applyMixins(MultipleChoice, [Feedback, MultipleChoiceMixin]);
