@@ -41,10 +41,6 @@ export class DropDown extends ComponentBase<Set<string>> implements MultipleChoi
     items: HTMLElement[] = [];
     _responseValidationElements: ResponseValidation[];
 
-    public onFeedbackSlotChanged(evt: any): any {
-        return this._onFeedbackSlotChanged(evt);
-    }
-
     /**
      * Called when the drop down menu is clicked on.
      * Sets the menu state to open.

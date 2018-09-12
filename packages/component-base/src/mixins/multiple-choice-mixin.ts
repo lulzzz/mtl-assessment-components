@@ -78,5 +78,5 @@ export abstract class MultipleChoiceMixin {
         }
     };
 
-    _onItemClicked: (event: Event, id: string, type?: string) => void;
+    abstract _onItemClicked(event: Event, id: string, type?: string): any
 }
