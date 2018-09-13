@@ -132,9 +132,7 @@ export class DropDown extends ComponentBase<Set<string>> implements MultipleChoi
      * 
      * @returns TemplateResult
      */
-    protected _render({ open, feedbackMessage, items, value}: DropDown): TemplateResult {
-        console.log('render value:', value);
- 
+    protected _render({ open, feedbackMessage, items, value}: DropDown): TemplateResult { 
         return html`
         <link rel="stylesheet" type="text/css" href="/dist/css/drop-down.css">
         
