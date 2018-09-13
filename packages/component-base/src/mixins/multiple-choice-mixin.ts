@@ -4,10 +4,11 @@ import { ResponseValidation, FeedbackMessage } from '../components/response-vali
 export abstract class MultipleChoiceMixin {
     public _responseValidationElements: ResponseValidation[];
     public items: HTMLElement[] = [];
-    public multiple: boolean;
     public feedbackMessage: FeedbackMessage;
-    public value: Set<string> = new Set();
+    public feedbackType: string;
 
+    public abstract getValue(): any;
+    abstract getFeedback(): FeedbackMessage;
     /**
      * Fired on slot change
      * @param {Event} event
@@ -54,27 +55,9 @@ export abstract class MultipleChoiceMixin {
         }
     };
 
-
-    getFeedback(): FeedbackMessage {
-        return this._getFeedback(this.getValue());
-    }
-
-    _getFeedback(value: any): FeedbackMessage {
-        for (const el of this._responseValidationElements) {
-            if (this.match(el, value)) {
-                return el.getFeedbackMessage();
-            }
-        }
-        throw new Error('missing default response-validation');
-    }
-
-    getValue(): Set<string> {
-        return this.value;
-    }
-
     showFeedback(): void {
-        this.feedbackMessage = this.getFeedback();
+        this.feedbackType = this.getFeedback().type;
     }
 
-    abstract _onItemClicked(event: Event, id: string, type?: string): any
+    abstract _onItemClicked(event: Event, id: string, type?: string): any;
 }
