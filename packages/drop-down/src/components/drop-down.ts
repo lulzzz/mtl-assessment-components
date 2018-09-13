@@ -17,7 +17,7 @@ export class DropDown extends ComponentBase<Set<string>> implements MultipleChoi
      */                      
     static get properties(): { [key: string]: string | object } {
         return {
-            ...ComponentBase.baseProperties,
+            ...ComponentBase.properties,
             open: Boolean,
             multiple: Boolean,
             feedbackMessage: Object,
@@ -66,6 +66,7 @@ export class DropDown extends ComponentBase<Set<string>> implements MultipleChoi
      * @param {string} selectedValue
      * @returns void
      */
+    
     _onItemClicked(event: Event, selectedValue: string): void {
         event.stopPropagation();
 
