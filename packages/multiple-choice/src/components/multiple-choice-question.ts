@@ -10,14 +10,13 @@ import { ResponseValidation, FeedbackMessage } from '@hmh/component-base/dist/co
 export class MultipleChoiceQuestion extends ComponentBase<string> implements Feedback, MultipleChoiceMixin {
     static get properties(): { [key: string]: string | object } {
         return {
-            ...ComponentBase.baseProperties,
+            ...super.properties,
             /* The multiple choice answer options */
             items: Array,
-            feedbackType: String
+            feedbackMessage: Object
         };
     }
 
-    public feedbackText: string = '';
     public value: string = '';
 
     // declare mixins properties to satisfy the typescript compiler
@@ -29,37 +28,28 @@ export class MultipleChoiceQuestion extends ComponentBase<string> implements Fee
     _onSlotChanged: (event: Event) => void;
     showFeedback: () => void;
     items: HTMLElement[] = [];
-    feedbackType: string = '';
-
-    protected _didRender(): void {
-        this._enableAccessibility();
-        this.setAttribute('value', this.value);
-    }
 
     public getFeedback(): FeedbackMessage {
-        //const feedback = this._getFeedback(this.getValue() !== '' ? new Set(this.getValue()) : new Set());
-        const convertedValue: Set<string> = new Set();
-        convertedValue.add(this.getValue());
-        const feedback = this._getFeedback(convertedValue);
+        const feedback = this._getFeedback(new Set().add(this.getValue()));
         return feedback;
     }
     public getValue(): string {
         return this.value;
     }
 
-    protected _render({ items, feedbackType }: MultipleChoiceQuestion): TemplateResult {
+    protected _render({ items, feedbackMessage }: MultipleChoiceQuestion): TemplateResult {
         return html`
         <link rel="stylesheet" type="text/css" href="/node_modules/@material/radio/dist/mdc.radio.css">
         <link rel="stylesheet" type="text/css" href="/node_modules/@material/form-field/dist/mdc.form-field.css">
         <link rel="stylesheet" type="text/css" href="/dist/css/multiple-choice.css">
-    <div class$="${feedbackType}" role="radiogroup">
+    <div class$="${feedbackMessage ? feedbackMessage.type : ''}">
        ${repeat(
            items,
            (item: HTMLElement) => item.id,
            (item: HTMLElement) => html`
-            <div hidden class="mdc-form-field" >
-                <div class="mdc-radio" role="radio" on-click="${(evt: Event) => this._onItemClicked(evt, item.id)}">
-                    <input class="mdc-radio__native-control" type="radio" id$="${item.id}" name="options"/>
+            <div hidden class="mdc-form-field">
+                <div class="mdc-radio" tabindex="0" on-click="${(evt: Event) => this._onItemClicked(evt, item.id)}">
+                    <input type="radio" class="mdc-radio__native-control"  aria-checked="false"  id$="${item.id}" name="options"/>
                         <div class="mdc-radio__background">
                         <div class="mdc-radio__outer-circle"></div>
                         <div class="mdc-radio__inner-circle"></div>
@@ -70,7 +60,6 @@ export class MultipleChoiceQuestion extends ComponentBase<string> implements Fee
        )}
         <slot name="options" on-slotchange="${(e: Event) => this._onSlotChanged(e)}" ></slot>
         <slot name="feedback" on-slotchange="${(e: Event) => this._onFeedbackSlotChanged(e)}"></slot>
-
     </div>
         `;
     }
@@ -83,15 +72,8 @@ export class MultipleChoiceQuestion extends ComponentBase<string> implements Fee
     _onItemClicked(event: Event, id: string): void {
         event.stopPropagation();
         this.value = id;
-        (event.target as HTMLInputElement).setAttribute('aria-selected', 'true');
-    }
-
-    private _enableAccessibility(): void {
-        this.setAttribute('aria-haspopup', 'true');
-        this.setAttribute('aria-label', this.innerHTML);
     }
 }
 
 applyMixins(MultipleChoiceQuestion, [Feedback, MultipleChoiceMixin]);
-
 customElements.define('multiple-choice-question', MultipleChoiceQuestion);

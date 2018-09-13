@@ -5,8 +5,6 @@ export abstract class MultipleChoiceMixin {
     public _responseValidationElements: ResponseValidation[];
     public items: HTMLElement[] = [];
     public feedbackMessage: FeedbackMessage;
-    public feedbackType: string;
-
     public abstract getValue(): any;
     abstract getFeedback(): FeedbackMessage;
     /**
@@ -56,7 +54,7 @@ export abstract class MultipleChoiceMixin {
     };
 
     showFeedback(): void {
-        this.feedbackType = this.getFeedback().type;
+        this.feedbackMessage = this.getFeedback();
     }
 
     abstract _onItemClicked(event: Event, id: string, type?: string): any;

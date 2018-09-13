@@ -11,10 +11,10 @@ import { ResponseValidation, FeedbackMessage } from '@hmh/component-base/dist/co
 export class MultipleResponseQuestion extends ComponentBase<Set<string>> implements Feedback, MultipleChoiceMixin {
     static get properties(): { [key: string]: string | object } {
         return {
-            ...ComponentBase.baseProperties,
+            ...super.properties,
             /* The multiple choice answer options */
             items: Array,
-            feedbackType: String
+            feedbackMessage: Object
         };
     }
 
@@ -30,31 +30,25 @@ export class MultipleResponseQuestion extends ComponentBase<Set<string>> impleme
     _onSlotChanged: (event: Event) => void;
     showFeedback: () => void;
     items: HTMLElement[] = [];
-    feedbackType: string = '';
-
-    protected _didRender(): void {
-        this._enableAccessibility();
-        this.setAttribute('value', [...this.value].toString());
-    }
 
     public getFeedback(): FeedbackMessage {
         const feedback = this._getFeedback(this.getValue());
         return feedback;
     }
 
-    protected _render({ items, feedbackType }: MultipleResponseQuestion): TemplateResult {
+    protected _render({ items, feedbackMessage }: MultipleResponseQuestion): TemplateResult {
         return html`
         <link rel="stylesheet" type="text/css" href="/node_modules/@material/form-field/dist/mdc.form-field.css">
         <link rel="stylesheet" type="text/css" href="/node_modules/@material/checkbox/dist/mdc.checkbox.css">
         <link rel="stylesheet" type="text/css" href="/dist/css/multiple-choice.css">
-    <div class$="${feedbackType}">
+    <div class$="${feedbackMessage ? this.feedbackMessage.type : ''}">
        ${repeat(
            items,
            (item: HTMLElement) => item.id,
            (item: HTMLElement) => html`
             <div hidden class="mdc-form-field" >
-                <div class="mdc-checkbox" role="checkbox" on-click="${(evt: MouseEvent) => this._onItemClicked(evt, item.id, 'check')}">
-                    <input type="checkbox" class="mdc-checkbox__native-control" id$="${item.id}"/>
+                <div class="mdc-checkbox" on-click="${(evt: MouseEvent) => this._onItemClicked(evt, item.id)}">
+                    <input type="checkbox" type="checkbox"  class="mdc-checkbox__native-control" id$="${item.id}"/>
                         <div class="mdc-checkbox__background">
                             <svg class="mdc-checkbox__checkmark"viewBox="0 0 24 24">
                                 <path class="mdc-checkbox__checkmark-path" fill="none" d="M1.73,12.91 8.1,19.28 22.79,4.59"/>
@@ -67,7 +61,6 @@ export class MultipleResponseQuestion extends ComponentBase<Set<string>> impleme
        )}
         <slot name="options" on-slotchange="${(e: Event) => this._onSlotChanged(e)}" ></slot>
         <slot name="feedback" on-slotchange="${(e: Event) => this._onFeedbackSlotChanged(e)}"></slot>
-
     </div>
         `;
     }
@@ -77,18 +70,11 @@ export class MultipleResponseQuestion extends ComponentBase<Set<string>> impleme
      * @param {Event} event
      * @param {string} id
      */
-    _onItemClicked(event: Event, id: string, type?: string): void {
+    _onItemClicked(event: Event, id: string): void {
         event.stopPropagation();
-        (event.target as HTMLInputElement).setAttribute('aria-checked', `${(event.target as HTMLInputElement).checked}`);
         (event.target as HTMLInputElement).checked ? this.value.add(id) : this.value.delete(id);
-    }
-
-    private _enableAccessibility(): void {
-        this.setAttribute('aria-haspopup', 'true');
-        this.setAttribute('aria-label', this.innerHTML);
     }
 }
 
 applyMixins(MultipleResponseQuestion, [Feedback, MultipleChoiceMixin]);
-
 customElements.define('multiple-response-question', MultipleResponseQuestion);
