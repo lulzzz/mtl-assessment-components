@@ -29,8 +29,8 @@ export abstract class MultipleChoiceMixin {
         }
         this.items = items;
     }
-
-    match: (el: ResponseValidation, response: Set<string>) => boolean = (el, response) => {
+    
+    match: (el: ResponseValidation, response: any) => boolean = (el, response) => {
         if (!el.getExpected()) {
             // catch-all clause
             return true;
@@ -53,25 +53,7 @@ export abstract class MultipleChoiceMixin {
         }
     };
 
-
-    getFeedback(): FeedbackMessage {
-        return this._getFeedback(this.getValue());
-    }
-
-    _getFeedback(value: any): FeedbackMessage {
-        for (const el of this._responseValidationElements) {
-            if (this.match(el, value)) {
-                return el.getFeedbackMessage();
-            }
-        }
-        throw new Error('missing default response-validation');
-    }
-    
     abstract getValue(): any;
-
-    showFeedback(): void {
-        this.feedbackMessage = this.getFeedback();
-    }
 
     abstract _onItemClicked(event: Event, id: string, type?: string): any
 }
