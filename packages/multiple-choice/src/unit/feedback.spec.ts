@@ -1,4 +1,4 @@
-import { expect, mcqTagName } from './constants.spec';
+import { expect, mcqTagName, mrqTagName } from './constants.spec';
 import { MultipleChoiceQuestion } from '../components/multiple-choice-question';
 import { MultipleResponseQuestion } from '../components/multiple-response-question';
 import { FeedbackMessage } from '@hmh/component-base/dist/components/response-validation';
@@ -46,16 +46,14 @@ export default () => {
             await element.renderComplete;
 
             element.showFeedback();
-            await element.renderComplete;
-
             // @ts-ignore accessing private member
-            expect(element.feedbackType).to.equal('neutral');
+            expect(element.feedbackMessage.type).to.equal('neutral');
         });
     });
-    describe(`<${mcqTagName}> feedback in multiple mode`, (): void => {
+    describe(`<${mrqTagName}> feedback in multiple mode`, (): void => {
         it('should provide negative feedback on incorrect answer', async (): Promise<void> => {
             withSnippet('multiple-feedback-1');
-            const element: MultipleResponseQuestion = document.querySelector('multiple-choice-question') as any;
+            const element: MultipleResponseQuestion = document.querySelector('multiple-response-question') as any;
             await element.renderComplete;
             element.shadowRoot.getElementById('5').click();
             await element.renderComplete;
@@ -116,9 +114,8 @@ export default () => {
             await element.renderComplete;
             element.shadowRoot.getElementById('2').click();
             await element.renderComplete;
-
-            const feedback: FeedbackMessage = element.getFeedback();
-            expect(feedback.type).to.equal('negative');
+            element.showFeedback();
+            expect(element.feedbackMessage.type).to.equal('negative');
         });
     });
 };

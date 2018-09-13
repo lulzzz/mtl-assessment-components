@@ -1,16 +1,18 @@
 import { MDCRadio } from '@material/radio/index';
 import { MDCCheckbox } from '@material/checkbox/index';
-import { expect, mcqTagName } from './constants.spec';
+import { MultipleChoiceQuestion } from '../components/multiple-choice-question';
+import { MultipleResponseQuestion } from '../components/multiple-response-question';
+import { expect, mcqTagName, mrqTagName } from './constants.spec';
 
 export default () => {
-    describe(`<${mcqTagName}> default`, (): void => {
+    describe(`<${mcqTagName}> single`, (): void => {
         it('default should render as expected', (): void => {
-            withSnippet('default');
+            withSnippet('single-default');
             const value: boolean = true;
             expect(value).to.be.true;
         });
         it('should be able to add options programmatically', (): void => {
-            withSnippet('default');
+            withSnippet('single-default');
             const value: boolean = true;
             expect(value).to.be.true;
             const element: HTMLElement = document.querySelector('multiple-choice-question');
@@ -23,27 +25,9 @@ export default () => {
             const divTest: HTMLDivElement = document.getElementById('1') as HTMLDivElement;
             expect(divTest).to.equal(div);
         });
-        it('should be single answer by default', async (): Promise<void> => {
-            withSnippet('default');
-            const value: boolean = true;
-            expect(value).to.be.true;
-            const element: HTMLElement = document.querySelector('multiple-choice-question');
-            const div: HTMLDivElement = document.createElement('div');
-            div.slot = 'options';
-            div.id = '1';
-            div.hidden = true;
-            div.innerText = 'Option 1';
-            element.appendChild(div);
-            const divTest: HTMLDivElement = document.getElementById('1') as HTMLDivElement;
-            expect(divTest).to.equal(div);
-            // @ts-ignore renderComplete is a protected member
-            await element.renderComplete;
-            const formField: HTMLDivElement = element.shadowRoot.querySelector('div.mdc-form-field');
-            const radioBtn: HTMLDivElement = formField.querySelector('div');
-            expect(radioBtn.className).to.equal('mdc-radio');
-        });
+
         it('should be able to click added option', async (): Promise<void> => {
-            withSnippet('default');
+            withSnippet('single-default');
             const value: boolean = true;
             expect(value).to.be.true;
             const element: HTMLElement = document.querySelector('multiple-choice-question') as HTMLElement;
@@ -67,27 +51,40 @@ export default () => {
         });
     });
 
-    describe(`<${mcqTagName}> single mode`, (): void => {
-        it('should render as expected', (): void => {
-            withSnippet('single');
+    describe(`<${mrqTagName}> multiple`, (): void => {
+        it('default should render as expected', (): void => {
+            withSnippet('multiple-default');
             const value: boolean = true;
-
             expect(value).to.be.true;
         });
-    });
 
-    describe(`<${mcqTagName}> multiple mode`, (): void => {
-        it('should render as expected', (): void => {
-            withSnippet('multiple');
+        it('should be able to add options programmatically', (): void => {
+            withSnippet('multiple-default');
             const value: boolean = true;
             expect(value).to.be.true;
+            const element: HTMLElement = document.querySelector('multiple-response-question');
+            const div: HTMLDivElement = document.createElement('div');
+            div.slot = 'options';
+            div.id = '1';
+            div.hidden = true;
+            div.innerText = 'Option 1';
+            element.appendChild(div);
+            const divTest: HTMLDivElement = document.getElementById('1') as HTMLDivElement;
+            expect(divTest).to.equal(div);
         });
         it('should be able to click added option', async (): Promise<void> => {
-            withSnippet('multiple');
+            withSnippet('multiple-default');
             const value: boolean = true;
             expect(value).to.be.true;
             const element: HTMLElement = document.querySelector('multiple-response-question') as HTMLElement;
-
+            const div: HTMLDivElement = document.createElement('div');
+            div.slot = 'options';
+            div.id = '1';
+            div.hidden = true;
+            div.innerText = 'Option 1';
+            element.appendChild(div);
+            const divTest: HTMLDivElement = document.getElementById('1') as HTMLDivElement;
+            expect(divTest).to.equal(div);
             // @ts-ignore renderComplete is a protected member
             await element.renderComplete;
             const formFieldElement: HTMLDivElement = element.shadowRoot.querySelector('div.mdc-form-field');
