@@ -34,7 +34,6 @@ export class DropDown extends ComponentBase<Set<string>> implements MultipleChoi
     value: Set<string> = new Set();
     
     // declare mixins properties to satisfy the typescript compiler
-    getFeedback: () => FeedbackMessage;
     _getFeedback: (value: Set<string>) => FeedbackMessage;
     _onFeedbackSlotChanged:(evt: Event) => void;
     _onSlotChanged:(event: Event) => void;
@@ -44,8 +43,8 @@ export class DropDown extends ComponentBase<Set<string>> implements MultipleChoi
     /**
      * Sets feedbackMessage (used in render for feedback state) depending upon this.value
      */
-    showFeedback(): void {
-        this.feedbackMessage = this._getFeedback(this.getValue());
+    getFeedback(): FeedbackMessage {
+        return this._getFeedback(this.getValue());
     }
 
     /**
