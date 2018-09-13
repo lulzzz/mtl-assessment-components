@@ -32,7 +32,7 @@ export abstract class MultipleChoiceMixin {
         this.items = items;
     }
 
-    match: (el: ResponseValidation, response: Set<string>) => boolean = (el, response) => {
+    match: (el: ResponseValidation, response: any) => boolean = (el, response) => {
         if (!el.getExpected()) {
             // catch-all clause
             return true;

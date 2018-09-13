@@ -1,9 +1,9 @@
 import { MDCRadio } from '@material/radio/index';
 import { MDCCheckbox } from '@material/checkbox/index';
-import { expect, tagName } from './constants.spec';
+import { expect, mcqTagName } from './constants.spec';
 
 export default () => {
-    describe(`<${tagName}> default`, (): void => {
+    describe(`<${mcqTagName}> default`, (): void => {
         it('default should render as expected', (): void => {
             withSnippet('default');
             const value: boolean = true;
@@ -13,7 +13,7 @@ export default () => {
             withSnippet('default');
             const value: boolean = true;
             expect(value).to.be.true;
-            const element: HTMLElement = document.querySelector('multiple-choice');
+            const element: HTMLElement = document.querySelector('multiple-choice-question');
             const div: HTMLDivElement = document.createElement('div');
             div.slot = 'options';
             div.id = '1';
@@ -27,7 +27,7 @@ export default () => {
             withSnippet('default');
             const value: boolean = true;
             expect(value).to.be.true;
-            const element: HTMLElement = document.querySelector('multiple-choice');
+            const element: HTMLElement = document.querySelector('multiple-choice-question');
             const div: HTMLDivElement = document.createElement('div');
             div.slot = 'options';
             div.id = '1';
@@ -46,7 +46,7 @@ export default () => {
             withSnippet('default');
             const value: boolean = true;
             expect(value).to.be.true;
-            const element: HTMLElement = document.querySelector('multiple-choice') as HTMLElement;
+            const element: HTMLElement = document.querySelector('multiple-choice-question') as HTMLElement;
             const div: HTMLDivElement = document.createElement('div');
             div.slot = 'options';
             div.id = '1';
@@ -67,7 +67,7 @@ export default () => {
         });
     });
 
-    describe(`<${tagName}> single mode`, (): void => {
+    describe(`<${mcqTagName}> single mode`, (): void => {
         it('should render as expected', (): void => {
             withSnippet('single');
             const value: boolean = true;
@@ -76,7 +76,7 @@ export default () => {
         });
     });
 
-    describe(`<${tagName}> multiple mode`, (): void => {
+    describe(`<${mcqTagName}> multiple mode`, (): void => {
         it('should render as expected', (): void => {
             withSnippet('multiple');
             const value: boolean = true;
@@ -86,7 +86,7 @@ export default () => {
             withSnippet('multiple');
             const value: boolean = true;
             expect(value).to.be.true;
-            const element: HTMLElement = document.querySelector('multiple-choice') as HTMLElement;
+            const element: HTMLElement = document.querySelector('multiple-response-question') as HTMLElement;
 
             // @ts-ignore renderComplete is a protected member
             await element.renderComplete;

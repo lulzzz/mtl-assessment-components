@@ -15,42 +15,43 @@
         sourceMapSupport.install();
         mocha.setup('bdd');
     </script>
-    <script type="module" src="../dist/components/multiple-choice.js"></script>
+    <script type="module" src="../dist/components/multiple-choice-question.js"></script>
+    <script type="module" src="../dist/components/multiple-response-question.js"></script>
     <script type="module" src="../node_modules/@hmh/component-base/dist/components/response-validation.js"></script>
 </head>
 
 <body>
     <!-- test fixtures -->
     <template id="default">
-        <multiple-choice></multiple-choice>
+        <multiple-choice-question></multiple-choice-question>
     </template>
 
     <template id="single">
         <p>How much does Alex get paid per week if she works 40 hours, at an hourly rate of 10$/h?</p>
-        <multiple-choice>
+        <multiple-choice-question>
             <div hidden slot="options" id="1">300$</div>
             <div hidden slot="options" id="2">400$</div>
             <div hidden slot="options" id="3">800%</div>
             <div hidden slot="options" id="4">0 because she is always sick</div>
-        </multiple-choice>
+        </multiple-choice-question>
     </template>
 
     <template id="multiple">
         <p>Which of the following cities are located in Africa?</p>
-        <multiple-choice multiple>
+        <multiple-choice-question multiple>
             <div hidden slot="options" id="1">Durban</div>
             <div hidden slot="options" id="2">Dallas</div>
             <div hidden slot="options" id="3">Dakar</div>
             <div hidden slot="options" id="4">Douala</div>
             <div hidden slot="options" id="5">Dunkerque</div>
             <div hidden slot="options" id="6">Doha</div>
-        </multiple-choice>
+        </multiple-choice-question>
     </template>
 
 
     <template id="single-feedback-1">
         <p>How much does Alex get paid per week if she works 40 hours, at an hourly rate of 10$/h?</p>
-        <multiple-choice>
+        <multiple-choice-question>
             <div hidden slot="options" id="1">300$</div>
             <div hidden slot="options" id="2">400$</div>
             <div hidden slot="options" id="3">800%</div>
@@ -67,12 +68,12 @@
                 <span>Try again</span>
                 <span>Bad</span>
             </response-validation>
-        </multiple-choice>
+        </multiple-choice-question>
     </template>
 
     <template id="multiple-feedback-1">
         <p>Which of the following cities are located in Africa?</p>
-        <multiple-choice multiple>
+        <multiple-response-question multiple>
             <div hidden slot="options" id="1">Durban</div>
             <div hidden slot="options" id="2">Dallas</div>
             <div hidden slot="options" id="3">Dakar</div>
@@ -94,11 +95,11 @@
                 <span>Still not good</span>
                 <span>Wrong answer</span>
             </response-validation>
-        </multiple-choice>
+        </multiple-response-question>
     </template>
     <template id="multiple-feedback-2">
         <p>Which of the following cities are located in Africa?</p>
-        <multiple-choice multiple>
+        <multiple-response-question multiple>
             <div hidden slot="options" id="1">Durban</div>
             <div hidden slot="options" id="2">Dallas</div>
             <div hidden slot="options" id="3">Dakar</div>
@@ -123,7 +124,7 @@
                 <span>Still not good</span>
                 <span>Wrong answer</span>
             </response-validation>
-        </multiple-choice>
+        </multiple-response-question>
     </template>
 
     <div id="mocha">
