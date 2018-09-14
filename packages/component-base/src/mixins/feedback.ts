@@ -38,21 +38,6 @@ export abstract class Feedback {
         throw new Error('missing default response-validation');
     }
 
-    /*public match(el: ResponseValidation, response: any): boolean {
-        if (!el.expected) {
-            // catch-all clause
-            return true;
-        }
-
-        switch (el.strategy) {
-            case Strategy.FUZZY_MATCH:
-                return el.expected.toLowerCase() === response.toLowerCase();
-            case Strategy.EXACT_MATCH:
-            default:
-                return el.expected === response;
-        }
-    }*/
-
     public _onFeedbackSlotChanged(evt: Event): void {
         const slot: HTMLSlotElement = evt.srcElement as HTMLSlotElement;
         if (slot) {

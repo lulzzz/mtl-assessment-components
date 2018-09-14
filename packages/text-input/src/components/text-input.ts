@@ -1,4 +1,4 @@
-import { applyMixins, ComponentBase, Feedback, FeedbackMessage, html, TemplateResult } from '@hmh/component-base/dist/index';
+import { applyMixins, ComponentBase, Feedback, FeedbackMessage, Strategy, html, TemplateResult } from '@hmh/component-base/dist/index';
 import { MDCTextField } from '@material/textfield/index';
 import { ResponseValidation } from '@hmh/component-base/dist/components/response-validation';
 
@@ -15,7 +15,6 @@ export class TextInput extends ComponentBase<string> implements Feedback {
     public _getFeedback: (value: string) => FeedbackMessage;
     public _responseValidationElements: ResponseValidation[];
     public _onFeedbackSlotChanged: any;
-    public match: any;
 
     static get properties(): { [key: string]: string | object } {
         return {
@@ -28,6 +27,21 @@ export class TextInput extends ComponentBase<string> implements Feedback {
 
     public showFeedback(): void {
         this.feedback = this._getFeedback(this.value);
+    }
+
+    public match(el: ResponseValidation, response: string): boolean {
+        if (!el.expected) {
+            // catch-all clause
+            return true;
+        }
+
+        switch (el.strategy) {
+            case Strategy.FUZZY_MATCH:
+                return el.expected.toLowerCase() === response.toLowerCase();
+            case Strategy.EXACT_MATCH:
+            default:
+                return el.expected === response;
+        }
     }
 
     protected _render({ disabled, feedback, placeholder, value }: TextInput): TemplateResult {
