@@ -4,12 +4,11 @@ import { ResponseValidation, FeedbackMessage } from '../components/response-vali
 export abstract class MultipleChoiceMixin {
     public _responseValidationElements: ResponseValidation[];
     public items: HTMLElement[] = [];
-    public multiple: boolean;
     public feedbackMessage: FeedbackMessage;
     public feedbackType: string;
     abstract getValue(): any;
     abstract getFeedback(): FeedbackMessage;
-    abstract _onItemClicked(event: Event, id: string, type?: string): any
+    abstract _onItemClicked(event: Event, id: string, type?: string): any;
 
     /**
      * Fired on slot change
@@ -61,8 +60,8 @@ export abstract class MultipleChoiceMixin {
         }
     };
 
-    /**
-     * Set feedbackMessage to the appropritate 'FeedbackMessage'
+     /**
+     * Set feedbackMessage to the appropriate 'feedbackMessage' object
      * 
      * @returns void
      */
