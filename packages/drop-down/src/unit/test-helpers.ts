@@ -16,16 +16,7 @@ export function checkAccessibilityparams(el: DropDown, params: { [key: string]: 
 }
 
 export function getOptions(el: DropDown): HTMLElement[] {
-    const shadowRoot = el.shadowRoot;   
-    const slot = shadowRoot.querySelector('slot') as HTMLSlotElement;
-    const nodes: Node[] = slot.assignedNodes();
-    const results: Array<HTMLElement> = [];
-
-    nodes.forEach((node) => {
-        results.push(node as HTMLElement);
-    });
-
-    return results;
+    return el.shadowRoot.querySelectorAll('.option-item');
 }
 
 export function clickElement(el: HTMLElement): void {

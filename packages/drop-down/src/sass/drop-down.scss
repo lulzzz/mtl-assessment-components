@@ -36,6 +36,7 @@
     min-width: 160px;
     box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
     z-index: 1;
+    margin-top: 24px;
 }
 
 /* Links inside the dropdown */
@@ -57,17 +58,17 @@
     float: right;
 }
 
-::slotted(.option-item){
+.option-item {
     border-style: solid;
     border-color: transparent
 }
 
-::slotted(.option-item:hover){
+.option-item:hover {
     border-style: solid;
     border-color: var(--option-hover-color, #BEE9F7);
 }
 
-::slotted(.selected){
+.selected {
     background-color: var(--option-selected-color,lightblue);
 }
 

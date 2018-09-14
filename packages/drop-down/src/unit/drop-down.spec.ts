@@ -17,6 +17,7 @@ describe(`<${tagName}>`, (): void => {
     it('should open contents on button clicked', async (): Promise<void> => {
         withSnippet('default');
         const el: DropDown = document.querySelector('drop-down') as any;
+        await el.renderComplete;
         const shadowRoot = el.shadowRoot;
         clickElement(shadowRoot.querySelector('.drop-button'));
         await el.renderComplete;
@@ -28,6 +29,7 @@ describe(`<${tagName}>`, (): void => {
     it('should open contents on navigation (arrow) button clicked', async (): Promise<void> => {
         withSnippet('default');
         const el: DropDown = document.querySelector('drop-down') as any;
+        await el.renderComplete;
         clickElement(el.shadowRoot.querySelector('.nav-button'));
         await el.renderComplete;
         const content = el.shadowRoot.querySelector('.dropdown-content');
@@ -38,17 +40,21 @@ describe(`<${tagName}>`, (): void => {
     it('should contain the expected option values', async (): Promise<void> => {
         withSnippet('values-one-two-three');
         const el: DropDown = document.querySelector('drop-down') as any;
+        await el.renderComplete;
         const options = getOptions(el);
-        expect(options[0].getAttribute('value')).to.equal('one');
-        expect(options[1].getAttribute('value')).to.equal('two');
-        expect(options[2].getAttribute('value')).to.equal('three');
+        await el.renderComplete;
+        expect(options[0].getAttribute('id')).to.equal('one');
+        expect(options[1].getAttribute('id')).to.equal('two');
+        expect(options[2].getAttribute('id')).to.equal('three');
     });
-
+    
     it('should set aria-selected property correctly when a selection is made', async (): Promise<void> => {
         withSnippet('values-one-two-three');
         let el: DropDown = document.querySelector('drop-down') as any;
-        const options = getOptions(el);
+        await el.renderComplete;
+        let options = getOptions(el);
         clickElement(options[2]);
+        await el.renderComplete;
         expect(options[0].getAttribute('aria-selected')).to.equal('false');
         expect(options[1].getAttribute('aria-selected')).to.equal('false');
         expect(options[2].getAttribute('aria-selected')).to.equal('true');
@@ -57,6 +63,7 @@ describe(`<${tagName}>`, (): void => {
     it('should set selected class correctly when multiple selections are made in single mode', async (): Promise<void> => {
         withSnippet('values-one-two-three');
         let el: DropDown = document.querySelector('drop-down') as any;
+        await el.renderComplete;
         const options = getOptions(el);
         await selectOptions(options, [0]);
         await selectOptions(options, [1]);
@@ -68,6 +75,7 @@ describe(`<${tagName}>`, (): void => {
     it('should set selected class correctly when selections are made in multiple mode', async (): Promise<void> => {
         withSnippet('values-one-two-three-multiple');
         let el: DropDown = document.querySelector('drop-down') as any;
+        await el.renderComplete;
         const options = getOptions(el);
         await selectOptions(options, [1,2]);
         expect(options[0].classList.contains('selected')).to.equal(false);
@@ -78,26 +86,30 @@ describe(`<${tagName}>`, (): void => {
     it('should deselect an item when the item is clicked twice in multiple mode', async (): Promise<void> => {
         withSnippet('values-one-two-three-multiple');
         let el: DropDown = document.querySelector('drop-down') as any;
+        await el.renderComplete;
         const options = getOptions(el);
         clickElement(options[0]);
         await el.renderComplete;
         expect(options[0].classList.contains('selected')).to.equal(true);
         clickElement(options[0]);
+        await el.renderComplete;
         expect(options[0].classList.contains('selected')).to.equal(false);
     });
 
     it('should change value when a selection is made', async (): Promise<void> => {
         withSnippet('values-one-two-three');
         let el: DropDown = document.querySelector('drop-down') as any;
+        await el.renderComplete;
         const options = getOptions(el);
         clickElement(options[1]);
         await el.renderComplete;
-        expect(el.getValue()).to.have.deep.keys([options[1].getAttribute('value')]);
+        expect(el.getValue()).to.have.deep.keys([options[1].getAttribute('id')]);
     });
 
     it('should change value when multiple selections are made', async (): Promise<void> => {
         withSnippet('values-one-two-three-multiple');
         let el: DropDown = document.querySelector('drop-down') as any;
+        await el.renderComplete;
         await selectOptions(getOptions(el), [0,2]);
         expect(el.getValue()).to.have.deep.keys(['one', 'three']);
     });
@@ -105,22 +117,25 @@ describe(`<${tagName}>`, (): void => {
     it('should update the UI to reflect selected option content when a selection is made', async (): Promise<void> => {
         withSnippet('values-one-two-three');
         let el: DropDown = document.querySelector('drop-down') as any;
+        await el.renderComplete;
         const options = getOptions(el);
         clickElement(options[0]);
         await el.renderComplete;
-        expect(el.shadowRoot.querySelector('.drop-button').innerHTML).to.equal(options[0].innerHTML.trim());
+        expect(el.shadowRoot.querySelector('.drop-button').innerHTML).to.contain(options[0].innerHTML.trim());
     });
 
     it('should update the UI to reflect selected option content when selections are made in multiple mode', async (): Promise<void> => {
         withSnippet('values-one-two-three-multiple');
         let el: DropDown = document.querySelector('drop-down') as any;
+        await el.renderComplete;
         await selectOptions(getOptions(el), [0,1,2]);
-        expect(el.shadowRoot.querySelector('.drop-button').innerHTML).to.equal('one,two,three');
+        expect(el.shadowRoot.querySelector('.drop-button').innerHTML).to.contain('one,two,three');
     });
 
     it('should allow for HTML as option content', async (): Promise<void> => {
         withSnippet('html');
         let el: DropDown = document.querySelector('drop-down') as any;
+        await el.renderComplete;
         const options = getOptions(el);
         expect(options[0].innerHTML.includes('https://ebird.org/content/atlasva/wp-content/uploads/sites/68/Picture-286-1024x768.jpg')).to.equal(true);
         expect(options[1].innerHTML.includes('<b>')).to.equal(true);
@@ -133,7 +148,7 @@ describe(`<${tagName}>`, (): void => {
 
         await new Promise(resolve => {
             el.addEventListener('change', (evt: CustomEvent) => {
-                expect(evt.detail.value.pop()).to.equal('two');
+                expect([...evt.detail.value].pop()).to.equal('two');
                 resolve();
             });
 
@@ -145,6 +160,7 @@ describe(`<${tagName}>`, (): void => {
     it('should display correct feedback on correct answer', async (): Promise<void> => {
         withSnippet('feedback');
         let el: DropDown = document.querySelector('drop-down') as any;
+        await el.renderComplete;
         await triggerValidation(el, 0);
         const feedbackMessage = el.shadowRoot.querySelector('.feedback-message');
         expect(feedbackMessage.classList.contains('feedback-positive-background')).to.equal(true);
@@ -155,6 +171,7 @@ describe(`<${tagName}>`, (): void => {
     it('should display correct feedback on correct answer with strategy fuzzyMatch', async (): Promise<void> => {
         withSnippet('feedback-fuzzy-stategy');
         let el: DropDown = document.querySelector('drop-down') as any;
+        await el.renderComplete;
         await triggerValidation(el, 0);
         const feedbackMessage = el.shadowRoot.querySelector('.feedback-message');
         expect(feedbackMessage.classList.contains('feedback-positive-background')).to.equal(true);
@@ -165,6 +182,7 @@ describe(`<${tagName}>`, (): void => {
     it('should display neutral feedback on neutral (almost correct) answer', async (): Promise<void> => {
         withSnippet('feedback');
         let el: DropDown = document.querySelector('drop-down') as any;
+        await el.renderComplete;
         await triggerValidation(el, 1);
         const feedbackMessage = el.shadowRoot.querySelector('.feedback-message');
         expect(feedbackMessage.classList.contains('feedback-neutral-background')).to.equal(true);
@@ -175,6 +193,7 @@ describe(`<${tagName}>`, (): void => {
     it('should display incorrect feedback on incorrect answer', async (): Promise<void> => {
         withSnippet('feedback');
         let el: DropDown = document.querySelector('drop-down') as any;
+        await el.renderComplete;
         await triggerValidation(el, 2)
         const feedbackMessage = el.shadowRoot.querySelector('.feedback-message');
         expect(feedbackMessage.classList.contains('feedback-negative-background')).to.equal(true);
@@ -189,14 +208,16 @@ describe(`<${tagName}>`, (): void => {
         await selectOptions(getOptions(el), [0]);
         const rv: ResponseValidation = new ResponseValidation();
         rv.strategy = Strategy.MATH_EQUIVALENT;
-        rv['expected'] = '1'; //hacky because expected is private
+        //@ts-ignore
+        rv.expected = '1';
         expect(el.match(rv, null)).to.equal(false);
     });
 
     it('should set _responseValidationElements in response to feedback slot change event', async (): Promise<void> => {
         withSnippet('values-one-two-three');
         const el: DropDown = document.querySelector('drop-down') as any;
-        el.onFeedbackSlotChanged(generateOnSlotChangeEvent(el));
+        await el.renderComplete;
+        el._onFeedbackSlotChanged(generateOnSlotChangeEvent(el));
         await el.renderComplete;
         expect(el._responseValidationElements).to.not.equal(null);
     });

@@ -5,8 +5,11 @@ export abstract class MultipleChoiceMixin {
     public _responseValidationElements: ResponseValidation[];
     public items: HTMLElement[] = [];
     public feedbackMessage: FeedbackMessage;
-    public abstract getValue(): any;
+    public feedbackType: string;
+    abstract getValue(): any;
     abstract getFeedback(): FeedbackMessage;
+    abstract _onItemClicked(event: Event, id: string, type?: string): any;
+
     /**
      * Fired on slot change
      * @param {Event} event
@@ -29,8 +32,12 @@ export abstract class MultipleChoiceMixin {
         }
         this.items = items;
     }
-
-    match: (el: ResponseValidation, response: Set<string>) => boolean = (el, response) => {
+    
+    /**
+     * @param  {ResponseValidation} el - the element containing an expected value and a strategy 
+     * @param  {any} response - The value to match against
+     */
+    match: (el: ResponseValidation, response: any) => boolean = (el, response) => {
         if (!el.getExpected()) {
             // catch-all clause
             return true;
@@ -53,9 +60,12 @@ export abstract class MultipleChoiceMixin {
         }
     };
 
+     /**
+     * Set feedbackMessage to the appropriate 'feedbackMessage' object
+     * 
+     * @returns void
+     */
     showFeedback(): void {
         this.feedbackMessage = this.getFeedback();
     }
-
-    abstract _onItemClicked(event: Event, id: string, type?: string): any;
 }

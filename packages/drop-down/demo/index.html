@@ -15,15 +15,9 @@
                 <!-- basic usage -->
                 <h4> Simple Drop Down </h4>
                 <drop-down id="drop-down1">
-                    <div value="one" slot="options" class="option-item">
-                        one
-                    </div>
-                    <div value="two" slot="options" class="option-item">
-                        two
-                    </div>
-                    <div value="three" slot="options" class="option-item">
-                        three
-                    </div>
+                    <div slot="options" class="option-item", id="one">one</div>
+                    <div slot="options" class="option-item", id="two">two</div>
+                    <div slot="options" class="option-item", id="three">three</div>
 
                     <response-validation slot="feedback" expected="one" score="4" strategy="exactMatch">
                         <span>Correct</span>
@@ -53,17 +47,11 @@
                 <h4> Drop Down Multiple </h4>
                 <!-- multiple select -->
                 <drop-down multiple id="drop-down2">
-                    <div value="one" slot="options" class="option-item">
-                        one
-                    </div>
-                    <div value="two" slot="options" class="option-item">
-                        two
-                    </div>
-                    <div value="three" slot="options" class="option-item">
-                        three
-                    </div>
+                    <div slot="options" class="option-item" id="one">one</div>
+                    <div slot="options" class="option-item" id="two">two</div>
+                    <div slot="options" class="option-item" id="three">three</div>
 
-                    <response-validation slot="feedback" expected="one" score="4" strategy="exactMatch">
+                    <response-validation slot="feedback" expected="one" score="4" strategy="fuzzyMatch">
                         <span>Correct</span>
                     </response-validation>
                 
