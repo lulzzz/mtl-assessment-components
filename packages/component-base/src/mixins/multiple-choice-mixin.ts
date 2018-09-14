@@ -5,7 +5,6 @@ export abstract class MultipleChoiceMixin {
     public _responseValidationElements: ResponseValidation[];
     public items: HTMLElement[] = [];
     public feedbackMessage: FeedbackMessage;
-    public feedbackType: string;
     abstract getValue(): any;
     abstract getFeedback(): FeedbackMessage;
     abstract _onItemClicked(event: Event, id: string, type?: string): any;

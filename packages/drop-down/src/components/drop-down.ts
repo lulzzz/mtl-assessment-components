@@ -30,6 +30,7 @@ export class DropDown extends ComponentBase<Set<string>> implements MultipleChoi
     public open: boolean = false;
     public multiple: boolean = false;
     public feedbackMessage: FeedbackMessage;
+    showFeedback: () => void;
     items: HTMLElement[] = [];
     value: Set<string> = new Set();
     
