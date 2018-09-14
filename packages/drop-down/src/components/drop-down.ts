@@ -17,7 +17,7 @@ export class DropDown extends ComponentBase<Set<string>> implements MultipleChoi
      */                      
     static get properties(): { [key: string]: string | object } {
         return {
-            ...ComponentBase.properties,
+            ...super.properties,
             open: Boolean,
             multiple: Boolean,
             feedbackMessage: Object,
@@ -72,7 +72,11 @@ export class DropDown extends ComponentBase<Set<string>> implements MultipleChoi
         if (this.value.has(selectedValue)) {
             this.value.delete(selectedValue);
         } else {
-            this._selectElement(selectedValue);
+            if (this.multiple) {
+                this.value.add(selectedValue);
+            } else {
+                this.value = new Set<string>([selectedValue]);
+            }
         }
         // Set add doesn't result in a render call (no assignent)
         this.requestRender();
@@ -86,20 +90,6 @@ export class DropDown extends ComponentBase<Set<string>> implements MultipleChoi
                 }
             })
         );
-    }
-
-    /**
-     * Select an options element. Behavior depends upon this.multiple
-     * 
-     * @param  {string} selectedValue
-     * @returns void
-     */
-    private _selectElement(selectedValue: string) : void {        
-        if (this.multiple) {
-            this.value.add(selectedValue);
-        } else {
-            this.value = new Set<string>([selectedValue]);
-        }
     }
 
     /**
@@ -139,7 +129,7 @@ export class DropDown extends ComponentBase<Set<string>> implements MultipleChoi
         <div class$="container ${this._getFeedbackClass(feedbackMessage, false)}">
             <div class="dropdown">
                 <div class="buttons-container">
-                    <button class="drop-button" on-click="${(evt: Event) => this._onDropDownClicked()}"> ${value.size > 0 ? [...value].pop() : this.defaultTitle}</button>
+                    <button class="drop-button" on-click="${(evt: Event) => this._onDropDownClicked()}">${value.size > 0 ? [...value].join(',') : this.defaultTitle}</button>
                     <button class="nav-button" on-click="${(evt: Event) => this._onDropDownClicked()}">${ open ? html`&uarr;` : html`&darr;` }</button>
                 </div>
             </div>
@@ -147,7 +137,7 @@ export class DropDown extends ComponentBase<Set<string>> implements MultipleChoi
             <div class="dropdown-content" hidden="${!open}">
                 ${repeat(items, (item: HTMLElement) => item.id, (item: HTMLElement, index: number) => html`
                     <div class="options">
-                        <div class$="option-item ${value.has(item.id) ? 'selected' : ''}" aria-selected$="${value.has(item.id)}" tabindex$="${index+1}" role="button" on-click="${(evt: MouseEvent) => this._onItemClicked(evt, item.id)}"> 
+                        <div class$="option-item ${value.has(item.id) ? 'selected' : ''}" aria-selected$="${value.has(item.id)}" id$="${item.id}" tabindex$="${index+1}" role="button" on-click="${(evt: MouseEvent) => this._onItemClicked(evt, item.id)}"> 
                             ${unsafeHTML(item.innerHTML)}
                         </div>
                     </div>
