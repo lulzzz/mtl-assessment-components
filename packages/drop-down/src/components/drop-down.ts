@@ -159,29 +159,11 @@ export class DropDown extends ComponentBase<Set<string>> implements MultipleChoi
      * @returns String
      */
     private  _getFeedbackClass(feedbackMessage: FeedbackMessage, isContainer: boolean): string {
-        let result = '';
-        
-        const feedbackBackgroundMap = {
-            positive: 'feedback-positive-background',
-            negative: 'feedback-negative-background',
-            neutral: 'feedback-neutral-background',
-        };
-
-        const feedbackBorderMap = {
-            positive: 'feedback-positive-border',
-            negative: 'feedback-negative-border',
-            neutral: 'feedback-neutral-border',
-        };
-
-        if (feedbackMessage) {
-            if (isContainer) {
-                result = feedbackBackgroundMap[feedbackMessage.type];
-            } else {
-                result = feedbackBorderMap[feedbackMessage.type];
-            }
+        if (!feedbackMessage) {
+            return '';
         }
         
-        return result;
+        return isContainer ? `feedback-${feedbackMessage.type}-background` : `feedback-${feedbackMessage.type}-border`;
     }
 }
 
