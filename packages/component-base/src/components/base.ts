@@ -37,9 +37,7 @@ export class ComponentBase<T> extends LitElement {
      */
     public showFeedback(): void {
         if (typeof this._getFeedback === 'function') {
-            this.feedbackMessage = { ...this._getFeedback(this.value) };
-        } else {
-            throw new Error('Unsupported method');
+            this.feedbackMessage = this._getFeedback(this.value);
         }
     }
 
