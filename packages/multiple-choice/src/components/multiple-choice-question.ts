@@ -2,9 +2,9 @@ import { ComponentBase, html, TemplateResult, Feedback, applyMixins, repeat, uns
 import { ResponseValidation, FeedbackMessage } from '@hmh/component-base/dist/components/response-validation';
 
 /**
- * `<multiple-choice>`
- * In typical use, use `<multiple-choice> if single correct answer, and <multiple-choice mode="multiple"> if multiple correct answer`
- * @demo ./demo/index.html
+ * `<multiple-choice-question>`
+ * In typical use, use `<multiple-choice-question>`
+ * @demo ./demo/index-mcq.html
  *
  */
 export class MultipleChoiceQuestion extends ComponentBase<string> implements Feedback, MultipleChoiceMixin {

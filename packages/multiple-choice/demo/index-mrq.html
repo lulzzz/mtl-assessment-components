@@ -10,56 +10,8 @@
 </head>
 
 <body>
-    <h3>Multiple Choice Demo</h3>
+    <h3>Multiple Response Question Demo</h3>
     <!-- basic usage -->
-    <h4>How many fingers do you have?</h4>
-    <multiple-choice-question id="multiple1">
-        <div hidden slot="options" id="000-1">three</div>
-        <div hidden slot="options" id="000-2">
-            <a href="https://www.w3schools.com/html/">Visit our HTML tutorial</a>
-        </div>
-        <div hidden slot="options" id="000-3">
-            <table style="width:100%" alt="A table">
-                <tr>
-                    <th>Firstname</th>
-                    <th>Lastname</th>
-                    <th>Age</th>
-                </tr>
-                <tr>
-                    <td>Jill</td>
-                    <td>Smith</td>
-                    <td>50</td>
-                </tr>
-                <tr>
-                    <td>Eve</td>
-                    <td>Jackson</td>
-                    <td>94</td>
-                </tr>
-            </table>
-        </div>
-        <div hidden slot="options" id="000-4">eleven
-            <img src="https://upload.wikimedia.org/wikipedia/commons/a/ac/Approve_icon.svg" alt="Check image" style="width:42px;height:42px;border:0;">
-        </div>
-
-        <response-validation hidden slot="feedback" expected="000-1" score="4" strategy="exactMatch">
-            <span>Good</span>
-            <span>Wooot!</span>
-        </response-validation>
-
-        <response-validation hidden slot="feedback" expected="000-3" score="1" feedbackType="neutral" strategy="exactMatch">
-            <span>Almost</span>
-        </response-validation>
-
-        <response-validation hidden slot="feedback" score="0" feedback="negative" strategy="exactMatch">
-            <span>Try again</span>
-            <span>Oups, still not good</span>
-            <span>Too bad!</span>
-        </response-validation>
-
-    </multiple-choice-question>
-    <div id="feedback1">Feedback will appear here</div>
-
-
     <h4>Which of these producers make Dub Techno?</h4>
     <multiple-response-question id="multiple2">
         <div hidden slot="options" id="000-1-b">Moritz Von Oswald</div>
@@ -124,11 +76,9 @@
     <script>
 
         document.getElementById('button').addEventListener('click', () => {
-            document.getElementById('multiple1').showFeedback();
             document.getElementById('multiple2').showFeedback();
             document.getElementById('multiple3').showFeedback();
 
-            document.getElementById('feedback1').innerText = JSON.stringify(document.getElementById('multiple1').getFeedback());
             document.getElementById('feedback2').innerText = JSON.stringify(document.getElementById('multiple2').getFeedback());
             document.getElementById('feedback3').innerText = JSON.stringify(document.getElementById('multiple3').getFeedback());
 
