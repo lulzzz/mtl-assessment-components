@@ -7,7 +7,7 @@ import {
     applyMixins,
     repeat,
     unsafeHTML,
-    MultipleChoiceMixin
+    MultipleChoice
 } from '@hmh/component-base/dist/index';
 import { ResponseValidation } from '@hmh/component-base/dist/components/response-validation';
 
@@ -17,7 +17,7 @@ import { ResponseValidation } from '@hmh/component-base/dist/components/response
  * @demo ./demo/index-mrq.html
  *
  */
-export class MultipleResponseQuestion extends ComponentBase<string[]> implements Feedback, MultipleChoiceMixin {
+export class MultipleResponseQuestion extends ComponentBase<string[]> implements MultipleChoice, Feedback {
     static get properties(): { [key: string]: string | object } {
         return {
             ...super.properties,
@@ -52,7 +52,7 @@ export class MultipleResponseQuestion extends ComponentBase<string[]> implements
                 (item: HTMLElement) => item.id,
                 (item: HTMLElement) => html`
                     <div hidden class="mdc-form-field" >
-                        <div class="mdc-checkbox" on-click="${(evt: MouseEvent) => this._onItemClicked(evt, item.id)}">
+                        <div class="mdc-checkbox" on-click="${(evt: MouseEvent) => this._onItemClicked(evt, item.id, true)}">
                             <input type="checkbox" type="checkbox"  class="mdc-checkbox__native-control" id$="${item.id}"/>
                                 <div class="mdc-checkbox__background">
                                     <svg class="mdc-checkbox__checkmark"viewBox="0 0 24 24">
@@ -71,5 +71,5 @@ export class MultipleResponseQuestion extends ComponentBase<string[]> implements
     }
 }
 
-applyMixins(MultipleResponseQuestion, [Feedback, MultipleChoiceMixin]);
+applyMixins(MultipleResponseQuestion, [MultipleChoice, Feedback]);
 customElements.define('multiple-response-question', MultipleResponseQuestion);

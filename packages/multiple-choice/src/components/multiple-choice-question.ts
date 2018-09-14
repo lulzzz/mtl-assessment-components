@@ -1,4 +1,4 @@
-import { ComponentBase, html, TemplateResult, Feedback, FeedbackMessage, applyMixins, repeat, unsafeHTML, MultipleChoiceMixin } from '@hmh/component-base/dist/index';
+import { ComponentBase, html, TemplateResult, Feedback, FeedbackMessage, applyMixins, repeat, unsafeHTML, MultipleChoice } from '@hmh/component-base/dist/index';
 import { ResponseValidation } from '@hmh/component-base/dist/components/response-validation';
 
 /**
@@ -7,7 +7,7 @@ import { ResponseValidation } from '@hmh/component-base/dist/components/response
  * @demo ./demo/index-mcq.html
  *
  */
-export class MultipleChoiceQuestion extends ComponentBase<string[]> implements Feedback, MultipleChoiceMixin {
+export class MultipleChoiceQuestion extends ComponentBase<string[]> implements MultipleChoice, Feedback {
     static get properties(): { [key: string]: string | object } {
         return {
             ...super.properties,
@@ -58,5 +58,5 @@ export class MultipleChoiceQuestion extends ComponentBase<string[]> implements F
     }
 }
 
-applyMixins(MultipleChoiceQuestion, [Feedback, MultipleChoiceMixin]);
+applyMixins(MultipleChoiceQuestion, [MultipleChoice, Feedback]);
 customElements.define('multiple-choice-question', MultipleChoiceQuestion);

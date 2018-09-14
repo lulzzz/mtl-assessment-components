@@ -1,4 +1,4 @@
-import { applyMixins, ComponentBase, html, TemplateResult, Feedback, MultipleChoiceMixin, repeat, unsafeHTML } from '@hmh/component-base/dist/index';
+import { applyMixins, ComponentBase, html, TemplateResult, Feedback, MultipleChoice, repeat, unsafeHTML } from '@hmh/component-base/dist/index';
 import { ResponseValidation } from '@hmh/component-base/dist/components/response-validation';
 import { FeedbackMessage } from '@hmh/component-base/dist/mixins/feedback';
 
@@ -8,7 +8,7 @@ import { FeedbackMessage } from '@hmh/component-base/dist/mixins/feedback';
  * Currently uses Set for value so option values must be unique.
  * @demo ./demo/index.html
  */
-export class DropDown extends ComponentBase<string[]> implements Feedback, MultipleChoiceMixin {
+export class DropDown extends ComponentBase<string[]> implements Feedback, MultipleChoice {
     static get properties(): { [key: string]: string | object } {
         return {
             ...super.properties,
@@ -125,6 +125,6 @@ export class DropDown extends ComponentBase<string[]> implements Feedback, Multi
     }
 }
 
-applyMixins(DropDown, [MultipleChoiceMixin, Feedback]);
+applyMixins(DropDown, [MultipleChoice, Feedback]);
 
 customElements.define('drop-down', DropDown);

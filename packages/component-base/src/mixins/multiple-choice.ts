@@ -1,7 +1,7 @@
 import { Strategy } from '../index';
 import { ResponseValidation } from '../components/response-validation';
 
-export abstract class MultipleChoiceMixin {
+export abstract class MultipleChoice {
     public items: HTMLElement[] = [];
     public value: string[] = [];
 
