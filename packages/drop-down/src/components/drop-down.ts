@@ -17,7 +17,7 @@ export class DropDown extends ComponentBase<Set<string>> implements MultipleChoi
      */                      
     static get properties(): { [key: string]: string | object } {
         return {
-            ...ComponentBase.baseProperties,
+            ...super.properties,
             open: Boolean,
             multiple: Boolean,
             feedbackMessage: Object

@@ -15,7 +15,7 @@ export class ComponentBase<T> extends LitElement {
     public mode: Mode = Mode.INTERACTIVE;
     public value: T;
 
-    static get baseProperties(): { [key: string]: string | object } {
+    static get properties(): { [key: string]: string | object } {
         return {
             disabled: Boolean
         };
