@@ -1,0 +1,74 @@
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="index.css">
+    <link rel="stylesheet" type="text/css" href="/node_modules/@material/button/dist/mdc.button.css">
+    <script type="module" src="../node_modules/@hmh/component-base/dist/components/response-validation.js"></script>
+    <script type="module" src="../dist/components/multiple-response-question.js"></script>
+    <script type="module" src="../dist/components/multiple-choice-question.js"></script>
+</head>
+
+<body>
+    <h3>Multiple Choice Demo</h3>
+    <!-- basic usage -->
+    <h4>How many fingers do you have?</h4>
+    <multiple-choice-question id="multiple1">
+        <div hidden slot="options" id="000-1">three</div>
+        <div hidden slot="options" id="000-2">
+            <a href="https://www.w3schools.com/html/">Visit our HTML tutorial</a>
+        </div>
+        <div hidden slot="options" id="000-3">
+            <table style="width:100%" alt="A table">
+                <tr>
+                    <th>Firstname</th>
+                    <th>Lastname</th>
+                    <th>Age</th>
+                </tr>
+                <tr>
+                    <td>Jill</td>
+                    <td>Smith</td>
+                    <td>50</td>
+                </tr>
+                <tr>
+                    <td>Eve</td>
+                    <td>Jackson</td>
+                    <td>94</td>
+                </tr>
+            </table>
+        </div>
+        <div hidden slot="options" id="000-4">eleven
+            <img src="https://upload.wikimedia.org/wikipedia/commons/a/ac/Approve_icon.svg" alt="Check image" style="width:42px;height:42px;border:0;">
+        </div>
+
+        <response-validation hidden slot="feedback" expected="000-1" score="4" strategy="exactMatch">
+            <span>Good</span>
+            <span>Wooot!</span>
+        </response-validation>
+
+        <response-validation hidden slot="feedback" expected="000-3" score="1" feedbackType="neutral" strategy="exactMatch">
+            <span>Almost</span>
+        </response-validation>
+
+        <response-validation hidden slot="feedback" score="0" feedback="negative" strategy="exactMatch">
+            <span>Try again</span>
+            <span>Oups, still not good</span>
+            <span>Too bad!</span>
+        </response-validation>
+
+    </multiple-choice-question>
+    <div id="feedback1">Feedback will appear here</div>
+    <button id="button" class="mdc-button">Validate</button>
+
+    <script>
+
+        document.getElementById('button').addEventListener('click', () => {
+            document.getElementById('multiple1').showFeedback();
+            document.getElementById('feedback1').innerText = JSON.stringify(document.getElementById('multiple1').getFeedback());
+
+        })
+
+    </script>
+</body>
+
+</html>

@@ -25,7 +25,7 @@ export class ResponseValidation extends ComponentBase<string> {
 
     static get properties(): { [key: string]: string | object } {
         return {
-            ...ComponentBase.baseProperties,
+            ...super.properties,
             expected: String,
             feedbackType: String,
             score: Number,
