@@ -19,7 +19,7 @@ export class TextInput extends ComponentBase<string> implements Feedback {
 
     static get properties(): { [key: string]: string | object } {
         return {
-            ...ComponentBase.baseProperties,
+            ...super.properties,
             feedback: Object,
             placeholder: String,
             value: String

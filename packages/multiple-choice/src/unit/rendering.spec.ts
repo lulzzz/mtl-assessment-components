@@ -1,7 +1,5 @@
 import { MDCRadio } from '@material/radio/index';
 import { MDCCheckbox } from '@material/checkbox/index';
-import { MultipleChoiceQuestion } from '../components/multiple-choice-question';
-import { MultipleResponseQuestion } from '../components/multiple-response-question';
 import { expect, mcqTagName, mrqTagName } from './constants.spec';
 
 export default () => {
