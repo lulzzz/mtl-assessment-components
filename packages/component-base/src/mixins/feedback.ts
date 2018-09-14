@@ -26,10 +26,11 @@ export abstract class Feedback {
     public abstract feedbackMessage: FeedbackMessage;
 
     public abstract _responseValidationElements: ResponseValidation[];
+    public abstract match: (el: ResponseValidation, response: any) => boolean;
 
     public _getFeedback(value: any): FeedbackMessage {
         for (const el of this._responseValidationElements) {
-            console.log('_getFeedback', el, value);
+            console.log('_getFeedback', el.expected, value);
             if (this.match(el, value)) {
                 return el.getFeedbackMessage();
             }
@@ -37,7 +38,7 @@ export abstract class Feedback {
         throw new Error('missing default response-validation');
     }
 
-    public match(el: ResponseValidation, response: any): boolean {
+    /*public match(el: ResponseValidation, response: any): boolean {
         if (!el.expected) {
             // catch-all clause
             return true;
@@ -50,7 +51,7 @@ export abstract class Feedback {
             default:
                 return el.expected === response;
         }
-    }
+    }*/
 
     public _onFeedbackSlotChanged(evt: Event): void {
         const slot: HTMLSlotElement = evt.srcElement as HTMLSlotElement;

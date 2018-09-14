@@ -8,7 +8,7 @@ import { FeedbackMessage } from '@hmh/component-base/dist/mixins/feedback';
  * Currently uses Set for value so option values must be unique.
  * @demo ./demo/index.html
  */
-export class DropDown extends ComponentBase<string[]> implements MultipleChoiceMixin, Feedback {
+export class DropDown extends ComponentBase<string[]> implements Feedback, MultipleChoiceMixin {
     static get properties(): { [key: string]: string | object } {
         return {
             ...super.properties,
@@ -23,9 +23,10 @@ export class DropDown extends ComponentBase<string[]> implements MultipleChoiceM
     public multiple: boolean = false;
     items: HTMLElement[] = [];
     private defaultTitle = 'Select an option';
+    public value: string[] = [];
 
     // declare mixins properties to satisfy the typescript compiler
-    _getFeedback: (value: Set<string>) => FeedbackMessage;
+    _getFeedback: (value: string[]) => FeedbackMessage;
     _onFeedbackSlotChanged: (evt: Event) => void;
     _onSlotChanged: (event: Event) => void;
     _onItemClicked: (event: Event, selected: string, multiple?: boolean) => void;
