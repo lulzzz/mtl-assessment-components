@@ -1,7 +1,7 @@
 export { ComponentBase, html, repeat, TemplateResult, unsafeHTML } from './components/base';
 export { Persistence } from './mixins/persistence';
-export { Feedback, Strategy } from './mixins/feedback';
-export { MultipleChoiceMixin } from './mixins/multiple-choice-mixin'
+export { Feedback, FeedbackType, FeedbackMessage, Strategy } from './mixins/feedback';
+export { MultipleChoiceMixin } from './mixins/multiple-choice-mixin';
 /**
  * Apply Mixins Implementation to a Component
  *

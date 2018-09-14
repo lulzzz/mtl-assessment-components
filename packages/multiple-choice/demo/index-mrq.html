@@ -32,7 +32,8 @@
             <span>Good</span>
             <span>Wooot!</span>
         </response-validation>
-        <response-validation hidden slot="feedback" expected="000-1-b|000-4-b" score="2" feedbackType="neutral" strategy="fuzzyMatch">
+        <response-validation hidden slot="feedback" expected="000-1-b|000-4-b" score="2" feedbackType="neutral"
+            strategy="fuzzyMatch">
             <span>Good</span>
             <span>Wooot!</span>
         </response-validation>
@@ -53,11 +54,11 @@
         <div hidden slot="options" id="5">Dunkerque</div>
         <div hidden slot="options" id="6">Doha</div>
 
-        <response-validation hidden slot="feedback" expected="1|3" score="10" strategy="exactMatch">
+        <response-validation hidden slot="feedback" expected="1|3" score="10">
             <span>Perfect</span>
         </response-validation>
 
-        <response-validation hidden slot="feedback" expected="1" score="5" feedbackType="neutral" strategy="fuzzyMatch">
+        <response-validation hidden slot="feedback" expected="1" score="5" feedbackType="neutral">
             <span>Almost</span>
         </response-validation>
 
@@ -79,8 +80,8 @@
             document.getElementById('multiple2').showFeedback();
             document.getElementById('multiple3').showFeedback();
 
-            document.getElementById('feedback2').innerText = JSON.stringify(document.getElementById('multiple2').getFeedback());
-            document.getElementById('feedback3').innerText = JSON.stringify(document.getElementById('multiple3').getFeedback());
+            //document.getElementById('feedback2').innerText = JSON.stringify(document.getElementById('multiple2').getFeedback());
+            //document.getElementById('feedback3').innerText = JSON.stringify(document.getElementById('multiple3').getFeedback());
 
         })
 

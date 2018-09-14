@@ -1,19 +1,68 @@
 import { Strategy } from '../index';
-import { ResponseValidation, FeedbackMessage } from '../components/response-validation';
+import { ResponseValidation } from '../components/response-validation';
 
 export abstract class MultipleChoiceMixin {
-    public _responseValidationElements: ResponseValidation[];
     public items: HTMLElement[] = [];
-    public feedbackMessage: FeedbackMessage;
-    abstract getValue(): any;
-    abstract getFeedback(): FeedbackMessage;
-    abstract _onItemClicked(event: Event, id: string, type?: string): any;
+    public value: string[] = [];
+
+    /**
+     * @param  {ResponseValidation} el - the element containing an expected value and a strategy
+     * @param  {any} response - The value to match against
+     */
+    public match(el: ResponseValidation, response: string[]): boolean {
+        if (!el.expected) {
+            // catch-all clause
+            return true;
+        }
+        const expected: string[] = el.expected.split('|');
+
+        switch (el.strategy) {
+            case Strategy.CONTAINS:
+                return expected.some((answer: string) => response.includes(answer));
+            case Strategy.EXACT_MATCH:
+            default:
+                return response.length === expected.length && expected.every((answer: string) => response.includes(answer));
+        }
+    }
+
+    /**
+     * Called when an option item is selected.
+     * Sets the element value to that of the selected element.
+     *
+     * @param  {HTMLElement} eventTarget
+     * @param {string} selected
+     * @param {boolean} multiple
+     * @returns void
+     */
+    _onItemClicked(event: Event, selected: string, multiple: boolean = false): void {
+        event.stopPropagation();
+
+        let value: string[] = [...this.value];
+        const index: number = value.indexOf(selected);
+
+        if (index > 0) {
+            // remove element from the array
+            value.splice(index, 1);
+        } else {
+            multiple ? value.push(selected) : (value = [selected]);
+        }
+
+        this.value = value;
+
+        (this as any).dispatchEvent(
+            new CustomEvent('change', {
+                bubbles: true,
+                composed: true,
+                detail: { value }
+            })
+        );
+    }
 
     /**
      * Fired on slot change
      * @param {Event} event
      */
-    _onSlotChanged(event: Event): void {
+    public _onSlotChanged(event: Event): void {
         const items: HTMLElement[] = [];
         const slot: HTMLSlotElement = event.srcElement as HTMLSlotElement;
         if (slot) {
@@ -30,41 +79,5 @@ export abstract class MultipleChoiceMixin {
             }
         }
         this.items = items;
-    }
-    
-    /**
-     * @param  {ResponseValidation} el - the element containing an expected value and a strategy 
-     * @param  {any} response - The value to match against
-     */
-    match: (el: ResponseValidation, response: any) => boolean = (el, response) => {
-        if (!el.getExpected()) {
-            // catch-all clause
-            return true;
-        }
-        let matches: boolean = false;
-        switch (el.strategy) {
-            case Strategy.EXACT_MATCH:
-                matches = response.size === el.getExpected().size;
-                response.forEach((r: any) => {
-                    matches = matches && el.getExpected().has(r);
-                });
-                return matches;
-            case Strategy.FUZZY_MATCH:
-                response.forEach((r: any) => {
-                    matches = matches || el.getExpected().has(r);
-                });
-                return matches;
-            default:
-                return matches;
-        }
-    };
-
-     /**
-     * Set feedbackMessage to the appropriate 'feedbackMessage' object
-     * 
-     * @returns void
-     */
-    showFeedback(): void {
-        this.feedbackMessage = this.getFeedback();
     }
 }

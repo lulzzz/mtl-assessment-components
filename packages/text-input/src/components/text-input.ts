@@ -1,6 +1,6 @@
-import { applyMixins, ComponentBase, Feedback, html, TemplateResult } from '@hmh/component-base/dist/index';
+import { applyMixins, ComponentBase, Feedback, FeedbackMessage, html, TemplateResult } from '@hmh/component-base/dist/index';
 import { MDCTextField } from '@material/textfield/index';
-import { ResponseValidation, FeedbackMessage } from '@hmh/component-base/dist/components/response-validation';
+import { ResponseValidation } from '@hmh/component-base/dist/components/response-validation';
 
 /**
  * `<text-input>`
@@ -26,12 +26,8 @@ export class TextInput extends ComponentBase<string> implements Feedback {
         };
     }
 
-    public getFeedback(): FeedbackMessage {
-        return this._getFeedback(this.getValue());
-    }
-
     public showFeedback(): void {
-        this.feedback = this.getFeedback();
+        this.feedback = this._getFeedback(this.value);
     }
 
     protected _render({ disabled, feedback, placeholder, value }: TextInput): TemplateResult {

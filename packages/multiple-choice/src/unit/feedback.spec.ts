@@ -1,7 +1,7 @@
 import { expect, mcqTagName, mrqTagName } from './constants.spec';
 import { MultipleChoiceQuestion } from '../components/multiple-choice-question';
 import { MultipleResponseQuestion } from '../components/multiple-response-question';
-import { FeedbackMessage } from '@hmh/component-base/dist/components/response-validation';
+import { FeedbackMessage } from '@hmh/component-base/dist/mixins/feedback';
 
 export default () => {
     describe(`<${mcqTagName}> feedback in single mode`, (): void => {
