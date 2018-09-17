@@ -89,7 +89,7 @@
                 <span>Perfect</span>
             </response-validation>
 
-            <response-validation hidden slot="feedback" expected="1" score="5" feedbackType="neutral" strategy="fuzzyMatch">
+            <response-validation hidden slot="feedback" expected="1" score="5" feedbackType="neutral" strategy="contains">
                 <span>Almost</span>
             </response-validation>
 
@@ -100,6 +100,7 @@
             </response-validation>
         </multiple-response-question>
     </template>
+
     <template id="multiple-feedback-2">
         <p>Which of the following cities are located in Africa?</p>
         <multiple-response-question multiple>
@@ -115,10 +116,7 @@
                 <span>Perfect</span>
             </response-validation>
 
-            <response-validation hidden slot="feedback" expected="1|3|4" score="5" feedbackType="neutral" strategy="fuzzyMatch">
-                <span>Almost</span>
-            </response-validation>
-            <response-validation hidden slot="feedback" expected="2" score="3" strategy="noMatch">
+            <response-validation hidden slot="feedback" expected="1|3|4" score="5" feedbackType="neutral" strategy="contains">
                 <span>Almost</span>
             </response-validation>
 

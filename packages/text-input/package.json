@@ -11,7 +11,7 @@
         "sass": "node-sass src/sass -r -o dist/css",
         "sass-watch": "node-sass src/sass -r -o dist/css -w",
         "watch": "npm run build; npm run sass; concurrently --names 'build,sass' -c 'bgBlue,bgMagenta' 'npm run build -- -w' 'npm run sass -- -w' 'npm-watch'",
-        "test": "lit-element-tester dist/components/text-input.js",
+        "test": "lit-element-tester dist/components/*.js",
         "test-dev": "lit-element-tester -d",
         "_generateDocs": "polymer analyze ./dist/components/text-input.js > ./dist/components/analysis.json"
     },
@@ -21,7 +21,8 @@
     "dependencies": {
         "@hmh/component-base": "latest",
         "@material/button": "latest",
-        "@material/textfield": "latest"
+        "@material/textfield": "latest",
+        "nyc": "^13.0.1"
     },
     "devDependencies": {
         "@hmh/lit-element-tester": "latest",

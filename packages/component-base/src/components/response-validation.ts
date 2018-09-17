@@ -1,21 +1,8 @@
 import { ComponentBase, html, TemplateResult } from './base';
-import { Strategy } from '../mixins/feedback';
-
-
-export enum FeedbackType {
-    POSITIVE = 'positive',
-    NEGATIVE = 'negative',
-    NEUTRAL = 'neutral'
-}
-
-export interface FeedbackMessage {
-    type: FeedbackType;
-    message: string;
-    score: number;
-}
+import { Strategy, FeedbackMessage, FeedbackType } from '../mixins/feedback';
 
 export class ResponseValidation extends ComponentBase<string> {
-    private expected: string = '';
+    public expected: string = '';
     public feedbackType: FeedbackType;
     public score: number = 0;
     public strategy: Strategy = Strategy.EXACT_MATCH;
@@ -32,9 +19,11 @@ export class ResponseValidation extends ComponentBase<string> {
             strategy: String
         };
     }
+     
+    /*
     getExpected(): Set<string> {
         return this.expected !== '' ? new Set(this.expected.split('|')) : null; //TODO: fix
-    }
+    }*/
 
     public getFeedbackMessage(): FeedbackMessage {
         let type: FeedbackType = this.feedbackType;

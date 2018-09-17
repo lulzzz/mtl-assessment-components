@@ -1,6 +1,6 @@
-import { applyMixins, ComponentBase, Feedback, html, TemplateResult } from '@hmh/component-base/dist/index';
-import { MDCTextField } from '@material/textfield/index';
-import { ResponseValidation, FeedbackMessage } from '@hmh/component-base/dist/components/response-validation';
+import { applyMixins, ComponentBase, Feedback, FeedbackMessage, Strategy, html, TemplateResult } from '@hmh/component-base/dist/index';
+import { MDCTextField } from '@material/textfield/index'; 
+import { ResponseValidation } from '@hmh/component-base/dist/index';
 
 /**
  * `<text-input>`
@@ -11,12 +11,6 @@ export class TextInput extends ComponentBase<string> implements Feedback {
     public placeholder: string = '';
     public value: string = '';
 
-    // declare mixins properties to satisfy the typescript compiler
-    public _getFeedback: (value: string) => FeedbackMessage;
-    public _responseValidationElements: ResponseValidation[];
-    public _onFeedbackSlotChanged: any;
-    public match: any;
-
     static get properties(): { [key: string]: string | object } {
         return {
             ...super.properties,
@@ -26,12 +20,23 @@ export class TextInput extends ComponentBase<string> implements Feedback {
         };
     }
 
-    public getFeedback(): FeedbackMessage {
-        return this._getFeedback(this.getValue());
-    }
+    // @mixin: feedback
+    public computeFeedback: (value: string) => FeedbackMessage;
+    public _onFeedbackSlotChanged: any;
 
-    public showFeedback(): void {
-        this.feedback = this.getFeedback();
+    public match(el: ResponseValidation, response: string): boolean {
+        if (!el.expected) {
+            // catch-all clause
+            return true;
+        }
+
+        switch (el.strategy) {
+            case Strategy.FUZZY_MATCH:
+                return el.expected.toLowerCase() === response.toLowerCase();
+            case Strategy.EXACT_MATCH:
+            default:
+                return el.expected === response;
+        }
     }
 
     protected _render({ disabled, feedback, placeholder, value }: TextInput): TemplateResult {

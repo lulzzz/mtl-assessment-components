@@ -57,15 +57,12 @@
         </response-validation>
 
     </multiple-choice-question>
-    <div id="feedback1">Feedback will appear here</div>
     <button id="button" class="mdc-button">Validate</button>
 
     <script>
 
         document.getElementById('button').addEventListener('click', () => {
             document.getElementById('multiple1').showFeedback();
-            document.getElementById('feedback1').innerText = JSON.stringify(document.getElementById('multiple1').getFeedback());
-
         })
 
     </script>

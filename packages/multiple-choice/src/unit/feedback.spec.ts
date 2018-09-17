@@ -1,7 +1,6 @@
 import { expect, mcqTagName, mrqTagName } from './constants.spec';
 import { MultipleChoiceQuestion } from '../components/multiple-choice-question';
 import { MultipleResponseQuestion } from '../components/multiple-response-question';
-import { FeedbackMessage } from '@hmh/component-base/dist/components/response-validation';
 
 export default () => {
     describe(`<${mcqTagName}> feedback in single mode`, (): void => {
@@ -12,8 +11,8 @@ export default () => {
             element.shadowRoot.getElementById('3').click();
             await element.renderComplete;
 
-            const feedback: FeedbackMessage = element.getFeedback();
-            expect(feedback.type).to.equal('negative');
+            element.showFeedback();
+            expect(element.feedbackMessage.type).to.equal('negative');
         });
 
         it('should provide positive feedback on correct answer', async (): Promise<void> => {
@@ -23,9 +22,9 @@ export default () => {
             element.shadowRoot.getElementById('2').click();
             await element.renderComplete;
 
-            const feedback: FeedbackMessage = element.getFeedback();
-            expect(feedback.type).to.equal('positive');
-            expect(feedback.score).to.equal(5);
+            element.showFeedback();
+            expect(element.feedbackMessage.type).to.equal('positive');
+            expect(element.feedbackMessage.score).to.equal(5);
         });
         it('should provide neutral feedback on neutral answer', async (): Promise<void> => {
             withSnippet('single-feedback');
@@ -34,9 +33,9 @@ export default () => {
             element.shadowRoot.getElementById('4').click();
             await element.renderComplete;
 
-            const feedback: FeedbackMessage = element.getFeedback();
-            expect(feedback.type).to.equal('neutral');
-            expect(feedback.score).to.equal(1);
+            element.showFeedback();
+            expect(element.feedbackMessage.type).to.equal('neutral');
+            expect(element.feedbackMessage.score).to.equal(1);
         });
         it('should show feedback', async (): Promise<void> => {
             withSnippet('single-feedback');
@@ -56,8 +55,8 @@ export default () => {
             await element.renderComplete;
             element.shadowRoot.getElementById('5').click();
             await element.renderComplete;
-            const feedback: FeedbackMessage = element.getFeedback();
-            expect(feedback.type).to.equal('negative');
+            element.showFeedback();
+            expect(element.feedbackMessage.type).to.equal('negative');
         });
         it('should provide positive feedback on correct answer strict', async (): Promise<void> => {
             withSnippet('multiple-feedback-1');
@@ -67,9 +66,9 @@ export default () => {
             element.shadowRoot.getElementById('3').click();
             await element.renderComplete;
 
-            const feedback: FeedbackMessage = element.getFeedback();
-            expect(feedback.type).to.equal('positive');
-            expect(feedback.score).to.equal(10);
+            element.showFeedback();
+            expect(element.feedbackMessage.type).to.equal('positive');
+            expect(element.feedbackMessage.score).to.equal(10);
         });
         it('should provide neutral feedback on neutral answer', async (): Promise<void> => {
             withSnippet('multiple-feedback-1');
@@ -78,8 +77,8 @@ export default () => {
             element.shadowRoot.getElementById('1').click();
             await element.renderComplete;
 
-            const feedback: FeedbackMessage = element.getFeedback();
-            expect(feedback.type).to.equal('neutral');
+            element.showFeedback();
+            expect(element.feedbackMessage.type).to.equal('neutral');
         });
         it('use of exactMatch strategy', async (): Promise<void> => {
             withSnippet('multiple-feedback-2');
@@ -90,9 +89,9 @@ export default () => {
             element.shadowRoot.getElementById('4').click();
             await element.renderComplete;
 
-            const feedback: FeedbackMessage = element.getFeedback();
-            expect(feedback.type).to.equal('positive');
-            expect(feedback.score).to.equal(10);
+            element.showFeedback();
+            expect(element.feedbackMessage.type).to.equal('positive');
+            expect(element.feedbackMessage.score).to.equal(10);
         });
         it('use of fuzzyMatch strategy', async (): Promise<void> => {
             withSnippet('multiple-feedback-2');
@@ -102,9 +101,9 @@ export default () => {
             element.shadowRoot.getElementById('4').click();
             await element.renderComplete;
 
-            const feedback: FeedbackMessage = element.getFeedback();
-            expect(feedback.type).to.equal('neutral');
-            expect(feedback.score).to.equal(5);
+            element.showFeedback();
+            expect(element.feedbackMessage.type).to.equal('neutral');
+            expect(element.feedbackMessage.score).to.equal(5);
         });
         it('default strategy test', async (): Promise<void> => {
             withSnippet('multiple-feedback-2');
