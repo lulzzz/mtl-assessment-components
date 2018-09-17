@@ -2,14 +2,21 @@
 
 interface Feedback
 
-Feedback : <b>computeFeedback()</b> - Determine feedback state (via componentBase)
-Feedback : <b>_onFeedbackSlotChanged()</b> - Place Feedback slot elements into the interaction render template
+interface Feedback {
+    <b>computeFeedback()</b> - Determine feedback state (via componentBase)
+    <b>_onFeedbackSlotChanged()</b> - Place Feedback slot elements into the interaction render template
+}
 
 DropDown <|- Feedback
 
 note top  of DropDown : The interaction. Contains an HTML render template. Defines HTML tag <drop-down>  
 
-DropDown : key functions: <b>_render()</b> - Renders the drop down menu using an HTML template
+DropDown : <b>_render()</b> - Renders the drop down menu using an HTML template
+DropDown : <b>_onDropDownClicked()</b> Open / close the drop down menu
+DropDown : <b>_enableAccessibility()</b> Sets various accessibility attributes
+DropDown : <b>_didRender()</b> Called after first render. Calls _enableAccessibility()
+DropDown : <b>_getFeedbackClass()</b> Used by _render() to set CSS classes
+
 
 DropDown --> MultipleChoice
 note right : Super class for all \ninteractions of this type 
@@ -18,6 +25,8 @@ MultipleChoice : <b>_onItemClicked</b> - Click handler for option items. Sets th
 MultipleChoice : <b>match()</b> - Determine if the value of this interaction matches any of the responses
 
 MultipleChoice --> ComponentBase
+
+class ComponentBase<T>
 note right : Super class for all \ninteractions
 
 ComponentBase : <b>showFeedback()</b> - Sets the feedback state of the interaction
