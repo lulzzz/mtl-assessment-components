@@ -13,7 +13,7 @@ export default () => {
             withSnippet('single-default');
             const value: boolean = true;
             expect(value).to.be.true;
-            const element: HTMLElement = document.querySelector('multiple-choice-question');
+            const element: HTMLElement = document.querySelector(mcqTagName);
             const div: HTMLDivElement = document.createElement('div');
             div.slot = 'options';
             div.id = '1';
@@ -28,7 +28,7 @@ export default () => {
             withSnippet('single-default');
             const value: boolean = true;
             expect(value).to.be.true;
-            const element: HTMLElement = document.querySelector('multiple-choice-question') as HTMLElement;
+            const element: HTMLElement = document.querySelector(mcqTagName) as HTMLElement;
             const div: HTMLDivElement = document.createElement('div');
             div.slot = 'options';
             div.id = '1';
@@ -60,7 +60,7 @@ export default () => {
             withSnippet('multiple-default');
             const value: boolean = true;
             expect(value).to.be.true;
-            const element: HTMLElement = document.querySelector('multiple-response-question');
+            const element: HTMLElement = document.querySelector(mrqTagName);
             const div: HTMLDivElement = document.createElement('div');
             div.slot = 'options';
             div.id = '1';
@@ -74,7 +74,7 @@ export default () => {
             withSnippet('multiple-default');
             const value: boolean = true;
             expect(value).to.be.true;
-            const element: HTMLElement = document.querySelector('multiple-response-question') as HTMLElement;
+            const element: HTMLElement = document.querySelector(mrqTagName) as HTMLElement;
             const div: HTMLDivElement = document.createElement('div');
             div.slot = 'options';
             div.id = '1';
