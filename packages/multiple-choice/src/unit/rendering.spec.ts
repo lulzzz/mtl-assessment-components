@@ -70,7 +70,7 @@ export default () => {
             const divTest: HTMLDivElement = document.getElementById('1') as HTMLDivElement;
             expect(divTest).to.equal(div);
         });
-        it('should be able to click added option', async (): Promise<void> => {
+        it('should be able to check added option', async (): Promise<void> => {
             withSnippet('multiple-default');
             const value: boolean = true;
             expect(value).to.be.true;
@@ -92,6 +92,31 @@ export default () => {
             expect(checkbox.checked).to.be.false;
             label.click();
             expect(checkbox.checked).to.be.true;
+        });
+        it('should be able to uncheck added option', async (): Promise<void> => {
+            withSnippet('multiple-default');
+            const value: boolean = true;
+            expect(value).to.be.true;
+            const element: HTMLElement = document.querySelector(mrqTagName) as HTMLElement;
+            const div: HTMLDivElement = document.createElement('div');
+            div.slot = 'options';
+            div.id = '1';
+            div.hidden = true;
+            div.innerText = 'Option 1';
+            element.appendChild(div);
+            const divTest: HTMLDivElement = document.getElementById('1') as HTMLDivElement;
+            expect(divTest).to.equal(div);
+            // @ts-ignore renderComplete is a protected member
+            await element.renderComplete;
+            const formFieldElement: HTMLDivElement = element.shadowRoot.querySelector('div.mdc-form-field');
+            const checkboxElement = formFieldElement.querySelector('div');
+            const label = formFieldElement.querySelector('label');
+            const checkbox = new MDCCheckbox(checkboxElement);
+            expect(checkbox.checked).to.be.false;
+            label.click();
+            expect(checkbox.checked).to.be.true;
+            label.click();
+            expect(checkbox.checked).to.be.false;
         });
     });
 };
