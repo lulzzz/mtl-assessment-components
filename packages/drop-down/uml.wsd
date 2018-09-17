@@ -1,0 +1,31 @@
+@startuml drop-down
+
+interface Feedback
+
+Feedback : <b>computeFeedback()</b> - Determine feedback state (via componentBase)
+Feedback : <b>_onFeedbackSlotChanged()</b> - Place Feedback slot elements into the interaction render template
+
+DropDown <|- Feedback
+
+note top  of DropDown : The interaction. Contains an HTML render template. Defines HTML tag <drop-down>  
+
+DropDown : key functions: <b>_render()</b> - Renders the drop down menu using an HTML template
+
+DropDown --> MultipleChoice
+note right : Super class for all \ninteractions of this type 
+
+MultipleChoice : <b>_onItemClicked</b> - Click handler for option items. Sets the value of the interaction
+MultipleChoice : <b>match()</b> - Determine if the value of this interaction matches any of the responses
+
+MultipleChoice --> ComponentBase
+note right : Super class for all \ninteractions
+
+ComponentBase : <b>showFeedback()</b> - Sets the feedback state of the interaction
+ComponentBase : <b>_onSlotChanged()</b> - Place item elements into the interaction render template
+
+ComponentBase --> LitElement
+note right : A simple base class for creating\ncustom elements rendered with lit-html.
+
+LitElement : <b>_render()</b> - Render using an HTML template. Overridden in the interaction
+
+@enduml
