@@ -1,3 +1,5 @@
+http://plantuml.com/sitemap-language-specification
+
 @startuml drop-down
 
 interface Feedback {
@@ -33,6 +35,9 @@ class MultipleChoice<string[]>  {
     --
     <b>public match(el: ResponseValidation, response: string[]): boolean</b>
     Determine if the value of this interaction matches any of the responses
+    --
+    <b>protected _onSlotChanged(event: Event): void</b>
+    Place item elements into the interaction render template
 }
 
 MultipleChoice --> ComponentBase
