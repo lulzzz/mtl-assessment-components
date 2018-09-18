@@ -6,7 +6,7 @@ In some occasion, you may want to use (*top) to force the starting point to be a
 
 Use --> for arrows.
 
-@startuml
+@startuml drop-down-process-diagram
          
 (*) --> "<b><drop-down> ... </drop-down></b>
         drop down element added to page

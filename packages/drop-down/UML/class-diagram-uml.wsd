@@ -1,6 +1,6 @@
 http://plantuml.com/sitemap-language-specification
 
-@startuml drop-down
+@startuml drop-down-class-diagram
 
 interface Feedback {
     <b>key functions:</b>
