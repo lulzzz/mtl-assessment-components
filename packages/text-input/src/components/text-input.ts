@@ -7,14 +7,12 @@ import { ResponseValidation } from '@hmh/component-base/dist/index';
  * @demo ./demo/index.html
  */
 export class TextInput extends ComponentBase<string> implements Feedback {
-    public feedback: FeedbackMessage;
     public placeholder: string = '';
     public value: string = '';
 
     static get properties(): { [key: string]: string | object } {
         return {
             ...super.properties,
-            feedback: Object,
             placeholder: String,
             value: String
         };
@@ -39,13 +37,13 @@ export class TextInput extends ComponentBase<string> implements Feedback {
         }
     }
 
-    protected _render({ disabled, feedback, placeholder, value }: TextInput): TemplateResult {
-        const feedbackMessage: TemplateResult = feedback && feedback.message ? html`<div class="feedback-message"><div>${feedback.message}<div></div>` : html``;
+    protected _render({ disabled, feedbackMessage, placeholder, value }: TextInput): TemplateResult {
+        const feedbackBanner: TemplateResult = feedbackMessage && feedbackMessage.message ? html`<div class="feedback-message"><div>${feedbackMessage.message}<div></div>` : html``;
 
         return html`
         <link rel="stylesheet" type="text/css" href="/node_modules/@material/textfield/dist/mdc.textfield.css">
         <link rel="stylesheet" type="text/css" href="/dist/css/text-input.css">
-        ${this._feedbackStyle}
+        ${this._feedbackStyle(feedbackMessage)}
         <div class$="mdc-text-field mdc-text-field--outlined ${disabled ? 'mdc-text-field--disabled' : ''}">
             <input
                 disabled="${disabled}"
@@ -61,7 +59,7 @@ export class TextInput extends ComponentBase<string> implements Feedback {
                 </svg>
             </div>
             <div class="mdc-notched-outline__idle"></div>
-            ${feedbackMessage} 
+            ${feedbackBanner} 
         </div>
 
         <slot hidden name="feedback" on-slotchange="${(evt: Event) => this._onFeedbackSlotChanged(evt)}"></slot>
@@ -73,7 +71,7 @@ export class TextInput extends ComponentBase<string> implements Feedback {
         this._enableAccessibility();
     }
 
-    private get _feedbackStyle(): TemplateResult {
+    private _feedbackStyle(feedbackMessage: FeedbackMessage): TemplateResult {
         const feedbackColorMap = {
             submitted: 'var(--submitted-color, gray)',
             positive: 'var(--positive-color, green)',
@@ -81,11 +79,11 @@ export class TextInput extends ComponentBase<string> implements Feedback {
             neutral: 'var(--neutral-color, yellow)'
         };
 
-        if (!this.feedback) {
+        if (!feedbackMessage) {
             return html``;
         }
 
-        const color = feedbackColorMap[this.feedback.type];
+        const color = feedbackColorMap[feedbackMessage.type];
         return html`<style>
             .mdc-notched-outline__idle {
                 border: 2px solid ${color}!important;

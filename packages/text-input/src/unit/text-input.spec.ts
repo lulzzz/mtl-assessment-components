@@ -111,7 +111,7 @@ describe(`<${tagName}> validation and feedback`, (): void => {
         const el: TextInput = document.querySelector('text-input') as any;
         await checkAnswer(el, 'smile');
         el.showFeedback();
-        expect(el.feedback.type).to.equal('positive');
+        expect(el.feedbackMessage.type).to.equal('positive');
     });
 
     it('should give neutral feedback on neutral answer', async (): Promise<void> => {

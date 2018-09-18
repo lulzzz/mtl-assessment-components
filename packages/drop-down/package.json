@@ -24,17 +24,17 @@
     },
     "devDependencies": {
         "@hmh/lit-element-tester": "latest",
+        "@polymer/iron-component-page": "next",
+        "@polymer/iron-demo-helpers": "latest",
+        "@webcomponents/webcomponentsjs": "^2.0.2",
         "chai": "^4.1.2",
         "concurrently": "^4.0.1",
         "mocha": "^5.2.0",
         "node-sass": "^4.9.3",
-        "source-map-support": "^0.5.9",
-        "typescript": "latest",
-        "@polymer/iron-component-page": "next",
-        "@polymer/iron-demo-helpers": "latest",
-        "@webcomponents/webcomponentsjs": "^2.0.2",
+        "npm-watch": "latest",
         "polymer-cli": "latest",
-        "npm-watch": "latest"
+        "source-map-support": "^0.5.9",
+        "typescript": "latest"
     },
     "watch": {
         "_generateDocs": "src/components/**/*.*"
