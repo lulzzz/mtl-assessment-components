@@ -1,0 +1,30 @@
+http://plantuml.com/sitemap-language-specification
+
+You can use (*) for the starting point and ending point of the activity diagram.
+
+In some occasion, you may want to use (*top) to force the starting point to be at the top of the diagram.
+
+Use --> for arrows.
+
+@startuml text-input-process-diagram
+         
+(*) --> "<b><text-input> ... </text-input></b>
+        text input element added to page
+        "  
+
+    --> "<b>_onFeedbackSlotChanged()</b> - 
+         Feedback items (answers) added to HTML template
+         " as init
+
+    -->  "<b>_render({ .. feedbackMessage, value ... })</b> - 
+         Render the HTML template
+         " as render
+
+if "User clicks validate" then
+  -->[true] "<b>showFeedback()</b>
+    update feedbackMessage variable
+    (change to feedbackMessage will trigger render())"
+    --> render
+endif
+
+@enduml

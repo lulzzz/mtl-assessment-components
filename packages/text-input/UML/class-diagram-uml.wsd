@@ -1,0 +1,54 @@
+http://plantuml.com/sitemap-language-specification
+
+@startuml text-input-class-diagram
+
+interface Feedback {
+    <b>key functions:</b>
+    --
+    <b>computeFeedback()</b>
+    Determine feedback state (via componentBase)
+    --
+    <b>_onFeedbackSlotChanged()</b>
+    Place Feedback slot elements into the interaction render template
+}
+
+Feedback --|> TextInput
+
+note right of TextInput: The interaction.\nContains an HTML render template.\nDefines HTML tag <text-input>  
+class TextInput<string> {
+    <b>key functions:</b>
+    --
+    <b>protected _render\n<b>protected _render({ disabled, feedback, placeholder, value }: TextInput): TemplateResult </b>
+    Renders the text input menu using an HTML template.
+    Re-renders whenever any of the parameters change.
+    --
+    <b>private _onInputChange(evt: Event): void </b>\nCalled whenever the contents of the input field changes
+    --
+    <b>public match(el: ResponseValidation, response: string[]): boolean</b>
+    Determine if the value of this interaction (the contents of the text field) matches any of the responses
+}
+
+TextInput --> ComponentBase
+note right of ComponentBase: Super class for all \ninteractions
+class ComponentBase<T> {
+    <b>key functions:</b>
+    --
+    <b>public showFeedback(): void</b>
+    Sets the feedback state of the interaction
+    --
+    <b>public getFeedback(): FeedbackMessage</b>
+    --
+    <b>public getValue(): T</b>
+    Returns the value of the interaction
+}
+
+ComponentBase --> LitElement
+note right of LitElement: A simple base class for creating\ncustom elements rendered with lit-html.
+class LitElement {
+    <b>key functions:</b>
+    --
+    <b>protected _render(_props: object): TemplateResult;</b>
+    Render using an HTML template. Overridden by the interaction
+}
+
+@enduml
