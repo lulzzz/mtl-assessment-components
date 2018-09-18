@@ -1,0 +1,61 @@
+@startuml drop-down
+
+interface Feedback {
+    <b>key functions:</b>
+    --
+    <b>computeFeedback()</b>
+    Determine feedback state (via componentBase)
+    --
+    <b>_onFeedbackSlotChanged()</b>
+    Place Feedback slot elements into the interaction render template
+}
+
+Feedback --|> DropDown
+
+note right of DropDown: The interaction.\nContains an HTML render template.\nDefines HTML tag <drop-down>  
+class DropDown {
+    <b>key functions:</b>
+    --
+    <b>protected _render\n<b>({ open, feedbackMessage, items, multiple, value }: DropDown): TemplateResult</b>
+    Renders the drop down menu using an HTML template.
+    Re-renders whenever any of the parameters change.
+    --
+    <b>_onDropDownClicked()</b> 
+    Open / close the drop down menu
+}
+
+DropDown --> MultipleChoice
+note right of MultipleChoice: Super class for all \ninteractions of this type 
+class MultipleChoice<string[]>  {
+    <b>key functions:</b>
+    --
+    <b>protected _onItemClicked\n<b>(event: Event, selected: string, multiple: boolean = false): void</b>\nClick handler for option items. Sets the value of the interaction
+    --
+    <b>public match(el: ResponseValidation, response: string[]): boolean</b>
+    Determine if the value of this interaction matches any of the responses
+}
+
+MultipleChoice --> ComponentBase
+note right of ComponentBase: Super class for all \ninteractions
+class ComponentBase<T> {
+    <b>key functions:</b>
+    --
+    <b>public showFeedback(): void</b>
+    Sets the feedback state of the interaction
+    --
+    <b>public getFeedback(): FeedbackMessage</b>
+    --
+    <b>public getValue(): T</b>
+    Returns the value of the interaction
+}
+
+ComponentBase --> LitElement
+note right of LitElement: A simple base class for creating\ncustom elements rendered with lit-html.
+class LitElement {
+    <b>key functions:</b>
+    --
+    <b>protected _render(_props: object): TemplateResult;</b>
+    Render using an HTML template. Overridden by the interaction
+}
+
+@enduml
