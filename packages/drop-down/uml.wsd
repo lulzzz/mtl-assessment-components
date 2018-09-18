@@ -1,40 +1,40 @@
 @startuml drop-down
 
-interface Feedback
-
 interface Feedback {
+    <b>key functions:</b>
     <b>computeFeedback()</b> - Determine feedback state (via componentBase)
-    <b>_onFeedbackSlotChanged()</b> - Place Feedback slot elements into the interaction render template
+    <b>_onFeedbackSlotChanged()</b> - Place Feedback slot elements\n into the interaction render template
 }
 
-DropDown <|- Feedback
+Feedback --|> DropDown
 
-note top  of DropDown : The interaction. Contains an HTML render template. Defines HTML tag <drop-down>  
-
-DropDown : <b>_render()</b> - Renders the drop down menu using an HTML template
-DropDown : <b>_onDropDownClicked()</b> Open / close the drop down menu
-DropDown : <b>_enableAccessibility()</b> Sets various accessibility attributes
-DropDown : <b>_didRender()</b> Called after first render. Calls _enableAccessibility()
-DropDown : <b>_getFeedbackClass()</b> Used by _render() to set CSS classes
-
+note right of DropDown : The interaction.\nContains an HTML render template.\nDefines HTML tag <drop-down>  
+class DropDown {
+    <b>key functions:</b>
+    <b>_render()</b> - Renders the drop down menu using an HTML template
+    <b>_onDropDownClicked()</b> Open / close the drop down menu
+}
 
 DropDown --> MultipleChoice
-note right : Super class for all \ninteractions of this type 
-
-MultipleChoice : <b>_onItemClicked</b> - Click handler for option items. Sets the value of the interaction
-MultipleChoice : <b>match()</b> - Determine if the value of this interaction matches any of the responses
+note right of MultipleChoice : Super class for all \ninteractions of this type 
+class MultipleChoice {
+    <b>key functions:</b>
+    <b>_onItemClicked</b> - Click handler for option items. Sets the value of the interaction
+    <b>match()</b> - Determine if the value of this interaction matches any of the responses
+}
 
 MultipleChoice --> ComponentBase
-
-class ComponentBase<T>
-note right : Super class for all \ninteractions
-
-ComponentBase : <b>showFeedback()</b> - Sets the feedback state of the interaction
-ComponentBase : <b>_onSlotChanged()</b> - Place item elements into the interaction render template
+note right of ComponentBase: Super class for all \ninteractions
+class ComponentBase<T> {
+    <b>showFeedback()</b> - Sets the feedback state of the interaction
+    <b>_onSlotChanged()</b> - Place item elements into the interaction render template
+}
 
 ComponentBase --> LitElement
-note right : A simple base class for creating\ncustom elements rendered with lit-html.
+note right of LitElement: A simple base class for creating\ncustom elements rendered with lit-html.
+class LitElement {
+    <b>_render()</b> - Render using an HTML template. Overridden in the interaction
+}
 
-LitElement : <b>_render()</b> - Render using an HTML template. Overridden in the interaction
 
 @enduml
