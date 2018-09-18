@@ -18,7 +18,7 @@ note right of MultipleChoiceQuestion: The interaction.\nContains an HTML render 
 class MultipleChoiceQuestion {
     <b>key functions:</b>
     --
-    <b>protected _render\n<b>({ open, feedbackMessage, items, multiple, value }: DropDown): TemplateResult</b>
+    <b>protected _render({ items, feedbackMessage }: MultipleChoiceQuestion): TemplateResult </b>
     Renders the Multiple Choice Question using an HTML template.
     Re-renders whenever any of the parameters change.
     --

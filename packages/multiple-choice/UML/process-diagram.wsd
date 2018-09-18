@@ -18,7 +18,7 @@ Use --> for arrows.
          Feedback items (answers) added to HTML template
          " as init
 
-    -->  "<b>_render({ .. feedbackMessage, value ... })</b> - 
+    -->  "<b>_render({ items, feedbackMessage })</b> - 
          Render the HTML template
          " as render
 
