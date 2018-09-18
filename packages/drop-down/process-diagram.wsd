@@ -20,22 +20,20 @@ Use --> for arrows.
 
     -->  "<b>_render({ .. feedbackMessage, value ... })</b> - 
          Render the HTML template
-         Note: render is called whenever a property passed into it changes
          " as render
 
 if "User selects an item" then
   -->[true] "<b>_onItemClicked()</b>
              Value updated based on selected item
-             (will trigger render())"
+             (change to value will trigger render())"
     --> render
 endif
 
 if "User clicks validate" then
   -->[true] "<b>showFeedback()</b>
     update feedbackMessage variable
-    (will trigger render())"
+    (change to feedbackMessage will trigger render())"
+    --> render
 endif
-
---> render
 
 @enduml
