@@ -1,6 +1,6 @@
 {
     "name": "@hmh/drop-down",
-    "version": "0.1.1",
+    "version": "0.2.0",
     "description": "Assessment System Drop Down Component",
     "main": "dist/index.js",
     "types": "dist/index.d.ts",
@@ -19,8 +19,8 @@
     "license": "ISC",
     "dependencies": {
         "@hmh/component-base": "^0.0.15",
-        "@material/select": "^0.39.0",
-        "@material/button": "latest"
+        "@material/button": "latest",
+        "@material/select": "^0.39.0"
     },
     "devDependencies": {
         "@hmh/lit-element-tester": "latest",
