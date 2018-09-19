@@ -34,8 +34,10 @@ export class MultipleChoice extends ComponentBase<string[]> implements Feedback 
         const expected: string[] = el.expected.split('|');
 
         switch (el.strategy) {
-            case Strategy.CONTAINS:
+            case Strategy.ANY:
                 return expected.some((answer: string) => response.includes(answer));
+            case Strategy.CONTAINS:
+                return expected.every((answer: string) => response.includes(answer));
             case Strategy.EXACT_MATCH:
             default:
                 return response.length === expected.length && expected.every((answer: string) => response.includes(answer));
@@ -83,17 +85,14 @@ export class MultipleChoice extends ComponentBase<string[]> implements Feedback 
         const items: HTMLElement[] = [];
         const slot: HTMLSlotElement = event.srcElement as HTMLSlotElement;
         if (slot) {
-            const nodes: Node[] = slot.assignedNodes();
-            if (nodes) {
-                nodes.forEach(
-                    (el: HTMLElement, index: number): void => {
-                        el.setAttribute('index', String(index));
-                        el.setAttribute('tabindex', String(index + 1));
-                        el.setAttribute('role', 'button');
-                        items.push(el);
-                    }
-                );
-            }
+            slot.assignedNodes().forEach(
+                (el: HTMLElement, index: number): void => {
+                    el.setAttribute('index', String(index));
+                    el.setAttribute('tabindex', String(index + 1));
+                    el.setAttribute('role', 'button');
+                    items.push(el);
+                }
+            );
         }
         this.items = items;
     }

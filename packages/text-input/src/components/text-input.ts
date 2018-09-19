@@ -61,7 +61,6 @@ export class TextInput extends ComponentBase<string> implements Feedback {
             <div class="mdc-notched-outline__idle"></div>
             ${feedbackBanner} 
         </div>
-
         <slot hidden name="feedback" on-slotchange="${(evt: Event) => this._onFeedbackSlotChanged(evt)}"></slot>
         `;
     }
