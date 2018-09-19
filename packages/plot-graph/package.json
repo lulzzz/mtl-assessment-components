@@ -13,7 +13,7 @@
         "watch": "npm run build; npm run sass; concurrently --names 'build,sass' -c 'bgBlue,bgMagenta' 'npm run build -- -w' 'npm run sass -- -w' 'npm-watch'",
         "test": "lit-element-tester dist/components/*.js",
         "test-dev": "lit-element-tester -d",
-        "_generateDocs": "polymer analyze ./dist/components/text-input.js > ./dist/components/analysis.json"
+        "_generateDocs": "polymer analyze ./dist/components/plot-graph.js > ./dist/components/analysis.json"
     },
     "keywords": [],
     "author": "Christopher Morris <christopher.morris@hmhco.com>",

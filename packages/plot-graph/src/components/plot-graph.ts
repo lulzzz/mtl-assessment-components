@@ -2,7 +2,7 @@ import { applyMixins, ComponentBase, Feedback, FeedbackMessage, Strategy, html, 
 import { ResponseValidation } from '@hmh/component-base/dist/index';
 
 /**
- * `<text-input>`
+ * `<plot-graph>`
  * @demo ./demo/index.html
  */
 export class PlotGraph extends ComponentBase<string> implements Feedback {
@@ -18,7 +18,7 @@ export class PlotGraph extends ComponentBase<string> implements Feedback {
             value: String
         };
     }
-
+    
     public match(el: ResponseValidation, response: string): boolean {
         if (!el.expected) {
             // catch-all clause
