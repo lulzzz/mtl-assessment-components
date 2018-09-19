@@ -1,50 +1,54 @@
-import { applyMixins, ComponentBase, Feedback, FeedbackMessage, Strategy, html, TemplateResult } from '@hmh/component-base/dist/index';
-import { ResponseValidation } from '@hmh/component-base/dist/index';
+import { ComponentBase, html, TemplateResult } from '@hmh/component-base/dist/index';
 
 /**
  * `<plot-graph>`
  * @demo ./demo/index.html
  */
-export class PlotGraph extends ComponentBase<string> implements Feedback {
-    public value: string = '';
-
-    // @mixin: feedback
-    public computeFeedback: (value: string) => FeedbackMessage;
-    public _onFeedbackSlotChanged: any;
+export class PlotGraph extends ComponentBase<string>{
+    public value: string;
 
     static get properties(): { [key: string]: string | object } {
         return {
             ...super.properties,
-            value: String
+            x1: String,
+            y1: String,
+            x2: String,
+            y2: String
         };
     }
     
-    public match(el: ResponseValidation, response: string): boolean {
-        if (!el.expected) {
-            // catch-all clause
-            return true;
-        }
-
-        switch (el.strategy) {
-            case Strategy.FUZZY_MATCH:
-                return el.expected.toLowerCase() === response.toLowerCase();
-            case Strategy.EXACT_MATCH:
-            default:
-                return el.expected === response;
-        }
-    }
-
-    protected _render({ feedbackMessage, value }: PlotGraph): TemplateResult {
+    protected _render({}: PlotGraph): TemplateResult {
         return html`
-        <link rel="stylesheet" type="text/css" href="/node_modules/@material/textfield/dist/mdc.textfield.css">
-        <link rel="stylesheet" type="text/css" href="/dist/css/text-input.css">
-        <p> test </p>
-        <slot hidden name="feedback" on-slotchange="${(evt: Event) => this._onFeedbackSlotChanged(evt)}"></slot>
+        <link rel="stylesheet" type="text/css" href="/dist/css/plot-graph.css">
+        <canvas id="canvas" width="200" height="200"></canvas>
         `;
     }
+    
+    protected _didRender() {
+        this.plotGraph(parseInt(this.x1),parseInt(this.y1),parseInt(this.x2), parseInt(this.y2));
+    }
 
+    private plotGraph(x1: number, y1: number, x2: number, y2: number ) {
+        const canvas = this.shadowRoot.querySelector('#canvas');
+        const ctx = canvas.getContext("2d");
+
+        ctx.moveTo(x1, y1);
+        ctx.lineTo(x2, y2);
+        ctx.stroke();
+        if (JSON.stringify(this.value) != JSON.stringify([x1,y1,x2,y2])) {
+            this.value = JSON.stringify([x1,y1,x2,y2]);
+
+            this.dispatchEvent(
+                new CustomEvent('change', {
+                    bubbles: true,
+                    composed: true,
+                    detail: {
+                        value: this.value
+                    }
+                })
+            );
+        }
+    }
 }
-
-applyMixins(PlotGraph, [Feedback]);
 
 customElements.define('plot-graph', PlotGraph);
