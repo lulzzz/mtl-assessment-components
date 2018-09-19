@@ -1,0 +1,64 @@
+http://plantuml.com/sitemap-language-specification
+
+@startuml simple-interaction-class-diagram
+
+title
+    Example of a typical interaction.
+end title
+
+note right of LitElement: A simple base class for creating\ncustom elements rendered with lit-html.
+class LitElement {
+    <b>key functions:</b>
+    --
+    <b>protected _render(_props: object): TemplateResult;</b>
+    Render using an HTML template. Overridden by the interaction
+}
+
+LitElement <|-- ComponentBase
+
+note right of ComponentBase: Super class for all \ninteractions
+class ComponentBase<T> {
+    <b>key functions:</b>
+    --
+    <b>public showFeedback(): void</b>
+    Sets the feedback state of the interaction
+    --
+    <b>public getFeedback(): FeedbackMessage</b>
+    --
+    <b>public getValue(): T</b>
+    Returns the value of the interaction
+}
+
+interface Feedback {
+    <b>key functions:</b>
+    --
+    <b>computeFeedback()</b>
+    Determine feedback state (via componentBase)
+    --
+    <b>_onFeedbackSlotChanged()</b>
+    Place Feedback slot elements into the interaction render template
+}
+
+ComponentBase <|-- Interaction
+Interaction .left.|> Feedback:.
+
+class Interaction<T> {
+    <b>key functions:</b>
+    --
+    <b>protected _render\n<b>({ feedbackMessage, value }: DropDown): TemplateResult</b>
+    Renders using templated HTML.
+    Re-renders whenever any of the parameters change.
+    --
+    <b>private _onInputChange(evt: Event): void</b>
+    Will trigger a change to value. Which in turn triggers a re-render.
+    --
+    <b>public match(el: ResponseValidation, response: string[]): boolean</b>
+    Determine if the value of this interaction matches any of the responses
+    --
+}
+
+note right of Interaction
+an simple interaction. E.g. text-input
+end note
+
+@enduml
