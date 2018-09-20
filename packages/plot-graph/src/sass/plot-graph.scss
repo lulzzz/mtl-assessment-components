@@ -6,3 +6,12 @@
     margin-top: 0px;
     margin-bottom: 0px;
 }
+
+.container {
+    display: inline-flex;
+    flex-direction: column;
+}
+
+canvas {
+    margin: 1em;
+}
