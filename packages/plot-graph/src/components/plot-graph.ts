@@ -1,6 +1,20 @@
 import { ComponentBase, html, TemplateResult } from '@hmh/component-base/dist/index';
 import { MDCTextField } from '@material/textfield/index'; 
 
+class Line {
+    public startX: number;
+    public endX: number;
+    public startY: number;
+    public endY: number;
+
+    constructor(x1: number, x2: number, y1: number, y2: number) {
+        this.startX = x1;
+        this.endX = x2;
+        this.startY = y1;
+        this.endY = y2;
+    }
+}
+
 /**
  * `<plot-graph>`
  * @demo ./demo/index.html
@@ -11,14 +25,13 @@ export class PlotGraph extends ComponentBase<string>{
     private placeholderText: string = 'Solve for Y:';
     private textFieldDisabled: boolean = false;
 
-
     static get properties(): { [key: string]: string | object } {
         return {
             ...super.properties,
-            x1: String,
-            y1: String,
-            x2: String,
-            y2: String,
+            xMax: String,
+            xMin: String,
+            yMax: String,
+            yMin: String,
             disableInput: Boolean,
             placeholderText: String,
             textFieldDisabled: Boolean
@@ -27,13 +40,14 @@ export class PlotGraph extends ComponentBase<string>{
     
     private _onTextInputChange(evt: Event): void {
         evt.stopPropagation();
-        const text = (evt.target as HTMLInputElement).value;
-        this.parseEquation(text);
+        // const text = (evt.target as HTMLInputElement).value;
+        const lines = this.getGraph('some equation', Number(this.xMin), Number(this.xMax), Number(this.yMin), Number(this.yMax));
+        this.plotGraph(lines);
     }
 
     // TODO: impl me
-    private parseEquation(equation: string): void {
-        this.plotGraph(0,0,50,50);
+    private getGraph(equation: string, xMin: number, xMax: number, yMin: number, yMax: number): Line[] {
+        return [new Line(xMin,xMax,yMin,yMax)];
     }
 
     protected _render({ textFieldDisabled, placeholderText }: PlotGraph): TemplateResult {
@@ -41,9 +55,7 @@ export class PlotGraph extends ComponentBase<string>{
         <link rel="stylesheet" type="text/css" href="/node_modules/@material/textfield/dist/mdc.textfield.css">
         <link rel="stylesheet" type="text/css" href="/dist/css/plot-graph.css">
         <div class="container">
-            
-                <canvas id="canvas" width="100" height="100"></canvas>
-            
+            <canvas id="canvas" width="100" height="100"></canvas>
             <div class$="mdc-text-field mdc-text-field--outlined ${textFieldDisabled ? 'mdc-text-field--disabled' : ''}">
                 <input
                     disabled="${textFieldDisabled}"
@@ -60,25 +72,30 @@ export class PlotGraph extends ComponentBase<string>{
                 </div>
                 <div class="mdc-notched-outline__idle"></div>
             </div>
-         </div>
+        </div>
         `;
     }
 
     protected _didRender(): void {
         const elem = this.shadowRoot.querySelector('.mdc-text-field');          
         MDCTextField.attachTo(elem);
-        this.plotGraph(parseInt(this.x1),parseInt(this.y1),parseInt(this.x2), parseInt(this.y2));
+        const lines = this.getGraph('some equation', this.xMin, this.xMax, this.yMin, this.yMax);
+        this.plotGraph(lines);
     }
 
-    private plotGraph(x1: number, y1: number, x2: number, y2: number ) {
+    private plotGraph(lines: Line[]) {
         const canvas: HTMLCanvasElement = this.shadowRoot.querySelector('#canvas');
         const ctx = canvas.getContext("2d");
+        console.log('lines:', lines);
 
-        ctx.moveTo(x1, y1);
-        ctx.lineTo(x2, y2);
-        ctx.stroke();
-        if (JSON.stringify(this.value) != JSON.stringify([x1,y1,x2,y2])) {
-            this.value = JSON.stringify([x1,y1,x2,y2]);
+        lines.forEach((line) => {
+            ctx.moveTo(line.startX, line.startY);
+            ctx.lineTo(line.endX, line.endY);
+            ctx.stroke();
+        });
+
+        if (JSON.stringify(this.value) != JSON.stringify(lines)) {
+            this.value = JSON.stringify(lines);
             
             this.dispatchEvent(
                 new CustomEvent('change', {
