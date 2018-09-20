@@ -63,7 +63,7 @@ export class PlotGraph extends ComponentBase<string>{
     }
 
     private plotGraph(x1: number, y1: number, x2: number, y2: number ) {
-        const canvas = this.shadowRoot.querySelector('#canvas');
+        const canvas: HTMLCanvasElement = this.shadowRoot.querySelector('#canvas');
         const ctx = canvas.getContext("2d");
 
         ctx.moveTo(x1, y1);
