@@ -2,17 +2,19 @@ import { ComponentBase, html, TemplateResult } from '@hmh/component-base/dist/in
 import { MDCTextField } from '@material/textfield/index'; 
 
 class Line {
-    private _startX: number;
-    private _endX: number;
-    private _startY: number;
-    private _endY: number;
+    private static _nullValue: number = -10000;
+
+    private _startX: number = Line._nullValue;
+    private _endX: number = Line._nullValue;
+    private _startY: number = Line._nullValue;
+    private _endY: number = Line._nullValue;
 
     get startX() : number { return this._startX; }
     get endX() : number { return this._endX; }
     get startY() : number { return this._startY; }
     get endY() : number { return this._endY; }
 
-    constructor(x1: number, x2: number, y1: number, y2: number) {
+    constructor(x1?: number, x2?: number, y1?: number, y2?: number) {
         this._startX = x1;
         this._endX = x2;
         this._startY = y1;
@@ -26,7 +28,6 @@ class Line {
  */
 export class PlotGraph extends ComponentBase<string>{
     public value: string;
-    // public disableInput: boolean = false;
     private placeholderText: string = 'Solve for Y:';
     private textFieldDisabled: boolean = false;
     private points: string;
@@ -83,15 +84,21 @@ export class PlotGraph extends ComponentBase<string>{
     }
 
     private plotGraph(): void {
-        const points = this.points.split(",").map(Number);
-        const line = this.getGraph(this.equation, points[0], points[1], points[2], points[3]);
-        this.drawGraph(line);        
+        const points: number[] = this.points.split(",").map(Number);
+        var lines: Line[] = [];
+
+        points.forEach((point, index) => {
+            if ((index+1) % 4 == 0) {
+                lines.push(this.getModifiedLine(this.equation, points[index-3], points[index-2], points[index-1], point));
+            }
+        });
+
+        this.drawGraph(lines);        
     }
 
-    // TODO: impl me
-    private getGraph(equation: string, xMin: number, xMax: number, yMin: number, yMax: number): Line[] {
-        console.log('equation: ', equation);
-        return [new Line(xMin,xMax,yMin,yMax)];
+    // TODO: impl me. Do something with the equation
+    private getModifiedLine(equation: string, xMin: number, xMax: number, yMin: number, yMax: number): Line {
+        return new Line(xMin,xMax,yMin,yMax);
     }
 
     private drawGraph(lines: Line[]) {
