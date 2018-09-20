@@ -2,16 +2,21 @@ import { ComponentBase, html, TemplateResult } from '@hmh/component-base/dist/in
 import { MDCTextField } from '@material/textfield/index'; 
 
 class Line {
-    public startX: number;
-    public endX: number;
-    public startY: number;
-    public endY: number;
+    private _startX: number;
+    private _endX: number;
+    private _startY: number;
+    private _endY: number;
+
+    get startX() : number { return this._startX; }
+    get endX() : number { return this._endX; }
+    get startY() : number { return this._startY; }
+    get endY() : number { return this._endY; }
 
     constructor(x1: number, x2: number, y1: number, y2: number) {
-        this.startX = x1;
-        this.endX = x2;
-        this.startY = y1;
-        this.endY = y2;
+        this._startX = x1;
+        this._endX = x2;
+        this._startY = y1;
+        this._endY = y2;
     }
 }
 
@@ -24,30 +29,25 @@ export class PlotGraph extends ComponentBase<string>{
     // public disableInput: boolean = false;
     private placeholderText: string = 'Solve for Y:';
     private textFieldDisabled: boolean = false;
+    private points: string;
+    private equation: string;
 
     static get properties(): { [key: string]: string | object } {
         return {
             ...super.properties,
-            xMax: String,
-            xMin: String,
-            yMax: String,
-            yMin: String,
             disableInput: Boolean,
             placeholderText: String,
-            textFieldDisabled: Boolean
+            textFieldDisabled: Boolean,
+            points: String,
+            equation: String
         };
     }
     
+    // TODO : this is meant to be the answer
     private _onTextInputChange(evt: Event): void {
         evt.stopPropagation();
         // const text = (evt.target as HTMLInputElement).value;
-        const lines = this.getGraph('some equation', Number(this.xMin), Number(this.xMax), Number(this.yMin), Number(this.yMax));
-        this.plotGraph(lines);
-    }
-
-    // TODO: impl me
-    private getGraph(equation: string, xMin: number, xMax: number, yMin: number, yMax: number): Line[] {
-        return [new Line(xMin,xMax,yMin,yMax)];
+        // this.plotGraph();
     }
 
     protected _render({ textFieldDisabled, placeholderText }: PlotGraph): TemplateResult {
@@ -79,17 +79,27 @@ export class PlotGraph extends ComponentBase<string>{
     protected _didRender(): void {
         const elem = this.shadowRoot.querySelector('.mdc-text-field');          
         MDCTextField.attachTo(elem);
-        const lines = this.getGraph('some equation', this.xMin, this.xMax, this.yMin, this.yMax);
-        this.plotGraph(lines);
+        this.plotGraph();
     }
 
-    private plotGraph(lines: Line[]) {
+    private plotGraph(): void {
+        const points = this.points.split(",").map(Number);
+        const line = this.getGraph(this.equation, points[0], points[1], points[2], points[3]);
+        this.drawGraph(line);        
+    }
+
+    // TODO: impl me
+    private getGraph(equation: string, xMin: number, xMax: number, yMin: number, yMax: number): Line[] {
+        console.log('equation: ', equation);
+        return [new Line(xMin,xMax,yMin,yMax)];
+    }
+
+    private drawGraph(lines: Line[]) {
         const canvas: HTMLCanvasElement = this.shadowRoot.querySelector('#canvas');
         const ctx = canvas.getContext("2d");
-        console.log('lines:', lines);
-
+        
         lines.forEach((line) => {
-            ctx.moveTo(line.startX, line.startY);
+            ctx.moveTo(line.startX, line.startX);
             ctx.lineTo(line.endX, line.endY);
             ctx.stroke();
         });
