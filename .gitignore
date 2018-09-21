@@ -62,3 +62,5 @@ typings/
 
 .DS_Store
 *.lerna_backup
+.bash_history
+update-notifier-npm.*

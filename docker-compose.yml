@@ -1,0 +1,7 @@
+version: '3'
+services:
+  jenkins:
+    image: tribalnova/jenkins-habitat-slave:chrome
+    volumes:
+      - .:/home/jenkins
+    entrypoint: bash
