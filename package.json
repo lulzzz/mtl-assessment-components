@@ -5,7 +5,6 @@
         "bootstrap": "lerna bootstrap",
         "build": "lerna run build",
         "clean": "lerna clean --yes",
-        "docker": "docker-compose run jenkins",
         "link-all": "lerna link --force-local",
         "list": "lerna ls",
         "publish": "lerna publish --registry http://npm.tribalnova.com --no-verify-access",
