@@ -11,7 +11,7 @@
         "sass": "node-sass src/sass -r -o dist/css",
         "sass-watch": "node-sass src/sass -r -o dist/css -w",
         "watch": "npm run build; npm run sass; concurrently --names 'build,sass' -c 'bgBlue,bgMagenta' 'npm run build -- -w' 'npm run sass -- -w' 'npm-watch'",
-        "test": "lit-element-tester dist/components/{multiple-choice-question.js,multiple-response-question.js}",
+        "test": "lit-element-tester dist/components/*.js",
         "_generateDocs": "polymer analyze ./dist/components/{multiple-choice-question.js,multiple-response-question.js} > ./dist/components/analysis.json"
     },
     "keywords": [],
