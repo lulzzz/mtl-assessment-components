@@ -1,0 +1,26 @@
+* {
+    font-family: Roboto, sans-serif;
+}
+
+p {
+    line-height: 2rem;
+}
+
+drag-drop {
+}
+drop-container {
+    padding: 10px;
+    margin: 10px;
+    background-color: gray;
+    display: flex;
+}
+drag-container {
+    background-color: lightblue;
+    padding: 10px;
+    margin: 10px;
+    display: flex;
+}
+
+[slot] {
+    display: none;
+}
