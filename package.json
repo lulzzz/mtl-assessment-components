@@ -14,5 +14,8 @@
     },
     "devDependencies": {
         "lerna": "latest"
+    },
+    "dependencies": {
+        "@types/d3": "^5.0.0"
     }
 }
