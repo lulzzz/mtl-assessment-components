@@ -48,9 +48,8 @@ export class PlotGraph extends ComponentBase<string> implements Feedback {
 
     private yMin: number = 0;
     private graphSize: number = 500;
-    private yMax: number = this.graphSize;
+    private yMax: number = 100; // this.graphSize;
     private lineDescription: string = '';
-    
 
     static get properties(): { [key: string]: string | object } {
         return {
@@ -103,14 +102,27 @@ export class PlotGraph extends ComponentBase<string> implements Feedback {
         // draw the lines
         lines.forEach((line) => {
             svgContainer.append("line")
-            .attr("x1", line.startX)
-            .attr("y1", line.startY)
-            .attr("x2", line.endX)
-            .attr("y2", line.endY)
+            .attr("x1", this.scaleValToGraph(line.startX))
+            .attr("y1", this.scaleValToGraph(line.startY))
+            .attr("x2", this.scaleValToGraph(line.endX))
+            .attr("y2", this.scaleValToGraph(line.endY))
             .attr("stroke-width", 1)
             .attr("stroke", 'red');
             this.lineDescription += line.toString() + ' ';
         });
+    }
+
+    private scaleValToGraph(val: number) : number {
+        return (this.graphSize / 100) * val;
+    }
+
+    // This is a mock
+    private applyEquation(equation: string, xMin: number, xMax: number): Line {
+        console.log("equation: ", equation);
+        let line = new Line(xMin, xMax, this.yMin, this.yMax);
+        this.yMin += this.graphSize;
+        this.yMax += this.graphSize;
+        return line;
     }
 
     protected _render({ textFieldDisabled, placeholderText, lineDescription, feedbackMessage }: PlotGraph): TemplateResult {
@@ -165,15 +177,6 @@ export class PlotGraph extends ComponentBase<string> implements Feedback {
     private _onTextInputChange(evt: Event): void {
         evt.stopPropagation();
         this.value = (evt.target as HTMLInputElement).value;
-    }
-
-    // This is a mock
-    private applyEquation(equation: string, xMin: number, xMax: number): Line {
-        console.log("equation: ", equation);
-        let line = new Line(xMin, xMax, this.yMin, this.yMax);
-        this.yMin += this.graphSize;
-        this.yMax += this.graphSize;
-        return line;
     }
 }
 
