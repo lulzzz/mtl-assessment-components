@@ -47,8 +47,10 @@ export class PlotGraph extends ComponentBase<string> implements Feedback {
     private equation: string;
 
     private yMin: number = 0;
-    private yMax: number = 500;
+    private graphSize: number = 500;
+    private yMax: number = this.graphSize;
     private lineDescription: string = '';
+    
 
     static get properties(): { [key: string]: string | object } {
         return {
@@ -96,7 +98,7 @@ export class PlotGraph extends ComponentBase<string> implements Feedback {
         });
 
         // use D3 for SVG
-        let svgContainer = d3.select(this.shadowRoot).select("#canvas").append("svg").attr("width", 500).attr("height", 500);
+        let svgContainer = d3.select(this.shadowRoot).select("#canvas").append("svg").attr("width", this.graphSize).attr("height", this.graphSize);
 
         // draw the lines
         lines.forEach((line) => {
@@ -118,11 +120,11 @@ export class PlotGraph extends ComponentBase<string> implements Feedback {
         <link rel="stylesheet" type="text/css" href="/node_modules/@material/textfield/dist/mdc.textfield.css">
         <link rel="stylesheet" type="text/css" href="/dist/css/plot-graph.css">
 
-        <div class="container" class$="${this._getFeedbackClass(feedbackMessage, true)}">
+        <div class$="container ${this._getFeedbackClass(feedbackMessage, true)}">
             <div id='canvas'></div>
-            <div id='line-description'> ${lineDescription ? lineDescription : ''} </div>
+            <div class='line-description'> ${lineDescription ? lineDescription : ''} </div>
 
-            <div class="text-field-container">
+            <div class="bottom-ui-container">
                 <div class$="mdc-text-field mdc-text-field--outlined ${ textFieldDisabled ? "mdc-text-field--disabled" : "" }">
                     <input
                         disabled="${textFieldDisabled}"ß
@@ -138,7 +140,7 @@ export class PlotGraph extends ComponentBase<string> implements Feedback {
                     </div>
                     <div class="mdc-notched-outline__idle"></div>
                 </div>
-                <span class$="feedback-message ${this._getFeedbackClass(feedbackMessage, false)}">${feedbackMessage ? feedbackMessage.message : ''}</span>            
+                <span class$="feedback-message ${this._getFeedbackClass(feedbackMessage, false)}">${feedbackMessage ? feedbackMessage.message : ''}</span>          
             </div>
         </div>
 
@@ -169,8 +171,8 @@ export class PlotGraph extends ComponentBase<string> implements Feedback {
     private applyEquation(equation: string, xMin: number, xMax: number): Line {
         console.log("equation: ", equation);
         let line = new Line(xMin, xMax, this.yMin, this.yMax);
-        this.yMin += 500;
-        this.yMax += 500;
+        this.yMin += this.graphSize;
+        this.yMax += this.graphSize;
         return line;
     }
 }

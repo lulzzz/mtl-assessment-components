@@ -2,10 +2,16 @@
     font-family: Roboto, sans-serif;
 }
 
-#button {
-    display: block;
-}
-
 [slot] {
     display: none;
+}
+
+.demo-container {
+    display: flex;
+    flex-direction: column;
+}
+
+#button {
+    display: inline-flex;
+    width: 25%;
 }

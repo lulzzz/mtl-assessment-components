@@ -1,3 +1,8 @@
+.mdc-text-field {
+    margin: auto;
+    width: 50%;
+}
+
 .mdc-text-field--upgraded:not(.mdc-text-field--fullwidth):not(.mdc-text-field--box) {
     margin-top: 0px;
 }
@@ -26,12 +31,16 @@
     flex-direction: column;
 }
 
-.text-field-container {
+.bottom-ui-container {
     display: inline-flex;
-    flex-direction: row;
+    flex-direction: column;
     width: 100%;
     margin: 0;
     padding: 0;
+}
+
+.line-description {
+    text-align: center;
 }
 
 .feedback-negative-border {
@@ -55,7 +64,6 @@
     padding-left: 5px;
     padding-right: 5px;
     display: flex;
-    width: 50%;
 }
 
 .feedback-negative-background {
