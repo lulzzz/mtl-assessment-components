@@ -4,7 +4,7 @@ import { ComponentBase, html, TemplateResult, Feedback, FeedbackMessage, Respons
  * @demo ./demo/index.html
  */
 export class DropContainer extends ComponentBase<string[]> implements Feedback {
-    public value: string[] = [];
+    //public value: string[] = [];
     public feedbackMessage: FeedbackMessage;
 
     // @mixin: Feedback
@@ -17,14 +17,19 @@ export class DropContainer extends ComponentBase<string[]> implements Feedback {
         return {
             ...super.properties,
             containers: Array,
+            feedbackMessage: Object,
             maxItems: Number,
             value: Array
         };
     }
-    /**
-     * @param  {ResponseValidation} el - the element containing an expected value and a strategy
-     * @param  {any} response - The value to match against
-     */
+    public get value(): string[] {
+        const arr: string[] = [];
+        for (let i = 0; i < this.getNumberChildren(); i++) {
+            arr.push(this.shadowRoot.querySelectorAll('.option-item').item(i).id);
+        }
+        return arr;
+    }
+
     public match(el: ResponseValidation, response: string[]): boolean {
         if (!el.expected) {
             // catch-all clause
@@ -43,7 +48,9 @@ export class DropContainer extends ComponentBase<string[]> implements Feedback {
     public getNumberChildren(): number {
         return this.shadowRoot.querySelectorAll('.option-item').length;
     }
-    protected _render(): TemplateResult {
+    protected _render({ feedbackMessage }: DropContainer): TemplateResult {
+        this.className = feedbackMessage ? this.feedbackMessage.type : '';
+
         return html`
         <link rel="stylesheet" type="text/css" href="/dist/css/drag-drop.css">
         <slot name="feedback" on-slotchange="${(e: Event) => this._onFeedbackSlotChanged(e)}"></slot>

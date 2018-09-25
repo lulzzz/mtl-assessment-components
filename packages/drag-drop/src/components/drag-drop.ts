@@ -1,15 +1,4 @@
-import {
-    applyMixins,
-    ComponentBase,
-    Feedback,
-    FeedbackMessage,
-    Strategy,
-    html,
-    TemplateResult,
-    repeat,
-    unsafeHTML,
-    ResponseValidation
-} from '@hmh/component-base/dist/index';
+import { applyMixins, ComponentBase, Feedback, FeedbackMessage, Strategy, html, TemplateResult, ResponseValidation } from '@hmh/component-base/dist/index';
 import './drag-container';
 import './drop-container';
 import { DragContainer } from './drag-container';
@@ -45,7 +34,7 @@ export class DragDrop extends ComponentBase<string[]> implements Feedback {
      */
     public showFeedback(): void {
         //   this.feedbackMessage = this.computeFeedback(this.value);
-        this.dropContainers.forEach((d) => console.log(d.computeFeedback(d.value)));
+        this.dropContainers.forEach((d) => console.log(d.showFeedback()));
         //   this.dropContainers.forEach((d) => console.log(d.computeFeedback));
     }
 
@@ -83,14 +72,11 @@ export class DragDrop extends ComponentBase<string[]> implements Feedback {
         ev.preventDefault();
         ev.stopPropagation();
 
-        console.log('drop invoked', ev);
         const eventElement: HTMLElement = ev.target as HTMLElement;
         if (eventElement !== this) {
             //do not allow drop of drag-drop itself
 
             var data = ev.dataTransfer.getData('text/plain');
-            console.log('data', data);
-
             if (data) {
                 let dataElement;
 
