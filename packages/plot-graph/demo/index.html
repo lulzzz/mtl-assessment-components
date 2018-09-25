@@ -2,11 +2,35 @@
     <head>
         <meta charset="utf-8">
         <link rel="stylesheet" href="index.css">
+        <link rel="stylesheet" type="text/css" href="/node_modules/@material/button/dist/mdc.button.css">
         <script type="module" src="../dist/components/plot-graph.js"></script>
+        <script type="module" src="../node_modules/@hmh/response-validation/dist/components/response-validation.js"></script>
     </head>
 
     <body>
         <h2>Plot Graph Demo</h3>
-            <plot-graph xValues='0,50,50,100' equation='some equation format TBD'></plot-graph>
+        <plot-graph xValues='0,100' equation='some equation format TBD'>
+
+            <response-validation slot="feedback" expected="y=x" score="4" strategy="fuzzyMatch">
+                <span>Good</span>
+                <span>Wooot!</span>
+            </response-validation>
+    
+            <response-validation slot="feedback" score="0" feedback="negative" strategy="exactMatch">
+                <span>Try again</span>
+                <span>Oups, still not good</span>
+                <span>Too bad!</span>
+            </response-validation>
+
+
+        </plot-graph>
+
+        <button id="button" class="mdc-button">Validate</button>
+
+        <script>
+            document.getElementById('button').addEventListener('click', () => {
+                document.querySelector('plot-graph').showFeedback();
+            })
+        </script>
     </body>
 </html>
