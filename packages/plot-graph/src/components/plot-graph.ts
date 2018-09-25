@@ -47,7 +47,7 @@ export class PlotGraph extends ComponentBase<string> implements Feedback {
     private equation: string;
 
     private yMin: number = 0;
-    private yMax: number = 100;
+    private yMax: number = 500;
     private lineDescription: string = '';
 
     static get properties(): { [key: string]: string | object } {
@@ -79,6 +79,36 @@ export class PlotGraph extends ComponentBase<string> implements Feedback {
             default:
                 return el.expected === (response ? response.toLowerCase() : '');
         }
+    }
+
+    public _firstRendered(): void {
+        const elem = this.shadowRoot.querySelector(".mdc-text-field");
+        MDCTextField.attachTo(elem);
+        // get an array of numbers from the string input
+        const xValues: number[] = this.xValues.split(",").map(Number);
+        const lines: Line[] = [];
+
+        xValues.forEach((xValue, index) => {
+            if ((index + 1) % 2 == 0) {
+                // max and min X for each line, Get max min Y per this.equation
+                lines.push(this.applyEquation(this.equation, xValues[index - 1], xValue));
+            }
+        });
+
+        // use D3 for SVG
+        let svgContainer = d3.select(this.shadowRoot).select("#canvas").append("svg").attr("width", 500).attr("height", 500);
+
+        // draw the lines
+        lines.forEach((line) => {
+            svgContainer.append("line")
+            .attr("x1", line.startX)
+            .attr("y1", line.startY)
+            .attr("x2", line.endX)
+            .attr("y2", line.endY)
+            .attr("stroke-width", 1)
+            .attr("stroke", 'red');
+            this.lineDescription += line.toString() + ' ';
+        });
     }
 
     protected _render({ textFieldDisabled, placeholderText, lineDescription, feedbackMessage }: PlotGraph): TemplateResult {
@@ -130,37 +160,6 @@ export class PlotGraph extends ComponentBase<string> implements Feedback {
         return isContainer ? `feedback-${feedbackMessage.type}-border` : `feedback-${feedbackMessage.type}-background`;
     }
   
-    public _firstRendered(): void {
-        const elem = this.shadowRoot.querySelector(".mdc-text-field");
-        MDCTextField.attachTo(elem);
-        // get an array of numbers from the string input
-        const xValues: number[] = this.xValues.split(",").map(Number);
-        const lines: Line[] = [];
-
-        xValues.forEach((xValue, index) => {
-            if ((index + 1) % 2 == 0) {
-                // max and min X for each line, Get max min Y per this.equation
-                lines.push(this.applyEquation(this.equation, xValues[index - 1], xValue));
-            }
-        });
-
-        // use D3 for SVG
-        let svgContainer = d3.select(this.shadowRoot).select("#canvas").append("svg").attr("width", 100).attr("height", 100);
-
-        // draw the lines
-        lines.forEach((line) => {
-            svgContainer.append("line")
-            .attr("x1", line.startX)
-            .attr("y1", line.startY)
-            .attr("x2", line.endX)
-            .attr("y2", line.endY)
-            .attr("stroke-width", 1)
-            .attr("stroke", 'red');
-            this.lineDescription += line.toString() + ' ';
-        });
-    }
-
-  
     private _onTextInputChange(evt: Event): void {
         evt.stopPropagation();
         this.value = (evt.target as HTMLInputElement).value;
@@ -170,8 +169,8 @@ export class PlotGraph extends ComponentBase<string> implements Feedback {
     private applyEquation(equation: string, xMin: number, xMax: number): Line {
         console.log("equation: ", equation);
         let line = new Line(xMin, xMax, this.yMin, this.yMax);
-        this.yMin += 50;
-        this.yMax += 50;
+        this.yMin += 500;
+        this.yMax += 500;
         return line;
     }
 }
