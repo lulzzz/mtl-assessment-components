@@ -28,27 +28,39 @@
             <div hidden slot="options" id="3">3</div>
             <div hidden slot="options" id="4">4</div>
         </drag-container>
-        <drop-container>
-            <div>drop 1</div>
+
+        <drop-container maxItems="4">
+
+            <response-validation hidden slot="feedback" expected="000-1|000-5" score="10">
+                <span>Perfect</span>
+            </response-validation>
+
+            <response-validation hidden slot="feedback" expected="000-1|000-5" score="5" strategy="fuzzyMatch" feedbackType="neutral">
+                <span>Almost</span>
+            </response-validation>
+
+            <response-validation hidden slot="feedback" score="0" feedback="negative">
+                <span>Try again</span>
+                <span>Still not good</span>
+                <span>Wrong answer</span>
+            </response-validation>
         </drop-container>
-        <drop-container>
-            <div>drop 2</div>
+
+        <drop-container maxItems="1">
+            <response-validation hidden slot="feedback" expected="4" score="10">
+                <span>Perfect</span>
+            </response-validation>
+
+            <response-validation hidden slot="feedback" expected="2" score="5" strategy="fuzzyMatch" feedbackType="neutral">
+                <span>Almost</span>
+            </response-validation>
+
+            <response-validation hidden slot="feedback" score="0" feedback="negative">
+                <span>Try again</span>
+                <span>Still not good</span>
+                <span>Wrong answer</span>
+            </response-validation>
         </drop-container>
-
-        <response-validation slot="feedback" expected="smile" score="4" strategy="fuzzyMatch">
-            <span>Good</span>
-            <span>Wooot!</span>
-        </response-validation>
-
-        <response-validation slot="feedback" expected="grin" score="1" feedbackType="neutral" strategy="exactMatch">
-            <span>Almost</span>
-        </response-validation>
-
-        <response-validation slot="feedback" score="0" feedback="negative" strategy="exactMatch">
-            <span>Try again</span>
-            <span>Oups, still not good</span>
-            <span>Too bad!</span>
-        </response-validation>
 
     </drag-drop>
 

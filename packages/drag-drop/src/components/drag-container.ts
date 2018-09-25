@@ -24,15 +24,17 @@ export class DragContainer extends ComponentBase<string[]> {
             options,
             (option: HTMLElement) => option.id,
             (option: HTMLElement) => html`
-                <div class="option-item" id$="${option.id}" draggable="true" ondragstart="${(e: DragEvent) => this.drag(e)}" > ${unsafeHTML(
+                <div class="option-item" slot="option-item" id$="${option.id}" draggable="true" ondragstart="${(e: DragEvent) => this.drag(e)}" > ${unsafeHTML(
                 option.innerHTML
             )} </div>`
         )}
+
         <slot name="options" on-slotchange="${(e: Event) => this._onSlotChanged(e)}" ></slot>
         `;
     }
 
     drag(ev: DragEvent) {
+        ev.stopPropagation();
         ev.dataTransfer.setData('text/plain', (ev.target as HTMLElement).id);
     }
 
@@ -43,10 +45,7 @@ export class DragContainer extends ComponentBase<string[]> {
             const nodes: Node[] = slot.assignedNodes();
             if (nodes) {
                 nodes.forEach(
-                    (el: HTMLElement, index: number): void => {
-                        el.setAttribute('index', String(index));
-                        el.setAttribute('tabindex', String(index + 1));
-                        // el.setAttribute('role', 'button');
+                    (el: HTMLElement): void => {
                         items.push(el);
                     }
                 );

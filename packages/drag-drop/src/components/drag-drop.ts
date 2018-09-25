@@ -19,7 +19,6 @@ import { DropContainer } from './drop-container';
  * @demo ./demo/index.html
  */
 export class DragDrop extends ComponentBase<string[]> implements Feedback {
-    hasDuplicates: boolean = true;
     value: string[] = [];
     dragContainers: DragContainer[] = [];
     dropContainers: DropContainer[] = [];
@@ -28,7 +27,6 @@ export class DragDrop extends ComponentBase<string[]> implements Feedback {
         return {
             ...super.properties,
             items: Array,
-            hasDuplicates: Boolean,
             value: Array
         };
     }
@@ -41,10 +39,16 @@ export class DragDrop extends ComponentBase<string[]> implements Feedback {
         this.addEventListener('drop', this.drop);
         this.addEventListener('dragover', this.allowDrop);
     }
+
     /**
-     * @param  {ResponseValidation} el - the element containing an expected value and a strategy
-     * @param  {any} response - The value to match against
+     * Call this function to display feedback to the user
      */
+    public showFeedback(): void {
+        //   this.feedbackMessage = this.computeFeedback(this.value);
+        this.dropContainers.forEach((d) => console.log(d.computeFeedback(d.value)));
+        //   this.dropContainers.forEach((d) => console.log(d.computeFeedback));
+    }
+
     public match(el: ResponseValidation, response: string[]): boolean {
         if (!el.expected) {
             // catch-all clause
@@ -61,7 +65,7 @@ export class DragDrop extends ComponentBase<string[]> implements Feedback {
         }
     }
 
-    protected _render({ feedbackMessage, hasDuplicates, value }: DragDrop): TemplateResult {
+    protected _render({ feedbackMessage, value }: DragDrop): TemplateResult {
         return html`
         <link rel="stylesheet" type="text/css" href="/dist/css/drag-drop.css">
         <div class$="${feedbackMessage ? feedbackMessage.type : ''}">
@@ -74,30 +78,34 @@ export class DragDrop extends ComponentBase<string[]> implements Feedback {
         ev.preventDefault();
         ev.dataTransfer.dropEffect = 'move';
     }
-    drag(ev: DragEvent) {
-        ev.dataTransfer.setData('text/plain', (ev.target as HTMLElement).id);
-    }
+
     drop(ev: DragEvent) {
         ev.preventDefault();
         ev.stopPropagation();
 
-        console.log('invoked', ev);
+        console.log('drop invoked', ev);
         const eventElement: HTMLElement = ev.target as HTMLElement;
         if (eventElement !== this) {
             //do not allow drop of drag-drop itself
+
             var data = ev.dataTransfer.getData('text/plain');
+            console.log('data', data);
 
             if (data) {
                 let dataElement;
-                //Look for id in drag and drop arrays (prevents external drag items to be added)
+
+                //Look for id in drag and drop arrays (prevents external drag items to be added) TODO: check element belongs
                 this.dragContainers.forEach((d: DragContainer) => {
                     if (d.shadowRoot.getElementById(data)) dataElement = d.shadowRoot.getElementById(data);
                 });
                 this.dropContainers.forEach((d: DropContainer) => {
                     if (d.shadowRoot.getElementById(data)) dataElement = d.shadowRoot.getElementById(data);
                 });
-
-                eventElement.shadowRoot.appendChild(dataElement);
+                if (eventElement instanceof DragContainer) {
+                    eventElement.shadowRoot.appendChild(dataElement);
+                } else if ((eventElement as DropContainer).maxItems > (eventElement as DropContainer).getNumberChildren()) {
+                    eventElement.shadowRoot.appendChild(dataElement);
+                }
             }
         }
     }
