@@ -39,8 +39,6 @@ class Line {
  * @demo ./demo/index.html
  */
 export class PlotGraph extends ComponentBase<string> {
-    private placeholderText: string = "Solve for Y:";
-    private textFieldDisabled: boolean = false;
     private xValues: string;
     private equation: string;
 
@@ -102,7 +100,7 @@ export class PlotGraph extends ComponentBase<string> {
         return line;
     }
 
-    protected _render({ textFieldDisabled, placeholderText, lineDescription }: PlotGraph): TemplateResult {
+    protected _render({ lineDescription }: PlotGraph): TemplateResult {
         return html`
         <link rel="stylesheet" type="text/css" href="/dist/css/plot-graph.css">
 
