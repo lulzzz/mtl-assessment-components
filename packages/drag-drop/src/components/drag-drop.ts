@@ -27,15 +27,14 @@ export class DragDrop extends ComponentBase<string[]> implements Feedback {
         super();
         this.addEventListener('drop', this.drop);
         this.addEventListener('dragover', this.allowDrop);
+        this.addEventListener('dragstart', this.drag);
     }
 
     /**
      * Call this function to display feedback to the user
      */
     public showFeedback(): void {
-        //   this.feedbackMessage = this.computeFeedback(this.value);
-        this.dropContainers.forEach((d) => console.log(d.showFeedback()));
-        //   this.dropContainers.forEach((d) => console.log(d.computeFeedback));
+        this.dropContainers.forEach((d) => d.showFeedback());
     }
 
     public match(el: ResponseValidation, response: string[]): boolean {
@@ -44,7 +43,6 @@ export class DragDrop extends ComponentBase<string[]> implements Feedback {
             return true;
         }
         const expected: string[] = el.expected.split('|');
-
         switch (el.strategy) {
             case Strategy.CONTAINS:
                 return expected.some((answer: string) => response.includes(answer));
@@ -64,15 +62,17 @@ export class DragDrop extends ComponentBase<string[]> implements Feedback {
         `;
     }
     isDropAllowed(element: HTMLElement, id: string): boolean {
-        return (
-            (element instanceof DragContainer && element.options.some((e: HTMLElement) => e.id === id)) ||
-            (element as DropContainer).maxItems > (element as DropContainer).childrenNb
-        );
+        return element instanceof DragContainer || (element as DropContainer).maxItems > (element as DropContainer).childrenNb;
     }
     allowDrop(ev: any) {
         ev.preventDefault();
         ev.stopPropagation();
         ev.dataTransfer.dropEffect = 'move';
+    }
+    drag(ev: DragEvent) {
+        if ((ev.target as HTMLElement).className === 'option-item') {
+            ev.dataTransfer.setData('source_id', (ev.target as HTMLElement).id);
+        }
     }
 
     drop(ev: DragEvent) {
@@ -84,16 +84,22 @@ export class DragDrop extends ComponentBase<string[]> implements Feedback {
             //do not allow drop of drag-drop itself
 
             var data = ev.dataTransfer.getData('source_id');
-            let dataElement;
+            let dataElement: HTMLElement;
+
             //Look for id in drag and drop arrays (prevents external drag items to be added) TODO: check element belongs
             this.dragContainers.forEach((d: DragContainer) => {
-                if (d.shadowRoot.getElementById(data)) dataElement = d.shadowRoot.getElementById(data);
+                d.options.forEach((o: HTMLElement) => {
+                    if (o.id === data) dataElement = o;
+                });
             });
             this.dropContainers.forEach((d: DropContainer) => {
-                if (d.shadowRoot.getElementById(data)) dataElement = d.shadowRoot.getElementById(data);
+                d.addedItems.forEach((o: HTMLElement) => {
+                    if (o.id === data) dataElement = o;
+                });
             });
-            if (this.isDropAllowed(target, data)) {
-                target.shadowRoot.appendChild(dataElement);
+
+            if (dataElement && this.isDropAllowed(target, data)) {
+                target.appendChild(dataElement);
             }
         }
     }

@@ -20,7 +20,3 @@ drag-container {
     display: flex;
     min-height: 100px;
 }
-
-[slot] {
-    display: none;
-}

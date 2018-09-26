@@ -6,7 +6,7 @@ import { ComponentBase, html, TemplateResult, Feedback, FeedbackMessage, Respons
 export class DropContainer extends ComponentBase<string[]> implements Feedback {
     //public value: string[] = [];
     public feedbackMessage: FeedbackMessage;
-
+    public addedItems: HTMLElement[] = [];
     // @mixin: Feedback
     computeFeedback: (value: string[]) => FeedbackMessage;
     _onFeedbackSlotChanged: (evt: Event) => void;
@@ -16,21 +16,17 @@ export class DropContainer extends ComponentBase<string[]> implements Feedback {
     static get properties(): { [key: string]: string | object } {
         return {
             ...super.properties,
-            containers: Array,
+            addedItems: Array,
             feedbackMessage: Object,
             maxItems: Number,
             value: Array
         };
     }
     public get value(): string[] {
-        const arr: string[] = [];
-        for (let i = 0; i < this.childrenNb; i++) {
-            arr.push(this.shadowRoot.querySelectorAll('.option-item').item(i).id);
-        }
-        return arr;
+        return this.addedItems.map((x: HTMLElement) => x.id);
     }
     public get childrenNb(): number {
-        return this.shadowRoot.querySelectorAll('.option-item').length;
+        return this.addedItems.length;
     }
 
     public match(el: ResponseValidation, response: string[]): boolean {
@@ -49,14 +45,30 @@ export class DropContainer extends ComponentBase<string[]> implements Feedback {
         }
     }
 
-    protected _render({ feedbackMessage }: DropContainer): TemplateResult {
+    protected _render({ addedItems, feedbackMessage }: DropContainer): TemplateResult {
         this.className = feedbackMessage ? this.feedbackMessage.type : '';
 
         return html`
         <link rel="stylesheet" type="text/css" href="/dist/css/drag-drop.css">
         <slot name="feedback" on-slotchange="${(e: Event) => this._onFeedbackSlotChanged(e)}"></slot>
+        <slot name="options" on-slotchange="${(e: Event) => this._onSlotChanged(e)}" ></slot>
 
         `;
+    }
+    _onSlotChanged(event: Event): void {
+        const items: HTMLElement[] = [];
+        const slot: HTMLSlotElement = event.srcElement as HTMLSlotElement;
+        if (slot) {
+            const nodes: Node[] = slot.assignedNodes();
+            if (nodes) {
+                nodes.forEach(
+                    (el: HTMLElement): void => {
+                        items.push(el);
+                    }
+                );
+            }
+        }
+        this.addedItems = items;
     }
 }
 applyMixins(DropContainer, [Feedback]);

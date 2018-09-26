@@ -1,4 +1,4 @@
-import { ComponentBase, html, TemplateResult, repeat, unsafeHTML } from '@hmh/component-base/dist/index';
+import { ComponentBase, html, TemplateResult } from '@hmh/component-base/dist/index';
 /**
  * `<drag-drop>`
  * @demo ./demo/index.html
@@ -20,24 +20,9 @@ export class DragContainer extends ComponentBase<string[]> {
     protected _render({ options, hasDuplicates, value }: DragContainer): TemplateResult {
         return html`
         <link rel="stylesheet" type="text/css" href="/dist/css/drag-drop.css">
-        ${repeat(
-            options,
-            (option: HTMLElement) => option.id,
-            (option: HTMLElement) => html`
-                <div class="option-item" slot="option-item" id$="${option.id}" draggable="true" ondragstart="${(e: DragEvent) => this.drag(e)}" > ${unsafeHTML(
-                option.innerHTML
-            )} </div>`
-        )}
 
         <slot name="options" on-slotchange="${(e: Event) => this._onSlotChanged(e)}" ></slot>
         `;
-    }
-
-    drag(ev: DragEvent) {
-        ev.stopPropagation();
-        if ((ev.target as HTMLElement).className === 'option-item') {
-            ev.dataTransfer.setData('source_id', (ev.target as HTMLElement).id);
-        }
     }
 
     _onSlotChanged(event: Event): void {
@@ -48,6 +33,8 @@ export class DragContainer extends ComponentBase<string[]> {
             if (nodes) {
                 nodes.forEach(
                     (el: HTMLElement): void => {
+                        el.className = 'option-item';
+                        el.draggable = true;
                         items.push(el);
                     }
                 );
