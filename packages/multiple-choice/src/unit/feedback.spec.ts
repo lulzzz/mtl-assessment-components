@@ -93,7 +93,7 @@ export default () => {
             expect(element.feedbackMessage.type).to.equal('positive');
             expect(element.feedbackMessage.score).to.equal(10);
         });
-        it('use of fuzzyMatch strategy', async (): Promise<void> => {
+        it('use of contains any strategy', async (): Promise<void> => {
             withSnippet('multiple-feedback-2');
             const element: MultipleResponseQuestion = document.querySelector(mrqTagName) as any;
             await element.renderComplete;

@@ -19,13 +19,8 @@ export class ResponseValidation extends ComponentBase<string> {
             strategy: String
         };
     }
-     
-    /*
-    getExpected(): Set<string> {
-        return this.expected !== '' ? new Set(this.expected.split('|')) : null; //TODO: fix
-    }*/
 
-    public getFeedbackMessage(): FeedbackMessage {
+    public getFeedback(): FeedbackMessage {
         let type: FeedbackType = this.feedbackType;
         const score = this.score;
         if (!this.feedbackType) {
@@ -49,25 +44,21 @@ export class ResponseValidation extends ComponentBase<string> {
 
     protected _render(): TemplateResult {
         return html`
-            <slot on-slotchange="${(evt: Event) => this.onSlotChanged(evt)}"></slot>
+            <slot on-slotchange="${(evt: Event) => this._onSlotChanged(evt)}"></slot>
         `;
     }
 
-    private onSlotChanged(event: Event) {
+    private _onSlotChanged(event: Event) {
         event.stopPropagation();
         const slot: HTMLSlotElement = event.srcElement as HTMLSlotElement;
-        if (slot) {
-            const nodes: Node[] = slot.assignedNodes();
-            if (nodes) {
-                const feedbackItems: HTMLElement[] = [];
-                for (const el of nodes as HTMLElement[]) {
-                    if (el && el.tagName) {
-                        feedbackItems.push(el);
-                    }
-                }
-                this.feedbackItems = feedbackItems;
+        const nodes: Node[] = slot.assignedNodes();
+        const feedbackItems: HTMLElement[] = [];
+        for (const el of nodes as HTMLElement[]) {
+            if (el && el.tagName) {
+                feedbackItems.push(el);
             }
         }
+        this.feedbackItems = feedbackItems;
     }
 }
 

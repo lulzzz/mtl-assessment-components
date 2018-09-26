@@ -33,7 +33,7 @@ describe(`<${tagName}>`, (): void => {
         await el.renderComplete;
         const content = el.shadowRoot.querySelector('.dropdown-content');
         const display = window.getComputedStyle(content).getPropertyValue('display');
-        expect(display).to.equal('block');
+        expect(display).to.equal('blocky');
     });
 
     it('should contain the expected option values', async (): Promise<void> => {

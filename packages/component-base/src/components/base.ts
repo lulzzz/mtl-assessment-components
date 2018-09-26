@@ -37,12 +37,23 @@ export class ComponentBase<T> extends LitElement {
     public feedbackMessage: FeedbackMessage;
     public _responseValidationElements: ResponseValidation[] = [];
 
+    public match(el: ResponseValidation, response: any): boolean {
+        if (!el.expected) {
+            // catch-all clause
+            return true;
+        }
+
+        return el.expected === response.toString();
+    }
+
     /**
      * Call this function to display feedback to the user
      */
     public showFeedback(): void {
         if (typeof this.computeFeedback === 'function') {
             this.feedbackMessage = this.computeFeedback(this.value);
+        } else {
+            throw new Error('unsupported method');
         }
     }
 

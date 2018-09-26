@@ -15,26 +15,70 @@
         sourceMapSupport.install();
         mocha.setup('bdd');
     </script>
-    <script type="module" src="../dist/components/text-input.js">
-    </script>
+    <script type="module" src="../dist/components/base.js"></script>
+    <script type="module" src="../dist/components/multiple-choice.js"></script>
+    <script type="module" src="../dist/components/response-validation.js"></script>
+    <script type="module" src="../dist/unit/fixture-elements.js"></script>
+
 </head>
 
 <body>
     <!-- test fixtures -->
-    <template id="default">
-        <text-input>Enter some text</text-input>
+    <template id="base">
+        <base-element></base-element>
     </template>
-    
-    <template id="paragraph">
-        <p>The great and striking
-            <text-input value="peculiarity"></text-input> of this play is that its action lies wholly in the ideal world.
-            It differs, therefore, from every other work of Shakespeare in the
-            <text-input value="character"></text-input> of its mediation. Our poet, in most of his dramas, portrays the real
-            world, and exhibits man as acting from clear
-            <text-input value="conscious"></text-input> motives, and not from supernatural influences. But here he completely
-            reverses his procedure; from beginning to end the chief instrumentalities of the poem are external; its conflicts
-            and solutions are brought about by powers seemingly beyond human might and intelligence.
-        </p>
+
+    <template id="base-with-feedback-empty-slot">
+        <base-element-feedback></base-element-feedback>
+    </template>
+
+    <template id="base-with-feedback-without-slot">
+        <base-element-feedback-no-slot></base-element-feedback-no-slot>
+    </template>
+
+    <template id="base-with-feedback">
+        <base-element-feedback>
+            <response-validation slot="feedback" expected="hello" score="4">
+                <span>A</span>
+            </response-validation>
+
+            <response-validation slot="feedback" expected="world" score="1" feedbackType="neutral">
+                <span>B</span>
+            </response-validation>
+
+            <response-validation slot="feedback" score="0" feedback="negative">
+                <span>C</span>
+                <span>D</span>
+                <span>E</span>
+            </response-validation>
+        </base-element-feedback>
+    </template>
+
+    <template id="multiple-choice">
+        <multiple-choice-element></multiple-choice-element>
+    </template>
+
+    <template id="multiple-choice-options">
+        <multiple-choice-element>
+            <div hidden slot="options" id="1">A</div>
+            <div hidden slot="options" id="2">B</div>
+            <div hidden slot="options" id="3">C</div>
+            <div hidden slot="options" id="4">D</div>
+            <div hidden slot="options" id="5">E</div>
+            <div hidden slot="options" id="6">F</div>
+        </multiple-choice-element>
+    </template>
+
+    <template id="response-validation">
+        <response-validation></response-validation>
+    </template>
+
+    <template id="response-validation-messages">
+        <response-validation>
+            <span>X</span>
+            <span>Y</span>
+            <span>Z</span>
+        </response-validation>
     </template>
 
     <div id="mocha">
@@ -45,8 +89,7 @@
         <!-- elements under tests are displayed here -->
     </div>
 
-    <script type="module" src="../dist/unit/text-input.spec.js">
-    </script>
+    <script type="module" src="../dist/unit/index.spec.js"></script>
 </body>
 
 </html>

@@ -8,14 +8,19 @@
         "link-all": "lerna link --force-local",
         "list": "lerna ls",
         "publish": "lerna publish --registry http://npm.tribalnova.com --no-verify-access",
-        "test": "lerna run test",
+        "test": "lerna run test --concurrency 1",
         "watch": "lerna run watch --parallel",
         "init": "npm run clean && npm run bootstrap && npm run link-all && lerna run --scope @hmh/component-base build && npm run build"
     },
     "devDependencies": {
+<<<<<<< HEAD
         "lerna": "latest"
     },
     "dependencies": {
         "@types/d3": "^5.0.0"
+=======
+        "lerna": "latest",
+        "puppeteer": "^1.8.0"
+>>>>>>> master
     }
 }
