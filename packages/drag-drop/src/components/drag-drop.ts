@@ -63,8 +63,15 @@ export class DragDrop extends ComponentBase<string[]> implements Feedback {
         </div>
         `;
     }
+    isDropAllowed(element: HTMLElement, id: string): boolean {
+        return (
+            (element instanceof DragContainer && element.options.some((e: HTMLElement) => e.id === id)) ||
+            (element as DropContainer).maxItems > (element as DropContainer).childrenNb
+        );
+    }
     allowDrop(ev: any) {
         ev.preventDefault();
+        ev.stopPropagation();
         ev.dataTransfer.dropEffect = 'move';
     }
 
@@ -72,11 +79,11 @@ export class DragDrop extends ComponentBase<string[]> implements Feedback {
         ev.preventDefault();
         ev.stopPropagation();
 
-        const eventElement: HTMLElement = ev.target as HTMLElement;
-        if (eventElement !== this) {
+        const target: HTMLElement = ev.target as HTMLElement;
+        if (target !== this) {
             //do not allow drop of drag-drop itself
 
-            var data = ev.dataTransfer.getData('text/plain');
+            var data = ev.dataTransfer.getData('source_id');
             let dataElement;
             //Look for id in drag and drop arrays (prevents external drag items to be added) TODO: check element belongs
             this.dragContainers.forEach((d: DragContainer) => {
@@ -85,12 +92,8 @@ export class DragDrop extends ComponentBase<string[]> implements Feedback {
             this.dropContainers.forEach((d: DropContainer) => {
                 if (d.shadowRoot.getElementById(data)) dataElement = d.shadowRoot.getElementById(data);
             });
-            if (dataElement) {
-                if (eventElement instanceof DragContainer) {
-                    eventElement.shadowRoot.appendChild(dataElement);
-                } else if ((eventElement as DropContainer).maxItems > (eventElement as DropContainer).childrenNb) {
-                    eventElement.shadowRoot.appendChild(dataElement);
-                }
+            if (this.isDropAllowed(target, data)) {
+                target.shadowRoot.appendChild(dataElement);
             }
         }
     }

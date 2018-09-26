@@ -35,7 +35,9 @@ export class DragContainer extends ComponentBase<string[]> {
 
     drag(ev: DragEvent) {
         ev.stopPropagation();
-        ev.dataTransfer.setData('text/plain', (ev.target as HTMLElement).id);
+        if ((ev.target as HTMLElement).className === 'option-item') {
+            ev.dataTransfer.setData('source_id', (ev.target as HTMLElement).id);
+        }
     }
 
     _onSlotChanged(event: Event): void {

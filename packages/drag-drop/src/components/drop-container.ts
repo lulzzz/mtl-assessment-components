@@ -58,11 +58,6 @@ export class DropContainer extends ComponentBase<string[]> implements Feedback {
 
         `;
     }
-    drag(ev: DragEvent) {
-        ev.stopPropagation();
-        ev.dataTransfer.setData('text/plain', (ev.target as HTMLElement).id);
-        console.log('drag event', ev.target);
-    }
 }
 applyMixins(DropContainer, [Feedback]);
 
