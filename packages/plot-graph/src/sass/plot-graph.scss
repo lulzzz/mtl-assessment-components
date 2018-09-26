@@ -1,21 +1,4 @@
-.mdc-text-field {
-    margin: auto;
-    width: 50%;
-}
 
-.mdc-text-field--upgraded:not(.mdc-text-field--fullwidth):not(.mdc-text-field--box) {
-    margin-top: 0px;
-}
-
-.mdc-text-field--outlined {
-    margin-top: 0px;
-    margin-bottom: 0px;
-}
-
-.container {
-    display: inline-flex;
-    flex-direction: column;
-}
 
 #canvas {
     margin: 1em;
@@ -31,53 +14,6 @@
     flex-direction: column;
 }
 
-.bottom-ui-container {
-    display: inline-flex;
-    flex-direction: column;
-    width: 100%;
-    margin: 0;
-    padding: 0;
-}
-
 .line-description {
     text-align: center;
-}
-
-.feedback-negative-border {
-    border-color: var(--feedback-negative-color,red);
-    border-style: solid;
-}
-
-.feedback-positive-border {
-    border-color: var(--feedback-positive-color,green);
-    border-style: solid;
-}
-
-.feedback-neutral-border {
-    border-color: var(--feedback-neutral-color,yellow);
-    border-style: solid;
-}
-
-.feedback-message {
-    justify-content: center;
-    align-items: center;
-    padding-left: 5px;
-    padding-right: 5px;
-    display: flex;
-}
-
-.feedback-negative-background {
-    background-color: var(--feedback-negative-color,red);
-}
-
-.feedback-positive-background {
-    background-color: var(--feedback-positive-color,green);
-    justify-content: center;
-    align-items: center;
-}
-
-.feedback-neutral-background {
-    background-color: var(--feedback-neutral-color,yellow);
-    justify-content: center;
-    align-items: center;
 }
