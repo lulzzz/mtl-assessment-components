@@ -22,9 +22,7 @@
         "@hmh/component-base": "latest",
         "@material/button": "latest",
         "@material/textfield": "latest",
-        "babel": "^6.23.0",
-        "d3": "^5.7.0",
-        "nyc": "^13.0.1"
+        "d3": "^5.7.0"
     },
     "devDependencies": {
         "@hmh/lit-element-tester": "latest",
