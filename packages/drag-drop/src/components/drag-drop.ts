@@ -77,19 +77,18 @@ export class DragDrop extends ComponentBase<string[]> implements Feedback {
             //do not allow drop of drag-drop itself
 
             var data = ev.dataTransfer.getData('text/plain');
-            if (data) {
-                let dataElement;
-
-                //Look for id in drag and drop arrays (prevents external drag items to be added) TODO: check element belongs
-                this.dragContainers.forEach((d: DragContainer) => {
-                    if (d.shadowRoot.getElementById(data)) dataElement = d.shadowRoot.getElementById(data);
-                });
-                this.dropContainers.forEach((d: DropContainer) => {
-                    if (d.shadowRoot.getElementById(data)) dataElement = d.shadowRoot.getElementById(data);
-                });
+            let dataElement;
+            //Look for id in drag and drop arrays (prevents external drag items to be added) TODO: check element belongs
+            this.dragContainers.forEach((d: DragContainer) => {
+                if (d.shadowRoot.getElementById(data)) dataElement = d.shadowRoot.getElementById(data);
+            });
+            this.dropContainers.forEach((d: DropContainer) => {
+                if (d.shadowRoot.getElementById(data)) dataElement = d.shadowRoot.getElementById(data);
+            });
+            if (dataElement) {
                 if (eventElement instanceof DragContainer) {
                     eventElement.shadowRoot.appendChild(dataElement);
-                } else if ((eventElement as DropContainer).maxItems > (eventElement as DropContainer).getNumberChildren()) {
+                } else if ((eventElement as DropContainer).maxItems > (eventElement as DropContainer).childrenNb) {
                     eventElement.shadowRoot.appendChild(dataElement);
                 }
             }

@@ -21,8 +21,6 @@
     "dependencies": {
         "@hmh/component-base": "latest",
         "@material/button": "latest",
-        "@material/textfield": "latest",
-        "interactjs": "latest",
         "nyc": "^13.0.1"
     },
     "devDependencies": {

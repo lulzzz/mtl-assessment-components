@@ -24,10 +24,13 @@ export class DropContainer extends ComponentBase<string[]> implements Feedback {
     }
     public get value(): string[] {
         const arr: string[] = [];
-        for (let i = 0; i < this.getNumberChildren(); i++) {
+        for (let i = 0; i < this.childrenNb; i++) {
             arr.push(this.shadowRoot.querySelectorAll('.option-item').item(i).id);
         }
         return arr;
+    }
+    public get childrenNb(): number {
+        return this.shadowRoot.querySelectorAll('.option-item').length;
     }
 
     public match(el: ResponseValidation, response: string[]): boolean {
@@ -45,9 +48,7 @@ export class DropContainer extends ComponentBase<string[]> implements Feedback {
                 return response.length === expected.length && expected.every((answer: string) => response.includes(answer));
         }
     }
-    public getNumberChildren(): number {
-        return this.shadowRoot.querySelectorAll('.option-item').length;
-    }
+
     protected _render({ feedbackMessage }: DropContainer): TemplateResult {
         this.className = feedbackMessage ? this.feedbackMessage.type : '';
 
