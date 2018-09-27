@@ -7,13 +7,16 @@ import { LitElement } from '../../node_modules/@polymer/lit-element/lit-element'
  */
 export class DragContainer extends LitElement {
     hasDuplicates: boolean = true;
-    options: HTMLElement[] = [];
+    options: string[] = [];
 
     static get properties(): { [key: string]: string | object } {
         return {
             hasDuplicates: Boolean,
             options: Array
         };
+    }
+    public getElement(id: string): HTMLElement {
+        return Array.from(this.getElementsByClassName('option-item')).find((x: HTMLElement) => x.id === id) as HTMLElement;
     }
 
     protected _render({ options, hasDuplicates }: DragContainer): TemplateResult {
@@ -24,7 +27,7 @@ export class DragContainer extends LitElement {
     }
 
     _onSlotChanged(event: Event): void {
-        const items: HTMLElement[] = [];
+        const items: string[] = [];
         const slot: HTMLSlotElement = event.srcElement as HTMLSlotElement;
         if (slot) {
             const nodes: Node[] = slot.assignedNodes();
@@ -33,7 +36,7 @@ export class DragContainer extends LitElement {
                     (el: HTMLElement): void => {
                         el.className = 'option-item';
                         el.draggable = true;
-                        items.push(el);
+                        items.push(el.id);
                     }
                 );
             }

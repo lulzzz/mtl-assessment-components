@@ -5,7 +5,7 @@ import { ComponentBase, html, TemplateResult, Feedback, FeedbackMessage, Respons
  */
 export class DropContainer extends ComponentBase<string[]> implements Feedback {
     maxItems: number;
-    public addedItems: HTMLElement[] = [];
+    public addedItems: string[] = [];
 
     // @mixin: Feedback
     computeFeedback: (value: string[]) => FeedbackMessage;
@@ -20,10 +20,13 @@ export class DropContainer extends ComponentBase<string[]> implements Feedback {
         };
     }
     public get value(): string[] {
-        return this.addedItems.map((x: HTMLElement) => x.id);
+        return Array.from(this.getElementsByClassName('option-item')).map((x: HTMLElement) => x.id);
     }
     public get childrenNb(): number {
         return this.addedItems.length;
+    }
+    public getElement(id: string): HTMLElement {
+        return Array.from(this.getElementsByClassName('option-item')).find((x: HTMLElement) => x.id === id) as HTMLElement;
     }
 
     public match(el: ResponseValidation, response: string[]): boolean {
@@ -53,14 +56,14 @@ export class DropContainer extends ComponentBase<string[]> implements Feedback {
         `;
     }
     _onSlotChanged(event: Event): void {
-        const items: HTMLElement[] = [];
+        const items: string[] = [];
         const slot: HTMLSlotElement = event.srcElement as HTMLSlotElement;
         if (slot) {
             const nodes: Node[] = slot.assignedNodes();
             if (nodes) {
                 nodes.forEach(
                     (el: HTMLElement): void => {
-                        items.push(el);
+                        items.push(el.id);
                     }
                 );
             }

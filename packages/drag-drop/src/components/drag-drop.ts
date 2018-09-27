@@ -48,38 +48,34 @@ export class DragDrop extends ComponentBase<string[]> {
     isDropAllowed(element: HTMLElement): boolean {
         return element instanceof DragContainer || (element as DropContainer).maxItems > (element as DropContainer).childrenNb;
     }
-    allowDrop(ev: any) {
-        ev.preventDefault();
-        ev.stopPropagation();
-        ev.dataTransfer.dropEffect = 'move';
+    allowDrop(event: DragEvent) {
+        event.preventDefault();
+        event.stopPropagation();
+        event.dataTransfer.dropEffect = 'move';
     }
-    drag(ev: DragEvent) {
-        if ((ev.target as HTMLElement).className === 'option-item') {
-            ev.dataTransfer.setData('source_id', (ev.target as HTMLElement).id);
+    drag(event: DragEvent) {
+        if ((event.target as HTMLElement).className === 'option-item') {
+            event.dataTransfer.setData('source_id', (event.target as HTMLElement).id);
         }
     }
 
-    drop(ev: DragEvent) {
-        ev.preventDefault();
-        ev.stopPropagation();
+    drop(event: DragEvent) {
+        event.preventDefault();
+        event.stopPropagation();
 
-        const target: HTMLElement = ev.target as HTMLElement;
+        const target: HTMLElement = event.target as HTMLElement;
         if (target !== this) {
             //do not allow drop of drag-drop itself
 
-            var data = ev.dataTransfer.getData('source_id');
+            var data = event.dataTransfer.getData('source_id');
             let dataElement: HTMLElement;
 
             //Look for id in drag and drop arrays (prevents external drag items to be added) TODO: check element belongs
             this.dragContainers.forEach((d: DragContainer) => {
-                d.options.forEach((o: HTMLElement) => {
-                    if (o.id === data) dataElement = o;
-                });
+                if (d.options.includes(data)) dataElement = d.getElement(data);
             });
             this.dropContainers.forEach((d: DropContainer) => {
-                d.addedItems.forEach((o: HTMLElement) => {
-                    if (o.id === data) dataElement = o;
-                });
+                if (d.addedItems.includes(data)) dataElement = d.getElement(data);
             });
 
             if (dataElement && this.isDropAllowed(target)) {
