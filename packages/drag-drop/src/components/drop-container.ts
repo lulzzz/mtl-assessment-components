@@ -1,23 +1,20 @@
 import { ComponentBase, html, TemplateResult, Feedback, FeedbackMessage, ResponseValidation, Strategy, applyMixins } from '@hmh/component-base/dist/index';
 /**
- * `<drag-drop>`
- * @demo ./demo/index.html
+ * `<drop-container>`
+ * @demo ./demo/index-drop-container.html
  */
 export class DropContainer extends ComponentBase<string[]> implements Feedback {
-    //public value: string[] = [];
-    public feedbackMessage: FeedbackMessage;
+    maxItems: number;
     public addedItems: HTMLElement[] = [];
+
     // @mixin: Feedback
     computeFeedback: (value: string[]) => FeedbackMessage;
     _onFeedbackSlotChanged: (evt: Event) => void;
-
-    maxItems: number;
 
     static get properties(): { [key: string]: string | object } {
         return {
             ...super.properties,
             addedItems: Array,
-            feedbackMessage: Object,
             maxItems: Number,
             value: Array
         };
@@ -45,7 +42,7 @@ export class DropContainer extends ComponentBase<string[]> implements Feedback {
         }
     }
 
-    protected _render({ addedItems, feedbackMessage }: DropContainer): TemplateResult {
+    protected _render({ feedbackMessage }: DropContainer): TemplateResult {
         this.className = feedbackMessage ? this.feedbackMessage.type : '';
 
         return html`

@@ -1,26 +1,24 @@
-import { ComponentBase, html, TemplateResult } from '@hmh/component-base/dist/index';
+import { html, TemplateResult } from '@hmh/component-base/dist/index';
+import { LitElement } from '../../node_modules/@polymer/lit-element/lit-element';
+
 /**
- * `<drag-drop>`
- * @demo ./demo/index.html
+ * `<drag-container>`
+ * @demo ./demo/index-drag-container.html
  */
-export class DragContainer extends ComponentBase<string[]> {
+export class DragContainer extends LitElement {
     hasDuplicates: boolean = true;
-    value: string[] = [];
     options: HTMLElement[] = [];
 
     static get properties(): { [key: string]: string | object } {
         return {
-            ...super.properties,
             hasDuplicates: Boolean,
-            options: Array,
-            value: Array
+            options: Array
         };
     }
 
-    protected _render({ options, hasDuplicates, value }: DragContainer): TemplateResult {
+    protected _render({ options, hasDuplicates }: DragContainer): TemplateResult {
         return html`
         <link rel="stylesheet" type="text/css" href="/dist/css/drag-drop.css">
-
         <slot name="options" on-slotchange="${(e: Event) => this._onSlotChanged(e)}" ></slot>
         `;
     }

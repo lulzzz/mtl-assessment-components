@@ -1,4 +1,4 @@
-import { applyMixins, ComponentBase, Feedback, FeedbackMessage, Strategy, html, TemplateResult, ResponseValidation } from '@hmh/component-base/dist/index';
+import { applyMixins, ComponentBase, Feedback, html, TemplateResult, FeedbackMessage } from '@hmh/component-base/dist/index';
 import './drag-container';
 import './drop-container';
 import { DragContainer } from './drag-container';
@@ -7,22 +7,17 @@ import { DropContainer } from './drop-container';
  * `<drag-drop>`
  * @demo ./demo/index.html
  */
-export class DragDrop extends ComponentBase<string[]> implements Feedback {
-    value: string[] = [];
+export class DragDrop extends ComponentBase<string[]> {
     dragContainers: DragContainer[] = [];
     dropContainers: DropContainer[] = [];
     map: Map<string, Set<string>> = new Map();
     static get properties(): { [key: string]: string | object } {
         return {
             ...super.properties,
-            items: Array,
-            value: Array
+            items: Array
         };
     }
 
-    // @mixin: feedback
-    computeFeedback: (value: string[]) => FeedbackMessage;
-    _onFeedbackSlotChanged: (evt: Event) => void;
     constructor() {
         super();
         this.addEventListener('drop', this.drop);
@@ -30,38 +25,27 @@ export class DragDrop extends ComponentBase<string[]> implements Feedback {
         this.addEventListener('dragstart', this.drag);
     }
 
-    /**
-     * Call this function to display feedback to the user
-     */
     public showFeedback(): void {
         this.dropContainers.forEach((d) => d.showFeedback());
     }
 
-    public match(el: ResponseValidation, response: string[]): boolean {
-        if (!el.expected) {
-            // catch-all clause
-            return true;
-        }
-        const expected: string[] = el.expected.split('|');
-        switch (el.strategy) {
-            case Strategy.CONTAINS:
-                return expected.some((answer: string) => response.includes(answer));
-            case Strategy.EXACT_MATCH:
-            default:
-                return response.length === expected.length && expected.every((answer: string) => response.includes(answer));
-        }
+    public getFeedback(): FeedbackMessage {
+        return this.feedbackMessage;
     }
 
-    protected _render({ feedbackMessage, value }: DragDrop): TemplateResult {
+    public getValue(): string[] {
+        return this.value;
+    }
+
+    protected _render({ feedbackMessage }: DragDrop): TemplateResult {
         return html`
         <link rel="stylesheet" type="text/css" href="/dist/css/drag-drop.css">
         <div class$="${feedbackMessage ? feedbackMessage.type : ''}">
             <slot on-slotchange="${(e: Event) => this._onSlotChanged(e)}"></slot>
-            <slot name="feedback" on-slotchange="${(e: Event) => this._onFeedbackSlotChanged(e)}"></slot>
         </div>
         `;
     }
-    isDropAllowed(element: HTMLElement, id: string): boolean {
+    isDropAllowed(element: HTMLElement): boolean {
         return element instanceof DragContainer || (element as DropContainer).maxItems > (element as DropContainer).childrenNb;
     }
     allowDrop(ev: any) {
@@ -98,7 +82,7 @@ export class DragDrop extends ComponentBase<string[]> implements Feedback {
                 });
             });
 
-            if (dataElement && this.isDropAllowed(target, data)) {
+            if (dataElement && this.isDropAllowed(target)) {
                 target.appendChild(dataElement);
             }
         }
