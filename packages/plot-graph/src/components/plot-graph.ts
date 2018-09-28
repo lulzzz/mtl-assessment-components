@@ -33,11 +33,6 @@ export class PlotGraph extends ComponentBase<string> {
         return eval(equation.innerHTML.replace('x', x));
     }
 
-    /*
-    private scaleValToGraph(val: number) : number {
-        return (this.graphSize / 100) * val;
-    }*/
-
     protected _render({equations}: PlotGraph): TemplateResult {
         return html`
         <link rel="stylesheet" type="text/css" href="/dist/css/plot-graph.css">
@@ -73,26 +68,15 @@ export class PlotGraph extends ComponentBase<string> {
                 .y(function(d: any) { return yScale(d.y); }) // set the y values for the line generator 
                 .curve(d3.curveMonotoneX) // apply smoothing to the line
      
+            this.svgContainer.attr("width", this.graphSize)
+            .attr("height", this.graphSize)
+            .append("g")
+            .attr("transform", "translate(0,0)");
+
             this.equations.forEach((equation) => {
                 // 8. An array of objects of length N. Each object has key -> value pair, the key being "y" and the value is a random number
-                const prepareValue = this.prepareValue;
-                const dataset = d3.range(numberPoints).map(function(x: any) { return {"y": prepareValue(equation, x)}});
-
-                this.svgContainer.attr("width", this.graphSize)
-                .attr("height", this.graphSize)
-                .append("g")
-                .attr("transform", "translate(0,0)");
-
-                // 3. Call the x axis in a group tag
-                this.svgContainer.append("g")
-                    .attr("class", "x axis")
-                    .attr("transform", "translate(0," + this.graphSize + ")")
-                    .call(d3.axisBottom(xScale)); // Create an axis component with d3.axisBottom
-
-                // 4. Call the y axis in a group tag
-                this.svgContainer.append("g")
-                    .attr("class", "y axis")
-                    .call(d3.axisLeft(yScale)); // Create an axis component with d3.axisLeft
+                // const prepareValue = this.prepareValue;
+                const dataset = d3.range(numberPoints).map(function(x: any) { return {"y": this.prepareValue(equation, x)}}.bind(this));
 
                 // 9. Append the path, bind the data, and call the line generator 
                 this.svgContainer.append("path")
@@ -101,6 +85,17 @@ export class PlotGraph extends ComponentBase<string> {
                     .attr("d", line) // 11. Calls the line generator 
                     .style("stroke", equation.getAttribute('color')) 
             });
+
+            // 3. Call the x axis in a group tag
+            this.svgContainer.append("g")
+                .attr("class", "x axis")
+                .attr("transform", "translate(0," + this.graphSize + ")")
+                .call(d3.axisBottom(xScale)); // Create an axis component with d3.axisBottom
+
+            // 4. Call the y axis in a group tag
+            this.svgContainer.append("g")
+                .attr("class", "y axis")
+                .call(d3.axisLeft(yScale)); // Create an axis component with d3.axisLeft
         }
     }
 
