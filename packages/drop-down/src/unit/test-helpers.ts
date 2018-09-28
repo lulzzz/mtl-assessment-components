@@ -57,5 +57,5 @@ export async function triggerValidation(el: DropDown, optionIndex: number) {
 }
 
 export async function sleep(){
-    await new Promise((done: any)=> setTimeout(done, 5));
+    await new Promise((done: any)=> setTimeout(done, 10));
 }

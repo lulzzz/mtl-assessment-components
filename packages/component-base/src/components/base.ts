@@ -21,7 +21,7 @@ export enum Mode {
  * @demo ./demo/index.html
  */
 export abstract class ComponentBase<T> extends LitElement {
-    @property({ type: Boolean })
+    @property({ type: Boolean, reflect: true })
     public disabled: boolean = false;
     @property({ type: String })
     public feedbackMessage: FeedbackMessage;

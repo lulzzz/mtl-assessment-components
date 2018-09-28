@@ -76,8 +76,6 @@ export abstract class MultipleChoice extends ComponentBase<string[]> implements 
      * @param {Event} event
      */
     protected _onSlotChanged(event: Event): void {
-        // @ts-ignore
-        console.log('SLOT CHANGED', event.srcElement.assignedNodes());
         const items: HTMLElement[] = [];
         const slot: HTMLSlotElement = event.srcElement as HTMLSlotElement;
         if (slot) {
