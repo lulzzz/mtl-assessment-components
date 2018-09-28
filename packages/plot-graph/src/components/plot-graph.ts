@@ -36,18 +36,14 @@ export class PlotGraph extends ComponentBase<string> {
     protected _render({equations}: PlotGraph): TemplateResult {
         return html`
         <link rel="stylesheet" type="text/css" href="/dist/css/plot-graph.css">
-
-        <div class="container">
             <div id="canvas"></div>
-        </div>
-
         <slot name="options" class="options" on-slotchange="${(evt: Event) => this._onSlotChanged(evt)}" hidden> </slot>
         `;
     }
 
     public _didRender(): void {
         if (!this.renderedGraph && this.equations.length > 0) {
-            /*.interpolate("linear");*/
+
             const numberPoints = (this.xmax - this.xmin / this.step);
             this.renderedGraph = true;
             this.svgContainer = d3.select(this.shadowRoot).select("#canvas").append("svg");
@@ -68,10 +64,10 @@ export class PlotGraph extends ComponentBase<string> {
                 .y(function(d: any) { return yScale(d.y); }) // set the y values for the line generator 
                 .curve(d3.curveMonotoneX) // apply smoothing to the line
      
-            this.svgContainer.attr("width", this.graphSize)
+            this.svgContainer
+            .attr("width", this.graphSize)
             .attr("height", this.graphSize)
             .append("g")
-            .attr("transform", "translate(0,0)");
 
             this.equations.forEach((equation) => {
                 // 8. An array of objects of length N. Each object has key -> value pair, the key being "y" and the value is a random number
