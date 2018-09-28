@@ -1,4 +1,4 @@
-import { expect, mcqTagName, mrqTagName } from './constants.spec';
+import { expect, mcqTagName, mrqTagName, sleep } from './constants.spec';
 import { MultipleChoiceQuestion } from '../components/multiple-choice-question';
 import { MultipleResponseQuestion } from '../components/multiple-response-question';
 
@@ -8,6 +8,7 @@ export default () => {
             withSnippet('single-feedback');
             const element: MultipleChoiceQuestion = document.querySelector(mcqTagName) as any;
             await element.updateComplete;
+            await sleep();
             element.shadowRoot.getElementById('3').click();
             await element.updateComplete;
 
@@ -19,6 +20,7 @@ export default () => {
             withSnippet('single-feedback');
             const element: MultipleChoiceQuestion = document.querySelector(mcqTagName) as any;
             await element.updateComplete;
+            await sleep();
             element.shadowRoot.getElementById('2').click();
             await element.updateComplete;
 
@@ -30,6 +32,7 @@ export default () => {
             withSnippet('single-feedback');
             const element: MultipleChoiceQuestion = document.querySelector(mcqTagName) as any;
             await element.updateComplete;
+            await sleep();
             element.shadowRoot.getElementById('4').click();
             await element.updateComplete;
 
@@ -41,6 +44,7 @@ export default () => {
             withSnippet('single-feedback');
             const element: MultipleChoiceQuestion = document.querySelector(mcqTagName) as any;
             await element.updateComplete;
+            await sleep();
             element.shadowRoot.getElementById('4').click();
             await element.updateComplete;
 
@@ -53,6 +57,7 @@ export default () => {
             withSnippet('multiple-feedback-1');
             const element: MultipleResponseQuestion = document.querySelector(mrqTagName) as any;
             await element.updateComplete;
+            await sleep();
             element.shadowRoot.getElementById('5').click();
             await element.updateComplete;
             element.showFeedback();
@@ -62,6 +67,7 @@ export default () => {
             withSnippet('multiple-feedback-1');
             const element: MultipleResponseQuestion = document.querySelector(mrqTagName) as any;
             await element.updateComplete;
+            await sleep();
             element.shadowRoot.getElementById('1').click();
             element.shadowRoot.getElementById('3').click();
             await element.updateComplete;
@@ -74,6 +80,7 @@ export default () => {
             withSnippet('multiple-feedback-1');
             const element: MultipleResponseQuestion = document.querySelector(mrqTagName) as any;
             await element.updateComplete;
+            await sleep();
             element.shadowRoot.getElementById('1').click();
             await element.updateComplete;
 
@@ -84,6 +91,7 @@ export default () => {
             withSnippet('multiple-feedback-2');
             const element: MultipleResponseQuestion = document.querySelector(mrqTagName) as any;
             await element.updateComplete;
+            await sleep();
             element.shadowRoot.getElementById('1').click();
             element.shadowRoot.getElementById('3').click();
             element.shadowRoot.getElementById('4').click();
@@ -97,6 +105,7 @@ export default () => {
             withSnippet('multiple-feedback-2');
             const element: MultipleResponseQuestion = document.querySelector(mrqTagName) as any;
             await element.updateComplete;
+            await sleep();
             element.shadowRoot.getElementById('1').click();
             element.shadowRoot.getElementById('4').click();
             await element.updateComplete;
@@ -109,6 +118,7 @@ export default () => {
             withSnippet('multiple-feedback-2');
             const element: MultipleResponseQuestion = document.querySelector(mrqTagName) as any;
             await element.updateComplete;
+            await sleep();
             element.shadowRoot.getElementById('2').click();
             await element.updateComplete;
             element.showFeedback();
@@ -118,6 +128,7 @@ export default () => {
             withSnippet('multiple-feedback-2');
             const element: MultipleChoiceQuestion = document.querySelector(mrqTagName) as any;
             await element.updateComplete;
+            await sleep();
             element.shadowRoot.getElementById('4').click();
             await element.updateComplete;
 

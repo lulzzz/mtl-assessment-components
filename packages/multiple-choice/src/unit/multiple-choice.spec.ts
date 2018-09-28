@@ -1,6 +1,6 @@
-// import renderingTests from './rendering.spec';
+import renderingTests from './rendering.spec';
 import feedbackTests from './feedback.spec';
 
-// renderingTests();
+renderingTests();
 feedbackTests();
 mocha.run();
