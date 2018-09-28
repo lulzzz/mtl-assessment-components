@@ -85,12 +85,14 @@ export class PlotGraph extends ComponentBase<string> {
             // 3. Call the x axis in a group tag
             this.svgContainer.append("g")
                 .attr("class", "x-axis")
+                .attr("transform", "translate(0," + (this.graphSize - 25) + ")")
                 .call(d3.axisBottom(xScale)); // Create an axis component with d3.axisBottom
                 
 
             // 4. Call the y axis in a group tag
             this.svgContainer.append("g")
                 .attr("class", "y-axis")
+                .attr("transform", "translate(" + 25 + ",0)")
                 .call(d3.axisLeft(yScale)); // Create an axis component with d3.axisLeft
         }
     }
