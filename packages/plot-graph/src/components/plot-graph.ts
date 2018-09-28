@@ -46,16 +46,16 @@ export class PlotGraph extends ComponentBase<string> {
 
             const numberPoints = (this.xmax - this.xmin / this.step);
             this.renderedGraph = true;
-            this.svgContainer = d3.select(this.shadowRoot).select("#canvas").append("svg");
+            this.svgContainer = d3.select(this.shadowRoot).select("#canvas").append("svg")
 
             // 5. X scale will use the index of our data
             const xScale = d3.scaleLinear()
-            .domain([0, numberPoints-1]) // input
+            .domain([this.xmin, this.xmax]) // input
             .range([0, this.graphSize]); // output
 
             // 6. Y scale will use the randomly generate number 
             const yScale = d3.scaleLinear()
-            .domain([-1, 1]) // input 
+            .domain([this.ymin, this.ymax]) // input 
             .range([this.graphSize, 0]); // output     
 
             // 7. d3's line generator
@@ -68,7 +68,7 @@ export class PlotGraph extends ComponentBase<string> {
             .attr("width", this.graphSize)
             .attr("height", this.graphSize)
             .append("g")
-
+            
             this.equations.forEach((equation) => {
                 // 8. An array of objects of length N. Each object has key -> value pair, the key being "y" and the value is a random number
                 // const prepareValue = this.prepareValue;
@@ -84,13 +84,13 @@ export class PlotGraph extends ComponentBase<string> {
 
             // 3. Call the x axis in a group tag
             this.svgContainer.append("g")
-                .attr("class", "x axis")
-                .attr("transform", "translate(0," + this.graphSize + ")")
+                .attr("class", "x-axis")
                 .call(d3.axisBottom(xScale)); // Create an axis component with d3.axisBottom
+                
 
             // 4. Call the y axis in a group tag
             this.svgContainer.append("g")
-                .attr("class", "y axis")
+                .attr("class", "y-axis")
                 .call(d3.axisLeft(yScale)); // Create an axis component with d3.axisLeft
         }
     }
