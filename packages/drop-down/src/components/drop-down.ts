@@ -87,11 +87,10 @@ export class DropDown extends MultipleChoice {
                     items,
                     (item: HTMLElement) => item.id,
                     (item: HTMLElement, index: number) => {
-                        console.log('STAMP ITEM', item);
                         return html`
                     <div class="options">
                         <div class="option-item ${value.includes(item.id) ? 'selected' : ''}" 
-                            ?aria-selected=${value.includes(item.id)} 
+                            aria-selected=${value.includes(item.id) ? 'true' : 'false'}
                             id=${item.id}
                             tabindex=${index + 1}
                             role="button"

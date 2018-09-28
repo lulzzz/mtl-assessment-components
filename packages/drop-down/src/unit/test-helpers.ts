@@ -16,7 +16,6 @@ export function checkAccessibilityparams(el: DropDown, params: { [key: string]: 
 }
 
 export function getOptions(el: DropDown): HTMLElement[] {
-    console.log('GET OPTIONS', el.shadowRoot);
     return Array.from(el.shadowRoot.querySelectorAll('.option-item'));
 }
 
