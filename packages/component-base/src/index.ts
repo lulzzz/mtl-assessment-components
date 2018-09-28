@@ -1,5 +1,4 @@
 export { ComponentBase, html, repeat, TemplateResult, unsafeHTML } from './components/base';
-export { Persistence } from './mixins/persistence';
 export { Feedback, FeedbackType, FeedbackMessage, Strategy } from './mixins/feedback';
 export { MultipleChoice } from './components/multiple-choice';
 export { ResponseValidation } from './components/response-validation';

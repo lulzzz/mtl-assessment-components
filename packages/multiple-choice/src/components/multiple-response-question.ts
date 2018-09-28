@@ -7,8 +7,8 @@ import { html, TemplateResult, repeat, unsafeHTML, MultipleChoice } from '@hmh/c
  *
  */
 export class MultipleResponseQuestion extends MultipleChoice {
-
-    protected _render({ items, feedbackMessage }: MultipleResponseQuestion): TemplateResult {
+    protected render(): TemplateResult {
+        const { items, feedbackMessage }: MultipleResponseQuestion = this;
         return html`
         <link rel="stylesheet" type="text/css" href="/node_modules/@material/form-field/dist/mdc.form-field.css">
         <link rel="stylesheet" type="text/css" href="/node_modules/@material/checkbox/dist/mdc.checkbox.css">

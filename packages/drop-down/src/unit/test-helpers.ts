@@ -16,7 +16,7 @@ export function checkAccessibilityparams(el: DropDown, params: { [key: string]: 
 }
 
 export function getOptions(el: DropDown): HTMLElement[] {
-    return el.shadowRoot.querySelectorAll('.option-item');
+    return Array.from(el.shadowRoot.querySelectorAll('.option-item'));
 }
 
 export function clickElement(el: HTMLElement): void {
@@ -51,5 +51,5 @@ export async function selectOptions(options: HTMLElement[], optionIndices: numbe
 export async function triggerValidation(el: DropDown, optionIndex: number){
     await selectOptions(getOptions(el), [optionIndex]);
     el.showFeedback();
-    await el.renderComplete;
+    await el.updateComplete;
 }

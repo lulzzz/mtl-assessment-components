@@ -1,8 +1,10 @@
-import { LitElement } from '@polymer/lit-element/lit-element';
+import { LitElement, property } from '@polymer/lit-element/lit-element';
+import { TemplateResult } from 'lit-html/lit-html';
 export { TemplateResult } from 'lit-html/lit-html';
-export { html } from '@polymer/lit-element/lit-element';
-export { repeat } from 'lit-html/lib/repeat';
-export { unsafeHTML } from 'lit-html/lib/unsafe-html';
+export { html, property } from '@polymer/lit-element/lit-element';
+export { ifDefined } from 'lit-html/directives/if-defined';
+export { repeat } from 'lit-html/directives/repeat';
+export { unsafeHTML } from 'lit-html/directives/unsafe-html';
 import { FeedbackMessage } from '../mixins/feedback';
 import { ResponseValidation } from './response-validation';
 
@@ -18,24 +20,23 @@ export enum Mode {
  * Currently uses Set for value so option values must be unique.
  * @demo ./demo/index.html
  */
-export class ComponentBase<T> extends LitElement {
-    /**
-     * Properties that all common to all interactions
-     */
-    static get properties(): { [key: string]: string | object } {
-        return {
-            disabled: Boolean,
-            feedbackMessage: Object,
-            mode: String,
-            value: String
-        };
-    }
-
+export abstract class ComponentBase<T> extends LitElement {
+    @property({ type: Boolean })
     public disabled: boolean = false;
-    public mode: Mode = Mode.INTERACTIVE;
-    public value: T;
+    @property({ type: String })
     public feedbackMessage: FeedbackMessage;
+    @property({ type: String })
+    public mode: Mode = Mode.INTERACTIVE;
+    @property({ type: String })
+    public value: T;
+
+    // Feedback related
+    public _onFeedbackSlotChanged: any;
     public _responseValidationElements: ResponseValidation[] = [];
+    public computeFeedback: any;
+
+    // from @polymer/lit-element
+    protected abstract render(): TemplateResult;
 
     public match(el: ResponseValidation, response: any): boolean {
         if (!el.expected) {

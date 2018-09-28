@@ -8,7 +8,7 @@ export default function() {
         it('should mix in feedback methods', async (): Promise<void> => {
             withSnippet('base-with-feedback-empty-slot');
             const el: BaseElementFeedback = document.querySelector('base-element-feedback') as any;
-            await el.renderComplete;
+            await el.updateComplete;
 
             expect(typeof el.computeFeedback).to.equal('function');
             expect(typeof el._onFeedbackSlotChanged).to.equal('function');
@@ -18,23 +18,21 @@ export default function() {
         it('should throw an error when trying to compute feedback without any validation element defined', async (): Promise<void> => {
             withSnippet('base-with-feedback-empty-slot');
             const el: BaseElementFeedback = document.querySelector('base-element-feedback') as any;
-            await el.renderComplete;
-            console.log('el.match', el.match);
+            await el.updateComplete;
             expect(() => el.computeFeedback('hello')).to.throw(Error, 'missing default response-validation');
         });
 
         it('should handle response-validation children', async (): Promise<void> => {
             withSnippet('base-with-feedback');
             const el: BaseElementFeedback = document.querySelector('base-element-feedback') as any;
-            await el.renderComplete;
-
+            await el.updateComplete;
             expect(el._responseValidationElements.length).to.equal(3);
         });
 
         it('should correctly compute feedback on right answer', async (): Promise<void> => {
             withSnippet('base-with-feedback');
             const el: BaseElementFeedback = document.querySelector('base-element-feedback') as any;
-            await el.renderComplete;
+            await el.updateComplete;
             const msg: FeedbackMessage = el.computeFeedback('hello');
             expect(msg.type).to.equal('positive');
             expect(msg.message).to.equal('A');
@@ -43,7 +41,7 @@ export default function() {
         it('should correctly compute feedback on neutral answer', async (): Promise<void> => {
             withSnippet('base-with-feedback');
             const el: BaseElementFeedback = document.querySelector('base-element-feedback') as any;
-            await el.renderComplete;
+            await el.updateComplete;
             const msg: FeedbackMessage = el.computeFeedback('world');
             expect(msg.type).to.equal('neutral');
             expect(msg.message).to.equal('B');
@@ -52,7 +50,7 @@ export default function() {
         it('should correctly compute feedback on neutral answer', async (): Promise<void> => {
             withSnippet('base-with-feedback');
             const el: BaseElementFeedback = document.querySelector('base-element-feedback') as any;
-            await el.renderComplete;
+            await el.updateComplete;
             let msg: FeedbackMessage = el.computeFeedback('xxx');
             expect(msg.type).to.equal('negative');
             expect(msg.message).to.equal('C');
@@ -71,7 +69,7 @@ export default function() {
         it('should not throw if feedback slot is not defined', async (): Promise<void> => {
             withSnippet('base-with-feedback-without-slot');
             const el: BaseElementFeedback = document.querySelector('base-element-feedback-no-slot') as any;
-            await el.renderComplete;
+            await el.updateComplete;
             expect(() => el._onFeedbackSlotChanged(new Event('slotchange'))).not.to.throw();
         });
     });

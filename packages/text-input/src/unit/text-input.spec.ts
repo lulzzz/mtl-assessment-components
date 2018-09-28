@@ -7,45 +7,45 @@ describe(`<${tagName}>`, (): void => {
     it('should render default state', async (): Promise<void> => {
         withSnippet('default');
         const el: TextInput = document.querySelector('text-input') as any;
-        await el.renderComplete;
+        await el.updateComplete;
         checkComponentDOM(el);
     });
 
     it('should render disabled state', async (): Promise<void> => {
         withSnippet('disabled');
         const el: TextInput = document.querySelector('text-input') as any;
-        await el.renderComplete;
+        await el.updateComplete;
         checkComponentDOM(el, { disabled: true });
     });
 
     it('should render prefilled state', async (): Promise<void> => {
         withSnippet('prefilled');
         const el: TextInput = document.querySelector('text-input') as any;
-        await el.renderComplete;
+        await el.updateComplete;
         checkComponentDOM(el, { value: 'Tokyo' });
     });
 
     it('should render readonly state', async (): Promise<void> => {
         withSnippet('readonly');
         const el: TextInput = document.querySelector('text-input') as any;
-        await el.renderComplete;
+        await el.updateComplete;
         checkComponentDOM(el, { disabled: true, value: 'Hong Kong' });
     });
 
     it('should allow user input', async (): Promise<void> => {
         withSnippet('default');
         const el: TextInput = document.querySelector('text-input') as any;
-        await el.renderComplete;
+        await el.updateComplete;
         checkComponentDOM(el);
         inputValue(el, 'Montreal');
-        await el.renderComplete;
+        await el.updateComplete;
         checkComponentDOM(el, { value: 'Montreal' });
     });
 
     it('should dispatch change event on user input', async (): Promise<void> => {
         withSnippet('default');
         const el: TextInput = document.querySelector('text-input') as any;
-        await el.renderComplete;
+        await el.updateComplete;
 
         await new Promise(resolve => {
             el.addEventListener('change', (evt: CustomEvent) => {
@@ -59,36 +59,36 @@ describe(`<${tagName}>`, (): void => {
     it('should toggle disabled state', async (): Promise<void> => {
         withSnippet('default');
         const el: TextInput = document.querySelector('text-input') as any;
-        await el.renderComplete;
+        await el.updateComplete;
         checkComponentDOM(el);
         inputValue(el, 'Ottawa');
-        await el.renderComplete;
+        await el.updateComplete;
         checkComponentDOM(el, { value: 'Ottawa' });
         el.setAttribute('disabled', 'disabled');
-        await el.renderComplete;
+        await el.updateComplete;
         expect(isDisabled(el)).to.be.true;
         checkComponentDOM(el, { value: 'Ottawa', disabled: true });
         el.removeAttribute('disabled');
-        await el.renderComplete;
+        await el.updateComplete;
         expect(isDisabled(el)).to.be.false;
         inputValue(el, 'London');
-        await el.renderComplete;
+        await el.updateComplete;
         checkComponentDOM(el, { value: 'London' });
     });
 
     it('should allow to change the value programmatically', async (): Promise<void> => {
         withSnippet('default');
         const el: TextInput = document.querySelector('text-input') as any;
-        await el.renderComplete;
+        await el.updateComplete;
         checkComponentDOM(el);
         el.value = 'Calgary';
-        await el.renderComplete;
+        await el.updateComplete;
         checkComponentDOM(el, { value: 'Calgary' });
         el.value = 'Edmonton';
-        await el.renderComplete;
+        await el.updateComplete;
         checkComponentDOM(el, { value: 'Edmonton' });
         el.value = '';
-        await el.renderComplete;
+        await el.updateComplete;
         checkComponentDOM(el);
     });
 
@@ -98,7 +98,7 @@ describe(`<${tagName}>`, (): void => {
         const elements: NodeListOf<any> = document.querySelectorAll('text-input');
         expect(elements.length).to.equal(3);
         for (const el of Array.from(elements)) {
-            await (el as TextInput).renderComplete;
+            await (el as TextInput).updateComplete;
             expect(getComputedStyle(el).display).to.equal('inline');
             checkComponentDOM(el, { value: values.shift() });
         }

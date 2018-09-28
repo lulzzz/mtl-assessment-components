@@ -38,6 +38,7 @@ export abstract class Feedback {
     }
 
     public _onFeedbackSlotChanged(evt: Event): void {
+        console.log('FEEDBACK SLOT CHANGED');
         const slot: HTMLSlotElement = evt.srcElement as HTMLSlotElement;
         if (slot) {
             const nodes: ResponseValidation[] = slot.assignedNodes() as any[];

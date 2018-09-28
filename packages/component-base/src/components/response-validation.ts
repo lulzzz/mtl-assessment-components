@@ -1,24 +1,18 @@
-import { ComponentBase, html, TemplateResult } from './base';
+import { ComponentBase, html, property, TemplateResult } from './base';
 import { Strategy, FeedbackMessage, FeedbackType } from '../mixins/feedback';
 
 export class ResponseValidation extends ComponentBase<string> {
+    @property({ reflect: true, type: String })
     public expected: string = '';
+    @property({ attribute: 'feedback-type', reflect: true, type: String })
     public feedbackType: FeedbackType;
+    @property({ reflect: true, type: Number })
     public score: number = 0;
+    @property({ reflect: true, type: String })
     public strategy: Strategy = Strategy.EXACT_MATCH;
 
     private feedbackItems: HTMLElement[] = [];
     private attempts: number = 0;
-
-    static get properties(): { [key: string]: string | object } {
-        return {
-            ...super.properties,
-            expected: String,
-            feedbackType: String,
-            score: Number,
-            strategy: String
-        };
-    }
 
     public getFeedback(): FeedbackMessage {
         let type: FeedbackType = this.feedbackType;
@@ -42,9 +36,9 @@ export class ResponseValidation extends ComponentBase<string> {
         this.attempts = 0;
     }
 
-    protected _render(): TemplateResult {
+    protected render(): TemplateResult {
         return html`
-            <slot on-slotchange="${(evt: Event) => this._onSlotChanged(evt)}"></slot>
+            <slot @slotchange=${(evt: Event) => this._onSlotChanged(evt)}></slot>
         `;
     }
 

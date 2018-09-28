@@ -37,7 +37,8 @@ export class TextInput extends ComponentBase<string> implements Feedback {
         }
     }
 
-    protected _render({ disabled, feedbackMessage, placeholder, value }: TextInput): TemplateResult {
+    protected render(): TemplateResult {
+        const { disabled, feedbackMessage, placeholder, value }: TextInput = this;
         const feedbackBanner: TemplateResult = feedbackMessage && feedbackMessage.message ? html`<div class="feedback-message"><div>${feedbackMessage.message}<div></div>` : html``;
 
         return html`
@@ -65,7 +66,7 @@ export class TextInput extends ComponentBase<string> implements Feedback {
         `;
     }
 
-    protected _didRender(): void {
+    protected updated(): void {
         MDCTextField.attachTo(this.shadowRoot.querySelector('.mdc-text-field'));
         this._enableAccessibility();
     }

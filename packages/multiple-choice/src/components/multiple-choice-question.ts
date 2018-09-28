@@ -7,8 +7,8 @@ import { html, TemplateResult, repeat, unsafeHTML, MultipleChoice } from '@hmh/c
  *
  */
 export class MultipleChoiceQuestion extends MultipleChoice {
-
-    protected _render({ items, feedbackMessage }: MultipleChoiceQuestion): TemplateResult {
+    protected render(): TemplateResult {
+        const { items, feedbackMessage }: MultipleChoiceQuestion = this;
         return html`
         <link rel="stylesheet" type="text/css" href="/node_modules/@material/radio/dist/mdc.radio.css">
         <link rel="stylesheet" type="text/css" href="/node_modules/@material/form-field/dist/mdc.form-field.css">
@@ -35,6 +35,5 @@ export class MultipleChoiceQuestion extends MultipleChoice {
         `;
     }
 }
-
 
 customElements.define('multiple-choice-question', MultipleChoiceQuestion);

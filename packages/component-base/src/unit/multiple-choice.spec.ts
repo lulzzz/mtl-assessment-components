@@ -9,15 +9,15 @@ export default function() {
         it('should render as expected', async (): Promise<void> => {
             withSnippet('multiple-choice');
             const el: MultipleChoiceElement = document.querySelector('multiple-choice-element') as any;
-            await el.renderComplete;
-            const text: string = el.shadowRoot.querySelector('main').innerText;
+            await el.updateComplete;
+            const text: string = (el.shadowRoot.querySelector('main') as HTMLElement).innerText;
             expect(text).to.equal('Hello MultipleChoiceElement');
         });
 
         it('should implement feedback methods', async (): Promise<void> => {
             withSnippet('multiple-choice');
             const el: MultipleChoiceElement = document.querySelector('multiple-choice-element') as any;
-            await el.renderComplete;
+            await el.updateComplete;
 
             expect(typeof el.match).is.equal('function');
             expect(typeof el.showFeedback).is.equal('function');
@@ -28,7 +28,7 @@ export default function() {
         it('should override exact match strategy with single expected', async (): Promise<void> => {
             withSnippet('multiple-choice');
             const el: MultipleChoiceElement = document.querySelector('multiple-choice-element') as any;
-            await el.renderComplete;
+            await el.updateComplete;
 
             let matchResult: boolean = el.match(
                 {
@@ -61,7 +61,7 @@ export default function() {
         it('should override exact match strategy with multiple expected', async (): Promise<void> => {
             withSnippet('multiple-choice');
             const el: MultipleChoiceElement = document.querySelector('multiple-choice-element') as any;
-            await el.renderComplete;
+            await el.updateComplete;
 
             let matchResult: boolean = el.match(
                 {
@@ -94,7 +94,7 @@ export default function() {
         it('should override contains strategy with single expected', async (): Promise<void> => {
             withSnippet('multiple-choice');
             const el: MultipleChoiceElement = document.querySelector('multiple-choice-element') as any;
-            await el.renderComplete;
+            await el.updateComplete;
 
             let matchResult: boolean = el.match(
                 {
@@ -127,7 +127,7 @@ export default function() {
         it('should override contains strategy with multiple expected', async (): Promise<void> => {
             withSnippet('multiple-choice');
             const el: MultipleChoiceElement = document.querySelector('multiple-choice-element') as any;
-            await el.renderComplete;
+            await el.updateComplete;
 
             let matchResult: boolean = el.match(
                 {
@@ -151,7 +151,7 @@ export default function() {
         it('should override any strategy with single expected', async (): Promise<void> => {
             withSnippet('multiple-choice');
             const el: MultipleChoiceElement = document.querySelector('multiple-choice-element') as any;
-            await el.renderComplete;
+            await el.updateComplete;
 
             let matchResult: boolean = el.match(
                 {
@@ -184,7 +184,7 @@ export default function() {
         it('should override any strategy with multiple expected', async (): Promise<void> => {
             withSnippet('multiple-choice');
             const el: MultipleChoiceElement = document.querySelector('multiple-choice-element') as any;
-            await el.renderComplete;
+            await el.updateComplete;
 
             let matchResult: boolean = el.match(
                 {
@@ -217,7 +217,7 @@ export default function() {
         it('should default to exact match strategy with single expected', async (): Promise<void> => {
             withSnippet('multiple-choice');
             const el: MultipleChoiceElement = document.querySelector('multiple-choice-element') as any;
-            await el.renderComplete;
+            await el.updateComplete;
 
             let matchResult: boolean = el.match(
                 {
@@ -247,7 +247,7 @@ export default function() {
         it('should always match is no expected value specified (catch-all)', async (): Promise<void> => {
             withSnippet('multiple-choice');
             const el: MultipleChoiceElement = document.querySelector('multiple-choice-element') as any;
-            await el.renderComplete;
+            await el.updateComplete;
 
             let matchResult: boolean = el.match({} as ResponseValidation, ['1']);
             expect(matchResult).to.be.true;
@@ -262,7 +262,7 @@ export default function() {
         it('should default to exact match strategy with multiple expected', async (): Promise<void> => {
             withSnippet('multiple-choice');
             const el: MultipleChoiceElement = document.querySelector('multiple-choice-element') as any;
-            await el.renderComplete;
+            await el.updateComplete;
 
             let matchResult: boolean = el.match(
                 {
@@ -292,7 +292,7 @@ export default function() {
         it('should load all answer options', async (): Promise<void> => {
             withSnippet('multiple-choice-options');
             const el: MultipleChoiceElement = document.querySelector('multiple-choice-element') as any;
-            await el.renderComplete;
+            await el.updateComplete;
 
             // @ts-ignore : access to protected member
             expect(el.items.length).to.equal(6);
@@ -301,7 +301,7 @@ export default function() {
         it('should handle programmatically modifying answer options', async (): Promise<void> => {
             withSnippet('multiple-choice-options');
             const el: MultipleChoiceElement = document.querySelector('multiple-choice-element') as any;
-            await el.renderComplete;
+            await el.updateComplete;
 
             const options: NodeListOf<HTMLDivElement> = el.querySelectorAll('[slot=options]');
 
@@ -309,11 +309,11 @@ export default function() {
             expect(el.items.length).to.equal(options.length);
 
             el.removeChild(options[1]);
-            await el.renderComplete;
+            await el.updateComplete;
             // @ts-ignore : access to protected member
             expect(el.items.length).to.equal(options.length - 1);
             el.removeChild(options[3]);
-            await el.renderComplete;
+            await el.updateComplete;
             // @ts-ignore : access to protected member
             expect(el.items.length).to.equal(options.length - 2);
         });
@@ -321,60 +321,60 @@ export default function() {
         it('should select item when user clicks on it (single mode)', async (): Promise<any> => {
             withSnippet('multiple-choice-options');
             const el: MultipleChoiceElement = document.querySelector('multiple-choice-element') as any;
-            await el.renderComplete;
+            await el.updateComplete;
             // @ts-ignore : access to protected member
             expect(el.items.length).to.equal(6);
             expect(el.getValue()).to.deep.equal([]);
 
             // @ts-ignore : access to protected member
             el._onItemClicked(new Event('click'), '2');
-            await el.renderComplete;
+            await el.updateComplete;
             expect(el.getValue()).to.deep.equal(['2']);
 
             // @ts-ignore : access to protected member
             el._onItemClicked(new Event('click'), '4');
-            await el.renderComplete;
+            await el.updateComplete;
             expect(el.getValue()).to.deep.equal(['4']);
 
             // @ts-ignore : access to protected member
             el._onItemClicked(new Event('click'), '1');
-            await el.renderComplete;
+            await el.updateComplete;
             expect(el.getValue()).to.deep.equal(['1']);
 
             // DESELECTION
             // @ts-ignore : access to protected member
             el._onItemClicked(new Event('click'), '1');
-            await el.renderComplete;
+            await el.updateComplete;
             expect(el.getValue()).to.deep.equal([]);
         });
 
         it('should select items when user clicks on it (multiple mode)', async (): Promise<any> => {
             withSnippet('multiple-choice-options');
             const el: MultipleChoiceElement = document.querySelector('multiple-choice-element') as any;
-            await el.renderComplete;
+            await el.updateComplete;
             // @ts-ignore : access to protected member
             expect(el.items.length).to.equal(6);
             expect(el.getValue()).to.deep.equal([]);
 
             // @ts-ignore : access to protected member
             el._onItemClicked(new Event('click'), '2', true);
-            await el.renderComplete;
+            await el.updateComplete;
             expect(el.getValue()).to.deep.equal(['2']);
 
             // @ts-ignore : access to protected member
             el._onItemClicked(new Event('click'), '4', true);
-            await el.renderComplete;
+            await el.updateComplete;
             expect(el.getValue().sort()).to.deep.equal(['2', '4'].sort());
 
             // @ts-ignore : access to protected member
             el._onItemClicked(new Event('click'), '1', true);
-            await el.renderComplete;
+            await el.updateComplete;
             expect(el.getValue().sort()).to.deep.equal(['1', '2', '4'].sort());
 
             // DESELECTION
             // @ts-ignore : access to protected member
             el._onItemClicked(new Event('click'), '2', true);
-            await el.renderComplete;
+            await el.updateComplete;
             expect(el.getValue().sort()).to.deep.equal(['1', '4'].sort());
         });
 

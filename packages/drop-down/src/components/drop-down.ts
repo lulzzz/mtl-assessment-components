@@ -47,7 +47,7 @@ export class DropDown extends MultipleChoice {
      *
      * @returns void
      */
-    protected _didRender(): void {
+    protected updated(): void {
         this._enableAccessibility();
     }
 
@@ -61,7 +61,9 @@ export class DropDown extends MultipleChoice {
      *
      * @returns TemplateResult
      */
-    protected _render({ open, feedbackMessage, items, multiple, value }: DropDown): TemplateResult {
+    protected render(): TemplateResult {
+        const { open, feedbackMessage, items, multiple, value }: DropDown = this;
+
         return html`
         <link rel="stylesheet" type="text/css" href="/dist/css/drop-down.css">
         

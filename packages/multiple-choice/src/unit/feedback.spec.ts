@@ -7,9 +7,9 @@ export default () => {
         it('should provide negative feedback on incorrect answer', async (): Promise<void> => {
             withSnippet('single-feedback');
             const element: MultipleChoiceQuestion = document.querySelector(mcqTagName) as any;
-            await element.renderComplete;
+            await element.updateComplete;
             element.shadowRoot.getElementById('3').click();
-            await element.renderComplete;
+            await element.updateComplete;
 
             element.showFeedback();
             expect(element.feedbackMessage.type).to.equal('negative');
@@ -18,9 +18,9 @@ export default () => {
         it('should provide positive feedback on correct answer', async (): Promise<void> => {
             withSnippet('single-feedback');
             const element: MultipleChoiceQuestion = document.querySelector(mcqTagName) as any;
-            await element.renderComplete;
+            await element.updateComplete;
             element.shadowRoot.getElementById('2').click();
-            await element.renderComplete;
+            await element.updateComplete;
 
             element.showFeedback();
             expect(element.feedbackMessage.type).to.equal('positive');
@@ -29,9 +29,9 @@ export default () => {
         it('should provide neutral feedback on neutral answer', async (): Promise<void> => {
             withSnippet('single-feedback');
             const element: MultipleChoiceQuestion = document.querySelector(mcqTagName) as any;
-            await element.renderComplete;
+            await element.updateComplete;
             element.shadowRoot.getElementById('4').click();
-            await element.renderComplete;
+            await element.updateComplete;
 
             element.showFeedback();
             expect(element.feedbackMessage.type).to.equal('neutral');
@@ -40,9 +40,9 @@ export default () => {
         it('should show feedback', async (): Promise<void> => {
             withSnippet('single-feedback');
             const element: MultipleChoiceQuestion = document.querySelector(mcqTagName) as any;
-            await element.renderComplete;
+            await element.updateComplete;
             element.shadowRoot.getElementById('4').click();
-            await element.renderComplete;
+            await element.updateComplete;
 
             element.showFeedback();
             expect(element.feedbackMessage.type).to.equal('neutral');
@@ -52,19 +52,19 @@ export default () => {
         it('should provide negative feedback on incorrect answer', async (): Promise<void> => {
             withSnippet('multiple-feedback-1');
             const element: MultipleResponseQuestion = document.querySelector(mrqTagName) as any;
-            await element.renderComplete;
+            await element.updateComplete;
             element.shadowRoot.getElementById('5').click();
-            await element.renderComplete;
+            await element.updateComplete;
             element.showFeedback();
             expect(element.feedbackMessage.type).to.equal('negative');
         });
         it('should provide positive feedback on correct answer strict', async (): Promise<void> => {
             withSnippet('multiple-feedback-1');
             const element: MultipleResponseQuestion = document.querySelector(mrqTagName) as any;
-            await element.renderComplete;
+            await element.updateComplete;
             element.shadowRoot.getElementById('1').click();
             element.shadowRoot.getElementById('3').click();
-            await element.renderComplete;
+            await element.updateComplete;
 
             element.showFeedback();
             expect(element.feedbackMessage.type).to.equal('positive');
@@ -73,9 +73,9 @@ export default () => {
         it('should provide neutral feedback on neutral answer', async (): Promise<void> => {
             withSnippet('multiple-feedback-1');
             const element: MultipleResponseQuestion = document.querySelector(mrqTagName) as any;
-            await element.renderComplete;
+            await element.updateComplete;
             element.shadowRoot.getElementById('1').click();
-            await element.renderComplete;
+            await element.updateComplete;
 
             element.showFeedback();
             expect(element.feedbackMessage.type).to.equal('neutral');
@@ -83,11 +83,11 @@ export default () => {
         it('use of exactMatch strategy', async (): Promise<void> => {
             withSnippet('multiple-feedback-2');
             const element: MultipleResponseQuestion = document.querySelector(mrqTagName) as any;
-            await element.renderComplete;
+            await element.updateComplete;
             element.shadowRoot.getElementById('1').click();
             element.shadowRoot.getElementById('3').click();
             element.shadowRoot.getElementById('4').click();
-            await element.renderComplete;
+            await element.updateComplete;
 
             element.showFeedback();
             expect(element.feedbackMessage.type).to.equal('positive');
@@ -96,10 +96,10 @@ export default () => {
         it('use of contains any strategy', async (): Promise<void> => {
             withSnippet('multiple-feedback-2');
             const element: MultipleResponseQuestion = document.querySelector(mrqTagName) as any;
-            await element.renderComplete;
+            await element.updateComplete;
             element.shadowRoot.getElementById('1').click();
             element.shadowRoot.getElementById('4').click();
-            await element.renderComplete;
+            await element.updateComplete;
 
             element.showFeedback();
             expect(element.feedbackMessage.type).to.equal('neutral');
@@ -108,18 +108,18 @@ export default () => {
         it('default strategy test', async (): Promise<void> => {
             withSnippet('multiple-feedback-2');
             const element: MultipleResponseQuestion = document.querySelector(mrqTagName) as any;
-            await element.renderComplete;
+            await element.updateComplete;
             element.shadowRoot.getElementById('2').click();
-            await element.renderComplete;
+            await element.updateComplete;
             element.showFeedback();
             expect(element.feedbackMessage.type).to.equal('negative');
         });
         it('should show feedback', async (): Promise<void> => {
             withSnippet('multiple-feedback-2');
             const element: MultipleChoiceQuestion = document.querySelector(mrqTagName) as any;
-            await element.renderComplete;
+            await element.updateComplete;
             element.shadowRoot.getElementById('4').click();
-            await element.renderComplete;
+            await element.updateComplete;
 
             element.showFeedback();
             expect(element.feedbackMessage.type).to.equal('neutral');

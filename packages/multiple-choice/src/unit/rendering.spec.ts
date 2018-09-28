@@ -38,7 +38,7 @@ export default () => {
             const divTest: HTMLDivElement = document.getElementById('1') as HTMLDivElement;
             expect(divTest).to.equal(div);
             // @ts-ignore renderComplete is a protected member
-            await element.renderComplete;
+            await element.updateComplete;
             const formFieldElement: HTMLDivElement = element.shadowRoot.querySelector('div.mdc-form-field');
             const radioElement = formFieldElement.querySelector('div');
             const label = formFieldElement.querySelector('label');
@@ -84,7 +84,7 @@ export default () => {
             const divTest: HTMLDivElement = document.getElementById('1') as HTMLDivElement;
             expect(divTest).to.equal(div);
             // @ts-ignore renderComplete is a protected member
-            await element.renderComplete;
+            await element.updateComplete;
             const formFieldElement: HTMLDivElement = element.shadowRoot.querySelector('div.mdc-form-field');
             const checkboxElement = formFieldElement.querySelector('div');
             const label = formFieldElement.querySelector('label');
@@ -107,7 +107,7 @@ export default () => {
             const divTest: HTMLDivElement = document.getElementById('1') as HTMLDivElement;
             expect(divTest).to.equal(div);
             // @ts-ignore renderComplete is a protected member
-            await element.renderComplete;
+            await element.updateComplete;
             const formFieldElement: HTMLDivElement = element.shadowRoot.querySelector('div.mdc-form-field');
             const checkboxElement = formFieldElement.querySelector('div');
             const label = formFieldElement.querySelector('label');

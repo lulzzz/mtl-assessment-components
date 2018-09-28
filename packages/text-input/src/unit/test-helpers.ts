@@ -68,10 +68,10 @@ export function checkAccessibilityparams(el: TextInput, params: { [key: string]:
 }
 
 export async function checkAnswer(el: TextInput, value: string): Promise<void> {
-    await el.renderComplete;
+    await el.updateComplete;
     const input: HTMLInputElement = el.shadowRoot.querySelector('input');
     input.value = value;
     input.dispatchEvent(new Event('change'));
-    await el.renderComplete;
+    await el.updateComplete;
     checkComponentDOM(el, { value });
 }
