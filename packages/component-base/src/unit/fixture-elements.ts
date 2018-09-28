@@ -51,7 +51,7 @@ export class MultipleChoiceElement extends MultipleChoice implements Feedback {
     public render(): TemplateResult {
         return html`
             <main>Hello MultipleChoiceElement</main>
-            <slot name="options" @slotchange=${(e: Event) => this._onSlotChanged(e)} ></slot>
+            <slot name="options" @slotchange=${(e: Event) => this._onSlotChanged(e)}></slot>
             <slot name="feedback" @slotchange=${(e: Event) => this._onFeedbackSlotChanged(e)}></slot>`;
     }
 }

@@ -45,7 +45,7 @@ export class TextInput extends ComponentBase<string> implements Feedback {
         <link rel="stylesheet" type="text/css" href="/node_modules/@material/textfield/dist/mdc.textfield.css">
         <link rel="stylesheet" type="text/css" href="/dist/css/text-input.css">
         ${this._feedbackStyle(feedbackMessage)}
-        <div class$="mdc-text-field mdc-text-field--outlined ${disabled ? 'mdc-text-field--disabled' : ''}">
+        <div class="mdc-text-field mdc-text-field--outlined ${disabled ? 'mdc-text-field--disabled' : ''}">
             <input
                 disabled="${disabled}"
                 type="text" 

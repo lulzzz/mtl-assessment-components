@@ -37,9 +37,7 @@ export class ResponseValidation extends ComponentBase<string> {
     }
 
     protected render(): TemplateResult {
-        return html`
-            <slot @slotchange=${(evt: Event) => this._onSlotChanged(evt)}></slot>
-        `;
+        return html`<slot @slotchange=${(evt: Event) => this._onSlotChanged(evt)}></slot>`;
     }
 
     private _onSlotChanged(event: Event) {
