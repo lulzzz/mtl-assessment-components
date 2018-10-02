@@ -1,22 +1,16 @@
 import { Strategy } from '../mixins/feedback';
 import { ResponseValidation } from './response-validation';
-import { ComponentBase } from './base';
+import { ComponentBase, property } from './base';
 import { Feedback, FeedbackMessage } from '../mixins/feedback';
 import { applyMixins } from '../index';
 
-export class MultipleChoice extends ComponentBase<string[]> implements Feedback {
+export abstract class MultipleChoice extends ComponentBase<string[]> implements Feedback {
+    @property({ type: Array })
     public value: string[] = [];
+    @property({ type: Object })
     public feedbackMessage: FeedbackMessage;
+    @property({ type: Array })
     protected items: HTMLElement[] = [];
-
-    static get properties(): { [key: string]: string | object } {
-        return {
-            ...super.properties,
-            feedbackMessage: Object,
-            items: Array,
-            value: Array
-        };
-    }
 
     // @mixin: Feedback
     computeFeedback: (value: string[]) => FeedbackMessage;

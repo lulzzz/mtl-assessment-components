@@ -8,7 +8,7 @@ export default function() {
         it('should render properly', async (): Promise<void> => {
             withSnippet('response-validation');
             const el: ResponseValidation = document.querySelector('response-validation') as any;
-            await el.renderComplete;
+            await el.updateComplete;
 
             const slot: HTMLSlotElement = el.shadowRoot.querySelector('slot');
             expect(slot).not.to.be.undefined;
@@ -24,7 +24,7 @@ export default function() {
         it('should display message according to user attempts', async (): Promise<void> => {
             withSnippet('response-validation-messages');
             const el: ResponseValidation = document.querySelector('response-validation') as any;
-            await el.renderComplete;
+            await el.updateComplete;
 
             let msg: FeedbackMessage = el.getFeedback();
             expect(msg.message).to.equal('X');
@@ -39,7 +39,7 @@ export default function() {
         it('should allow to reset user attempts', async (): Promise<void> => {
             withSnippet('response-validation-messages');
             const el: ResponseValidation = document.querySelector('response-validation') as any;
-            await el.renderComplete;
+            await el.updateComplete;
 
             let msg: FeedbackMessage = el.getFeedback();
             expect(msg.message).to.equal('X');
@@ -55,7 +55,7 @@ export default function() {
         it('should compute feedback type based on score when feedback type is not specified', async (): Promise<void> => {
             withSnippet('response-validation-messages');
             const el: ResponseValidation = document.querySelector('response-validation') as any;
-            await el.renderComplete;
+            await el.updateComplete;
 
             let msg: FeedbackMessage = el.getFeedback();
             expect(msg.message).to.equal('X');
@@ -63,14 +63,14 @@ export default function() {
             expect(msg.type).to.equal(FeedbackType.NEGATIVE);
 
             el.score = 5;
-            await el.renderComplete;
+            await el.updateComplete;
             msg = el.getFeedback();
             expect(msg.message).to.equal('Y');
             expect(msg.score).to.equal(5);
             expect(msg.type).to.equal(FeedbackType.POSITIVE);
 
             el.score = -2;
-            await el.renderComplete;
+            await el.updateComplete;
             msg = el.getFeedback();
             expect(msg.message).to.equal('Z');
             expect(msg.score).to.equal(-2);
@@ -80,9 +80,9 @@ export default function() {
         it('should compute feedback type based on what specified regardless of the score', async (): Promise<void> => {
             withSnippet('response-validation-messages');
             const el: ResponseValidation = document.querySelector('response-validation') as any;
-            await el.renderComplete;
+            await el.updateComplete;
             el.feedbackType = FeedbackType.POSITIVE;
-            await el.renderComplete;
+            await el.updateComplete;
 
             let msg: FeedbackMessage = el.getFeedback();
             expect(msg.message).to.equal('X');
@@ -90,14 +90,14 @@ export default function() {
             expect(msg.type).to.equal(FeedbackType.POSITIVE);
 
             el.score = 5;
-            await el.renderComplete;
+            await el.updateComplete;
             msg = el.getFeedback();
             expect(msg.message).to.equal('Y');
             expect(msg.score).to.equal(5);
             expect(msg.type).to.equal(FeedbackType.POSITIVE);
 
             el.score = -2;
-            await el.renderComplete;
+            await el.updateComplete;
             msg = el.getFeedback();
             expect(msg.message).to.equal('Z');
             expect(msg.score).to.equal(-2);
@@ -107,9 +107,9 @@ export default function() {
         it('should handle neutral feedback', async (): Promise<void> => {
             withSnippet('response-validation-messages');
             const el: ResponseValidation = document.querySelector('response-validation') as any;
-            await el.renderComplete;
+            await el.updateComplete;
             el.feedbackType = FeedbackType.NEUTRAL;
-            await el.renderComplete;
+            await el.updateComplete;
 
             let msg: FeedbackMessage = el.getFeedback();
             expect(msg.message).to.equal('X');
@@ -117,14 +117,14 @@ export default function() {
             expect(msg.type).to.equal(FeedbackType.NEUTRAL);
 
             el.score = 5;
-            await el.renderComplete;
+            await el.updateComplete;
             msg = el.getFeedback();
             expect(msg.message).to.equal('Y');
             expect(msg.score).to.equal(5);
             expect(msg.type).to.equal(FeedbackType.NEUTRAL);
 
             el.score = -2;
-            await el.renderComplete;
+            await el.updateComplete;
             msg = el.getFeedback();
             expect(msg.message).to.equal('Z');
             expect(msg.score).to.equal(-2);

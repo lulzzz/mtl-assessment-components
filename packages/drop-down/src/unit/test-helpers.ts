@@ -16,7 +16,7 @@ export function checkAccessibilityparams(el: DropDown, params: { [key: string]: 
 }
 
 export function getOptions(el: DropDown): HTMLElement[] {
-    return el.shadowRoot.querySelectorAll('.option-item');
+    return Array.from(el.shadowRoot.querySelectorAll('.option-item'));
 }
 
 export function clickElement(el: HTMLElement): void {
@@ -37,19 +37,24 @@ export function generateOnSlotChangeEvent(el: DropDown): CustomEvent {
         detail: {
             srcElement: feedback
         }
-    })
+    });
 
     return evt;
 }
 
-export async function selectOptions(options: HTMLElement[], optionIndices: number[]){    
+export async function selectOptions(options: HTMLElement[], optionIndices: number[]) {
     optionIndices.forEach((index: number) => {
         clickElement(options[index]);
     });
 }
 
-export async function triggerValidation(el: DropDown, optionIndex: number){
+export async function triggerValidation(el: DropDown, optionIndex: number) {
     await selectOptions(getOptions(el), [optionIndex]);
     el.showFeedback();
-    await el.renderComplete;
+    // @ts-ignore
+    await el.updateComplete;
+}
+
+export async function sleep(){
+    await new Promise((done: any)=> setTimeout(done, 10));
 }

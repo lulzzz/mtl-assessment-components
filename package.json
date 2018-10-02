@@ -4,7 +4,7 @@
     "scripts": {
         "bootstrap": "lerna bootstrap",
         "build": "lerna run build",
-        "clean": "lerna clean --yes",
+        "clean": "lerna clean --yes; rm -rf packages/*/package-lock.json; rm -rf packages/*/dist",
         "link-all": "lerna link --force-local",
         "list": "lerna ls",
         "publish": "lerna publish --registry http://npm.tribalnova.com --no-verify-access",

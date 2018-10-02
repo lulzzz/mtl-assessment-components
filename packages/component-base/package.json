@@ -3,6 +3,7 @@
     "version": "0.2.1",
     "description": "Assessment System Component Base Classes",
     "main": "dist/index.js",
+    "module": "dist/index.js",
     "types": "dist/index.d.ts",
     "scripts": {
         "start": "polyserve -o",
@@ -15,12 +16,12 @@
     "author": "Dominique Rochefort <dominique.rochefort@hmhco.com>",
     "license": "ISC",
     "dependencies": {
-        "@polymer/lit-element": "0.5.2",
-        "lit-html": "0.10.0"
+        "@polymer/lit-element": "^0.6.1",
+        "lit-html": "^0.11.4"
     },
     "devDependencies": {
         "@hmh/lit-element-tester": "latest",
-        "chai": "^4.1.2",
+        "chai": "^4.2.0",
         "concurrently": "^4.0.1",
         "mocha": "^5.2.0",
         "node-sass": "^4.9.3",
