@@ -23,7 +23,6 @@ export class PlotGraph extends ComponentBase<string> {
     public step: number = 0;
     @property({ type: Array })
     private equations: HTMLElement[] = [];
-
     public shadowRoot: ShadowRoot;
 
     private graphSize: number = 500;
