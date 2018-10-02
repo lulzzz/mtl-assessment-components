@@ -13,7 +13,7 @@
         <span>Correct</span>
     </response-validation>
 
-    <response-validation slot="feedback" expected="two" score="2" feedbackType="neutral" strategy="exactMatch">
+    <response-validation slot="feedback" expected="two" score="2" feedback-type="neutral" strategy="exactMatch">
         <span>Almost Correct</span>
     </response-validation>
 

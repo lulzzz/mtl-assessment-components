@@ -1,5 +1,4 @@
-import { html, TemplateResult, MultipleChoice, repeat, unsafeHTML } from '@hmh/component-base/dist/index';
-import { FeedbackMessage } from '@hmh/component-base/dist/mixins/feedback';
+import { FeedbackMessage, html, Mode, property, TemplateResult, MultipleChoice, repeat, unsafeHTML } from '@hmh/component-base/dist/index';
 
 /**
  * `<drop-down>`
@@ -8,16 +7,20 @@ import { FeedbackMessage } from '@hmh/component-base/dist/mixins/feedback';
  * @demo ./demo/index.html
  */
 export class DropDown extends MultipleChoice {
+    @property({ type: Boolean })
+    public disabled: boolean = false;
+    @property({ type: String })
+    public feedbackMessage: FeedbackMessage;
+    @property({ type: String })
+    public mode: Mode = Mode.INTERACTIVE;
+    @property({ type: Array })
+    public value: string[];
+    @property({ type: Array })
+    public items: HTMLElement[] = [];
+    @property({ reflect: true, type: Boolean })
     public open: boolean = false;
+    @property({ reflect: true, type: Boolean })
     public multiple: boolean = false;
-
-    static get properties(): { [key: string]: string | object } {
-        return {
-            ...super.properties,
-            open: Boolean,
-            multiple: Boolean
-        };
-    }
 
     private defaultTitle = 'Select an option';
 
@@ -47,7 +50,7 @@ export class DropDown extends MultipleChoice {
      *
      * @returns void
      */
-    protected _didRender(): void {
+    protected updated(): void {
         this._enableAccessibility();
     }
 
@@ -61,42 +64,51 @@ export class DropDown extends MultipleChoice {
      *
      * @returns TemplateResult
      */
-    protected _render({ open, feedbackMessage, items, multiple, value }: DropDown): TemplateResult {
+    protected render(): TemplateResult {
+        const { open, feedbackMessage, items, multiple, value }: DropDown = this;
+
         return html`
         <link rel="stylesheet" type="text/css" href="/dist/css/drop-down.css">
         
-        <div class$="container ${this._getFeedbackClass(feedbackMessage, false)}">
+        <div class="container ${this._getFeedbackClass(feedbackMessage, false)}">
             <div class="dropdown">
                 <div class="buttons-container">
-                    <button class="drop-button" on-click="${(evt: Event) => this._onDropDownClicked()}">
+                    <button class="drop-button" @click=${(evt: Event) => this._onDropDownClicked()}>
                         ${value.length > 0 ? [...value].join(',') : this.defaultTitle}
                     </button>
-                    <button class="nav-button" on-click="${(evt: Event) => this._onDropDownClicked()}">${open ? html`&uarr;` : html`&darr;`}</button>
+                    <button class="nav-button" @click=${(evt: Event) => this._onDropDownClicked()}>
+                        ${open ? html`&uarr;` : html`&darr;`}
+                    </button>
                 </div>
             </div>
                 
-            <div class="dropdown-content" hidden="${!open}">
+            <div class="dropdown-content" ?hidden=${!open}>
                 ${repeat(
                     items,
                     (item: HTMLElement) => item.id,
-                    (item: HTMLElement, index: number) => html`
+                    (item: HTMLElement, index: number) => {
+                        return html`
                     <div class="options">
-                        <div class$="option-item ${value.includes(item.id) ? 'selected' : ''}" aria-selected$="${value.includes(item.id)}" id$="${
-                        item.id
-                    }" tabindex$="${index + 1}" role="button" on-click="${(evt: MouseEvent) => this._onItemClicked(evt, item.id, multiple)}"> 
+                        <div class="option-item ${value.includes(item.id) ? 'selected' : ''}" 
+                            aria-selected=${value.includes(item.id) ? 'true' : 'false'}
+                            id=${item.id}
+                            tabindex=${index + 1}
+                            role="button"
+                            @click=${(evt: MouseEvent) => this._onItemClicked(evt, item.id, multiple)}> 
                             ${unsafeHTML(item.innerHTML)}
                         </div>
                     </div>
-                `
+                `;
+                    }
                 )}
             </div>
             
-            <span class$="feedback-message ${this._getFeedbackClass(feedbackMessage, true)}">${feedbackMessage ? feedbackMessage.message : ''}</span>
+            <span class="feedback-message ${this._getFeedbackClass(feedbackMessage, true)}">${feedbackMessage ? feedbackMessage.message : ''}</span>
         
         </div>
         
-        <slot name="options" class="options" on-slotchange="${(evt: Event) => this._onSlotChanged(evt)}" hidden> </slot>
-        <slot name="feedback" class="feedback-values" on-slotchange="${(evt: Event) => this._onFeedbackSlotChanged(evt)}"></slot>`;
+        <slot hidden name="options" class="options" @slotchange=${(evt: Event) => this._onSlotChanged(evt)}></slot>
+        <slot name="feedback" class="feedback-values" @slotchange=${(evt: Event) => this._onFeedbackSlotChanged(evt)}></slot>`;
     }
 
     /**

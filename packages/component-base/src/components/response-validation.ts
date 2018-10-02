@@ -1,31 +1,20 @@
-import { ComponentBase, html, TemplateResult } from './base';
+import { ComponentBase, html, property, TemplateResult } from './base';
 import { Strategy, FeedbackMessage, FeedbackType } from '../mixins/feedback';
 
 export class ResponseValidation extends ComponentBase<string> {
+    @property({ reflect: true, type: String })
     public expected: string = '';
+    @property({ attribute: 'feedback-type', reflect: true, type: String })
     public feedbackType: FeedbackType;
+    @property({ reflect: true, type: Number })
     public score: number = 0;
+    @property({ reflect: true, type: String })
     public strategy: Strategy = Strategy.EXACT_MATCH;
 
     private feedbackItems: HTMLElement[] = [];
     private attempts: number = 0;
 
-    static get properties(): { [key: string]: string | object } {
-        return {
-            ...super.properties,
-            expected: String,
-            feedbackType: String,
-            score: Number,
-            strategy: String
-        };
-    }
-     
-    /*
-    getExpected(): Set<string> {
-        return this.expected !== '' ? new Set(this.expected.split('|')) : null; //TODO: fix
-    }*/
-
-    public getFeedbackMessage(): FeedbackMessage {
+    public getFeedback(): FeedbackMessage {
         let type: FeedbackType = this.feedbackType;
         const score = this.score;
         if (!this.feedbackType) {
@@ -47,27 +36,21 @@ export class ResponseValidation extends ComponentBase<string> {
         this.attempts = 0;
     }
 
-    protected _render(): TemplateResult {
-        return html`
-            <slot on-slotchange="${(evt: Event) => this.onSlotChanged(evt)}"></slot>
-        `;
+    protected render(): TemplateResult {
+        return html`<slot @slotchange=${(evt: Event) => this._onSlotChanged(evt)}></slot>`;
     }
 
-    private onSlotChanged(event: Event) {
+    private _onSlotChanged(event: Event) {
         event.stopPropagation();
         const slot: HTMLSlotElement = event.srcElement as HTMLSlotElement;
-        if (slot) {
-            const nodes: Node[] = slot.assignedNodes();
-            if (nodes) {
-                const feedbackItems: HTMLElement[] = [];
-                for (const el of nodes as HTMLElement[]) {
-                    if (el && el.tagName) {
-                        feedbackItems.push(el);
-                    }
-                }
-                this.feedbackItems = feedbackItems;
+        const nodes: Node[] = slot.assignedNodes();
+        const feedbackItems: HTMLElement[] = [];
+        for (const el of nodes as HTMLElement[]) {
+            if (el && el.tagName) {
+                feedbackItems.push(el);
             }
         }
+        this.feedbackItems = feedbackItems;
     }
 }
 

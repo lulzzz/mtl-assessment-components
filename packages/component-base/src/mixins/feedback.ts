@@ -4,6 +4,7 @@ import { ResponseValidation } from '../components/response-validation';
  * All components that have feedback must implement this mixin
  */
 export enum Strategy {
+    ANY = 'any',
     CONTAINS = 'contains',
     EXACT_MATCH = 'exactMatch',
     FUZZY_MATCH = 'fuzzyMatch',
@@ -30,7 +31,7 @@ export abstract class Feedback {
     public computeFeedback(value: any): FeedbackMessage {
         for (const el of this._responseValidationElements) {
             if (this.match(el, value)) {
-                return el.getFeedbackMessage();
+                return el.getFeedback();
             }
         }
         throw new Error('missing default response-validation');
@@ -40,13 +41,11 @@ export abstract class Feedback {
         const slot: HTMLSlotElement = evt.srcElement as HTMLSlotElement;
         if (slot) {
             const nodes: ResponseValidation[] = slot.assignedNodes() as any[];
-            if (nodes) {
-                const responseValidationElements: ResponseValidation[] = [];
-                for (const el of nodes as ResponseValidation[]) {
-                    responseValidationElements.push(el);
-                }
-                this._responseValidationElements = responseValidationElements;
+            const responseValidationElements: ResponseValidation[] = [];
+            for (const el of nodes as ResponseValidation[]) {
+                responseValidationElements.push(el);
             }
+            this._responseValidationElements = responseValidationElements;
         }
     }
 }
