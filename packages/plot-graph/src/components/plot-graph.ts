@@ -29,6 +29,7 @@ export class PlotGraph extends ComponentBase<string> {
     private graphSize: number = 500;
     private svgContainer: any = null;
     private renderedGraph: boolean = false;
+    private axisSize: number = 25;
 
     protected render(): TemplateResult {
         return html`
@@ -91,14 +92,14 @@ export class PlotGraph extends ComponentBase<string> {
             this.svgContainer
                 .append('g')
                 .attr('class', 'x-axis')
-                .attr('transform', 'translate(0,' + (this.graphSize - 25) + ')')
+                .attr('transform', 'translate(0,' + (this.graphSize - this.axisSize) + ')')
                 .call(d3.axisBottom(xScale)); // Create an axis component with d3.axisBottom
 
             // 4. Call the y axis in a group tag
             this.svgContainer
                 .append('g')
                 .attr('class', 'y-axis')
-                .attr('transform', 'translate(' + 25 + ',0)')
+                .attr('transform', 'translate(' + this.axisSize + ',0)')
                 .call(d3.axisLeft(yScale)); // Create an axis component with d3.axisLeft
         }
     }
