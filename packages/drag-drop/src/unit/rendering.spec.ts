@@ -19,7 +19,7 @@ export default () => {
         it('should  have the correct amount of initial options', async (): Promise<void> => {
             withSnippet('basic');
             const element: DragDrop = document.querySelector(basicTagName) as any;
-            await element.renderComplete;
+            await element.updateComplete;
 
             expect(element.dragContainers[0].getElementsByTagName('div').length).to.equal(5);
             expect(element.dragContainers[0].options.length).to.equal(5);

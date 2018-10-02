@@ -11,12 +11,6 @@ export class DragDrop extends ComponentBase<string[]> {
     dragContainers: DragContainer[] = [];
     dropContainers: DropContainer[] = [];
     map: Map<string, Set<string>> = new Map();
-    static get properties(): { [key: string]: string | object } {
-        return {
-            ...super.properties,
-            items: Array
-        };
-    }
 
     constructor() {
         super();
@@ -26,7 +20,7 @@ export class DragDrop extends ComponentBase<string[]> {
     }
 
     public showFeedback(): void {
-        this.dropContainers.forEach((d) => d.showFeedback());
+        this.dropContainers.forEach((d: DropContainer) => d.showFeedback());
     }
 
     public getFeedback(): FeedbackMessage {
@@ -37,11 +31,11 @@ export class DragDrop extends ComponentBase<string[]> {
         return this.value;
     }
 
-    protected _render({ feedbackMessage }: DragDrop): TemplateResult {
+    protected render(): TemplateResult {
         return html`
         <link rel="stylesheet" type="text/css" href="/dist/css/drag-drop.css">
-        <div class$="${feedbackMessage ? feedbackMessage.type : ''}">
-            <slot on-slotchange="${(e: Event) => this._onSlotChanged(e)}"></slot>
+        <div class="${this.feedbackMessage ? this.feedbackMessage.type : ''}">
+            <slot @slotchange="${(e: Event) => this._onSlotChanged(e)}"></slot>
         </div>
         `;
     }

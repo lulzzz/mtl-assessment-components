@@ -1,28 +1,25 @@
-import { html, TemplateResult } from '@hmh/component-base/dist/index';
-import { LitElement } from '../../node_modules/@polymer/lit-element/lit-element';
+import { html, TemplateResult, property } from '@hmh/component-base/dist/index';
+import { LitElement } from '@hmh/component-base/node_modules/@polymer/lit-element/lit-element';
+//import { LitElement } from '@polymer/lit-element/lit-element';
 
 /**
  * `<drag-container>`
  * @demo ./demo/index-drag-container.html
  */
 export class DragContainer extends LitElement {
+    @property({ type: Boolean })
     hasDuplicates: boolean = true;
+    @property({ type: Array, reflect: true })
     options: string[] = [];
 
-    static get properties(): { [key: string]: string | object } {
-        return {
-            hasDuplicates: Boolean,
-            options: Array
-        };
-    }
     public getElement(id: string): HTMLElement {
         return Array.from(this.getElementsByClassName('option-item')).find((x: HTMLElement) => x.id === id) as HTMLElement;
     }
 
-    protected _render(): TemplateResult {
+    protected render(): TemplateResult {
         return html`
         <link rel="stylesheet" type="text/css" href="/dist/css/drag-drop.css">
-        <slot name="options" on-slotchange="${(e: Event) => this._onSlotChanged(e)}" ></slot>
+        <slot name="options" @slotchange="${(e: Event) => this._onSlotChanged(e)}" ></slot>
         `;
     }
 
@@ -42,7 +39,6 @@ export class DragContainer extends LitElement {
             }
         }
         this.options = items;
-        console.log('called');
     }
 }
 

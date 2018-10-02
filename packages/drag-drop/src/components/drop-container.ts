@@ -1,24 +1,28 @@
-import { ComponentBase, html, TemplateResult, Feedback, FeedbackMessage, ResponseValidation, Strategy, applyMixins } from '@hmh/component-base/dist/index';
+import {
+    applyMixins,
+    ComponentBase,
+    Feedback,
+    FeedbackMessage,
+    html,
+    property,
+    ResponseValidation,
+    Strategy,
+    TemplateResult
+} from '@hmh/component-base/dist/index';
 /**
  * `<drop-container>`
  * @demo ./demo/index-drop-container.html
  */
 export class DropContainer extends ComponentBase<string[]> implements Feedback {
+    @property({ type: Array })
     maxItems: number;
+    @property({ type: Array, reflect: true })
     public addedItems: string[] = [];
 
     // @mixin: Feedback
     computeFeedback: (value: string[]) => FeedbackMessage;
     _onFeedbackSlotChanged: (evt: Event) => void;
 
-    static get properties(): { [key: string]: string | object } {
-        return {
-            ...super.properties,
-            addedItems: Array,
-            maxItems: Number,
-            value: Array
-        };
-    }
     public get value(): string[] {
         return Array.from(this.getElementsByClassName('option-item')).map((x: HTMLElement) => x.id);
     }
@@ -45,13 +49,13 @@ export class DropContainer extends ComponentBase<string[]> implements Feedback {
         }
     }
 
-    protected _render({ feedbackMessage }: DropContainer): TemplateResult {
-        this.className = feedbackMessage ? this.feedbackMessage.type : '';
+    protected render(): TemplateResult {
+        this.className = this.feedbackMessage ? this.feedbackMessage.type : '';
 
         return html`
         <link rel="stylesheet" type="text/css" href="/dist/css/drag-drop.css">
-        <slot name="feedback" on-slotchange="${(e: Event) => this._onFeedbackSlotChanged(e)}"></slot>
-        <slot name="options" on-slotchange="${(e: Event) => this._onSlotChanged(e)}" ></slot>
+        <slot name="feedback" @slotchange="${(e: Event) => this._onFeedbackSlotChanged(e)}"></slot>
+        <slot name="options" @slotchange="${(e: Event) => this._onSlotChanged(e)}" ></slot>
 
         `;
     }
