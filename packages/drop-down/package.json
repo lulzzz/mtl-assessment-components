@@ -3,6 +3,7 @@
     "version": "0.2.1",
     "description": "Assessment System Drop Down Component",
     "main": "dist/index.js",
+    "module": "dist/index.js",
     "types": "dist/index.d.ts",
     "scripts": {
         "start": "polyserve -o",
@@ -18,7 +19,7 @@
     "author": "Christopher Morris <christopher.morris@hmhco.com>",
     "license": "ISC",
     "dependencies": {
-        "@hmh/component-base": "^0.0.15",
+        "@hmh/component-base": "0.0.15",
         "@material/button": "latest",
         "@material/select": "^0.39.0"
     },

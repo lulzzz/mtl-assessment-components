@@ -1,5 +1,5 @@
-import { applyMixins, ComponentBase, Feedback, FeedbackMessage, Strategy, html, TemplateResult } from '@hmh/component-base/dist/index';
-import { MDCTextField } from '@material/textfield/index'; 
+import { applyMixins, ComponentBase, Feedback, FeedbackMessage, Strategy, html, property, TemplateResult } from '@hmh/component-base/dist/index';
+import { MDCTextField } from '@material/textfield/index';
 import { ResponseValidation } from '@hmh/component-base/dist/index';
 
 /**
@@ -7,16 +7,14 @@ import { ResponseValidation } from '@hmh/component-base/dist/index';
  * @demo ./demo/index.html
  */
 export class TextInput extends ComponentBase<string> implements Feedback {
+    @property({ type: Boolean, reflect: true })
+    public disabled: boolean = false;
+    @property({ type: String })
+    public feedbackMessage: FeedbackMessage;
+    @property({ type: String, reflect: true })
     public placeholder: string = '';
+    @property({ type: String })
     public value: string = '';
-
-    static get properties(): { [key: string]: string | object } {
-        return {
-            ...super.properties,
-            placeholder: String,
-            value: String
-        };
-    }
 
     // @mixin: feedback
     public computeFeedback: (value: string) => FeedbackMessage;
@@ -37,22 +35,28 @@ export class TextInput extends ComponentBase<string> implements Feedback {
         }
     }
 
-    protected _render({ disabled, feedbackMessage, placeholder, value }: TextInput): TemplateResult {
-        const feedbackBanner: TemplateResult = feedbackMessage && feedbackMessage.message ? html`<div class="feedback-message"><div>${feedbackMessage.message}<div></div>` : html``;
+    protected render(): TemplateResult {
+        const { disabled, feedbackMessage, placeholder, value }: TextInput = this;
+        const feedbackBanner: TemplateResult =
+            feedbackMessage && feedbackMessage.message
+                ? html`<div class="feedback-message">
+                    <div>${feedbackMessage.message}<div>
+                </div>`
+                : html``;
 
         return html`
         <link rel="stylesheet" type="text/css" href="/node_modules/@material/textfield/dist/mdc.textfield.css">
         <link rel="stylesheet" type="text/css" href="/dist/css/text-input.css">
         ${this._feedbackStyle(feedbackMessage)}
-        <div class$="mdc-text-field mdc-text-field--outlined ${disabled ? 'mdc-text-field--disabled' : ''}">
+        <div class="mdc-text-field mdc-text-field--outlined ${disabled ? 'mdc-text-field--disabled' : ''}">
             <input
-                disabled="${disabled}"
+                ?disabled="${disabled}"
                 type="text" 
                 id="tf-outlined" 
                 class="mdc-text-field__input" 
-                value="${value}" 
-                placeholder="${placeholder}" 
-                on-change="${(evt: Event) => this._onInputChange(evt)}" />
+                .value=${value} 
+                placeholder=${placeholder}
+                @change=${(evt: Event) => this._onInputChange(evt)} />
             <div class="mdc-notched-outline">
                 <svg>
                 <path class="mdc-notched-outline__path"/>
@@ -61,11 +65,11 @@ export class TextInput extends ComponentBase<string> implements Feedback {
             <div class="mdc-notched-outline__idle"></div>
             ${feedbackBanner} 
         </div>
-        <slot hidden name="feedback" on-slotchange="${(evt: Event) => this._onFeedbackSlotChanged(evt)}"></slot>
+        <slot hidden name="feedback" @slotchange=${(evt: Event) => this._onFeedbackSlotChanged(evt)}></slot>
         `;
     }
 
-    protected _didRender(): void {
+    protected updated(): void {
         MDCTextField.attachTo(this.shadowRoot.querySelector('.mdc-text-field'));
         this._enableAccessibility();
     }
