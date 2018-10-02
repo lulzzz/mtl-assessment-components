@@ -1,0 +1,98 @@
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <!-- encoding must be set for mocha's special characters to render properly -->
+    <link rel="stylesheet" href="../node_modules/mocha/mocha.css" />
+    <link rel="stylesheet" href="runner.css">
+    <link rel="stylesheet" type="text/css" href="../dist/css/drag-drop.css">
+
+    <script src="../node_modules/@hmh/lit-element-tester/dist/browser/util.js"></script>
+    <script src="../node_modules/source-map-support/browser-source-map-support.js"></script>
+    <script src="../node_modules/mocha/mocha.js"></script>
+    <script src="../node_modules/chai/chai.js"></script>
+    <script>
+        /* global mocha, sourceMapSupport */
+        sourceMapSupport.install();
+        mocha.setup('bdd');
+    </script>
+    <script type="module" src="../dist/components/drag-drop.js"></script>
+    <script type="module" src="../dist/components/drag-container.js"></script>
+    <script type="module" src="../dist/components/drop-container.js"></script>
+    <script type="module" src="../node_modules/@hmh/component-base/dist/components/response-validation.js"></script>
+</head>
+
+<body>
+    <!-- test fixtures -->
+    <template id="default">
+        <drag-drop></drag-drop>
+    </template>
+    <template id="basic">
+        <drag-drop>
+            <drag-container>
+                <div slot="options" id="000-1">x</div>
+                <div slot="options" id="000-2">8</div>
+                <div slot="options" id="000-3">f(x)</div>
+                <div slot="options" id="000-4">4</div>
+                <div slot="options" id="000-5">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/a/ac/Approve_icon.svg" alt="Check image" style="width:42px;height:42px;border:0;">
+                </div>
+            </drag-container>
+            <drag-container>
+                <div slot="options" id="1">1</div>
+                <div slot="options" id="2">2</div>
+                <div slot="options" id="3">3</div>
+                <div slot="options" id="4">4</div>
+            </drag-container>
+
+            <drop-container maxItems="4">
+
+                <response-validation hidden slot="feedback" expected="000-1|000-5" score="10">
+                    <span>Perfect</span>
+                </response-validation>
+
+                <response-validation hidden slot="feedback" expected="000-1|000-5" score="5" strategy="contains" feedbackType="neutral">
+                    <span>Almost</span>
+                </response-validation>
+
+                <response-validation hidden slot="feedback" score="0" feedback="negative">
+                    <span>Try again</span>
+                    <span>Still not good</span>
+                    <span>Wrong answer</span>
+                </response-validation>
+            </drop-container>
+
+            <drop-container maxItems="2">
+                <response-validation hidden slot="feedback" expected="4" score="10">
+                    <span>Perfect</span>
+                </response-validation>
+
+                <response-validation hidden slot="feedback" expected="2" score="5" strategy="contains" feedbackType="neutral">
+                    <span>Almost</span>
+                </response-validation>
+
+                <response-validation hidden slot="feedback" score="0" feedback="negative">
+                    <span>Try again</span>
+                    <span>Still not good</span>
+                    <span>Wrong answer</span>
+                </response-validation>
+            </drop-container>
+
+        </drag-drop>
+    </template>
+
+
+
+
+    <div id="mocha">
+        <!-- test results are displayed here -->
+    </div>
+
+    <div id="stage">
+        <!-- elements under tests are displayed here -->
+    </div>
+
+    <script type="module" src="../dist/unit/drag-drop.spec.js"></script>
+</body>
+
+</html>

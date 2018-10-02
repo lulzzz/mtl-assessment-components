@@ -19,7 +19,7 @@ export class DragContainer extends LitElement {
         return Array.from(this.getElementsByClassName('option-item')).find((x: HTMLElement) => x.id === id) as HTMLElement;
     }
 
-    protected _render({ options, hasDuplicates }: DragContainer): TemplateResult {
+    protected _render(): TemplateResult {
         return html`
         <link rel="stylesheet" type="text/css" href="/dist/css/drag-drop.css">
         <slot name="options" on-slotchange="${(e: Event) => this._onSlotChanged(e)}" ></slot>
@@ -42,6 +42,7 @@ export class DragContainer extends LitElement {
             }
         }
         this.options = items;
+        console.log('called');
     }
 }
 

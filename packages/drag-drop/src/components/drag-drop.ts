@@ -46,7 +46,10 @@ export class DragDrop extends ComponentBase<string[]> {
         `;
     }
     isDropAllowed(element: HTMLElement): boolean {
-        return element instanceof DragContainer || (element as DropContainer).maxItems > (element as DropContainer).childrenNb;
+        return (
+            element instanceof DragContainer ||
+            (element instanceof DropContainer && (element as DropContainer).maxItems > (element as DropContainer).childrenNb)
+        );
     }
     allowDrop(event: DragEvent) {
         event.preventDefault();
@@ -62,25 +65,20 @@ export class DragDrop extends ComponentBase<string[]> {
     drop(event: DragEvent) {
         event.preventDefault();
         event.stopPropagation();
-
         const target: HTMLElement = event.target as HTMLElement;
-        if (target !== this) {
-            //do not allow drop of drag-drop itself
+        const data = event.dataTransfer.getData('source_id');
+        let dataElement: HTMLElement;
 
-            var data = event.dataTransfer.getData('source_id');
-            let dataElement: HTMLElement;
+        //Look for id in drag and drop arrays (prevents external drag items to be added) TODO: check element belongs
+        this.dragContainers.forEach((d: DragContainer) => {
+            if (d.options.includes(data)) dataElement = d.getElement(data);
+        });
+        this.dropContainers.forEach((d: DropContainer) => {
+            if (d.addedItems.includes(data)) dataElement = d.getElement(data);
+        });
 
-            //Look for id in drag and drop arrays (prevents external drag items to be added) TODO: check element belongs
-            this.dragContainers.forEach((d: DragContainer) => {
-                if (d.options.includes(data)) dataElement = d.getElement(data);
-            });
-            this.dropContainers.forEach((d: DropContainer) => {
-                if (d.addedItems.includes(data)) dataElement = d.getElement(data);
-            });
-
-            if (dataElement && this.isDropAllowed(target)) {
-                target.appendChild(dataElement);
-            }
+        if (dataElement && this.isDropAllowed(target)) {
+            target.appendChild(dataElement);
         }
     }
     _onSlotChanged(event: Event): void {
