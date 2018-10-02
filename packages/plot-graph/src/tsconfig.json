@@ -24,7 +24,7 @@
             "@material/*": ["node_modules/@material/*"],
             "@polymer/*": ["node_modules/@hmh/component-base/node_modules/@polymer/*"],
             "lit-html/*": ["node_modules/@hmh/component-base/node_modules/lit-html/*"],
-            "d3/*": ["node_modules/d3/*"]
+            "d3": ["node_modules/d3"]
         },
         "plugins": [
             {

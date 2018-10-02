@@ -1,47 +1,43 @@
-import { ComponentBase, html, TemplateResult } from "@hmh/component-base/dist/index";
+import { ComponentBase, html, TemplateResult, property } from "@hmh/component-base/dist/index";
 import * as d3 from "d3";
+
+// This is a mock
+function prepareValue(equation: HTMLElement, x: string) : number {
+    return eval(equation.innerHTML.replace('x', x));
+}
 
 /**
  * `<plot-graph>`
  * @demo ./demo/index.html
  */
 export class PlotGraph extends ComponentBase<string> {
+ 
+    @property({ type: Number })
+    public xmin: number = 0;
+    @property({ type: Number })
+    public xmax: number = 0;
+    @property({ type: Number })
+    public ymax: number = 0;
+    @property({ type: Number })
+    public ymin: number = 0;
+    @property({ type: Number })
+    public step: number = 0;
+    @property({ type: Array })
+    private equations: HTMLElement[] = [];
 
     private graphSize: number = 500;
-    private xmin: number = 0;
-    private xmax: number = 0;
-    private ymax: number = 0;
-    private ymin: number = 0;
-    private step: number = 0;
-    private equations: HTMLElement[] = [];
     private svgContainer: any = null;
     private renderedGraph: boolean = false;
     
-    static get properties(): { [key: string]: string | object } {
-        return {
-            ...super.properties,
-            xmin: Number,
-            xmax: Number,
-            ymin: Number,
-            ymax: Number,
-            step: Number
-        };
-    }
-
-    // This is a mock
-    private prepareValue(equation: HTMLElement, x: string) : number {
-        return eval(equation.innerHTML.replace('x', x));
-    }
-
-    protected _render({equations}: PlotGraph): TemplateResult {
+    protected render(): TemplateResult {
         return html`
         <link rel="stylesheet" type="text/css" href="/dist/css/plot-graph.css">
             <div id="canvas"></div>
-        <slot name="options" class="options" on-slotchange="${(evt: Event) => this._onSlotChanged(evt)}" hidden> </slot>
+        <slot hidden name="options" class="options" @slotchange=${(evt: Event) => this._onSlotChanged(evt)}> </slot>
         `;
     }
 
-    public _didRender(): void {
+    public updated(): void {
         if (!this.renderedGraph && this.equations.length > 0) {
 
             const numberPoints = (this.xmax - this.xmin / this.step);
@@ -68,7 +64,7 @@ export class PlotGraph extends ComponentBase<string> {
             .append("g")
             
             this.equations.forEach((equation) => {
-                const dataset = d3.range(numberPoints).map(function(x: any) { return {"y": this.prepareValue(equation, x)}}.bind(this));
+                const dataset = d3.range(numberPoints).map(function(x: any) { return {"y": prepareValue(equation, x) }});
 
                 // Append the path, bind the data, and call the line generator 
                 this.svgContainer.append("path")
@@ -100,15 +96,18 @@ export class PlotGraph extends ComponentBase<string> {
     protected _onSlotChanged(event: Event): void {
         const slot: HTMLSlotElement = event.srcElement as HTMLSlotElement;
         if (slot) {
+            const equations: HTMLElement[] = [];
             slot.assignedNodes().forEach(
                 (el: HTMLElement): void => {
-                    this.equations.push(el);
+                    equations.push(el);
                 }
             );
-        }
 
-        this.requestRender();
+            this.equations = equations;
+        }
     }
+
+
 }
 
 customElements.define("plot-graph", PlotGraph);

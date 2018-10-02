@@ -7,7 +7,7 @@ describe(`<${tagName}>`, (): void => {
     it('should render default state', async (): Promise<void> => {
         withSnippet('default');
         const el: PlotGraph = document.querySelector('plot-graph') as any;
-        await el.renderComplete;
+        await el.updateComplete;
         checkComponentDOM(el);
     });
 });
