@@ -28,6 +28,7 @@
         "@hmh/lit-element-tester": "latest",
         "@polymer/iron-component-page": "next",
         "@polymer/iron-demo-helpers": "latest",
+        "@types/d3": "^5.0.0",
         "@webcomponents/webcomponentsjs": "^2.0.2",
         "chai": "^4.1.2",
         "concurrently": "^4.0.1",
