@@ -6,4 +6,3 @@ export function checkComponentDOM(el: PlotGraph, params: { [key: string]: string
     const shadowRoot: ShadowRoot = el.shadowRoot;
     expect(shadowRoot).not.to.be.null;
 }
-
