@@ -1,5 +1,5 @@
 import { PlotGraph } from '../components/plot-graph';
-import { checkComponentDOM } from './test-helpers';
+import { checkComponentDOM, generateOnSlotChangeEvent } from './test-helpers';
 // const expect: any = chai.expect;
 const tagName: string = 'plot-graph';
 const expect: any = chai.expect;
@@ -39,6 +39,17 @@ describe(`<${tagName}>`, (): void => {
         expect(lineCount).to.equal(3);
     });
 
+    it('should set equations in response to a slot change event', async (): Promise<void> => {
+        withSnippet('default');
+        const el: PlotGraph = document.querySelector('plot-graph') as any;
+        
+        await el.updateComplete;
+        // @ts-ignore
+        el._onSlotChanged(generateOnSlotChangeEvent(el));
+        await el.updateComplete;
+        // @ts-ignore
+        expect(el.equations).to.not.equal(null);
+    });
 });
 
 mocha.run();
