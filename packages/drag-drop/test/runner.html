@@ -27,6 +27,12 @@
     <template id="default">
         <drag-drop></drag-drop>
     </template>
+    <template id="drag-container">
+        <drag-container></drag-container>
+    </template>
+    <template id="drop-container">
+        <drop-container></drop-container>
+    </template>
     <template id="basic">
         <drag-drop>
             <drag-container>
@@ -62,7 +68,7 @@
                 </response-validation>
             </drop-container>
 
-            <drop-container maxItems="2">
+            <drop-container maxItems="1">
                 <response-validation hidden slot="feedback" expected="4" score="10">
                     <span>Perfect</span>
                 </response-validation>

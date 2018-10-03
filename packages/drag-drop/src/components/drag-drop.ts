@@ -1,4 +1,4 @@
-import { applyMixins, ComponentBase, Feedback, html, TemplateResult, FeedbackMessage } from '@hmh/component-base/dist/index';
+import { applyMixins, ComponentBase, Feedback, html, TemplateResult } from '@hmh/component-base/dist/index';
 import './drag-container';
 import './drop-container';
 import { DragContainer } from './drag-container';
@@ -23,18 +23,10 @@ export class DragDrop extends ComponentBase<string[]> {
         this.dropContainers.forEach((d: DropContainer) => d.showFeedback());
     }
 
-    public getFeedback(): FeedbackMessage {
-        return this.feedbackMessage;
-    }
-
-    public getValue(): string[] {
-        return this.value;
-    }
-
     protected render(): TemplateResult {
         return html`
         <link rel="stylesheet" type="text/css" href="/dist/css/drag-drop.css">
-        <div class="${this.feedbackMessage ? this.feedbackMessage.type : ''}">
+        <div>
             <slot @slotchange="${(e: Event) => this._onSlotChanged(e)}"></slot>
         </div>
         `;
@@ -63,7 +55,6 @@ export class DragDrop extends ComponentBase<string[]> {
         const data = event.dataTransfer.getData('source_id');
         let dataElement: HTMLElement;
 
-        //Look for id in drag and drop arrays (prevents external drag items to be added) TODO: check element belongs
         this.dragContainers.forEach((d: DragContainer) => {
             if (d.options.includes(data)) dataElement = d.getElement(data);
         });
