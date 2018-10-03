@@ -1,5 +1,7 @@
 import { expect, basicTagName, dropContainerTagName, dragContainerTagName } from './constants.spec';
 import { DragDrop } from '../components/drag-drop';
+import { DragContainer } from '../components/drag-container';
+import { DropContainer } from '../components/drop-container';
 
 export default () => {
     describe(`<${basicTagName}> default`, (): void => {
@@ -15,12 +17,70 @@ export default () => {
             const value: boolean = true;
             expect(value).to.be.true;
         });
+        it('should be able to add options programmatically', async (): Promise<void> => {
+            withSnippet(dragContainerTagName);
+            const element: DragContainer = document.querySelector(dragContainerTagName) as any;
+            await element.updateComplete;
+            let div: HTMLDivElement = document.createElement('div');
+
+            div.slot = 'options';
+            div.id = '1';
+            div.innerText = 'Option 1';
+            element.appendChild(div);
+            await element.updateComplete;
+
+            expect(element.getElement(div.id)).to.equal(div);
+
+            div = document.createElement('div');
+            div.id = '2';
+            div.innerText = 'Option 2';
+            element.appendChild(div);
+            await element.updateComplete;
+
+            expect(element.getElement(div.id)).to.not.equal(div);
+        });
+        it('should not throw is there is no options slot', async (): Promise<void> => {
+            withSnippet(dragContainerTagName);
+            const element: DragContainer = document.querySelector(dragContainerTagName) as any;
+            // @ts-ignore : access to protected member
+            expect(() => element._onSlotChanged(new Event('slotchange'))).not.to.throw();
+        });
     });
     describe(`<${dropContainerTagName}> default drop container`, (): void => {
         it('default should render as expected', (): void => {
             withSnippet(dropContainerTagName);
             const value: boolean = true;
             expect(value).to.be.true;
+        });
+        it('should be able to add options programmatically', async (): Promise<void> => {
+            withSnippet(dropContainerTagName);
+            const element: DropContainer = document.querySelector(dropContainerTagName) as any;
+            await element.updateComplete;
+            let div: HTMLDivElement = document.createElement('div');
+
+            div.slot = 'options';
+            div.id = '1';
+            div.className = 'option-item';
+            div.innerText = 'Option 1';
+            element.appendChild(div);
+            await element.updateComplete;
+            expect(element.getElement(div.id)).to.equal(div);
+
+            div = document.createElement('div');
+            div.slot = 'options';
+            div.className = 'other';
+            div.id = '2';
+            div.innerText = 'Option 2';
+            element.appendChild(div);
+            await element.updateComplete;
+
+            expect(element.getElement(div.id)).to.not.equal(div);
+        });
+        it('should not throw is there is no options slot', async (): Promise<void> => {
+            withSnippet(dropContainerTagName);
+            const element: DropContainer = document.querySelector(dropContainerTagName) as any;
+            // @ts-ignore : access to protected member
+            expect(() => element._onSlotChanged(new Event('slotchange'))).not.to.throw();
         });
     });
     describe(`<${basicTagName}> basic`, (): void => {
@@ -29,7 +89,22 @@ export default () => {
             const value: boolean = true;
             expect(value).to.be.true;
         });
-
+        it('should be able to programmatically add slots', async (): Promise<void> => {
+            withSnippet('basic');
+            const element: DragDrop = document.querySelector(basicTagName) as any;
+            await element.updateComplete;
+            const div: HTMLDivElement = document.createElement('div');
+            div.slot = 'drop-container';
+            div.id = '1';
+            div.innerText = 'Option 1';
+            element.appendChild(div);
+        });
+        it('should not throw is there is no options slot', async (): Promise<void> => {
+            withSnippet('basic');
+            const element: DragDrop = document.querySelector(basicTagName) as any;
+            // @ts-ignore : access to protected member
+            expect(() => element._onSlotChanged(new Event('slotchange'))).not.to.throw();
+        });
         it('should  have the correct amount of initial options', async (): Promise<void> => {
             withSnippet('basic');
             const element: DragDrop = document.querySelector(basicTagName) as any;

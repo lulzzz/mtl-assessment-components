@@ -63,15 +63,15 @@ export class DropContainer extends ComponentBase<string[]> implements Feedback {
         const items: string[] = [];
         const slot: HTMLSlotElement = event.srcElement as HTMLSlotElement;
         if (slot) {
-            const nodes: Node[] = slot.assignedNodes();
-            if (nodes) {
-                nodes.forEach(
-                    (el: HTMLElement): void => {
+            slot.assignedNodes().forEach(
+                (el: HTMLElement): void => {
+                    if (el.className.includes('option-item')) {
                         items.push(el.id);
                     }
-                );
-            }
+                }
+            );
         }
+
         this.addedItems = items;
     }
 }

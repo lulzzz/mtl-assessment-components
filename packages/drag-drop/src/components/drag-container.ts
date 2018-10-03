@@ -27,16 +27,13 @@ export class DragContainer extends LitElement {
         const items: string[] = [];
         const slot: HTMLSlotElement = event.srcElement as HTMLSlotElement;
         if (slot) {
-            const nodes: Node[] = slot.assignedNodes();
-            if (nodes) {
-                nodes.forEach(
-                    (el: HTMLElement): void => {
-                        el.className = 'option-item';
-                        el.draggable = true;
-                        items.push(el.id);
-                    }
-                );
-            }
+            slot.assignedNodes().forEach(
+                (el: HTMLElement): void => {
+                    el.className = 'option-item';
+                    el.draggable = true;
+                    items.push(el.id);
+                }
+            );
         }
         this.options = items;
     }

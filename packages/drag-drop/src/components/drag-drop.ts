@@ -68,19 +68,16 @@ export class DragDrop extends ComponentBase<string[]> {
     private _onSlotChanged(event: Event): void {
         const slot: HTMLSlotElement = event.srcElement as HTMLSlotElement;
         if (slot) {
-            const nodes: Node[] = slot.assignedNodes();
-            if (nodes) {
-                nodes.forEach(
-                    (el: HTMLElement): void => {
-                        if (el instanceof DragContainer) {
-                            this.dragContainers.push(el as DragContainer);
-                        }
-                        if (el instanceof DropContainer) {
-                            this.dropContainers.push(el as DropContainer);
-                        }
+            slot.assignedNodes().forEach(
+                (el: HTMLElement): void => {
+                    if (el instanceof DragContainer) {
+                        this.dragContainers.push(el as DragContainer);
                     }
-                );
-            }
+                    if (el instanceof DropContainer) {
+                        this.dropContainers.push(el as DropContainer);
+                    }
+                }
+            );
         }
     }
 }
