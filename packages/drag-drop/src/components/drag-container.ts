@@ -7,9 +7,9 @@ import { LitElement } from '@hmh/component-base/node_modules/@polymer/lit-elemen
  * @demo ./demo/index-drag-container.html
  */
 export class DragContainer extends LitElement {
-    @property({ type: Boolean })
-    hasDuplicates: boolean = true;
-    @property({ type: Array, reflect: true })
+    @property({ type: Boolean, reflect: true })
+    dispenser: boolean = false;
+    @property({ type: Array })
     options: string[] = [];
 
     public getElement(id: string): HTMLElement {
@@ -18,12 +18,12 @@ export class DragContainer extends LitElement {
 
     protected render(): TemplateResult {
         return html`
-        <link rel="stylesheet" type="text/css" href="/dist/css/drag-drop.css">
-        <slot name="options" @slotchange="${(e: Event) => this._onSlotChanged(e)}" ></slot>
+        <link rel="stylesheet"href="/dist/css/drag-drop.css">
+        <slot name="options" @slotchange=${(e: Event) => this._onSlotChanged(e)} ></slot>
         `;
     }
 
-    _onSlotChanged(event: Event): void {
+    private _onSlotChanged(event: Event): void {
         const items: string[] = [];
         const slot: HTMLSlotElement = event.srcElement as HTMLSlotElement;
         if (slot) {

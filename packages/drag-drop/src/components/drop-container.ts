@@ -14,9 +14,9 @@ import {
  * @demo ./demo/index-drop-container.html
  */
 export class DropContainer extends ComponentBase<string[]> implements Feedback {
+    @property({ type: Number })
+    public maxItems: number;
     @property({ type: Array })
-    maxItems: number;
-    @property({ type: Array, reflect: true })
     public addedItems: string[] = [];
 
     // @mixin: Feedback
@@ -26,7 +26,7 @@ export class DropContainer extends ComponentBase<string[]> implements Feedback {
     public get value(): string[] {
         return Array.from(this.getElementsByClassName('option-item')).map((x: HTMLElement) => x.id);
     }
-    public get childrenNb(): number {
+    public get childrenCount(): number {
         return this.addedItems.length;
     }
     public getElement(id: string): HTMLElement {
@@ -53,13 +53,13 @@ export class DropContainer extends ComponentBase<string[]> implements Feedback {
         this.className = this.feedbackMessage ? this.feedbackMessage.type : '';
 
         return html`
-        <link rel="stylesheet" type="text/css" href="/dist/css/drag-drop.css">
-        <slot name="feedback" @slotchange="${(e: Event) => this._onFeedbackSlotChanged(e)}"></slot>
-        <slot name="options" @slotchange="${(e: Event) => this._onSlotChanged(e)}" ></slot>
+        <link rel="stylesheet" href="/dist/css/drag-drop.css">
+        <slot name="feedback" @slotchange=${(e: Event) => this._onFeedbackSlotChanged(e)}></slot>
+        <slot name="options" @slotchange=${(e: Event) => this._onSlotChanged(e)} ></slot>
 
         `;
     }
-    _onSlotChanged(event: Event): void {
+    private _onSlotChanged(event: Event): void {
         const items: string[] = [];
         const slot: HTMLSlotElement = event.srcElement as HTMLSlotElement;
         if (slot) {

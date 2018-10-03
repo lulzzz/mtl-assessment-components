@@ -15,9 +15,9 @@ export class MultipleResponseQuestion extends MultipleChoice {
     protected render(): TemplateResult {
         const { items, feedbackMessage }: MultipleResponseQuestion = this;
         return html`
-        <link rel="stylesheet" type="text/css" href="/node_modules/@material/form-field/dist/mdc.form-field.css">
-        <link rel="stylesheet" type="text/css" href="/node_modules/@material/checkbox/dist/mdc.checkbox.css">
-        <link rel="stylesheet" type="text/css" href="/dist/css/multiple-choice.css">
+        <link rel="stylesheet" href="/node_modules/@material/form-field/dist/mdc.form-field.css">
+        <link rel="stylesheet" href="/node_modules/@material/checkbox/dist/mdc.checkbox.css">
+        <link rel="stylesheet" href="/dist/css/multiple-choice.css">
         <div class=${feedbackMessage ? feedbackMessage.type : ''}>
             ${repeat(
                 items,

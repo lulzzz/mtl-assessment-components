@@ -1,6 +1,4 @@
 import { applyMixins, ComponentBase, Feedback, html, TemplateResult } from '@hmh/component-base/dist/index';
-import './drag-container';
-import './drop-container';
 import { DragContainer } from './drag-container';
 import { DropContainer } from './drop-container';
 /**
@@ -14,9 +12,9 @@ export class DragDrop extends ComponentBase<string[]> {
 
     constructor() {
         super();
-        this.addEventListener('drop', this.drop);
-        this.addEventListener('dragover', this.allowDrop);
-        this.addEventListener('dragstart', this.drag);
+        this.addEventListener('drop', this.onDrop);
+        this.addEventListener('dragover', this.onDragOver);
+        this.addEventListener('dragstart', this.onDragStart);
     }
 
     public showFeedback(): void {
@@ -25,30 +23,31 @@ export class DragDrop extends ComponentBase<string[]> {
 
     protected render(): TemplateResult {
         return html`
-        <link rel="stylesheet" type="text/css" href="/dist/css/drag-drop.css">
+        <link rel="stylesheet" href="/dist/css/drag-drop.css">
         <div>
-            <slot @slotchange="${(e: Event) => this._onSlotChanged(e)}"></slot>
+            <slot @slotchange=${(e: Event) => this._onSlotChanged(e)}></slot>
         </div>
         `;
     }
-    isDropAllowed(element: HTMLElement): boolean {
+    private isDropAllowed(element: HTMLElement): boolean {
         return (
             element instanceof DragContainer ||
-            (element instanceof DropContainer && (element as DropContainer).maxItems > (element as DropContainer).childrenNb)
+            (element instanceof DropContainer && (element as DropContainer).maxItems > (element as DropContainer).childrenCount)
         );
     }
-    allowDrop(event: DragEvent) {
-        event.preventDefault();
-        event.stopPropagation();
-        event.dataTransfer.dropEffect = 'move';
-    }
-    drag(event: DragEvent) {
+    private onDragStart(event: DragEvent) {
         if ((event.target as HTMLElement).className === 'option-item') {
             event.dataTransfer.setData('source_id', (event.target as HTMLElement).id);
         }
     }
 
-    drop(event: DragEvent) {
+    private onDragOver(event: DragEvent) {
+        event.preventDefault();
+        event.stopPropagation();
+        event.dataTransfer.dropEffect = 'move';
+    }
+
+    private onDrop(event: DragEvent) {
         event.preventDefault();
         event.stopPropagation();
         const target: HTMLElement = event.target as HTMLElement;
@@ -66,7 +65,7 @@ export class DragDrop extends ComponentBase<string[]> {
             target.appendChild(dataElement);
         }
     }
-    _onSlotChanged(event: Event): void {
+    private _onSlotChanged(event: Event): void {
         const slot: HTMLSlotElement = event.srcElement as HTMLSlotElement;
         if (slot) {
             const nodes: Node[] = slot.assignedNodes();
