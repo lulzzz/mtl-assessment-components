@@ -43,7 +43,7 @@ describe(`<${tagName}>`, (): void => {
         withSnippet('no-equations');
         const el: PlotGraph = document.querySelector('plot-graph') as any;
         const equation: string = 'Math.sin(x/30)';
-        const optionElement: HTMLElement = document.querySelector('div');
+        const optionElement: HTMLElement = document.createElement('div');
         optionElement.setAttribute('slot', 'options');
         optionElement.innerHTML = equation;
         el.appendChild(optionElement);
