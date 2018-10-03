@@ -6,6 +6,11 @@ function prepareValue(equation: HTMLElement, x: string): number {
     return eval(equation.innerHTML.replace('x', x));
 }
 
+enum Direction {
+    X = 'X',
+    Y = 'Y'
+};
+
 /**
  * `<plot-graph>`
  * @demo ./demo/index.html
@@ -30,6 +35,39 @@ export class PlotGraph extends ComponentBase<string> {
     private renderedGraph: boolean = false;
     private axisSize: number = 25;
 
+    private generateLine(xScale: any, yScale: any): d3.Line<any> {
+        return d3.line()
+            .x(function(d: any, i: any) {
+                return xScale(i);
+            }) // set the x values for the line generator
+            .y(function(d: any) {
+                return yScale(d.y);
+            }) // set the y values for the line generator
+            .curve(d3.curveMonotoneX); // apply smoothing to the line
+    }
+
+    private scale(axis: Direction): d3.ScaleLinear<number, number> {
+        const domain = (axis === Direction.X ? [this.xmin, this.xmax] : [this.ymin, this.ymax]);
+        const range = (axis === Direction.X ? [0, this.graphSize] : [this.graphSize, 0]);
+
+        return d3
+        .scaleLinear()
+        .domain(domain) // input
+        .range(range); // output
+    }
+
+    private addAxis(axis: Direction, scale: d3.ScaleLinear<number, number>): void {
+        const translationX = 'translate(0,' + (this.graphSize - this.axisSize) + ')';
+        const translationY = 'translate(' + this.axisSize + ',0)';
+
+        // Call the x axis in a group tag
+        this.svgContainer
+        .append('g')
+        .attr('class', axis === Direction.X ? 'x-axis' : 'y-axis')
+        .attr('transform', axis === Direction.X ? translationX : translationY)
+        .call(axis === Direction.X ? d3.axisBottom(scale) : d3.axisLeft(scale)); // Create an axis component with d3.axisBottom
+    }
+
     protected render(): TemplateResult {
         return html`
         <link rel="stylesheet" type="text/css" href="/dist/css/plot-graph.css">
@@ -47,33 +85,17 @@ export class PlotGraph extends ComponentBase<string> {
                 .select('#canvas')
                 .append('svg');
 
-            const xScale = d3
-                .scaleLinear()
-                .domain([this.xmin, this.xmax]) // input
-                .range([0, this.graphSize]); // output
-
-            const yScale = d3
-                .scaleLinear()
-                .domain([this.ymin, this.ymax]) // input
-                .range([this.graphSize, 0]); // output
-
-            // Line generator
-            const line = d3
-                .line()
-                .x(function(d: any, i: any) {
-                    return xScale(i);
-                }) // set the x values for the line generator
-                .y(function(d: any) {
-                    return yScale(d.y);
-                }) // set the y values for the line generator
-                .curve(d3.curveMonotoneX); // apply smoothing to the line
+            const xScale = this.scale(Direction.X);
+            const yScale = this.scale(Direction.Y);
 
             this.svgContainer
                 .attr('width', this.graphSize)
                 .attr('height', this.graphSize)
                 .append('g');
 
+            // plot a line for each equation
             this.equations.forEach(equation => {
+                // get Y for each X (apply equation)
                 const dataset = d3.range(numberPoints).map(function(x: any) {
                     return { y: prepareValue(equation, x) };
                 });
@@ -83,26 +105,16 @@ export class PlotGraph extends ComponentBase<string> {
                     .append('path')
                     .datum(dataset) // inds data to the line
                     .attr('class', 'line') // Assign a class for styling
-                    .attr('d', line) // Calls the line generator
+                    .attr('d', this.generateLine(xScale, yScale)) // Calls the line generator
                     .style('stroke', equation.getAttribute('color'));
             });
 
-            // Call the x axis in a group tag
-            this.svgContainer
-                .append('g')
-                .attr('class', 'x-axis')
-                .attr('transform', 'translate(0,' + (this.graphSize - this.axisSize) + ')')
-                .call(d3.axisBottom(xScale)); // Create an axis component with d3.axisBottom
-
-            // 4. Call the y axis in a group tag
-            this.svgContainer
-                .append('g')
-                .attr('class', 'y-axis')
-                .attr('transform', 'translate(' + this.axisSize + ',0)')
-                .call(d3.axisLeft(yScale)); // Create an axis component with d3.axisLeft
+            // Call the X and Y axes in a group tag
+            this.addAxis(Direction.X, xScale);
+            this.addAxis(Direction.Y, yScale);
         }
     }
-
+ 
     /**
      * Fired on slot change
      * @param {Event} event

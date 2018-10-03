@@ -1,5 +1,5 @@
 import { PlotGraph } from '../components/plot-graph';
-import { checkComponentDOM, getLines } from './test-helpers';
+import { checkComponentDOM } from './test-helpers';
 // const expect: any = chai.expect;
 const tagName: string = 'plot-graph';
 const expect: any = chai.expect;
@@ -22,6 +22,23 @@ describe(`<${tagName}>`, (): void => {
         const equation = el.equations[0];
         expect(equation.innerHTML).to.equal('Math.sin(x/30)');
     });
+
+    it('should render a line per equation', async (): Promise<void> => {
+        withSnippet('three-equations');
+        const el: PlotGraph = document.querySelector('plot-graph') as any;
+        await el.updateComplete;
+        var lineCount: number = 0;
+        
+        // @ts-ignore
+        el.generateLine = function (xScale: any, yScale: any): d3.Line<any> {
+            lineCount++;
+        };
+
+        await el.updateComplete;
+
+        expect(lineCount).to.equal(3);
+    });
+
 });
 
 mocha.run();
