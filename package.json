@@ -13,6 +13,7 @@
         "init": "npm run clean && npm run bootstrap && npm run link-all && lerna run --scope @hmh/component-base build && npm run build"
     },
     "devDependencies": {
+        "@types/d3": "^5.0.0",
         "lerna": "latest",
         "puppeteer": "^1.8.0"
     }

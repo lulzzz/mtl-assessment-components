@@ -1,0 +1,18 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        <link rel="stylesheet" href="index.css">
+        <script type="module" src="../dist/components/plot-graph.js"></script>
+    </head>
+
+    <body>
+        <h2>Plot Graph Demo</h3>
+        <div class='demo-container'>
+            <plot-graph xmin="0" xmax="360" ymin="-10" ymax="10" step="1">
+                <div slot="options" class="option-item" color="red" id="one"> Math.sin(x/30) </div>
+                <div slot="options" class="option-item" color="blue" id="one"> Math.cos(x/30) </div>
+                <div slot="options" class="option-item" color="green" id="one"> Math.tan(x/30) </div>
+            </plot-graph>
+        </div>
+    </body>
+</html>
