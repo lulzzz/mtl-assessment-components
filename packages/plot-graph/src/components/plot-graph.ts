@@ -35,6 +35,13 @@ export class PlotGraph extends ComponentBase<string> {
     private renderedGraph: boolean = false;
     private axisSize: number = 25;
 
+    /**
+     * Return d3 line function
+     * 
+     * @param  {any} xScale
+     * @param  {any} yScale
+     * @returns d3.Line
+     */
     private generateLine(xScale: any, yScale: any): d3.Line<any> {
         return d3.line()
             .x(function(d: any, i: any) {
@@ -46,6 +53,12 @@ export class PlotGraph extends ComponentBase<string> {
             .curve(d3.curveMonotoneX); // apply smoothing to the line
     }
 
+    /**
+     * Return a d3.scale function
+     * 
+     * @param  {Direction} axis X or Y
+     * @returns d3.ScaleLinear
+     */
     private scale(axis: Direction): d3.ScaleLinear<number, number> {
         const domain = (axis === Direction.X ? [this.xmin, this.xmax] : [this.ymin, this.ymax]);
         const range = (axis === Direction.X ? [0, this.graphSize] : [this.graphSize, 0]);
@@ -56,6 +69,14 @@ export class PlotGraph extends ComponentBase<string> {
         .range(range); // output
     }
 
+    /**
+     * Add an axis to svgContainer (the graph)
+     * 
+     * @param  {Direction} axis
+     * @param  {d3.ScaleLinear<number} scale
+     * @param  {} number>
+     * @returns void
+     */
     private addAxis(axis: Direction, scale: d3.ScaleLinear<number, number>): void {
         const translationX = 'translate(0,' + (this.graphSize - this.axisSize) + ')';
         const translationY = 'translate(' + this.axisSize + ',0)';
@@ -76,6 +97,11 @@ export class PlotGraph extends ComponentBase<string> {
         `;
     }
 
+    /**
+     * Called after rendering (graph and lines generated here).
+     * 
+     * @returns void
+     */
     public updated(): void {
         if (!this.renderedGraph && this.equations.length > 0) {
             const numberPoints = this.xmax - this.xmin / this.step;
