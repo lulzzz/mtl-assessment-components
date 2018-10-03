@@ -1,5 +1,5 @@
 import { PlotGraph } from '../components/plot-graph';
-import { checkComponentDOM, generateOnSlotChangeEvent } from './test-helpers';
+import { checkComponentDOM } from './test-helpers';
 // const expect: any = chai.expect;
 const tagName: string = 'plot-graph';
 const expect: any = chai.expect;
@@ -30,7 +30,7 @@ describe(`<${tagName}>`, (): void => {
         var lineCount: number = 0;
         
         // @ts-ignore
-        el.generateLine = function (xScale: any, yScale: any): d3.Line<any> {
+        el.drawLine = function (xScale: any, yScale: any): d3.Line<any> {
             lineCount++;
         };
 
@@ -40,15 +40,18 @@ describe(`<${tagName}>`, (): void => {
     });
 
     it('should set equations in response to a slot change event', async (): Promise<void> => {
-        withSnippet('default');
+        withSnippet('no-equations');
         const el: PlotGraph = document.querySelector('plot-graph') as any;
-        
+        const equation: string = 'Math.sin(x/30)';
+        const optionElement: HTMLElement = document.querySelector('div');
+        optionElement.setAttribute('slot', 'options');
+        optionElement.innerHTML = equation;
+        el.appendChild(optionElement);
         await el.updateComplete;
         // @ts-ignore
-        el._onSlotChanged(generateOnSlotChangeEvent(el));
-        await el.updateComplete;
+        expect(el.equations.length).to.equal(1);
         // @ts-ignore
-        expect(el.equations).to.not.equal(null);
+        expect(el.equations[0].innerHTML).to.equal(equation);
     });
 });
 

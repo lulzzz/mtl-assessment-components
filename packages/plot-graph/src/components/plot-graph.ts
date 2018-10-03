@@ -42,7 +42,7 @@ export class PlotGraph extends ComponentBase<string> {
      * @param  {any} yScale
      * @returns d3.Line
      */
-    private generateLine(xScale: any, yScale: any): d3.Line<any> {
+    private drawLine(xScale: any, yScale: any): d3.Line<any> {
         return d3.line()
             .x(function(d: any, i: any) {
                 return xScale(i);
@@ -131,7 +131,7 @@ export class PlotGraph extends ComponentBase<string> {
                     .append('path')
                     .datum(dataset) // inds data to the line
                     .attr('class', 'line') // Assign a class for styling
-                    .attr('d', this.generateLine(xScale, yScale)) // Calls the line generator
+                    .attr('d', this.drawLine(xScale, yScale)) // Calls the line generator
                     .style('stroke', equation.getAttribute('color'));
             });
 
