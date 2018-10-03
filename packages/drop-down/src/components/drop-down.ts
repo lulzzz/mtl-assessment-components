@@ -68,8 +68,8 @@ export class DropDown extends MultipleChoice {
         const { open, feedbackMessage, items, multiple, value }: DropDown = this;
 
         return html`
-        <link rel="stylesheet" type="text/css" href="/dist/css/drop-down.css">
-        
+        <link rel="stylesheet" href="/dist/css/drop-down.css">
+
         <div class="container ${this._getFeedbackClass(feedbackMessage, false)}">
             <div class="dropdown">
                 <div class="buttons-container">
@@ -81,7 +81,7 @@ export class DropDown extends MultipleChoice {
                     </button>
                 </div>
             </div>
-                
+
             <div class="dropdown-content" ?hidden=${!open}>
                 ${repeat(
                     items,
@@ -89,12 +89,12 @@ export class DropDown extends MultipleChoice {
                     (item: HTMLElement, index: number) => {
                         return html`
                     <div class="options">
-                        <div class="option-item ${value.includes(item.id) ? 'selected' : ''}" 
+                        <div class="option-item ${value.includes(item.id) ? 'selected' : ''}"
                             aria-selected=${value.includes(item.id) ? 'true' : 'false'}
                             id=${item.id}
                             tabindex=${index + 1}
                             role="button"
-                            @click=${(evt: MouseEvent) => this._onItemClicked(evt, item.id, multiple)}> 
+                            @click=${(evt: MouseEvent) => this._onItemClicked(evt, item.id, multiple)}>
                             ${unsafeHTML(item.innerHTML)}
                         </div>
                     </div>
@@ -102,11 +102,11 @@ export class DropDown extends MultipleChoice {
                     }
                 )}
             </div>
-            
+
             <span class="feedback-message ${this._getFeedbackClass(feedbackMessage, true)}">${feedbackMessage ? feedbackMessage.message : ''}</span>
-        
+
         </div>
-        
+
         <slot hidden name="options" class="options" @slotchange=${(evt: Event) => this._onSlotChanged(evt)}></slot>
         <slot name="feedback" class="feedback-values" @slotchange=${(evt: Event) => this._onFeedbackSlotChanged(evt)}></slot>`;
     }

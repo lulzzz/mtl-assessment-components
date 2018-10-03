@@ -1,0 +1,78 @@
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="index.css">
+    <link rel="stylesheet" href="/node_modules/@material/button/dist/mdc.button.css">
+    <link rel="stylesheet" href="../dist/css/drag-drop.css">
+    <script type="module" src="../dist/components/drag-drop.js"></script>
+    <script type="module" src="../node_modules/@hmh/component-base/dist/components/response-validation.js"></script>
+</head>
+
+<body>
+    <h3>Drag and drop the numbers and variables into the correct boxes to complete a function in function notation for the situation.
+        Let x represent the number of hours.</h3>
+    Charles will babysit for up to 4 hours and charges $8 per hour. The function is
+    <drag-drop>
+        <drag-container>
+            <div slot="options" id="000-1">x</div>
+            <div slot="options" id="000-2">8</div>
+            <div slot="options" id="000-3">f(x)</div>
+            <div slot="options" id="000-4">4</div>
+            <div slot="options" id="000-5">
+                <img draggable="false" src="https://upload.wikimedia.org/wikipedia/commons/a/ac/Approve_icon.svg" alt="Check image" style="width:42px;height:42px;border:0;">
+            </div>
+        </drag-container>
+        <drag-container>
+            <div slot="options" id="1">1</div>
+            <div slot="options" id="2">2</div>
+            <div slot="options" id="3">3</div>
+            <div slot="options" id="4">4</div>
+        </drag-container>
+
+        <drop-container maxItems="4">
+
+            <response-validation hidden slot="feedback" expected="000-1|000-5" score="10">
+                <span>Perfect</span>
+            </response-validation>
+
+            <response-validation hidden slot="feedback" expected="000-1|000-5" score="5" strategy="contains" feedback-type="neutral">
+                <span>Almost</span>
+            </response-validation>
+
+            <response-validation hidden slot="feedback" score="0" feedback="negative">
+                <span>Try again</span>
+                <span>Still not good</span>
+                <span>Wrong answer</span>
+            </response-validation>
+        </drop-container>
+
+        <drop-container maxItems="1">
+            <response-validation hidden slot="feedback" expected="4" score="10">
+                <span>Perfect</span>
+            </response-validation>
+
+            <response-validation hidden slot="feedback" expected="2" score="5" strategy="contains" feedback-type="neutral">
+                <span>Almost</span>
+            </response-validation>
+
+            <response-validation hidden slot="feedback" score="0" feedback="negative">
+                <span>Try again</span>
+                <span>Still not good</span>
+                <span>Wrong answer</span>
+            </response-validation>
+        </drop-container>
+
+    </drag-drop>
+
+    <button id="button" class="mdc-button">Validate</button>
+
+    <script>
+        document.getElementById('button').addEventListener('click', () => {
+            document.querySelector('drag-drop').showFeedback();
+        })
+    </script>
+</body>
+
+
+</html>

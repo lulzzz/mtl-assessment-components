@@ -1,0 +1,17 @@
+* {
+    font-family: Roboto, sans-serif;
+}
+drop-container {
+    padding: 10px;
+    margin: 10px;
+    background-color: gray;
+    display: flex;
+    min-height: 100px;
+}
+drag-container {
+    background-color: lightblue;
+    padding: 10px;
+    margin: 10px;
+    display: flex;
+    min-height: 100px;
+}
