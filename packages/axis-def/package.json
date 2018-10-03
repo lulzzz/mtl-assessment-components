@@ -1,0 +1,48 @@
+{
+    "name": "@hmh/axis-def",
+    "version": "0.0.1",
+    "description": "Assessment System Graph Axis Def Component",
+    "main": "dist/index.js",
+    "types": "dist/index.d.ts",
+    "scripts": {
+        "start": "polyserve -o",
+        "build": "tsc -p src",
+        "prepubishOnly": "npm run build; npm run sass",
+        "sass": "node-sass src/sass -r -o dist/css",
+        "sass-watch": "node-sass src/sass -r -o dist/css -w",
+        "watch": "npm run build; npm run sass; concurrently --names 'build,sass' -c 'bgBlue,bgMagenta' 'npm run build -- -w' 'npm run sass -- -w' 'npm-watch'",
+        "test": "lit-element-tester dist/components/*.js",
+        "test-dev": "lit-element-tester -d",
+        "_generateDocs": "polymer analyze ./dist/components/axis-def.js > ./dist/components/analysis.json"
+    },
+    "keywords": [],
+    "author": "Christopher Morris <christopher.morris@hmhco.com>",
+    "license": "ISC",
+    "dependencies": {
+        "@hmh/component-base": "latest",
+        "@material/button": "latest",
+        "@material/textfield": "latest",
+        "d3": "^5.7.0"
+    },
+    "devDependencies": {
+        "@hmh/lit-element-tester": "latest",
+        "@polymer/iron-component-page": "next",
+        "@polymer/iron-demo-helpers": "latest",
+        "@types/d3": "^5.0.0",
+        "@webcomponents/webcomponentsjs": "^2.0.2",
+        "chai": "^4.1.2",
+        "concurrently": "^4.0.1",
+        "mocha": "^5.2.0",
+        "node-sass": "^4.9.3",
+        "npm-watch": "latest",
+        "polymer-cli": "latest",
+        "polyserve": "^0.27.12",
+        "source-map-support": "^0.5.9",
+        "typescript": "^3.0.1",
+        "typescript-styled-plugin": "^0.10.0"
+    },
+    "watch": {
+        "_generateDocs": "src/components/**/*.*"
+    },
+    "gitHead": "5e39cbea99c111a8e33650d70ba9d61d7c95167e"
+}
