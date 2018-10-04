@@ -1,4 +1,4 @@
-import { FeedbackMessage, html, Mode, property, TemplateResult, MultipleChoice, repeat, unsafeHTML } from '@hmh/component-base/dist/index';
+import { FeedbackMessage, html, Mode, property, TemplateResult, MultipleChoice, repeat, unsafeHTML } from '@hmh/component-base';
 
 /**
  * `<drop-down>`
@@ -68,8 +68,8 @@ export class DropDown extends MultipleChoice {
         const { open, feedbackMessage, items, multiple, value }: DropDown = this;
 
         return html`
-        <link rel="stylesheet" href="/dist/css/drop-down.css">
-
+        <link rel="stylesheet" href="/css/drop-down.css">
+        
         <div class="container ${this._getFeedbackClass(feedbackMessage, false)}">
             <div class="dropdown">
                 <div class="buttons-container">

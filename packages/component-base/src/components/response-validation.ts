@@ -1,5 +1,5 @@
-import { ComponentBase, html, property, TemplateResult } from './base';
-import { Strategy, FeedbackMessage, FeedbackType } from '../mixins/feedback';
+import { ComponentBase, html, property, TemplateResult } from './base.js';
+import { Strategy, FeedbackMessage, FeedbackType } from '../mixins/feedback.js';
 
 export class ResponseValidation extends ComponentBase<string> {
     @property({ reflect: true, type: String })

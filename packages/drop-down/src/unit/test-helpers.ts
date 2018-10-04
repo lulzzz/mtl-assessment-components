@@ -1,4 +1,4 @@
-import { DropDown } from '../components/drop-down';
+import { DropDown } from '../components/drop-down.js';
 
 const expect: any = chai.expect;
 

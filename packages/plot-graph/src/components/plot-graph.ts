@@ -1,5 +1,14 @@
-import { ComponentBase, html, TemplateResult, property } from '@hmh/component-base/dist/index';
-import * as d3 from 'd3';
+import { ComponentBase, html, TemplateResult, property } from '@hmh/component-base';
+/*
+FIXME: Leave this comment here until we resolve a server bare import issue 
+
+import { select } from 'd3-selection';
+import { scaleLinear } from 'd3-scale';
+import { line, curveMonotoneX } from 'd3-shape';
+import { range } from 'd3-array';
+import { axisBottom, axisLeft } from 'd3-axis';
+*/
+declare const d3: any;
 
 // This is a mock
 function prepareValue(equation: HTMLElement, x: string): number {
@@ -91,9 +100,9 @@ export class PlotGraph extends ComponentBase<string> {
 
     protected render(): TemplateResult {
         return html`
-        <link rel="stylesheet" type="text/css" href="/dist/css/plot-graph.css">
-            <div id="canvas"></div>
-        <slot hidden name="options" class="options" @slotchange=${(evt: Event) => this._onSlotChanged(evt)}> </slot>
+        <link rel="stylesheet" href="/css/plot-graph.css">
+        <div id="canvas"></div>
+        <slot hidden name="options" class="options" @slotchange=${(evt: Event) => this._onSlotChanged(evt)}></slot>
         `;
     }
 

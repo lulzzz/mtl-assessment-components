@@ -1,5 +1,5 @@
-import { TextInput } from '../components/text-input';
-import { checkComponentDOM, inputValue, isDisabled, checkAnswer } from './test-helpers';
+import { TextInput } from '../components/text-input.js';
+import { checkComponentDOM, inputValue, isDisabled, checkAnswer } from './test-helpers.js';
 const expect: any = chai.expect;
 const tagName: string = 'text-input';
 

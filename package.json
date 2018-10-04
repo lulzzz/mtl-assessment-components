@@ -4,7 +4,7 @@
     "scripts": {
         "bootstrap": "lerna bootstrap",
         "build": "lerna run build",
-        "clean": "lerna clean --yes; rm -rf packages/*/package-lock.json; rm -rf packages/*/dist",
+        "clean": "lerna clean --yes; rm -rf packages/*/dist",
         "link-all": "lerna link --force-local",
         "list": "lerna ls",
         "publish": "lerna publish --registry http://npm.tribalnova.com --no-verify-access",
@@ -13,7 +13,6 @@
         "init": "npm run clean && npm run bootstrap && npm run link-all && lerna run --scope @hmh/component-base build && npm run build"
     },
     "devDependencies": {
-        "@types/d3": "^5.0.0",
         "lerna": "latest",
         "puppeteer": "^1.8.0"
     }
