@@ -1,14 +1,11 @@
 import { ComponentBase, html, TemplateResult, property } from '@hmh/component-base';
-/*
-FIXME: Leave this comment here until we resolve a server bare import issue 
-
 import { select } from 'd3-selection';
 import { scaleLinear } from 'd3-scale';
 import { line, curveMonotoneX } from 'd3-shape';
 import { range } from 'd3-array';
 import { axisBottom, axisLeft } from 'd3-axis';
-*/
-declare const d3: any;
+
+// declare const d3: any;
 
 // This is a mock
 function prepareValue(equation: HTMLElement, x: string): number {
@@ -18,7 +15,7 @@ function prepareValue(equation: HTMLElement, x: string): number {
 enum Direction {
     X = 'X',
     Y = 'Y'
-};
+}
 
 /**
  * `<plot-graph>`
@@ -46,41 +43,40 @@ export class PlotGraph extends ComponentBase<string> {
 
     /**
      * Return d3 line function
-     * 
+     *
      * @param  {any} xScale
      * @param  {any} yScale
      * @returns d3.Line
      */
     private drawLine(xScale: any, yScale: any): d3.Line<any> {
-        return d3.line()
+        return line()
             .x(function(d: any, i: any) {
                 return xScale(i);
             }) // set the x values for the line generator
             .y(function(d: any) {
                 return yScale(d.y);
             }) // set the y values for the line generator
-            .curve(d3.curveMonotoneX); // apply smoothing to the line
+            .curve(curveMonotoneX); // apply smoothing to the line
     }
 
     /**
      * Return a d3.scale function
-     * 
+     *
      * @param  {Direction} axis X or Y
      * @returns d3.ScaleLinear
      */
     private scale(axis: Direction): d3.ScaleLinear<number, number> {
-        const domain = (axis === Direction.X ? [this.xmin, this.xmax] : [this.ymin, this.ymax]);
-        const range = (axis === Direction.X ? [0, this.graphSize] : [this.graphSize, 0]);
+        const domain = axis === Direction.X ? [this.xmin, this.xmax] : [this.ymin, this.ymax];
+        const range = axis === Direction.X ? [0, this.graphSize] : [this.graphSize, 0];
 
-        return d3
-        .scaleLinear()
-        .domain(domain) // input
-        .range(range); // output
+        return scaleLinear()
+            .domain(domain) // input
+            .range(range); // output
     }
 
     /**
      * Add an axis to svgContainer (the graph)
-     * 
+     *
      * @param  {Direction} axis
      * @param  {d3.ScaleLinear<number} scale
      * @param  {} number>
@@ -92,10 +88,10 @@ export class PlotGraph extends ComponentBase<string> {
 
         // Call the x axis in a group tag
         this.svgContainer
-        .append('g')
-        .attr('class', axis === Direction.X ? 'x-axis' : 'y-axis')
-        .attr('transform', axis === Direction.X ? translationX : translationY)
-        .call(axis === Direction.X ? d3.axisBottom(scale) : d3.axisLeft(scale)); // Create an axis component with d3.axisBottom
+            .append('g')
+            .attr('class', axis === Direction.X ? 'x-axis' : 'y-axis')
+            .attr('transform', axis === Direction.X ? translationX : translationY)
+            .call(axis === Direction.X ? axisBottom(scale) : axisLeft(scale)); // Create an axis component with d3.axisBottom
     }
 
     protected render(): TemplateResult {
@@ -108,15 +104,14 @@ export class PlotGraph extends ComponentBase<string> {
 
     /**
      * Called after rendering (graph and lines generated here).
-     * 
+     *
      * @returns void
      */
     public updated(): void {
         if (!this.renderedGraph && this.equations.length > 0) {
             const numberPoints = this.xmax - this.xmin / this.step;
             this.renderedGraph = true;
-            this.svgContainer = d3
-                .select(this.shadowRoot)
+            this.svgContainer = select(this.shadowRoot)
                 .select('#canvas')
                 .append('svg');
 
@@ -131,7 +126,7 @@ export class PlotGraph extends ComponentBase<string> {
             // plot a line for each equation
             this.equations.forEach(equation => {
                 // get Y for each X (apply equation)
-                const dataset = d3.range(numberPoints).map(function(x: any) {
+                const dataset = range(numberPoints).map(function(x: any) {
                     return { y: prepareValue(equation, x) };
                 });
 
@@ -149,7 +144,7 @@ export class PlotGraph extends ComponentBase<string> {
             this.addAxis(Direction.Y, yScale);
         }
     }
- 
+
     /**
      * Fired on slot change
      * @param {Event} event
