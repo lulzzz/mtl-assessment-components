@@ -1,44 +1,16 @@
-import { ComponentBase, html, TemplateResult, property } from '@hmh/component-base/dist/index';
+import { html, TemplateResult, property, GraphBase, Direction } from '@hmh/component-base/dist/index';
 import * as d3 from 'd3';
-
-
-enum Direction {
-    X = 'X',
-    Y = 'Y',
-    Z = 'Z'
-};
 
 /**
  * `<axis-def>`
  * @demo ./demo/index.html
  */
-export class AxisDef extends ComponentBase<string> {
+export class AxisDef extends GraphBase {
     @property({ type: Array })
-    private axes: HTMLElement[] = [];
-    public shadowRoot: ShadowRoot;
-
-    private graphSize: number = 500;
-    private svgContainer: any = null;
-    private renderedGraph: boolean = false;
     private axisSize: number = 25;
 
-    /**
-     * Return a d3.scale function
-     * 
-     * @param  {Direction} axis X or Y
-     * @returns d3.ScaleLinear
-     */
-    private scale(axis: Direction, min: number, max: number ): d3.ScaleLinear<number, number> {
-        const domain = [min, max];
-        const range = (axis === Direction.X ? [0, this.graphSize] : [this.graphSize, 0]);
-
-        return d3
-        .scaleLinear()
-        .domain(domain) // input
-        .range(range); // output
-    }
-
     private addAxis(axis: HTMLElement): void {
+        console.log('addAxis');
         const dir = axis.getAttribute('direction');
         var direction = (dir === 'x' ? Direction.X : dir === 'y' ? Direction.Y : Direction.Z);
         const min = axis.getAttribute('min');
@@ -71,8 +43,9 @@ export class AxisDef extends ComponentBase<string> {
      * @returns void
      */
     public updated(): void {
-        if (!this.renderedGraph && this.axes.length > 0) {
-            this.renderedGraph = true;
+        console.log('axis-def updated');
+        if (!this.rendered && this.items.length > 0) {
+            this.rendered = true;
             this.svgContainer = d3
                 .select(this.shadowRoot)
                 .select('#canvas')
@@ -83,28 +56,11 @@ export class AxisDef extends ComponentBase<string> {
             .attr('height', this.graphSize)
             .append('g');
 
-            this.axes.forEach((axis) => {                
+            this.items.forEach((axis) => {                
                 this.addAxis(axis);
             });
-        }
-    }
- 
-    /**
-     * Fired on slot change
-     * @param {Event} event
-     */
-    protected _onSlotChanged(event: Event): void {
-        const slot: HTMLSlotElement = event.srcElement as HTMLSlotElement;
-        if (slot) {
-            const axes: HTMLElement[] = [];
-            slot.assignedNodes().forEach(
-                (el: HTMLElement): void => {
-                    axes.push(el);
-                }
-            );
 
-            this.axes = axes;
-            console.log('axes:', this.axes);
+            this.value = this.svgContainer;
         }
     }
 }

@@ -2,6 +2,7 @@
     <head>
         <meta charset="utf-8">
         <link rel="stylesheet" href="index.css">
+        <script type="module" src="axis-def.js"></script>
         <script type="module" src="../dist/components/plot-graph.js"></script>
     </head>
 
@@ -9,6 +10,12 @@
         <h2>Plot Graph Demo</h3>
         <div class='demo-container'>
             <plot-graph xmin="0" xmax="360" ymin="-10" ymax="10" step="1">
+
+                <axis-def slot="graph-axis" gridintervals="1" label="Trig functions">
+                    <div slot="axis" color="red" direction="x" min="-10" max="10"> X </div>
+                    <div slot="axis" color="green" direction="y" min="-10" max="10"> Y </div>
+                </axis-def>
+
                 <div slot="options" class="option-item" color="red""> Math.sin(x/30) </div>
                 <div slot="options" class="option-item" color="blue""> Math.cos(x/30) </div>
                 <div slot="options" class="option-item" color="green"> Math.tan(x/30) </div>

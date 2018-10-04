@@ -2,6 +2,7 @@ export { ComponentBase, html, Mode, property, repeat, TemplateResult, unsafeHTML
 export { Feedback, FeedbackType, FeedbackMessage, Strategy } from './mixins/feedback';
 export { MultipleChoice } from './components/multiple-choice';
 export { ResponseValidation } from './components/response-validation';
+export { GraphBase, Direction } from './components/graph-base';
 
 /**
  * Apply Mixins Implementation to a Component
