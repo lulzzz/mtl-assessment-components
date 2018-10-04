@@ -5,8 +5,6 @@ import { line, curveMonotoneX } from 'd3-shape';
 import { range } from 'd3-array';
 import { axisBottom, axisLeft } from 'd3-axis';
 
-// declare const d3: any;
-
 // This is a mock
 function prepareValue(equation: HTMLElement, x: string): number {
     return eval(equation.innerHTML.replace('x', x));
