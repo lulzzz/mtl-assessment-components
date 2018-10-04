@@ -1,6 +1,6 @@
 {
     "name": "@hmh/text-input",
-    "version": "0.3.0",
+    "version": "0.3.1",
     "description": "Assessment System Text Input Component",
     "main": "dist/index.js",
     "module": "dist/index.js",
@@ -27,9 +27,9 @@
     },
     "devDependencies": {
         "@hmh/lit-element-tester": "latest",
+        "@hmh/nodejs-base-server": "^1.2.0",
         "@polymer/iron-component-page": "next",
         "@polymer/iron-demo-helpers": "latest",
-        "@hmh/nodejs-base-server": "^1.2.0",
         "chai": "^4.1.2",
         "concurrently": "^4.0.1",
         "mocha": "^5.2.0",
