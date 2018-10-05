@@ -112,8 +112,6 @@ export class PlotGraph extends GraphBase {
                     .attr('d', this.drawLine(xScale, yScale)) // Calls the line generator
                     .style('stroke', equation.getAttribute('color'));
             });
-
-            // this.shadowRoot.querySelector('#canvas').appendChild(this.svgContainer.select('#canvas'));
         }
     }
 }
