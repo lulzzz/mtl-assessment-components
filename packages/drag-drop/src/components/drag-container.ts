@@ -1,12 +1,10 @@
-import { html, TemplateResult, property } from '@hmh/component-base/dist/index';
-import { LitElement } from '@hmh/component-base/node_modules/@polymer/lit-element/lit-element';
-//import { LitElement } from '@polymer/lit-element/lit-element';
+import { ComponentBase, html, TemplateResult, property } from '@hmh/component-base';
 
 /**
  * `<drag-container>`
  * @demo ./demo/index-drag-container.html
  */
-export class DragContainer extends LitElement {
+export class DragContainer extends ComponentBase<string> {
     @property({ type: Boolean, reflect: true })
     dispenser: boolean = false;
     @property({ type: Array })

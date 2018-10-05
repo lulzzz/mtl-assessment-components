@@ -27,20 +27,20 @@ export class PlotGraph extends GraphBase {
 
     /**
      * Return d3 line function
-     * 
+     *
      * @param  {any} xScale
      * @param  {any} yScale
      * @returns d3.Line
      */
     private drawLine(xScale: any, yScale: any): d3.Line<any> {
-        return d3.line()
+        return line()
             .x(function(d: any, i: any) {
                 return xScale(i);
             }) // set the x values for the line generator
             .y(function(d: any) {
                 return yScale(d.y);
             }) // set the y values for the line generator
-            .curve(d3.curveMonotoneX); // apply smoothing to the line
+            .curve(curveMonotoneX); // apply smoothing to the line
     }
 
     protected render(): TemplateResult {
@@ -69,7 +69,7 @@ export class PlotGraph extends GraphBase {
 
     /**
      * Called after rendering (graph and lines generated here).
-     * 
+     *
      * @returns void
      */
     public updated(): void {
@@ -99,7 +99,7 @@ export class PlotGraph extends GraphBase {
             // plot a line for each equation
             this.items.forEach(equation => {
                 // get Y for each X (apply equation)
-                const dataset = d3.range(numberPoints).map(function(x: any) {
+                const dataset = range(numberPoints).map(function(x: any) {
                     return { y: prepareValue(equation, x) };
                 });
 

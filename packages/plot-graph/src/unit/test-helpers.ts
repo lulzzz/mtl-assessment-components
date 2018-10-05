@@ -1,4 +1,4 @@
-import { PlotGraph } from '../components/plot-graph';
+import { PlotGraph } from '../components/plot-graph.js';
 
 const expect: any = chai.expect;
 

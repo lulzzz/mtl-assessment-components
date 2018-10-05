@@ -1,5 +1,5 @@
 import { DropDown } from '../components/drop-down';
-import { checkComponentDOM, clickElement, getOptions, triggerValidation, selectOptions, sleep, generateOnSlotChangeEvent } from './test-helpers';
+import { checkComponentDOM, clickElement, getOptions, triggerValidation, selectOptions, sleep, generateOnSlotChangeEvent } from './test-helpers.js';
 import { ResponseValidation, Strategy } from '@hmh/component-base/dist/index';
 
 const tagName: string = 'drop-down';

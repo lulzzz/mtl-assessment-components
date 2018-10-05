@@ -1,6 +1,5 @@
-import { PlotGraph } from '../components/plot-graph';
-import { checkComponentDOM } from './test-helpers';
-// const expect: any = chai.expect;
+import { PlotGraph } from '../components/plot-graph.js';
+import { checkComponentDOM } from './test-helpers.js';
 const tagName: string = 'plot-graph';
 const expect: any = chai.expect;
 

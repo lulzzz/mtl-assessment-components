@@ -1,12 +1,12 @@
 {
     "name": "@hmh/text-input",
-    "version": "0.3.0",
+    "version": "0.3.1",
     "description": "Assessment System Text Input Component",
     "main": "dist/index.js",
     "module": "dist/index.js",
     "types": "dist/index.d.ts",
     "scripts": {
-        "start": "polyserve -o",
+        "start": "nodejs-base-server -c ../../server-config.json",
         "build": "tsc -p src",
         "prepubishOnly": "npm run build; npm run sass",
         "sass": "node-sass src/sass -r -o dist/css",
@@ -27,16 +27,15 @@
     },
     "devDependencies": {
         "@hmh/lit-element-tester": "latest",
+        "@hmh/nodejs-base-server": "^1.2.0",
         "@polymer/iron-component-page": "next",
         "@polymer/iron-demo-helpers": "latest",
-        "@webcomponents/webcomponentsjs": "^2.0.2",
         "chai": "^4.1.2",
         "concurrently": "^4.0.1",
         "mocha": "^5.2.0",
         "node-sass": "^4.9.3",
         "npm-watch": "latest",
         "polymer-cli": "latest",
-        "polyserve": "^0.27.12",
         "source-map-support": "^0.5.9",
         "typescript": "^3.0.1",
         "typescript-styled-plugin": "^0.10.0"
