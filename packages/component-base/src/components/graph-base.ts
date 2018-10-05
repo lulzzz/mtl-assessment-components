@@ -1,5 +1,5 @@
 import { ComponentBase, property } from './base'
-import * as d3 from 'd3';
+import { scaleLinear } from 'd3-scale';
 
 export enum Direction {
     X = 'X',
@@ -26,8 +26,7 @@ export abstract class GraphBase extends ComponentBase<any> {
         const domain = [min, max];
         const range = (axis === Direction.X ? [0, this.graphSize] : [this.graphSize, 0]);
 
-        return d3
-        .scaleLinear()
+        return scaleLinear()
         .domain(domain) // input
         .range(range); // output
     }

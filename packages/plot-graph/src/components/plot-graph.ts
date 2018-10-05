@@ -1,5 +1,8 @@
-import { html, TemplateResult, property, GraphBase, Direction } from '@hmh/component-base/dist/index';
-import * as d3 from 'd3';
+import { html, TemplateResult, property, GraphBase, Direction } from '@hmh/component-base';
+import { line, curveMonotoneX } from 'd3-shape';
+import { range } from 'd3-array';
+import { select } from 'd3-selection';
+// import { axisDef } from './axis-def.js';
 
 // This is a mock
 function prepareValue(equation: HTMLElement, x: string): number {
@@ -23,8 +26,6 @@ export class PlotGraph extends GraphBase {
     public step: number = 0;
     @property({ type: Array })
 
-    private svg: any;
-
     /**
      * Return d3 line function
      *
@@ -45,7 +46,7 @@ export class PlotGraph extends GraphBase {
 
     protected render(): TemplateResult {
         return html`
-        <link rel="stylesheet" type="text/css" href="/dist/css/plot-graph.css">
+        <link rel="stylesheet" type="text/css" href="/css/plot-graph.css">
             <div id="canvas"></div>
         <slot hidden name="options" class="options" @slotchange=${(evt: Event) => this._onSlotChanged(evt)}> </slot>
         <slot name="graph-axis" @slotchange=${(evt: Event) => this._onAxisAdded(evt)}> </slot>
@@ -62,8 +63,7 @@ export class PlotGraph extends GraphBase {
                 }
             );
 
-            console.log('_onAxisAdded:', axisElements[0].value._groups[0]);
-            this.svg = axisElements[0].value;
+            console.log('_onAxisAdded:', axisElements);
         }
     }
 
@@ -83,13 +83,8 @@ export class PlotGraph extends GraphBase {
 
             const xScale = this.scale(Direction.X, this.xmin, this.xmax);
             const yScale = this.scale(Direction.Y, this.ymin, this.ymax);
-
-            this.svgContainer = d3
-                .select(this.shadowRoot)
-                .select('#canvas');
-
-            this.svgContainer._groups[0] = this.svg;
-            //.append('svg');
+            this.svgContainer = select(this.shadowRoot).select('#canvas');
+            this.svgContainer.append('svg');
             
             this.svgContainer
                 .attr('width', this.graphSize)
