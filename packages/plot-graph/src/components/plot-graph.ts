@@ -2,7 +2,8 @@ import { html, TemplateResult, property, GraphBase, Direction } from '@hmh/compo
 import { line, curveMonotoneX } from 'd3-shape';
 import { range } from 'd3-array';
 import { select } from 'd3-selection';
-// import { axisDef } from './axis-def.js';
+import { AxisDef } from './axis-def';
+import { axisBottom, axisLeft } from 'd3-axis';
 
 // This is a mock
 function prepareValue(equation: HTMLElement, x: string): number {
@@ -14,6 +15,8 @@ function prepareValue(equation: HTMLElement, x: string): number {
  * @demo ./demo/index.html
  */
 export class PlotGraph extends GraphBase {
+    private axes: any[] = [];
+
     @property({ type: Number })
     public xmin: number = 0;
     @property({ type: Number })
@@ -44,27 +47,28 @@ export class PlotGraph extends GraphBase {
             .curve(curveMonotoneX); // apply smoothing to the line
     }
 
+
+    private _onAxisDefAdded(event: Event): void {
+        const slot: HTMLSlotElement = event.srcElement as HTMLSlotElement;
+        if (slot) {
+            slot.assignedNodes().forEach(
+                (axisDef: AxisDef): void => {
+                    // Because axis def has a top level container (with it's own slotted axes inside)
+                    axisDef.getValue().forEach((axis: any) => {
+                        this.axes.push(axis);
+                    });   
+                }
+            );
+        }
+    }
+
     protected render(): TemplateResult {
         return html`
         <link rel="stylesheet" type="text/css" href="/css/plot-graph.css">
             <div id="canvas"></div>
         <slot hidden name="options" class="options" @slotchange=${(evt: Event) => this._onSlotChanged(evt)}> </slot>
-        <slot name="graph-axis" @slotchange=${(evt: Event) => this._onAxisAdded(evt)}> </slot>
+        <slot name="graph-axis" @slotchange=${(evt: Event) => this._onAxisDefAdded(evt)}> </slot>
         `;
-    }
-
-    private _onAxisAdded(event: Event): void {
-        const slot: HTMLSlotElement = event.srcElement as HTMLSlotElement;
-        if (slot) {
-            const axisElements: any[] = [];
-            slot.assignedNodes().forEach(
-                (el: any): void => {
-                    axisElements.push(el);
-                }
-            );
-
-            console.log('_onAxisAdded:', axisElements);
-        }
     }
 
     /**
@@ -73,23 +77,18 @@ export class PlotGraph extends GraphBase {
      * @returns void
      */
     public updated(): void {
-        console.log('updated');
-        console.log('items:', this.items);
-        console.log('rendered:', this.rendered);
-
         if (!this.rendered && this.items.length > 0) {
-            const numberPoints = this.xmax - this.xmin / this.step;
             this.rendered = true;
+            const numberPoints = this.xmax - this.xmin / this.step;
+            
+            this.svgContainer = select(this.shadowRoot).select('#canvas')
+            .append('svg')
+            .attr('width', this.graphSize)
+            .attr('height', this.graphSize)
+            .append('g');
 
             const xScale = this.scale(Direction.X, this.xmin, this.xmax);
             const yScale = this.scale(Direction.Y, this.ymin, this.ymax);
-
-            this.svgContainer = select(this.shadowRoot).select('#canvas').append('svg');
-            
-            this.svgContainer
-                .attr('width', this.graphSize)
-                .attr('height', this.graphSize)
-                .append('g');
 
             // plot a line for each equation
             this.items.forEach(equation => {
@@ -98,7 +97,6 @@ export class PlotGraph extends GraphBase {
                     return { y: prepareValue(equation, x) };
                 });
 
-                console.log('draw line');
                 // Append the path, bind the data, and call the line generator
                 this.svgContainer
                     .append('path')
@@ -106,6 +104,15 @@ export class PlotGraph extends GraphBase {
                     .attr('class', 'line') // Assign a class for styling
                     .attr('d', this.drawLine(xScale, yScale)) // Calls the line generator
                     .style('stroke', equation.getAttribute('color'));
+            });
+
+            //draw the axes (assuming any have been added)
+            this.axes.forEach((axis) => {
+                this.svgContainer
+                .append('g')
+                .attr('class', axis.direction === Direction.X ? 'x-axis' : 'y-axis')
+                .attr('transform', axis.direction === Direction.X ?axis.translationX : axis.translationY )
+                .call(axis.direction === Direction.X ? axisBottom(axis.scale) : axisLeft(axis.scale)); // Create an axis component with d3.axisBottom
             });
         }
     }
