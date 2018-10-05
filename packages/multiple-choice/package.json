@@ -31,14 +31,11 @@
         "@hmh/nodejs-base-server": "latest",
         "@polymer/iron-component-page": "next",
         "@polymer/iron-demo-helpers": "latest",
-        "chai": "^4.1.2",
-        "concurrently": "^4.0.1",
-        "mocha": "^5.2.0",
-        "node-sass": "^4.9.3",
-        "npm-watch": "latest",
+        "node-sass": "latest",
         "polymer-cli": "latest",
-        "source-map-support": "^0.5.8",
-        "typescript": "latest"
+        "source-map-support": "latest",
+        "typescript": "latest",
+        "typescript-styled-plugin": "latest"
     },
     "watch": {
         "_generateDocs": "src/components/**/*.*"

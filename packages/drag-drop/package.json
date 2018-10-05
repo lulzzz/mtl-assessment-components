@@ -27,15 +27,11 @@
         "@hmh/nodejs-base-server": "latest",
         "@polymer/iron-component-page": "next",
         "@polymer/iron-demo-helpers": "latest",
-        "chai": "^4.2.0",
-        "concurrently": "^4.0.1",
-        "mocha": "^5.2.0",
-        "node-sass": "^4.9.3",
-        "npm-watch": "latest",
+        "node-sass": "latest",
         "polymer-cli": "latest",
-        "source-map-support": "^0.5.9",
-        "typescript": "^3.1.1",
-        "typescript-styled-plugin": "^0.11.0"
+        "source-map-support": "latest",
+        "typescript": "latest",
+        "typescript-styled-plugin": "latest"
     },
     "watch": {
         "_generateDocs": "src/components/**/*.*"

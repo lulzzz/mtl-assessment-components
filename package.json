@@ -2,7 +2,7 @@
     "name": "root",
     "private": true,
     "scripts": {
-        "bootstrap": "lerna bootstrap",
+        "bootstrap": "lerna bootstrap --hoist --nohoist=@hmh/component-base",
         "build": "lerna run build",
         "clean": "lerna clean --yes; rm -rf packages/*/dist",
         "link-all": "lerna link --force-local",

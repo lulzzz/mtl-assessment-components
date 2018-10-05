@@ -22,23 +22,19 @@
         "@hmh/component-base": "latest",
         "@material/button": "latest",
         "@material/textfield": "latest",
-        "d3": "^5.7.0"
+        "d3": "latest"
     },
     "devDependencies": {
         "@hmh/lit-element-tester": "latest",
         "@hmh/nodejs-base-server": "latest",
         "@polymer/iron-component-page": "next",
         "@polymer/iron-demo-helpers": "latest",
-        "@types/d3": "^5.0.0",
-        "chai": "^4.1.2",
-        "concurrently": "^4.0.1",
-        "mocha": "^5.2.0",
-        "node-sass": "^4.9.3",
-        "npm-watch": "latest",
+        "node-sass": "latest",
         "polymer-cli": "latest",
-        "source-map-support": "^0.5.9",
-        "typescript": "^3.0.1",
-        "typescript-styled-plugin": "^0.10.0"
+        "source-map-support": "latest",
+        "typescript": "latest",
+        "typescript-styled-plugin": "latest",
+        "@types/d3": "latest"
     },
     "watch": {
         "_generateDocs": "src/components/**/*.*"
