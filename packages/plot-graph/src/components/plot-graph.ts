@@ -83,8 +83,8 @@ export class PlotGraph extends GraphBase {
 
             const xScale = this.scale(Direction.X, this.xmin, this.xmax);
             const yScale = this.scale(Direction.Y, this.ymin, this.ymax);
-            this.svgContainer = select(this.shadowRoot).select('#canvas');
-            this.svgContainer.append('svg');
+
+            this.svgContainer = select(this.shadowRoot).select('#canvas').append('svg');
             
             this.svgContainer
                 .attr('width', this.graphSize)
