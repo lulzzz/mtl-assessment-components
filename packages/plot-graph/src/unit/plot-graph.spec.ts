@@ -18,7 +18,7 @@ describe(`<${tagName}>`, (): void => {
         // @ts-ignore
         await el.updateComplete;
         // @ts-ignore
-        const equation = el.equations[0];
+        const equation = el.items[0];
         expect(equation.innerHTML).to.equal('Math.sin(x/30)');
     });
 
@@ -48,9 +48,9 @@ describe(`<${tagName}>`, (): void => {
         el.appendChild(optionElement);
         await el.updateComplete;
         // @ts-ignore
-        expect(el.equations.length).to.equal(1);
+        expect(el.items.length).to.equal(1);
         // @ts-ignore
-        expect(el.equations[0].innerHTML).to.equal(equation);
+        expect(el.items[0].innerHTML).to.equal(equation);
     });
 });
 
