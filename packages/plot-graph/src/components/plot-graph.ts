@@ -3,7 +3,9 @@ import { line, curveMonotoneX } from 'd3-shape';
 import { range } from 'd3-array';
 import { select } from 'd3-selection';
 import { AxisDef } from './axis-def';
-import { axisBottom, axisLeft } from 'd3-axis';
+// import { axisBottom, axisLeft } from 'd3-axis';
+import { Line } from 'd3-shape';
+import { _3d } from 'd3-3d/index.js';
 
 // This is a mock
 function prepareValue(equation: HTMLElement, x: string): number {
@@ -36,7 +38,7 @@ export class PlotGraph extends GraphBase {
      * @param  {any} yScale
      * @returns d3.Line
      */
-    private drawLine(xScale: any, yScale: any): d3.Line<any> {
+    private drawLine(xScale: any, yScale: any): Line<any> {
         return line()
             .x(function(d: any, i: any) {
                 return xScale(i);
@@ -47,6 +49,14 @@ export class PlotGraph extends GraphBase {
             .curve(curveMonotoneX); // apply smoothing to the line
     }
 
+    private drawGrid(startAngle: number, scale: number): any{
+        return _3d()
+        .shape('GRID', 20)
+        .origin(origin)
+        .rotateY( startAngle)
+        .rotateX(-startAngle)
+        .scale(scale);
+    }
 
     private _onAxisDefAdded(event: Event): void {
         const slot: HTMLSlotElement = event.srcElement as HTMLSlotElement;
@@ -106,14 +116,18 @@ export class PlotGraph extends GraphBase {
                     .style('stroke', equation.getAttribute('color'));
             });
 
+            this.svgContainer.attr('d', this.drawGrid(90, 20).draw);
+            
+
             //draw the axes (assuming any have been added)
+            /*
             this.axes.forEach((axis) => {
                 this.svgContainer
                 .append('g')
                 .attr('class', axis.direction === Direction.X ? 'x-axis' : 'y-axis')
                 .attr('transform', axis.direction === Direction.X ?axis.translationX : axis.translationY )
                 .call(axis.direction === Direction.X ? axisBottom(axis.scale) : axisLeft(axis.scale)); // Create an axis component with d3.axisBottom
-            });
+            });*/
         }
     }
 }

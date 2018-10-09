@@ -6,7 +6,7 @@ import { html, TemplateResult, GraphBase, Direction } from '@hmh/component-base'
  */
 export class AxisDef extends GraphBase {
     private axisSize: number = 25;
-    protected value: any = [];
+    public value: any = [];
 
     private addAxis(axis: HTMLElement): void {        
         const dir = axis.getAttribute('direction');
