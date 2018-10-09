@@ -111,7 +111,7 @@ export class PlotGraph extends GraphBase {
                 this.svgContainer
                 .append('g')
                 .attr('class', axis.direction === Direction.X ? 'x-axis' : 'y-axis')
-                .attr('transform', axis.direction === Direction.X ?axis.translationX : axis.translationY )
+                .attr('transform', axis.direction === Direction.X ? axis.translationX : axis.translationY )
                 .call(axis.direction === Direction.X ? axisBottom(axis.scale) : axisLeft(axis.scale)); // Create an axis component with d3.axisBottom
             });
         }
