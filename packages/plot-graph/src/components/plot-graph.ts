@@ -1,23 +1,35 @@
-import { html, TemplateResult, property, GraphBase, Direction } from '@hmh/component-base';
+import { html, TemplateResult, property, ComponentBase } from '@hmh/component-base';
 import { line, curveMonotoneX } from 'd3-shape';
 import { range } from 'd3-array';
 import { select } from 'd3-selection';
 import { AxisDef } from './axis-def';
 import { axisBottom, axisLeft } from 'd3-axis';
 import { Line } from 'd3-shape';
+import { scaleLinear } from 'd3-scale';
 
 // This is a mock
 function prepareValue(equation: HTMLElement, x: string): number {
     return eval(equation.innerHTML.replace('x', x));
 }
 
+enum Direction {
+    X = 'X',
+    Y = 'Y',
+    Z = 'Z'
+};
+
 /**
  * `<plot-graph>`
  * @demo ./demo/index.html
  */
-export class PlotGraph extends GraphBase {
+export class PlotGraph extends ComponentBase<any> {
     private axes: any[] = [];
     private axisSize: number = 25;
+    @property({ type: Array })
+    protected items: HTMLElement[] = [];
+    protected graphSize: number = 500;
+    protected svgContainer: any = null;
+    protected rendered: boolean = false;
 
     @property({ type: Number, attribute:'equation-xmin'})
     public equationXmin: number = 0;
@@ -30,6 +42,20 @@ export class PlotGraph extends GraphBase {
     @property({ type: Number })
     public step: number = 0;
     @property({ type: Array })
+
+    /**
+     * Return a d3.scale function
+     *
+     * @param  {Direction} axis X or Y
+     * @returns d3.ScaleLinear
+     */
+    private scale(axis: Direction, min: number, max: number): d3.ScaleLinear<number, number> {
+        const domain = [min, max];
+        const range = (axis === Direction.X ? [0, this.graphSize] : [this.graphSize, 0]);
+        return scaleLinear()
+            .domain(domain) // input
+            .range(range); // output
+    }
 
     /**
      * Return d3 line function
@@ -56,12 +82,31 @@ export class PlotGraph extends GraphBase {
                 (axisDef: AxisDef): void => {
                     // Because axis def has a top level container (with it's own slotted axes inside)
                     axisDef.getValue().forEach((axis: any) => {
-                        console.log('pushing axis: ', axis);
                         this.axes.push(axis);
                     });   
                 }
             );
         }
+    }
+
+    /**
+    * Fired on slot change
+    * @param {Event} event
+    */
+   protected _onSlotChanged(event: Event): void {
+        const slot: HTMLSlotElement = event.srcElement as HTMLSlotElement;
+        if (slot) {
+            const items: HTMLElement[] = [];
+            slot.assignedNodes().forEach(
+                (el: HTMLElement): void => {
+                    items.push(el);
+                }
+            );
+
+            this.items = items;
+        }
+
+        console.log('items;', this.items);
     }
 
     protected render(): TemplateResult {
@@ -79,7 +124,9 @@ export class PlotGraph extends GraphBase {
      * @returns void
      */
     public updated(): void {
+        console.log('updated rendered: ', this.rendered, 'this.items.length: ', this.items.length);
         if (!this.rendered && this.items.length > 0) {
+            console.log('updated');
             this.rendered = true;
             const numberPoints = this.equationXmax - this.equationXmin / this.step;
             
