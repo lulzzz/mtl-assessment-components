@@ -1,7 +1,6 @@
 import { applyMixins, ComponentBase, Feedback, html, TemplateResult } from '@hmh/component-base';
 import { DragContainer } from './drag-container.js';
 import { DropContainer } from './drop-container.js';
-import './drop-matt';
 
 /**
  * `<drag-drop>`
