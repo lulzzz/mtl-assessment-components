@@ -22,12 +22,12 @@
 <body>
     <!-- test fixtures -->
     <template id="no-equations">
-        <plot-graph xmin="0" xmax="360" ymin="-10" ymax="10" step="1">
+        <plot-graph equation-xmin="0" equation-xmax="360" equation-ymin="-10" equation-ymax="10" step="1">
         </plot-graph>
     </template>
 
     <template id="default">
-        <plot-graph xmin="0" xmax="360" ymin="-10" ymax="10" step="1">
+        <plot-graph equation-xmin="0" equation-xmax="360" equation-ymin="-10" equation-ymax="10" step="1">
             <div slot="options" class="option-item" color="red">Math.sin(x/30)</div>
 
             <axis-def slot="graph-axis">
@@ -39,7 +39,7 @@
     </template>
 
     <template id="three-equations">
-        <plot-graph xmin="0" xmax="360" ymin="-10" ymax="10" step="1">
+        <plot-graph equation-xmin="0" equation-xmax="360" equation-ymin="-10" equation-ymax="10" step="1">
             <div slot="options" class="option-item" color="red">Math.sin(x/30)</div>
             <div slot="options" class="option-item" color="blue">Math.cos(x/30)</div>
             <div slot="options" class="option-item" color="green">Math.tan(x/30)</div>

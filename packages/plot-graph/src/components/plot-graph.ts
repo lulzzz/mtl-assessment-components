@@ -19,14 +19,14 @@ export class PlotGraph extends GraphBase {
     private axes: any[] = [];
     private axisSize: number = 25;
 
-    @property({ type: Number })
-    public xmin: number = 0;
-    @property({ type: Number })
-    public xmax: number = 0;
-    @property({ type: Number })
-    public ymax: number = 0;
-    @property({ type: Number })
-    public ymin: number = 0;
+    @property({ type: Number, attribute:'equation-xmin'})
+    public equationXmin: number = 0;
+    @property({ type: Number, attribute:'equation-xmax'})
+    public equationXmax: number = 0;
+    @property({ type: Number, attribute:'equation-ymax'})
+    public equationYmax: number = 0;
+    @property({ type: Number, attribute:'equation-ymin'})
+    public equationYmin: number = 0;
     @property({ type: Number })
     public step: number = 0;
     @property({ type: Array })
@@ -81,7 +81,7 @@ export class PlotGraph extends GraphBase {
     public updated(): void {
         if (!this.rendered && this.items.length > 0) {
             this.rendered = true;
-            const numberPoints = this.xmax - this.xmin / this.step;
+            const numberPoints = this.equationXmax - this.equationXmin / this.step;
             
             this.svgContainer = select(this.shadowRoot).select('#canvas')
             .append('svg')
@@ -89,8 +89,8 @@ export class PlotGraph extends GraphBase {
             .attr('height', this.graphSize)
             .append('g');
 
-            const xScale = this.scale(Direction.X, this.xmin, this.xmax);
-            const yScale = this.scale(Direction.Y, this.ymin, this.ymax);
+            const xScale = this.scale(Direction.X, this.equationXmin, this.equationXmax);
+            const yScale = this.scale(Direction.Y, this.equationYmin, this.equationYmax);
 
             // plot a line for each equation
             this.items.forEach(equation => {
@@ -113,7 +113,6 @@ export class PlotGraph extends GraphBase {
 
             //draw the axes (assuming any have been added)
             this.axes.forEach((axis) => {
-
                 const min = axis.getAttribute('min');
                 const max = axis.getAttribute('max');
                 const scale = this.scale(axis.direction, parseInt(min), parseInt(max));
