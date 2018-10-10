@@ -1,8 +1,7 @@
-import { html, TemplateResult, property, ComponentBase } from '@hmh/component-base';
+import { html, TemplateResult, property, ComponentBase, CoordinateSystem } from '@hmh/component-base';
 import { line, curveMonotoneX } from 'd3-shape';
 import { range } from 'd3-array';
 import { select } from 'd3-selection';
-import { AxisDef } from './axis-def';
 import { axisBottom, axisLeft } from 'd3-axis';
 import { Line } from 'd3-shape';
 import { scaleLinear } from 'd3-scale';
@@ -75,13 +74,13 @@ export class PlotGraph extends ComponentBase<any> {
             .curve(curveMonotoneX); // apply smoothing to the line
     }
 
-    private _onAxisDefAdded(event: Event): void {
+    private _onCoordSystemAdded(event: Event): void {
         const slot: HTMLSlotElement = event.srcElement as HTMLSlotElement;
         if (slot) {
             slot.assignedNodes().forEach(
-                (axisDef: AxisDef): void => {
+                (cordSystem: CoordinateSystem): void => {
                     // Because axis def has a top level container (with it's own slotted axes inside)
-                    axisDef.getValue().forEach((axis: any) => {
+                    cordSystem.getValue().forEach((axis: any) => {
                         this.axes.push(axis);
                     });   
                 }
@@ -114,7 +113,7 @@ export class PlotGraph extends ComponentBase<any> {
         <link rel="stylesheet" type="text/css" href="/css/plot-graph.css">
         <div id="canvas"></div>
         <slot hidden name="options" class="options" @slotchange=${(evt: Event) => this._onSlotChanged(evt)}> </slot>
-        <slot hidden name="graph-axis" @slotchange=${(evt: Event) => this._onAxisDefAdded(evt)}> </slot>
+        <slot hidden name="graph-axis" @slotchange=${(evt: Event) => this._onCoordSystemAdded(evt)}> </slot>
         `;
     }
 
