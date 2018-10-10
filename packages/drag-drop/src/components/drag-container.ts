@@ -15,7 +15,7 @@ export class DragContainer extends ComponentBase<string> {
     public getElement(id: string): HTMLElement {
         return Array.from(this.getElementsByClassName('option-item')).find((x: HTMLElement) => x.id === id) as HTMLElement;
     }
-    public add(element: HTMLElement, event: DragEvent): void {
+    public add(element: HTMLElement, x?: number, y?: number): void {
         this.appendChild(element);
     }
     protected render(): TemplateResult {

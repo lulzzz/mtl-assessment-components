@@ -10,6 +10,8 @@ export class DragDrop extends ComponentBase<string[]> {
     dragContainers: DragContainer[] = [];
     dropContainers: DropContainer[] = [];
     map: Map<string, Set<string>> = new Map();
+    offsetX: number;
+    offsetY: number;
 
     constructor() {
         super();
@@ -45,6 +47,9 @@ export class DragDrop extends ComponentBase<string[]> {
     }
     private onDragStart(event: DragEvent) {
         if ((event.target as HTMLElement).className === 'option-item') {
+            //console.log((event.target as HTMLElement).offsetLeft, event.x);
+            this.offsetX = event.x - (event.target as HTMLElement).offsetLeft;
+            this.offsetY = event.y - (event.target as HTMLElement).offsetTop;
             let type: string;
             let index: number = -1;
             if ((event.target as HTMLElement).parentElement instanceof DragContainer) {
@@ -96,7 +101,7 @@ export class DragDrop extends ComponentBase<string[]> {
             }
 
             if (dataElement && this.isDropAllowed(target)) {
-                target.add(dataElement, event);
+                target.add(dataElement, event.x - this.offsetX, event.y - this.offsetY);
             } else if (this.isSwappable(event.srcElement as HTMLElement)) {
                 // if dispenser, modifying a copy has no impact
                 console.log('swapping');
