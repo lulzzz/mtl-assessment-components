@@ -1,10 +1,12 @@
-import { html, TemplateResult, GraphBase } from '@hmh/component-base';
+import { html, TemplateResult, ComponentBase } from '@hmh/component-base';
 
 /**
  * `<axis-def>`
  * @demo ./demo/index.html
  */
-export class AxisDef extends GraphBase {
+export class AxisDef extends ComponentBase<HTMLElement[]> {
+    public value: HTMLElement[] = [];
+
     // this element exists only to serve as an input structure for axis-def
     protected render(): TemplateResult {
         return html`
@@ -20,19 +22,13 @@ export class AxisDef extends GraphBase {
 
         const slot: HTMLSlotElement = event.srcElement as HTMLSlotElement;
         if (slot) {
-            const items: HTMLElement[] = [];
             slot.assignedNodes().forEach(
                 (el: HTMLElement): void => {
-                    items.push(el);
+                    this.value.push(el);
                 }
             );
-
-            this.items = items;
         }
-
-        this.value = this.items;
     }
-
 }
 
 customElements.define('axis-def', AxisDef);

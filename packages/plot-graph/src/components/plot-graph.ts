@@ -67,7 +67,7 @@ export class PlotGraph extends GraphBase {
     protected render(): TemplateResult {
         return html`
         <link rel="stylesheet" type="text/css" href="/css/plot-graph.css">
-            <div id="canvas"></div>
+        <div id="canvas"></div>
         <slot hidden name="options" class="options" @slotchange=${(evt: Event) => this._onSlotChanged(evt)}> </slot>
         <slot hidden name="graph-axis" @slotchange=${(evt: Event) => this._onAxisDefAdded(evt)}> </slot>
         `;

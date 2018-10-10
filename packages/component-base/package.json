@@ -17,8 +17,6 @@
     "license": "ISC",
     "dependencies": {
         "@polymer/lit-element": "^0.6.1",
-        "@types/d3": "^5.0.0",
-        "d3-scale": "^2.1.2",
         "lit-html": "^0.11.4"
     },
     "devDependencies": {
