@@ -1,4 +1,4 @@
-import { TextInput } from '../components/text-input';
+import { TextInput } from '../components/text-input.js';
 
 const expect: any = chai.expect;
 

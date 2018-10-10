@@ -1,4 +1,4 @@
-import { ResponseValidation } from '../components/response-validation';
+import { ResponseValidation } from '../components/response-validation.js';
 
 /**
  * All components that have feedback must implement this mixin

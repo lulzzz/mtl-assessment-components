@@ -1,12 +1,12 @@
-import { LitElement, property } from '@polymer/lit-element/lit-element';
-import { TemplateResult } from 'lit-html/lit-html';
-export { TemplateResult } from 'lit-html/lit-html';
-export { html, property } from '@polymer/lit-element/lit-element';
-export { ifDefined } from 'lit-html/directives/if-defined';
-export { repeat } from 'lit-html/directives/repeat';
-export { unsafeHTML } from 'lit-html/directives/unsafe-html';
-import { FeedbackMessage } from '../mixins/feedback';
-import { ResponseValidation } from './response-validation';
+import { LitElement, property } from '@polymer/lit-element';
+import { TemplateResult } from 'lit-html';
+export { TemplateResult } from 'lit-html';
+export { html, property } from '@polymer/lit-element';
+export { ifDefined } from 'lit-html/directives/if-defined.js';
+export { repeat } from 'lit-html/directives/repeat.js';
+export { unsafeHTML } from 'lit-html/directives/unsafe-html.js';
+import { FeedbackMessage } from '../mixins/feedback.js';
+import { ResponseValidation } from './response-validation.js';
 
 export enum Mode {
     INTERACTIVE = 'interactive',

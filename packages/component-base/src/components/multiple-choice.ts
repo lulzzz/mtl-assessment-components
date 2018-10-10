@@ -1,8 +1,8 @@
-import { Strategy } from '../mixins/feedback';
-import { ResponseValidation } from './response-validation';
-import { ComponentBase, property } from './base';
-import { Feedback, FeedbackMessage } from '../mixins/feedback';
-import { applyMixins } from '../index';
+import { Strategy } from '../mixins/feedback.js';
+import { ResponseValidation } from './response-validation.js';
+import { ComponentBase, property } from './base.js';
+import { Feedback, FeedbackMessage } from '../mixins/feedback.js';
+import { applyMixins } from '../index.js';
 
 export abstract class MultipleChoice extends ComponentBase<string[]> implements Feedback {
     @property({ type: Array })

@@ -1,5 +1,5 @@
-import { expect, basicTagName } from './constants.spec';
-import { DragDrop } from '../components/drag-drop';
+import { expect, basicTagName } from './constants.spec.js';
+import { DragDrop } from '../components/drag-drop.js';
 
 export default () => {
     describe(`<${basicTagName}> feedback`, (): void => {
@@ -21,9 +21,9 @@ export default () => {
 
             //Simulate drag&drop
             const dataTransfer = new DataTransfer();
-            const dragEvent: Event = new DragEvent('dragstart', { bubbles: true, dataTransfer: dataTransfer });
+            const dragEvent: Event = new DragEvent('dragstart', { bubbles: true, dataTransfer: dataTransfer } as any);
             dragSource.dispatchEvent(dragEvent);
-            const dropEvent: Event = new DragEvent('drop', { bubbles: true, dataTransfer: dataTransfer });
+            const dropEvent: Event = new DragEvent('drop', { bubbles: true, dataTransfer: dataTransfer } as any);
             dropTarget.dispatchEvent(dropEvent);
 
             element.showFeedback();
@@ -37,9 +37,9 @@ export default () => {
             const dragSource = element.dragContainers[0].getElement('000-1');
             const dropTarget = element.dropContainers[0];
             const dataTransfer = new DataTransfer();
-            const dragEvent: Event = new DragEvent('dragstart', { bubbles: true, dataTransfer: dataTransfer });
+            const dragEvent: Event = new DragEvent('dragstart', { bubbles: true, dataTransfer: dataTransfer } as any);
             dragSource.dispatchEvent(dragEvent);
-            const dropEvent: Event = new DragEvent('drop', { bubbles: true, dataTransfer: dataTransfer });
+            const dropEvent: Event = new DragEvent('drop', { bubbles: true, dataTransfer: dataTransfer } as any);
             dropTarget.dispatchEvent(dropEvent);
 
             element.showFeedback();

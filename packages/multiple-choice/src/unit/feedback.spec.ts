@@ -1,6 +1,6 @@
-import { expect, mcqTagName, mrqTagName, sleep } from './constants.spec';
-import { MultipleChoiceQuestion } from '../components/multiple-choice-question';
-import { MultipleResponseQuestion } from '../components/multiple-response-question';
+import { expect, mcqTagName, mrqTagName, sleep } from './constants.spec.js';
+import { MultipleChoiceQuestion } from '../components/multiple-choice-question.js';
+import { MultipleResponseQuestion } from '../components/multiple-response-question.js';
 
 export default () => {
     describe(`<${mcqTagName}> feedback in single mode`, (): void => {

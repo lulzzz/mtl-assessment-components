@@ -8,7 +8,7 @@ import {
     ResponseValidation,
     Strategy,
     TemplateResult
-} from '@hmh/component-base/dist/index';
+} from '@hmh/component-base';
 /**
  * `<drop-container>`
  * @demo ./demo/index-drop-container.html
