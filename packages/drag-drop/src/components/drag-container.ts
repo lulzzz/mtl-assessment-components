@@ -6,7 +6,7 @@ import { ComponentBase, html, TemplateResult, property } from '@hmh/component-ba
  */
 export class DragContainer extends ComponentBase<string> {
     @property({ type: Boolean, attribute: 'dispenser' })
-    dispenser: boolean = false;
+    isDispenser: boolean = false;
     @property({ type: Array })
     options: string[] = [];
     @property({ type: Boolean, attribute: 'trash' })
