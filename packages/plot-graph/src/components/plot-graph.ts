@@ -24,12 +24,11 @@ enum Direction {
 export class PlotGraph extends ComponentBase<any> {
     private axes: any[] = [];
     private axisSize: number = 25;
-    @property({ type: Array })
-    protected items: HTMLElement[] = [];
     protected graphSize: number = 500;
     protected svgContainer: any = null;
     protected rendered: boolean = false;
-
+    @property({ type: Array })
+    protected items: HTMLElement[] = [];
     @property({ type: Number, attribute:'equation-xmin'})
     public equationXmin: number = 0;
     @property({ type: Number, attribute:'equation-xmax'})
