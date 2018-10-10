@@ -30,8 +30,6 @@ export class AxisDef extends GraphBase {
             this.items = items;
         }
 
-
-
         this.value = this.items;
     }
 
