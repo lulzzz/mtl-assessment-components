@@ -77,8 +77,8 @@ export class PlotGraph extends ComponentBase<any> {
         const slot: HTMLSlotElement = event.srcElement as HTMLSlotElement;
         if (slot) {
             slot.assignedNodes().forEach(
-                (cordSystem: CoordinateSystem): void => {
-                    cordSystem.getValue().forEach((axis: any) => {
+                (coordSystem: CoordinateSystem): void => {
+                    coordSystem.getValue().forEach((axis: any) => {
                         this.axes.push(axis);
                     });   
                 }
@@ -128,10 +128,10 @@ export class PlotGraph extends ComponentBase<any> {
             const numberPoints = this.equationXmax - this.equationXmin / this.step;
             
             this.svgContainer = select(this.shadowRoot).select('#canvas')
-            .append('svg')
-            .attr('width', this.graphSize)
-            .attr('height', this.graphSize)
-            .append('g');
+                .append('svg')
+                .attr('width', this.graphSize)
+                .attr('height', this.graphSize)
+                .append('g');
 
             const xScale = this.scale(Direction.X, this.equationXmin, this.equationXmax);
             const yScale = this.scale(Direction.Y, this.equationYmin, this.equationYmax);
@@ -163,10 +163,10 @@ export class PlotGraph extends ComponentBase<any> {
                 const isDirectionX = axis.getAttribute('direction').toLowerCase() === Direction.X.toString().toLowerCase();
 
                 this.svgContainer
-                .append('g')
-                .attr('class', isDirectionX ? 'x-axis' : 'y-axis')
-                .attr('transform', isDirectionX ? translationX : translationY )
-                .call(isDirectionX ? axisBottom(scale) : axisLeft(scale));
+                    .append('g')
+                    .attr('class', isDirectionX ? 'x-axis' : 'y-axis')
+                    .attr('transform', isDirectionX ? translationX : translationY )
+                    .call(isDirectionX ? axisBottom(scale) : axisLeft(scale));
             });
         }
     }
