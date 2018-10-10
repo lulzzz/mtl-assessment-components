@@ -20,7 +20,7 @@ export class DragContainer extends ComponentBase<string> {
     }
     protected render(): TemplateResult {
         return html`
-        <link rel="stylesheet"href="/dist/css/drag-drop.css">
+        <link rel="stylesheet"href="/css/drag-drop.css">
         <slot name="options" @slotchange=${(e: Event) => this._onSlotChanged(e)} ></slot>
         `;
     }

@@ -1,14 +1,4 @@
-import {
-    applyMixins,
-    ComponentBase,
-    Feedback,
-    FeedbackMessage,
-    html,
-    property,
-    ResponseValidation,
-    Strategy,
-    TemplateResult
-} from '@hmh/component-base';
+import { applyMixins, ComponentBase, Feedback, FeedbackMessage, html, property, ResponseValidation, Strategy, TemplateResult } from '@hmh/component-base';
 /**
  * `<drop-container>`
  * @demo ./demo/index-drop-container.html
@@ -57,7 +47,7 @@ export class DropContainer extends ComponentBase<string[]> implements Feedback {
         this.className = this.feedbackMessage ? this.feedbackMessage.type : '';
 
         return html`
-        <link rel="stylesheet" href="/dist/css/drag-drop.css">
+        <link rel="stylesheet" href="/css/drag-drop.css">
         <slot name="feedback" @slotchange=${(e: Event) => this._onFeedbackSlotChanged(e)}></slot>
         <slot name="options" @slotchange=${(e: Event) => this._onSlotChanged(e)} ></slot>
 
