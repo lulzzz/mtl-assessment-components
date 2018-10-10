@@ -79,7 +79,6 @@ export class PlotGraph extends ComponentBase<any> {
         if (slot) {
             slot.assignedNodes().forEach(
                 (cordSystem: CoordinateSystem): void => {
-                    // Because axis def has a top level container (with it's own slotted axes inside)
                     cordSystem.getValue().forEach((axis: any) => {
                         this.axes.push(axis);
                     });   
