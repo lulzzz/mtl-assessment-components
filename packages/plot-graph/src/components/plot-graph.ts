@@ -128,10 +128,10 @@ export class PlotGraph extends ComponentBase<any> {
             const numberPoints = this.equationXmax - this.equationXmin / this.step;
             
             this.svgContainer = select(this.shadowRoot).select('#canvas')
-                .append('svg')
-                .attr('width', this.graphSize)
-                .attr('height', this.graphSize)
-                .append('g');
+            .append('svg')
+            .attr('width', this.graphSize)
+            .attr('height', this.graphSize)
+            .append('g');
 
             const xScale = this.scale(Direction.X, this.equationXmin, this.equationXmax);
             const yScale = this.scale(Direction.Y, this.equationYmin, this.equationYmax);
@@ -145,11 +145,11 @@ export class PlotGraph extends ComponentBase<any> {
 
                 // Append the path, bind the data, and call the line generator
                 this.svgContainer
-                    .append('path')
-                    .datum(dataset) // inds data to the line
-                    .attr('class', 'line') // Assign a class for styling
-                    .attr('d', this.drawLine(xScale, yScale)) // Calls the line generator
-                    .style('stroke', equation.getAttribute('color'));
+                .append('path')
+                .datum(dataset) // inds data to the line
+                .attr('class', 'line') // Assign a class for styling
+                .attr('d', this.drawLine(xScale, yScale)) // Calls the line generator
+                .style('stroke', equation.getAttribute('color'));
             });
 
             const translationX = 'translate(0,' + (this.graphSize - this.axisSize) + ')';
@@ -163,10 +163,10 @@ export class PlotGraph extends ComponentBase<any> {
                 const isDirectionX = axis.getAttribute('direction').toLowerCase() === Direction.X.toString().toLowerCase();
 
                 this.svgContainer
-                    .append('g')
-                    .attr('class', isDirectionX ? 'x-axis' : 'y-axis')
-                    .attr('transform', isDirectionX ? translationX : translationY )
-                    .call(isDirectionX ? axisBottom(scale) : axisLeft(scale));
+                .append('g')
+                .attr('class', isDirectionX ? 'x-axis' : 'y-axis')
+                .attr('transform', isDirectionX ? translationX : translationY )
+                .call(isDirectionX ? axisBottom(scale) : axisLeft(scale));
             });
         }
     }
