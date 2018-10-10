@@ -14,7 +14,7 @@ import {
  * @demo ./demo/index-drop-container.html
  */
 export class DropContainer extends ComponentBase<string[]> implements Feedback {
-    @property({ type: Number })
+    @property({ type: Number, attribute: 'max-items' })
     public maxItems: number;
     @property({ type: Array })
     public addedItems: string[] = [];
@@ -48,7 +48,11 @@ export class DropContainer extends ComponentBase<string[]> implements Feedback {
                 return response.length === expected.length && expected.every((answer: string) => response.includes(answer));
         }
     }
-
+    public add(element: HTMLElement, event: DragEvent): void {
+        element.style.left = event.x.toString();
+        element.style.top = event.y.toString();
+        this.appendChild(element);
+    }
     protected render(): TemplateResult {
         this.className = this.feedbackMessage ? this.feedbackMessage.type : '';
 
@@ -65,7 +69,7 @@ export class DropContainer extends ComponentBase<string[]> implements Feedback {
         if (slot) {
             slot.assignedNodes().forEach(
                 (el: HTMLElement): void => {
-                    if (el.className.includes('option-item')) {
+                    if (el.classList.contains('option-item')) {
                         items.push(el.id);
                     }
                 }

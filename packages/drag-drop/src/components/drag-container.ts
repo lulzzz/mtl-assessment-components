@@ -7,15 +7,19 @@ import { LitElement } from '@hmh/component-base/node_modules/@polymer/lit-elemen
  * @demo ./demo/index-drag-container.html
  */
 export class DragContainer extends LitElement {
-    @property({ type: Boolean, reflect: true })
-    dispenser: boolean = false;
+    @property({ type: Boolean, reflect: true, attribute: 'dispenser' })
+    isDispenser: boolean = false;
     @property({ type: Array })
     options: string[] = [];
+    @property({ type: Boolean, attribute: 'trash' })
+    public isTrash: boolean = false;
 
     public getElement(id: string): HTMLElement {
         return Array.from(this.getElementsByClassName('option-item')).find((x: HTMLElement) => x.id === id) as HTMLElement;
     }
-
+    public add(element: HTMLElement, event: DragEvent): void {
+        this.appendChild(element);
+    }
     protected render(): TemplateResult {
         return html`
         <link rel="stylesheet"href="/dist/css/drag-drop.css">
@@ -29,9 +33,12 @@ export class DragContainer extends LitElement {
         if (slot) {
             slot.assignedNodes().forEach(
                 (el: HTMLElement): void => {
-                    el.className = 'option-item';
+                    el.classList.add('option-item');
                     el.draggable = true;
-                    items.push(el.id);
+                    if (this.isTrash) el.remove();
+                    else if (el.classList.contains('option-item')) {
+                        items.push(el.id);
+                    }
                 }
             );
         }
