@@ -17,6 +17,7 @@ function prepareValue(equation: HTMLElement, x: string): number {
  */
 export class PlotGraph extends GraphBase {
     private axes: any[] = [];
+    private axisSize: number = 25;
 
     @property({ type: Number })
     public xmin: number = 0;
@@ -55,6 +56,7 @@ export class PlotGraph extends GraphBase {
                 (axisDef: AxisDef): void => {
                     // Because axis def has a top level container (with it's own slotted axes inside)
                     axisDef.getValue().forEach((axis: any) => {
+                        console.log('pushing axis: ', axis);
                         this.axes.push(axis);
                     });   
                 }
@@ -67,7 +69,7 @@ export class PlotGraph extends GraphBase {
         <link rel="stylesheet" type="text/css" href="/css/plot-graph.css">
             <div id="canvas"></div>
         <slot hidden name="options" class="options" @slotchange=${(evt: Event) => this._onSlotChanged(evt)}> </slot>
-        <slot name="graph-axis" @slotchange=${(evt: Event) => this._onAxisDefAdded(evt)}> </slot>
+        <slot hidden name="graph-axis" @slotchange=${(evt: Event) => this._onAxisDefAdded(evt)}> </slot>
         `;
     }
 
@@ -106,13 +108,22 @@ export class PlotGraph extends GraphBase {
                     .style('stroke', equation.getAttribute('color'));
             });
 
+            const translationX = 'translate(0,' + (this.graphSize - this.axisSize) + ')';
+            const translationY = 'translate(' + this.axisSize + ',0)';
+
             //draw the axes (assuming any have been added)
             this.axes.forEach((axis) => {
+
+                const min = axis.getAttribute('min');
+                const max = axis.getAttribute('max');
+                const scale = this.scale(axis.direction, parseInt(min), parseInt(max));
+                const isDirectionX = axis.getAttribute('direction').toLowerCase() === Direction.X.toString().toLowerCase();
+
                 this.svgContainer
                 .append('g')
-                .attr('class', axis.direction === Direction.X ? 'x-axis' : 'y-axis')
-                .attr('transform', axis.direction === Direction.X ? axis.translationX : axis.translationY )
-                .call(axis.direction === Direction.X ? axisBottom(axis.scale) : axisLeft(axis.scale)); // Create an axis component with d3.axisBottom
+                .attr('class', isDirectionX ? 'x-axis' : 'y-axis')
+                .attr('transform', isDirectionX ? translationX : translationY )
+                .call(isDirectionX ? axisBottom(scale) : axisLeft(scale));
             });
         }
     }
