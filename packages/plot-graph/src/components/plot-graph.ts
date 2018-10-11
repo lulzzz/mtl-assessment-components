@@ -32,13 +32,13 @@ export class PlotGraph extends ComponentBase<any> {
     @property({ type: Number, attribute:'equation-xmin'})
     public equationXmin: number = 0;
     @property({ type: Number, attribute:'equation-xmax'})
-    public equationXmax: number = 0;
+    public equationXmax: number = 10;
     @property({ type: Number, attribute:'equation-ymax'})
-    public equationYmax: number = 0;
+    public equationYmax: number = 10;
     @property({ type: Number, attribute:'equation-ymin'})
     public equationYmin: number = 0;
     @property({ type: Number })
-    public step: number = 0;
+    public step: number = 1;
     @property({ type: Array })
 
     /**
