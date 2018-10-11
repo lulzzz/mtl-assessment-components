@@ -59,7 +59,6 @@ export class PlotGraph extends ComponentBase<any> {
             .range(range); // output
     }
 
-
     private drawLine(xScale: any, yScale: any): Line<any> {
         return line()
             .x(function(d: any, i: any) {
@@ -157,8 +156,10 @@ export class PlotGraph extends ComponentBase<any> {
             .style('stroke', equation.getAttribute('color'));
         });
 
-        const axisOffset: number = 25;   
-        const translationX = 'translate(0,' + (width - axisOffset) + ')';
+        const axisOffset: number = 20;
+        // trans X and Y of bottom axis
+        const translationX = 'translate(0,' + (height - axisOffset) + ')'; 
+        // trans X and Y of left axis
         const translationY = 'translate(' + axisOffset + ',0)';
 
         //draw the axes (assuming any have been added)
@@ -170,7 +171,7 @@ export class PlotGraph extends ComponentBase<any> {
         
             this.svgContainer
             .append('g')
-            .attr('class', isDirectionX ? 'x-axis' : 'y-axis')
+            .attr('class', isDirectionX ? 'x-axis' : 'y-axis')           
             .attr('transform', isDirectionX ? translationX : translationY )
             .call(isDirectionX ? axisBottom(scale) : axisLeft(scale));
         });
