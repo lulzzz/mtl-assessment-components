@@ -18,8 +18,8 @@ describe(`<${tagName}>`, (): void => {
         // @ts-ignore
         await el.updateComplete;
         // @ts-ignore
-        const equation = el.items[0];
-        expect(equation.innerHTML).to.equal('Math.sin(x/30)');
+        const equation = el.equationItems[0];
+        expect(equation.innerHTML.trim()).to.equal('Math.sin(x/30)');
     });
 
     it('should render a line per equation', async (): Promise<void> => {
@@ -43,14 +43,14 @@ describe(`<${tagName}>`, (): void => {
         const el: PlotGraph = document.querySelector('plot-graph') as any;
         const equation: string = 'Math.sin(x/30)';
         const optionElement: HTMLElement = document.createElement('div');
-        optionElement.setAttribute('slot', 'options');
+        optionElement.setAttribute('slot', 'equation-items');
         optionElement.innerHTML = equation;
         el.appendChild(optionElement);
         await el.updateComplete;
         // @ts-ignore
-        expect(el.items.length).to.equal(1);
+        expect(el.equationItems.length).to.equal(1);
         // @ts-ignore
-        expect(el.items[0].innerHTML).to.equal(equation);
+        expect(el.equationItems[0].innerHTML).to.equal(equation);
     });
 });
 

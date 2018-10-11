@@ -20,15 +20,23 @@ enum Direction {
 /**
  * `<plot-graph>`
  * @demo ./demo/index.html
+ * 
+ * Plot a graph on a canvas of canvasSize pixels square using
+ * component-base CoordinateSystem to define the axes and equation-items for the equations
+ * 
+ * canvasSize is used for the X and Y dimensions of the canvas in pixels
+ * equationXmin etc are variables the bound the range of the equations (independently of the axis dimensions)
+ * step - the intervals at which points are plotted along the equation graphs
+ * 
  */
 export class PlotGraph extends ComponentBase<any> {
     private axes: any[] = [];
-    private axisSize: number = 25;
-    protected graphSize: number = 500;
     protected svgContainer: any = null;
     protected rendered: boolean = false;
+    @property({ type: Number, attribute:'canvas-size'})
+    protected canvasSize: number = 500;
     @property({ type: Array })
-    protected items: HTMLElement[] = [];
+    protected equationItems: HTMLElement[] = [];
     @property({ type: Number, attribute:'equation-xmin'})
     public equationXmin: number = 0;
     @property({ type: Number, attribute:'equation-xmax'})
@@ -49,7 +57,7 @@ export class PlotGraph extends ComponentBase<any> {
      */
     private scale(axis: Direction, min: number, max: number): d3.ScaleLinear<number, number> {
         const domain = [min, max];
-        const range = (axis === Direction.X ? [0, this.graphSize] : [this.graphSize, 0]);
+        const range = (axis === Direction.X ? [0, this.canvasSize] : [this.canvasSize, 0]);
         return scaleLinear()
             .domain(domain) // input
             .range(range); // output
@@ -72,7 +80,13 @@ export class PlotGraph extends ComponentBase<any> {
             }) // set the y values for the line generator
             .curve(curveMonotoneX); // apply smoothing to the line
     }
-
+    
+    /**
+     * A Coordinate System contains axis
+     * 
+     * @param  {Event} event
+     * @returns void
+     */
     private _onCoordSystemAdded(event: Event): void {
         const slot: HTMLSlotElement = event.srcElement as HTMLSlotElement;
         if (slot) {
@@ -87,57 +101,56 @@ export class PlotGraph extends ComponentBase<any> {
     }
 
     /**
+     * Fired when equations are added
+     * 
     * Fired on slot change
     * @param {Event} event
     */
    protected _onSlotChanged(event: Event): void {
         const slot: HTMLSlotElement = event.srcElement as HTMLSlotElement;
         if (slot) {
-            const items: HTMLElement[] = [];
+            const equationItems: HTMLElement[] = [];
             slot.assignedNodes().forEach(
                 (el: HTMLElement): void => {
-                    items.push(el);
+                    equationItems.push(el);
                 }
             );
 
-            this.items = items;
+            this.equationItems = equationItems;
         }
-
-        console.log('items;', this.items);
     }
 
     protected render(): TemplateResult {
         return html`
         <link rel="stylesheet" type="text/css" href="/css/plot-graph.css">
         <div id="canvas"></div>
-        <slot hidden name="options" class="options" @slotchange=${(evt: Event) => this._onSlotChanged(evt)}> </slot>
+        <slot hidden name="equation-items" class="equations" @slotchange=${(evt: Event) => this._onSlotChanged(evt)}> </slot>
         <slot hidden name="graph-axis" @slotchange=${(evt: Event) => this._onCoordSystemAdded(evt)}> </slot>
         `;
     }
 
     /**
-     * Called after rendering (graph and lines generated here).
+     * Called after rendering (graph axis and lines generated as an SVG and added to the canvas here ).
      *
      * @returns void
      */
     public updated(): void {
-        console.log('updated rendered: ', this.rendered, 'this.items.length: ', this.items.length);
-        if (!this.rendered && this.items.length > 0) {
-            console.log('updated');
+        if (!this.rendered && this.equationItems.length > 0) {
             this.rendered = true;
             const numberPoints = this.equationXmax - this.equationXmin / this.step;
-            
+            const axisOffset: number = 25;
+
             this.svgContainer = select(this.shadowRoot).select('#canvas')
             .append('svg')
-            .attr('width', this.graphSize)
-            .attr('height', this.graphSize)
+            .attr('width', this.canvasSize)
+            .attr('height', this.canvasSize)
             .append('g');
 
             const xScale = this.scale(Direction.X, this.equationXmin, this.equationXmax);
             const yScale = this.scale(Direction.Y, this.equationYmin, this.equationYmax);
 
             // plot a line for each equation
-            this.items.forEach(equation => {
+            this.equationItems.forEach(equation => {
                 // get Y for each X (apply equation)
                 const dataset = range(numberPoints).map(function(x: any) {
                     return { y: prepareValue(equation, x) };
@@ -152,8 +165,8 @@ export class PlotGraph extends ComponentBase<any> {
                 .style('stroke', equation.getAttribute('color'));
             });
 
-            const translationX = 'translate(0,' + (this.graphSize - this.axisSize) + ')';
-            const translationY = 'translate(' + this.axisSize + ',0)';
+            const translationX = 'translate(0,' + (this.canvasSize - axisOffset) + ')';
+            const translationY = 'translate(' + axisOffset + ',0)';
 
             //draw the axes (assuming any have been added)
             this.axes.forEach((axis) => {
