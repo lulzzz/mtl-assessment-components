@@ -184,14 +184,14 @@ export class PlotGraph extends ComponentBase<any> {
      */
     public updated(): void {
 
-        window.onresize = () => {  
-            this.drawGraph();
-        };
-
         // render first after equationItems have been added
         if (!this.graphDrawn && this.equationItems.length > 0) {
             this.graphDrawn = true;
             this.drawGraph();
+
+            window.onresize = () => {  
+                this.drawGraph();
+            };
         }
     }
 }
