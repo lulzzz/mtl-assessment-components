@@ -19,15 +19,14 @@ enum Direction {
 
 /**
  * `<plot-graph>`
- * @demo ./demo/index.html
- * 
  * Plot a graph on a canvas of canvasSize pixels square using
  * component-base CoordinateSystem to define the axes and equation-items for the equations
- * 
+ *
  * canvasSize is used for the X and Y dimensions of the canvas in pixels
  * equationXmin etc are variables the bound the range of the equations (independently of the axis dimensions)
  * step - the intervals at which points are plotted along the equation graphs
- * 
+ * @demo ./demo/index.html
+ *
  */
 export class PlotGraph extends ComponentBase<any> {
     private axes: any[] = [];
@@ -63,13 +62,7 @@ export class PlotGraph extends ComponentBase<any> {
             .range(range); // output
     }
 
-    /**
-     * Return d3 line function
-     *
-     * @param  {any} xScale
-     * @param  {any} yScale
-     * @returns d3.Line
-     */
+
     private drawLine(xScale: any, yScale: any): Line<any> {
         return line()
             .x(function(d: any, i: any) {
@@ -80,7 +73,7 @@ export class PlotGraph extends ComponentBase<any> {
             }) // set the y values for the line generator
             .curve(curveMonotoneX); // apply smoothing to the line
     }
-    
+
     /**
      * A Coordinate System contains axis
      * 
