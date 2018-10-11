@@ -93,12 +93,10 @@ export class DragDrop extends ComponentBase<string[]> {
                     ? (container.getElement(sourceId).cloneNode(true) as HTMLElement)
                     : container.getElement(sourceId);
             }
-
-            if (dataElement && target.isDropAllowed()) {
+            if (dataElement && (target instanceof DragContainer || target instanceof DropContainer) && target.isDropAllowed()) {
                 target.add(dataElement, event.x - this.offsetX, event.y - this.offsetY);
             } else if (this.isSwappable(event.srcElement as HTMLElement)) {
                 // if dispenser, modifying a copy has no impact
-                console.log('swapping');
                 const placeHolder: string = dataElement.innerHTML;
                 dataElement.innerHTML = event.srcElement.innerHTML;
                 event.srcElement.innerHTML = placeHolder;
