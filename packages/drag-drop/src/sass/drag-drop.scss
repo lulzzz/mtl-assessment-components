@@ -17,6 +17,9 @@
         transform: translateY(-2px);
     }
 }
+[sticky] > * {
+    position: absolute;
+}
 
 .positive {
     outline: 2px solid green;

@@ -8,6 +8,8 @@ export class DropContainer extends ComponentBase<string[]> implements Feedback {
     public maxItems: number;
     @property({ type: Array })
     public addedItems: string[] = [];
+    @property({ type: Boolean })
+    public sticky: boolean = false;
 
     // @mixin: Feedback
     computeFeedback: (value: string[]) => FeedbackMessage;
@@ -43,6 +45,10 @@ export class DropContainer extends ComponentBase<string[]> implements Feedback {
         element.style.top = y.toString();
         this.appendChild(element);
     }
+    public isDropAllowed(): boolean {
+        return this.maxItems > this.childrenCount;
+    }
+
     protected render(): TemplateResult {
         this.className = this.feedbackMessage ? this.feedbackMessage.type : '';
 
@@ -53,6 +59,7 @@ export class DropContainer extends ComponentBase<string[]> implements Feedback {
 
         `;
     }
+
     private _onSlotChanged(event: Event): void {
         const items: string[] = [];
         const slot: HTMLSlotElement = event.srcElement as HTMLSlotElement;

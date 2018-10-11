@@ -36,12 +36,6 @@ export class DragDrop extends ComponentBase<string[]> {
         </div>
         `;
     }
-    private isDropAllowed(element: HTMLElement): boolean {
-        return (
-            (element instanceof DragContainer && !element.isDispenser) ||
-            (element instanceof DropContainer && (element as DropContainer).maxItems > (element as DropContainer).childrenCount)
-        );
-    }
     private isSwappable(element: HTMLElement): boolean {
         return element.classList.contains('option-item') && element.parentElement instanceof DropContainer;
     }
@@ -95,12 +89,12 @@ export class DragDrop extends ComponentBase<string[]> {
         container = type === 'drop-container' ? this.dropContainers[index] : this.dragContainers[index];
         if (this.id === parentId) {
             if (container) {
-                dataElement = (container as DragContainer).isDispenser
+                dataElement = (container as DragContainer).dispenser
                     ? (container.getElement(sourceId).cloneNode(true) as HTMLElement)
                     : container.getElement(sourceId);
             }
 
-            if (dataElement && this.isDropAllowed(target)) {
+            if (dataElement && target.isDropAllowed()) {
                 target.add(dataElement, event.x - this.offsetX, event.y - this.offsetY);
             } else if (this.isSwappable(event.srcElement as HTMLElement)) {
                 // if dispenser, modifying a copy has no impact

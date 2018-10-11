@@ -6,7 +6,7 @@ import { ComponentBase, html, TemplateResult, property } from '@hmh/component-ba
  */
 export class DragContainer extends ComponentBase<string> {
     @property({ type: Boolean, attribute: 'dispenser' })
-    isDispenser: boolean = false;
+    dispenser: boolean = false;
     @property({ type: Array })
     options: string[] = [];
     @property({ type: Boolean, attribute: 'trash' })
@@ -18,6 +18,10 @@ export class DragContainer extends ComponentBase<string> {
     public add(element: HTMLElement, x?: number, y?: number): void {
         this.appendChild(element);
     }
+    public isDropAllowed(): boolean {
+        return !this.dispenser;
+    }
+
     protected render(): TemplateResult {
         return html`
         <link rel="stylesheet"href="/css/drag-drop.css">

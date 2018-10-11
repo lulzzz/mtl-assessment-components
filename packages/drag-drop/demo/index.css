@@ -29,9 +29,7 @@
     border: solid 1.5px;
     vertical-align: top;
 }
-#drop-matt > * {
-    position: absolute;
-}
+
 #dispenser-matt {
     width: 300px;
     height: 100px;
