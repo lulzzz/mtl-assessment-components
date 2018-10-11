@@ -19,8 +19,7 @@ enum Direction {
 
 /**
  * `<plot-graph>`
- * Plot a graph on a canvas of canvasSize pixels square using
- * component-base CoordinateSystem to define the axes and equation-items for the equations
+ * Plot a graph using component-base CoordinateSystem to define the axes and equation-items for the equations
  *
  * equationXmin etc are variables the bound the range of the equations (independently of the axis dimensions)
  * step - the intervals at which points are plotted along the equation graphs
@@ -58,8 +57,13 @@ export class PlotGraph extends ComponentBase<any> {
             .domain(domain) // input
             .range(range); // output
     }
-
-    private drawLine(xScale: any, yScale: any): Line<any> {
+    
+    /**
+     * @param  {d3.ScaleLinear<number, number>} xScale
+     * @param  {d3.ScaleLinear<number, number>} yScale
+     * @returns Returns a D3 line defined by xScale and yScale 
+     */
+    private drawLine(xScale: d3.ScaleLinear<number, number>, yScale: d3.ScaleLinear<number, number>): Line<any> {
         return line()
             .x(function(d: any, i: any) {
                 return xScale(i);
@@ -117,7 +121,11 @@ export class PlotGraph extends ComponentBase<any> {
         <slot hidden name="graph-axis" @slotchange=${(evt: Event) => this._onCoordSystemAdded(evt)}> </slot>
         `;
     }
-
+    /**
+     * Draws an svg graph using d3, CoordinateSystem to define the axes and equation-items for the equations.
+     * The SVG is attached to the 'canvas' element
+     * @returns void
+     */
     private drawGraph(): void {
         const aspect = 1;
         const canvas = this.shadowRoot.getElementById('canvas');
