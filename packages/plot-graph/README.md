@@ -4,7 +4,7 @@
 
 ```html
 <!-- basic usage -->
-    <plot-graph equation-xmin="0" equation-xmax="360" equation-ymin="-10" equation-ymax="10" step="1" canvas-size="500">
+    <plot-graph equation-xmin="0" equation-xmax="360" equation-ymin="-10" equation-ymax="10" step="1">
 
         <coordinate-system slot="graph-axis">
             <div slot="axis" color="red" direction="x" min="-5" max="5" axis-visibility="visible" scale-visibility="visible" other-axes-crossing-point="0">some label</div>

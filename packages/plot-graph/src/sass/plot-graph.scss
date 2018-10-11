@@ -1,8 +1,9 @@
 
 
-#canvas {
+.canvas {
     display: inline-flex;
     background-color: lightgray;
+    width: 100%;
 }
 
 .line-description {
@@ -22,6 +23,5 @@
 }
 
 .grid path {
-      stroke-width: 0;
+    stroke-width: 0;
 }
-
