@@ -52,6 +52,27 @@ describe(`<${tagName}>`, (): void => {
         // @ts-ignore
         expect(el.equationItems[0].innerHTML).to.equal(equation);
     });
+
+    it('should set coordinate system axis in response to a slot change event', async (): Promise<void> => {
+        withSnippet('no-equations');
+        const el: PlotGraph = document.querySelector('plot-graph') as any;
+        const expectedInnerHTML = '<p>i am the expected axis</p>'
+        const axisElement: HTMLElement = document.createElement('div');
+        axisElement.setAttribute('slot', 'axis');
+        axisElement.innerHTML = expectedInnerHTML;
+
+        const coordSystemElem: HTMLElement = document.createElement('coordinate-system');
+        coordSystemElem.setAttribute('slot', 'graph-axis');
+        coordSystemElem.appendChild(axisElement);
+        await el.updateComplete;
+        el.appendChild(coordSystemElem);
+        await el.updateComplete;
+        // @ts-ignore
+        expect(el.axes.length).to.equal(1);
+        // @ts-ignore
+        expect(el.axes[0].innerHTML).to.equal(expectedInnerHTML);
+    });
+
 });
 
 mocha.run();
