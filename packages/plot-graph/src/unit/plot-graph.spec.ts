@@ -19,17 +19,15 @@ describe(`<${tagName}>`, (): void => {
         await el.updateComplete;
         // @ts-ignore
         const equation = el.equationItems[0];
-        expect(equation.innerHTML.trim()).to.equal('Math.sin(x/30)');
+        expect(equation.innerText.trim()).to.equal('Math.sin(x/30)');
     });
 
     it('should render a line per equation', async (): Promise<void> => {
         withSnippet('three-equations');
         const el: PlotGraph = document.querySelector('plot-graph') as any;
-        await el.updateComplete;
         var lineCount: number = 0;
-        
         // @ts-ignore
-        el.drawLine = function (xScale: any, yScale: any): d3.Line<any> {
+        el.drawLine = function (xScale: d3.ScaleLinear<number, number>, yScale: d3.ScaleLinear<number, number>): d3.Line<any> {
             lineCount++;
         };
 
