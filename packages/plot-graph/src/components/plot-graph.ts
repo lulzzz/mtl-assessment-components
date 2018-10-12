@@ -29,20 +29,8 @@ enum Direction {
 export class PlotGraph extends ComponentBase<any> {
     private axes: any[] = [];
     protected svgContainer: any = null;
-    protected graphDrawn: boolean = false;
     @property({ type: Array })
     protected equationItems: HTMLElement[] = [];
-    @property({ type: Number, attribute:'equation-xmin'})
-    public equationXmin: number = 0;
-    @property({ type: Number, attribute:'equation-xmax'})
-    public equationXmax: number = 10;
-    @property({ type: Number, attribute:'equation-ymax'})
-    public equationYmax: number = 10;
-    @property({ type: Number, attribute:'equation-ymin'})
-    public equationYmin: number = 0;
-    @property({ type: Number })
-    public step: number = 1;
-    @property({ type: Array })
 
     /**
      * Return a d3.scale function
@@ -110,17 +98,23 @@ export class PlotGraph extends ComponentBase<any> {
             );
 
             this.equationItems = equationItems;
+            this.drawGraph();
         }
     }
 
     protected render(): TemplateResult {
         return html`
         <link rel="stylesheet" type="text/css" href="/css/plot-graph.css">
-        <div class="canvas" id="canvas"></div>
+
+            <div class="container">
+                <div id="canvas"></div>
+            </div>
+
+            <slot hidden name="graph-axis" @slotchange=${(evt: Event) => this._onCoordSystemAdded(evt)}> </slot>
         <slot hidden name="equation-items" class="equations" @slotchange=${(evt: Event) => this._onSlotChanged(evt)}> </slot>
-        <slot hidden name="graph-axis" @slotchange=${(evt: Event) => this._onCoordSystemAdded(evt)}> </slot>
         `;
     }
+
     /**
      * Draws an svg graph using d3, CoordinateSystem to define the axes and equation-items for the equations.
      * The SVG is attached to the 'canvas' element
@@ -137,19 +131,27 @@ export class PlotGraph extends ComponentBase<any> {
             canvas.removeChild(canvas.firstChild);
         }
 
-        this.svgContainer = select(this.shadowRoot).select('.canvas')
+        // https://chartio.com/resources/tutorials/how-to-resize-an-svg-when-the-window-is-resized-in-d3-js/
+        this.svgContainer = select(this.shadowRoot).select('#canvas')
         .append('svg')
-        .attr('width', width)
-        .attr('height', height)
+        .attr("preserveAspectRatio", "xMinYMin meet")
+        .attr('viewBox', `0 0 ${width} ${height}`)
+        .classed("svg-content", true)
+        .style("width", "100%")
+        .style("height", "100%")
         .append('g');
-
-        const xScale = this.scale(Direction.X, this.equationXmin, this.equationXmax, width);
-        const yScale = this.scale(Direction.Y, this.equationYmin, this.equationYmax, height);
-
-        const numberPoints = this.equationXmax - this.equationXmin / this.step;
 
         // plot a line for each equation
         this.equationItems.forEach(equation => {
+            const equationXmin = parseInt(equation.getAttribute('equation-xmin'));
+            const equationXmax = parseInt(equation.getAttribute('equation-xmax')); 
+            const equationYmin = parseInt(equation.getAttribute('equation-ymin')); 
+            const equationYmax = parseInt(equation.getAttribute('equation-ymax')); 
+            const step = parseInt(equation.getAttribute('step')); 
+            const xScale = this.scale(Direction.X, equationXmin, equationXmax, width);
+            const yScale = this.scale(Direction.Y, equationYmin, equationYmax, height);
+            const numberPoints = equationXmax - equationXmin / step;
+
             // get Y for each X (apply equation)
             const dataset = range(numberPoints).map(function(x: any) {
                 return { y: prepareValue(equation, x) };
@@ -183,24 +185,6 @@ export class PlotGraph extends ComponentBase<any> {
             .attr('transform', isDirectionX ? translationX : translationY )
             .call(isDirectionX ? axisBottom(scale) : axisLeft(scale));
         });
-    }
-
-    /**
-     * Called after rendering (graph axis and lines generated as an SVG and added to the canvas here ).
-     *
-     * @returns void
-     */
-    public updated(): void {
-
-        // render first after equationItems have been added
-        if (!this.graphDrawn && this.equationItems.length > 0) {
-            this.graphDrawn = true;
-            this.drawGraph();
-
-            window.onresize = () => {  
-                this.drawGraph();
-            };
-        }
     }
 }
 

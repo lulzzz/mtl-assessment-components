@@ -22,34 +22,32 @@
 <body>
     <!-- test fixtures -->
     <template id="no-equations">
-        <plot-graph equation-xmin="0" equation-xmax="360" equation-ymin="-10" equation-ymax="10" step="1">
+        <plot-graph>
         </plot-graph>
     </template>
 
     <template id="default">
-        <plot-graph equation-xmin="0" equation-xmax="360" equation-ymin="-10" equation-ymax="10" step="1">
-
+        <plot-graph>
             <coordinate-system slot="graph-axis">
                 <div slot="axis" color="red" direction="x" min="-5" max="5" axis-visibility="visible" scale-visibility="visible" other-axes-crossing-point="0">some label</div>
                 <div slot="axis" color="green" direction="y" min="-5" max="5" axis-visibility="visible" scale-visibility="visible" other-axes-crossing-point="0">some label</div>
             </coordinate-system>
-
-            <div slot="equation-items" class="equation-item" color="red"> Math.sin(x/30) </div>
-            
+    
+            <div slot="equation-items" class="equation-item" color="red" equation-xmin="0" equation-xmax="360" equation-ymin="-10" equation-ymax="10" step="1">Math.sin(x/30)</div>
+    
         </plot-graph>
     </template>
 
     <template id="three-equations">
-        <plot-graph equation-xmin="0" equation-xmax="360" equation-ymin="-10" equation-ymax="10" step="1">
-
+        <plot-graph>
             <coordinate-system slot="graph-axis">
                 <div slot="axis" color="red" direction="x" min="-5" max="5" axis-visibility="visible" scale-visibility="visible" other-axes-crossing-point="0">some label</div>
                 <div slot="axis" color="green" direction="y" min="-5" max="5" axis-visibility="visible" scale-visibility="visible" other-axes-crossing-point="0">some label</div>
             </coordinate-system>
-
-            <div slot="equation-items" class="equation-item" color="red"> Math.sin(x/30) </div>
-            <div slot="equation-items" class="equation-item" color="blue"> Math.cos(x/30) </div>
-            <div slot="equation-items" class="equation-item" color="green"> Math.tan(x/30) </div>
+    
+            <div slot="equation-items" class="equation-item" color="red" equation-xmin="0" equation-xmax="360" equation-ymin="-10" equation-ymax="10" step="1">Math.sin(x/30)</div>
+            <div slot="equation-items" class="equation-item" color="blue" equation-xmin="0" equation-xmax="360" equation-ymin="-10" equation-ymax="10" step="1">Math.cos(x/30)</div>
+            <div slot="equation-items" class="equation-item" color="green" equation-xmin="0" equation-xmax="360" equation-ymin="-10" equation-ymax="10" step="1">Math.tan(x/30)</div>
         </plot-graph>
     </template>
 
