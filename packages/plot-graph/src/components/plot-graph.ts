@@ -126,10 +126,6 @@ export class PlotGraph extends ComponentBase<any> {
         const width = canvas.clientWidth;
         const height = Math.round(width / aspect);
 
-        // wipe existing graph before redrawing
-        while (canvas.firstChild) {
-            canvas.removeChild(canvas.firstChild);
-        }
 
         // https://chartio.com/resources/tutorials/how-to-resize-an-svg-when-the-window-is-resized-in-d3-js/
         this.svgContainer = select(this.shadowRoot)
