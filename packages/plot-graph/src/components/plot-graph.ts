@@ -62,7 +62,7 @@ export class PlotGraph extends ComponentBase<any> {
             );
 
             this.equationItems = equationItems;
-            this.drawGraph();
+            this.drawGraph();     
         }
     }
 
@@ -113,6 +113,8 @@ export class PlotGraph extends ComponentBase<any> {
                 }
             );
         }
+        // in case axes are added after the equations
+        this.drawGraph();
     }
 
     /**
@@ -175,7 +177,7 @@ export class PlotGraph extends ComponentBase<any> {
             const min = axis.getAttribute('min');
             const max = axis.getAttribute('max');
             const scale = this.scale(axis.direction, parseInt(min), parseInt(max), isDirectionX ? width : height);
-
+            
             this.svgContainer
                 .append('g')
                 .attr('class', isDirectionX ? 'x-axis' : 'y-axis')

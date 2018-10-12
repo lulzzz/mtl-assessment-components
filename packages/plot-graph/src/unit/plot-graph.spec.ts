@@ -1,5 +1,6 @@
 import { PlotGraph } from '../components/plot-graph.js';
 import { checkComponentDOM } from './test-helpers.js';
+import { scaleLinear } from 'd3-scale';
 const tagName: string = 'plot-graph';
 const expect: any = chai.expect;
 
@@ -15,7 +16,6 @@ describe(`<${tagName}>`, (): void => {
     it('should update equations from slot elements', async (): Promise<void> => {
         withSnippet('default');
         const el: PlotGraph = document.querySelector('plot-graph') as any;
-        // @ts-ignore
         await el.updateComplete;
         // @ts-ignore
         const equation = el.equationItems[0];
@@ -52,11 +52,15 @@ describe(`<${tagName}>`, (): void => {
     });
 
     it('should set coordinate system axis in response to a slot change event', async (): Promise<void> => {
-        withSnippet('no-equations');
+        withSnippet('no-axis');
         const el: PlotGraph = document.querySelector('plot-graph') as any;
         const expectedInnerHTML = '<p>i am the expected axis</p>'
         const axisElement: HTMLElement = document.createElement('div');
         axisElement.setAttribute('slot', 'axis');
+        axisElement.setAttribute('color', 'red');
+        axisElement.setAttribute('direction', 'x');
+        axisElement.setAttribute('min', '-5');
+        axisElement.setAttribute('max', '5');
         axisElement.innerHTML = expectedInnerHTML;
 
         const coordSystemElem: HTMLElement = document.createElement('coordinate-system');
@@ -70,6 +74,38 @@ describe(`<${tagName}>`, (): void => {
         // @ts-ignore
         expect(el.axes[0].innerHTML).to.equal(expectedInnerHTML);
     });
+
+    it('drawLine should return x and y', async (): Promise<void> => {
+        withSnippet('no-equations');
+
+        const domain = [0, 1];
+        const range = [0, 10];
+        const scale = scaleLinear()
+            .domain(domain) // input
+            .range(range); // output
+
+        const el: PlotGraph = document.querySelector('plot-graph') as any;
+        await el.updateComplete;
+
+        // @ts-ignore
+        const lineX = el.drawLine(scale, scale).x();
+        // @ts-ignore
+        const lineY = el.drawLine(scale, scale).y();
+        expect(lineX).to.not.be.null;
+        expect(lineY).to.not.be.null;
+    });
+
+    it('scale should return domain and range', async (): Promise<void> => {
+        withSnippet('no-equations');
+
+        const el: PlotGraph = document.querySelector('plot-graph') as any;
+        await el.updateComplete;
+
+        // @ts-ignore
+        const testScale = el.scale('X', 0, 100, 100);
+
+        expect(testScale).to.not.be.null;
+    }); 
 
 });
 
