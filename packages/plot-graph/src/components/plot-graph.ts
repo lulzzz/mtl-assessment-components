@@ -139,8 +139,9 @@ export class PlotGraph extends ComponentBase<any> {
 
         this.svgContainer = select(this.shadowRoot).select('.canvas')
         .append('svg')
-        .attr('width', width)
-        .attr('height', height)
+        .attr('viewBox', `0 0 ${width} ${height}`)
+        .style("width", "100%")
+        .style("height", "100%")
         .append('g');
 
         const xScale = this.scale(Direction.X, this.equationXmin, this.equationXmax, width);
@@ -196,10 +197,6 @@ export class PlotGraph extends ComponentBase<any> {
         if (!this.graphDrawn && this.equationItems.length > 0) {
             this.graphDrawn = true;
             this.drawGraph();
-
-            window.onresize = () => {  
-                this.drawGraph();
-            };
         }
     }
 }
