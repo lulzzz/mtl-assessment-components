@@ -1,9 +1,10 @@
-import { ComponentBase, html, TemplateResult, property } from '@hmh/component-base';
-import { select } from 'd3-selection';
-import { scaleLinear } from 'd3-scale';
+import { html, TemplateResult, property, ComponentBase, CoordinateSystem } from '@hmh/component-base';
 import { line, curveMonotoneX } from 'd3-shape';
 import { range } from 'd3-array';
+import { select } from 'd3-selection';
 import { axisBottom, axisLeft } from 'd3-axis';
+import { Line } from 'd3-shape';
+import { scaleLinear } from 'd3-scale';
 
 // This is a mock
 function prepareValue(equation: HTMLElement, x: string): number {
@@ -12,41 +13,79 @@ function prepareValue(equation: HTMLElement, x: string): number {
 
 enum Direction {
     X = 'X',
-    Y = 'Y'
+    Y = 'Y',
+    Z = 'Z'
 }
 
 /**
  * `<plot-graph>`
+ * Plot a graph using component-base CoordinateSystem to define the axes and equation-items for the equations
+ *
+ * equationXmin etc are variables the bound the range of the equations (independently of the axis dimensions)
+ * step - the intervals at which points are plotted along the equation graphs
  * @demo ./demo/index.html
+ *
  */
-export class PlotGraph extends ComponentBase<string> {
-    @property({ type: Number })
-    public xmin: number = 0;
-    @property({ type: Number })
-    public xmax: number = 0;
-    @property({ type: Number })
-    public ymax: number = 0;
-    @property({ type: Number })
-    public ymin: number = 0;
-    @property({ type: Number })
-    public step: number = 0;
+export class PlotGraph extends ComponentBase<any> {
+    private axes: any[] = [];
+    protected svgContainer: any = null;
     @property({ type: Array })
-    private equations: HTMLElement[] = [];
-    public shadowRoot: ShadowRoot;
+    protected equationItems: HTMLElement[] = [];
 
-    private graphSize: number = 500;
-    private svgContainer: any = null;
-    private renderedGraph: boolean = false;
-    private axisSize: number = 25;
+    protected render(): TemplateResult {
+        return html`
+        <link rel="stylesheet" type="text/css" href="/css/plot-graph.css">
+
+        <div class="container">
+            <div id="canvas"></div>
+        </div>
+
+        <slot hidden name="graph-axis" @slotchange=${(evt: Event) => this._onCoordSystemAdded(evt)}> </slot>
+        <slot hidden name="equation-items" class="equations" @slotchange=${(evt: Event) => this._onSlotChanged(evt)}> </slot>
+        `;
+    }
 
     /**
-     * Return d3 line function
+     * Fired when equations are added
      *
-     * @param  {any} xScale
-     * @param  {any} yScale
-     * @returns d3.Line
+     * Fired on slot change
+     * @param {Event} event
      */
-    private drawLine(xScale: any, yScale: any): d3.Line<any> {
+    protected _onSlotChanged(event: Event): void {
+        const slot: HTMLSlotElement = event.srcElement as HTMLSlotElement;
+        if (slot) {
+            const equationItems: HTMLElement[] = [];
+            slot.assignedNodes().forEach(
+                (el: HTMLElement): void => {
+                    equationItems.push(el);
+                }
+            );
+
+            this.equationItems = equationItems;
+            this.drawGraph();     
+        }
+    }
+
+    /**
+     * Return a d3.scale function
+     *
+     * @param  {Direction} axis X or Y
+     * @returns d3.ScaleLinear
+     */
+    private scale(axis: Direction, min: number, max: number, size: number): d3.ScaleLinear<number, number> {
+        const domain = [min, max];
+        const range = axis === Direction.X ? [0, size] : [size, 0];
+        return scaleLinear()
+            .domain(domain) // input
+            .range(range); // output
+    }
+
+    /**
+     * @param  {d3.ScaleLinear<number, number>} xScale
+     * @param  {d3.ScaleLinear<number, number>} yScale
+     * @returns Returns a D3 line defined by xScale and yScale
+     */
+    private drawLine(xScale: d3.ScaleLinear<number, number>, yScale: d3.ScaleLinear<number, number>): Line<any> {
         return line()
             .x(function(d: any, i: any) {
                 return xScale(i);
@@ -58,107 +97,93 @@ export class PlotGraph extends ComponentBase<string> {
     }
 
     /**
-     * Return a d3.scale function
+     * A Coordinate System contains axis
      *
-     * @param  {Direction} axis X or Y
-     * @returns d3.ScaleLinear
-     */
-    private scale(axis: Direction): d3.ScaleLinear<number, number> {
-        const domain = axis === Direction.X ? [this.xmin, this.xmax] : [this.ymin, this.ymax];
-        const range = axis === Direction.X ? [0, this.graphSize] : [this.graphSize, 0];
-
-        return scaleLinear()
-            .domain(domain) // input
-            .range(range); // output
-    }
-
-    /**
-     * Add an axis to svgContainer (the graph)
-     *
-     * @param  {Direction} axis
-     * @param  {d3.ScaleLinear<number} scale
-     * @param  {} number>
+     * @param  {Event} event
      * @returns void
      */
-    private addAxis(axis: Direction, scale: d3.ScaleLinear<number, number>): void {
-        const translationX = 'translate(0,' + (this.graphSize - this.axisSize) + ')';
-        const translationY = 'translate(' + this.axisSize + ',0)';
-
-        // Call the x axis in a group tag
-        this.svgContainer
-            .append('g')
-            .attr('class', axis === Direction.X ? 'x-axis' : 'y-axis')
-            .attr('transform', axis === Direction.X ? translationX : translationY)
-            .call(axis === Direction.X ? axisBottom(scale) : axisLeft(scale)); // Create an axis component with d3.axisBottom
-    }
-
-    protected render(): TemplateResult {
-        return html`
-        <link rel="stylesheet" href="/css/plot-graph.css">
-        <div id="canvas"></div>
-        <slot hidden name="options" class="options" @slotchange=${(evt: Event) => this._onSlotChanged(evt)}></slot>
-        `;
-    }
-
-    /**
-     * Called after rendering (graph and lines generated here).
-     *
-     * @returns void
-     */
-    public updated(): void {
-        if (!this.renderedGraph && this.equations.length > 0) {
-            const numberPoints = this.xmax - this.xmin / this.step;
-            this.renderedGraph = true;
-            this.svgContainer = select(this.shadowRoot)
-                .select('#canvas')
-                .append('svg');
-
-            const xScale = this.scale(Direction.X);
-            const yScale = this.scale(Direction.Y);
-
-            this.svgContainer
-                .attr('width', this.graphSize)
-                .attr('height', this.graphSize)
-                .append('g');
-
-            // plot a line for each equation
-            this.equations.forEach(equation => {
-                // get Y for each X (apply equation)
-                const dataset = range(numberPoints).map(function(x: any) {
-                    return { y: prepareValue(equation, x) };
-                });
-
-                // Append the path, bind the data, and call the line generator
-                this.svgContainer
-                    .append('path')
-                    .datum(dataset) // inds data to the line
-                    .attr('class', 'line') // Assign a class for styling
-                    .attr('d', this.drawLine(xScale, yScale)) // Calls the line generator
-                    .style('stroke', equation.getAttribute('color'));
-            });
-
-            // Call the X and Y axes in a group tag
-            this.addAxis(Direction.X, xScale);
-            this.addAxis(Direction.Y, yScale);
-        }
-    }
-
-    /**
-     * Fired on slot change
-     * @param {Event} event
-     */
-    protected _onSlotChanged(event: Event): void {
+    private _onCoordSystemAdded(event: Event): void {
         const slot: HTMLSlotElement = event.srcElement as HTMLSlotElement;
         if (slot) {
-            const equations: HTMLElement[] = [];
             slot.assignedNodes().forEach(
-                (el: HTMLElement): void => {
-                    equations.push(el);
+                (coordSystem: CoordinateSystem): void => {
+                    coordSystem.getValue().forEach((axis: any) => {
+                        this.axes.push(axis);
+                    });
                 }
             );
-
-            this.equations = equations;
         }
+        // in case axes are added after the equations
+        this.drawGraph();
+    }
+
+    /**
+     * Draws an svg graph using d3, CoordinateSystem to define the axes and equation-items for the equations.
+     * The SVG is attached to the 'canvas' element
+     * @returns void
+     */
+    private drawGraph(): void {
+        const aspect = 1;
+        const canvas = this.shadowRoot.getElementById('canvas');
+        const width = canvas.clientWidth;
+        const height = Math.round(width / aspect);
+
+
+        // https://chartio.com/resources/tutorials/how-to-resize-an-svg-when-the-window-is-resized-in-d3-js/
+        this.svgContainer = select(this.shadowRoot)
+            .select('#canvas')
+            .append('svg')
+            .attr('preserveAspectRatio', 'xMinYMin meet')
+            .attr('viewBox', `0 0 ${width} ${height}`)
+            .classed('svg-content', true)
+            .style('width', '100%')
+            .style('height', '100%')
+            .append('g');
+
+        // plot a line for each equation
+        this.equationItems.forEach(equation => {
+            const equationXmin = parseInt(equation.getAttribute('equation-xmin'));
+            const equationXmax = parseInt(equation.getAttribute('equation-xmax'));
+            const equationYmin = parseInt(equation.getAttribute('equation-ymin'));
+            const equationYmax = parseInt(equation.getAttribute('equation-ymax'));
+            const step = parseInt(equation.getAttribute('step'));
+            const xScale = this.scale(Direction.X, equationXmin, equationXmax, width);
+            const yScale = this.scale(Direction.Y, equationYmin, equationYmax, height);
+            const numberPoints = equationXmax - equationXmin / step;
+
+            // get Y for each X (apply equation)
+            const dataset = range(numberPoints).map(function(x: any) {
+                return { y: prepareValue(equation, x) };
+            });
+
+            // Append the path, bind the data, and call the line generator
+            this.svgContainer
+                .append('path')
+                .datum(dataset) // inds data to the line
+                .attr('class', 'line') // Assign a class for styling
+                .attr('d', this.drawLine(xScale, yScale)) // Calls the line generator
+                .style('stroke', equation.getAttribute('color'));
+        });
+
+        const axisOffset: number = 20;
+        // trans X and Y of bottom axis
+        const translationX = 'translate(0,' + (height - axisOffset) + ')';
+        // trans X and Y of left axis
+        const translationY = 'translate(' + axisOffset + ',0)';
+
+        //draw the axes (assuming any have been added)
+        this.axes.forEach(axis => {
+            const isDirectionX = axis.getAttribute('direction').toLowerCase() === Direction.X.toString().toLowerCase();
+            const min = axis.getAttribute('min');
+            const max = axis.getAttribute('max');
+            const scale = this.scale(axis.direction, parseInt(min), parseInt(max), isDirectionX ? width : height);
+            
+            this.svgContainer
+                .append('g')
+                .attr('class', isDirectionX ? 'x-axis' : 'y-axis')
+                .attr('transform', isDirectionX ? translationX : translationY)
+                .call(isDirectionX ? axisBottom(scale) : axisLeft(scale));
+        });
     }
 }
 

@@ -81,6 +81,13 @@
         </response-validation>
     </template>
 
+    <template id="coordinate-system">
+        <coordinate-system slot="graph-axis">
+            <div slot="axis" color="red" direction="x" min="-5" max="5" axis-visibility="visible" scale-visibility="visible" other-axes-crossing-point="0">some label</div>
+            <div slot="axis" color="green" direction="y" min="-5" max="5" axis-visibility="visible" scale-visibility="visible" other-axes-crossing-point="0">some label</div>
+        </coordinate-system>
+    </template>
+
     <div id="mocha">
         <!-- test results are displayed here -->
     </div>
