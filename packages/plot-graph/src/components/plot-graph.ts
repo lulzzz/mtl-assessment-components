@@ -136,46 +136,26 @@ export class PlotGraph extends ComponentBase<any> {
             .style('height', '100%')
             .append('g');
 
-        const origin = [480, 250], startAngle = Math.PI/8, beta = startAngle;
-        const data = [[{'x':1,'y':1,'z':-1},{'x':-1,'y':1,'z':-1}],[{'x':-1,'y':-1,'z':-1},{'x':1,'y':-1,'z':-1}],[{'x':1,'y':1,'z':-1},{'x':1,'y':-1,'z':-1}],[{'x':-1,'y':1,'z':-1},{'x':-1,'y':-1,'z':-1}],[{'x':1,'y':1,'z':1},{'x':-1,'y':1,'z':1}],[{'x':-1,'y':-1,'z':1},{'x':1,'y':-1,'z':1}],[{'x':1,'y':1,'z':1},{'x':1,'y':-1,'z':1}],[{'x':-1,'y':1,'z':1},{'x':-1,'y':-1,'z':1}],[{'x':-1,'y':1,'z':1},{'x':-1,'y':1,'z':-1},],[{'x':1,'y':1,'z':1},{'x':1,'y':1,'z':-1},],[{'x':-1,'y':-1,'z':1},{'x':-1,'y':-1,'z':-1},],[{'x':1,'y':-1,'z':1},{'x':1,'y':-1,'z':-1},]];
-        
-        const func = _3d()
-		.scale(50)
-		.origin(origin) 
-		.rotateX(startAngle)
-		.rotateY(startAngle)
-        .primitiveType('LINES');
+            var data3D = [ [[0,-1,0],[-1,1,0],[1,1,0]] ];
 
-        function init(data: any){
-
-            this.svgContainer = select(this.shadowRoot)
-            .select('#canvas')
-            .append('svg')
-            .attr('preserveAspectRatio', 'xMinYMin meet')
-            .attr('viewBox', `0 0 ${width} ${height}`)
-            .classed('svg-content', true)
-            .style('width', '100%')
-            .style('height', '100%')
-            .append('g');
-
-            var lines = this.svgContainer.selectAll('line').data(data);
+            var triangles3D = _3d()
+                .scale(100)
+                .origin([480, 250])
+                .shape('TRIANGLE');
             
-            lines
-                .enter()
-                .append('line')
-                .merge(lines)
-                .attr('fill', 'black')
-                .attr('stroke', 'black')
-                .attr('stroke-width', 1)
-                .attr('x1', function(d: any){ return d[0].projected.x; })
-                .attr('y1', function(d: any){ return d[0].projected.y; })
-                .attr('x2', function(d: any){ return d[1].projected.x; })
-                .attr('y2', function(d: any){ return d[1].projected.y; });
+            var projectedData = triangles3D(data3D);
+            var triangles = this.svgContainer.selectAll('path').data(projectedData);
 
-            lines.exit().remove();
-        }
+            // triangles3D.draw(triangles);
 
-        init(func(data));
+            this.svgContainer
+                .append('path')
+                .datum(triangles) // inds data to the line
+                .attr('class', 'line') // Assign a class for styling
+                .style('stroke', 'red');
+
+            // this.svgContainer.append(triangles);
+            // add your logic here...   
 		//lines.exit().remove();
     }
 
