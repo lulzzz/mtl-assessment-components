@@ -13,19 +13,17 @@ export class CoordinateSystem extends ComponentBase<HTMLElement[]> {
         `;
     }
 
-     /**
+    /**
      * Fired on slot change
      * @param {Event} event
      */
     protected _onSlotChanged(event: Event): void {
         const slot: HTMLSlotElement = event.srcElement as HTMLSlotElement;
-        if (slot) {
-            slot.assignedNodes().forEach(
-                (el: HTMLElement): void => {
-                    this.value.push(el);
-                }
-            );
-        }
+        slot.assignedNodes().forEach(
+            (el: HTMLElement): void => {
+                this.value.push(el);
+            }
+        );
     }
 }
 
