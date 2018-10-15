@@ -1,0 +1,12 @@
+{
+    "modules": {
+        "@hmh/component-base": "/node_modules/@hmh/component-base/dist/index.js",
+        "@polymer/lit-element": "/node_modules/@hmh/component-base/node_modules/@polymer/lit-element/lit-element.js",
+        "lit-html/lib/shady-render": "/node_modules/@hmh/component-base/node_modules/lit-html/lib/shady-render.js",
+        "lit-html/lit-html": "/node_modules/@hmh/component-base/node_modules/lit-html/lit-html.js",
+        "lit-html": "/node_modules/@hmh/component-base/node_modules/lit-html/lit-html.js",
+        "lit-html/directives/if-defined.js": "/node_modules/@hmh/component-base/node_modules/lit-html/directives/if-defined.js",
+        "lit-html/directives/repeat.js": "/node_modules/@hmh/component-base/node_modules/lit-html/directives/repeat.js",
+        "lit-html/directives/unsafe-html.js": "/node_modules/@hmh/component-base/node_modules/lit-html/directives/unsafe-html.js"
+    }
+}

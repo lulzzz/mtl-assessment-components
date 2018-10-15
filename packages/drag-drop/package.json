@@ -3,6 +3,7 @@
     "version": "0.4.0",
     "description": "Assessment System Drag&Drop Component",
     "main": "dist/index.js",
+    "module": "dist/index.js",
     "types": "dist/index.d.ts",
     "scripts": {
         "start": "nodejs-base-server -c ../../server-config.json",
@@ -13,6 +14,7 @@
         "watch": "npm run build; npm run sass; concurrently --names 'build,sass' -c 'bgBlue,bgMagenta' 'npm run build -- -w' 'npm run sass -- -w' 'npm-watch'",
         "test": "lit-element-tester dist/components/{drag-drop.js,drop-container.js,drag-container.js}",
         "test-dev": "lit-element-tester -d",
+        "map": "nodejs-base-server dist/*.js -M",
         "_generateDocs": "polymer analyze ./dist/components/{drag-drop.js,drop-container.js,drag-container.js} > ./dist/components/analysis.json"
     },
     "keywords": [],

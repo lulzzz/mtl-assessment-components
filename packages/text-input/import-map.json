@@ -1,0 +1,20 @@
+{
+    "modules": {
+        "@material/textfield/dist/mdc.textfield.css": "/node_modules/@material/textfield/dist/mdc.textfield.css",
+        "@hmh/component-base": "/node_modules/@hmh/component-base/dist/index.js",
+        "@polymer/lit-element": "/node_modules/@hmh/component-base/node_modules/@polymer/lit-element/lit-element.js",
+        "lit-html/lib/shady-render": "/node_modules/@hmh/component-base/node_modules/lit-html/lib/shady-render.js",
+        "lit-html/lit-html": "/node_modules/@hmh/component-base/node_modules/lit-html/lit-html.js",
+        "lit-html": "/node_modules/@hmh/component-base/node_modules/lit-html/lit-html.js",
+        "lit-html/directives/if-defined.js": "/node_modules/@hmh/component-base/node_modules/lit-html/directives/if-defined.js",
+        "lit-html/directives/repeat.js": "/node_modules/@hmh/component-base/node_modules/lit-html/directives/repeat.js",
+        "lit-html/directives/unsafe-html.js": "/node_modules/@hmh/component-base/node_modules/lit-html/directives/unsafe-html.js",
+        "@material/textfield": "/node_modules/@material/textfield/index.js",
+        "@material/base/component": "/node_modules/@material/base/component.js",
+        "@material/ripple/index": "/node_modules/@material/ripple/index.js",
+        "@material/ripple/util": "/node_modules/@material/ripple/util.js",
+        "@material/line-ripple/index": "/node_modules/@material/line-ripple/index.js",
+        "@material/floating-label/index": "/node_modules/@material/floating-label/index.js",
+        "@material/notched-outline/index": "/node_modules/@material/notched-outline/index.js"
+    }
+}

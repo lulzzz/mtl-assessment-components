@@ -13,6 +13,7 @@
         "sass-watch": "node-sass src/sass -r -o dist/css -w",
         "watch": "npm run build; npm run sass; concurrently --names 'build,sass' -c 'bgBlue,bgMagenta' 'npm run build -- -w' 'npm run sass -- -w' 'npm-watch'",
         "test": "lit-element-tester dist/components/drop-down.js",
+        "map": "nodejs-base-server dist/*.js -M",
         "_generateDocs": "polymer analyze ./dist/components/drop-down.js > ./dist/components/analysis.json"
     },
     "keywords": [],
@@ -25,7 +26,7 @@
     },
     "devDependencies": {
         "@hmh/lit-element-tester": "latest",
-        "@hmh/nodejs-base-server": "^1.2.0",
+        "@hmh/nodejs-base-server": "latest",
         "@polymer/iron-component-page": "next",
         "@polymer/iron-demo-helpers": "latest",
         "chai": "^4.1.2",
