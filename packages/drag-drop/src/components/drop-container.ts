@@ -1,23 +1,15 @@
-import {
-    applyMixins,
-    ComponentBase,
-    Feedback,
-    FeedbackMessage,
-    html,
-    property,
-    ResponseValidation,
-    Strategy,
-    TemplateResult
-} from '@hmh/component-base';
+import { applyMixins, ComponentBase, Feedback, FeedbackMessage, html, property, ResponseValidation, Strategy, TemplateResult } from '@hmh/component-base';
 /**
  * `<drop-container>`
  * @demo ./demo/index-drop-container.html
  */
 export class DropContainer extends ComponentBase<string[]> implements Feedback {
-    @property({ type: Number })
+    @property({ type: Number, attribute: 'max-items' })
     public maxItems: number;
     @property({ type: Array })
     public addedItems: string[] = [];
+    @property({ type: Boolean })
+    public sticky: boolean = false;
 
     // @mixin: Feedback
     computeFeedback: (value: string[]) => FeedbackMessage;
@@ -48,24 +40,33 @@ export class DropContainer extends ComponentBase<string[]> implements Feedback {
                 return response.length === expected.length && expected.every((answer: string) => response.includes(answer));
         }
     }
+    public add(element: HTMLElement, x: number, y: number): void {
+        element.style.left = x.toString();
+        element.style.top = y.toString();
+        this.appendChild(element);
+    }
+    public isDropAllowed(): boolean {
+        return this.maxItems > this.childrenCount;
+    }
 
     protected render(): TemplateResult {
         this.className = this.feedbackMessage ? this.feedbackMessage.type : '';
 
         return html`
-        <link rel="stylesheet" href="/dist/css/drag-drop.css">
+        <link rel="stylesheet" href="/css/drag-drop.css">
         <slot name="feedback" @slotchange=${(e: Event) => this._onFeedbackSlotChanged(e)}></slot>
         <slot name="options" @slotchange=${(e: Event) => this._onSlotChanged(e)} ></slot>
 
         `;
     }
+
     private _onSlotChanged(event: Event): void {
         const items: string[] = [];
         const slot: HTMLSlotElement = event.srcElement as HTMLSlotElement;
         if (slot) {
             slot.assignedNodes().forEach(
                 (el: HTMLElement): void => {
-                    if (el.className.includes('option-item')) {
+                    if (el.classList.contains('option-item')) {
                         items.push(el.id);
                     }
                 }

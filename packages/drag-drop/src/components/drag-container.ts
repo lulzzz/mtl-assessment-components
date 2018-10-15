@@ -5,18 +5,26 @@ import { ComponentBase, html, TemplateResult, property } from '@hmh/component-ba
  * @demo ./demo/index-drag-container.html
  */
 export class DragContainer extends ComponentBase<string> {
-    @property({ type: Boolean, reflect: true })
+    @property({ type: Boolean, attribute: 'dispenser' })
     dispenser: boolean = false;
     @property({ type: Array })
     options: string[] = [];
+    @property({ type: Boolean, attribute: 'trash' })
+    public isTrash: boolean = false;
 
     public getElement(id: string): HTMLElement {
         return Array.from(this.getElementsByClassName('option-item')).find((x: HTMLElement) => x.id === id) as HTMLElement;
     }
+    public add(element: HTMLElement, x?: number, y?: number): void {
+        this.appendChild(element);
+    }
+    public isDropAllowed(): boolean {
+        return !this.dispenser;
+    }
 
     protected render(): TemplateResult {
         return html`
-        <link rel="stylesheet"href="/dist/css/drag-drop.css">
+        <link rel="stylesheet"href="/css/drag-drop.css">
         <slot name="options" @slotchange=${(e: Event) => this._onSlotChanged(e)} ></slot>
         `;
     }
@@ -27,9 +35,12 @@ export class DragContainer extends ComponentBase<string> {
         if (slot) {
             slot.assignedNodes().forEach(
                 (el: HTMLElement): void => {
-                    el.className = 'option-item';
+                    el.classList.add('option-item');
                     el.draggable = true;
-                    items.push(el.id);
+                    if (this.isTrash) el.remove();
+                    else if (el.classList.contains('option-item')) {
+                        items.push(el.id);
+                    }
                 }
             );
         }
