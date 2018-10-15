@@ -23,7 +23,8 @@
         "@material/button": "latest",
         "@material/textfield": "latest",
         "d3": "^5.7.0",
-        "d3-3d": "0.0.9"
+        "d3-3d": "0.0.9",
+        "d3-color": "^1.2.3"
     },
     "devDependencies": {
         "@hmh/lit-element-tester": "latest",

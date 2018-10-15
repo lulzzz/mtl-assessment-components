@@ -5,6 +5,7 @@ import { select } from 'd3-selection';
 import { axisBottom, axisLeft } from 'd3-axis';
 import { Line } from 'd3-shape';
 import { scaleLinear } from 'd3-scale';
+import { _3d } from 'd3-3d/index.js'
 
 // This is a mock
 function prepareValue(equation: HTMLElement, x: string): number {
@@ -62,7 +63,7 @@ export class PlotGraph extends ComponentBase<any> {
             );
 
             this.equationItems = equationItems;
-            this.drawGraph();     
+            // this.drawGraph();     
         }
     }
 
@@ -114,7 +115,68 @@ export class PlotGraph extends ComponentBase<any> {
             );
         }
         // in case axes are added after the equations
-        this.drawGraph();
+        //this.drawGraph();
+        this.drawGrid();
+    }
+
+    private drawGrid(): void {
+        
+        const aspect = 1;
+        const canvas = this.shadowRoot.getElementById('canvas');
+        const width = canvas.clientWidth;
+        const height = Math.round(width / aspect);
+
+        this.svgContainer = select(this.shadowRoot)
+            .select('#canvas')
+            .append('svg')
+            .attr('preserveAspectRatio', 'xMinYMin meet')
+            .attr('viewBox', `0 0 ${width} ${height}`)
+            .classed('svg-content', true)
+            .style('width', '100%')
+            .style('height', '100%')
+            .append('g');
+
+        const origin = [480, 250], startAngle = Math.PI/8, beta = startAngle;
+        const data = [[{'x':1,'y':1,'z':-1},{'x':-1,'y':1,'z':-1}],[{'x':-1,'y':-1,'z':-1},{'x':1,'y':-1,'z':-1}],[{'x':1,'y':1,'z':-1},{'x':1,'y':-1,'z':-1}],[{'x':-1,'y':1,'z':-1},{'x':-1,'y':-1,'z':-1}],[{'x':1,'y':1,'z':1},{'x':-1,'y':1,'z':1}],[{'x':-1,'y':-1,'z':1},{'x':1,'y':-1,'z':1}],[{'x':1,'y':1,'z':1},{'x':1,'y':-1,'z':1}],[{'x':-1,'y':1,'z':1},{'x':-1,'y':-1,'z':1}],[{'x':-1,'y':1,'z':1},{'x':-1,'y':1,'z':-1},],[{'x':1,'y':1,'z':1},{'x':1,'y':1,'z':-1},],[{'x':-1,'y':-1,'z':1},{'x':-1,'y':-1,'z':-1},],[{'x':1,'y':-1,'z':1},{'x':1,'y':-1,'z':-1},]];
+        
+        const func = _3d()
+		.scale(50)
+		.origin(origin) 
+		.rotateX(startAngle)
+		.rotateY(startAngle)
+        .primitiveType('LINES');
+
+        function init(data: any){
+
+            this.svgContainer = select(this.shadowRoot)
+            .select('#canvas')
+            .append('svg')
+            .attr('preserveAspectRatio', 'xMinYMin meet')
+            .attr('viewBox', `0 0 ${width} ${height}`)
+            .classed('svg-content', true)
+            .style('width', '100%')
+            .style('height', '100%')
+            .append('g');
+
+            var lines = this.svgContainer.selectAll('line').data(data);
+            
+            lines
+                .enter()
+                .append('line')
+                .merge(lines)
+                .attr('fill', 'black')
+                .attr('stroke', 'black')
+                .attr('stroke-width', 1)
+                .attr('x1', function(d: any){ return d[0].projected.x; })
+                .attr('y1', function(d: any){ return d[0].projected.y; })
+                .attr('x2', function(d: any){ return d[1].projected.x; })
+                .attr('y2', function(d: any){ return d[1].projected.y; });
+
+            lines.exit().remove();
+        }
+
+        init(func(data));
+		//lines.exit().remove();
     }
 
     /**
@@ -127,7 +189,6 @@ export class PlotGraph extends ComponentBase<any> {
         const canvas = this.shadowRoot.getElementById('canvas');
         const width = canvas.clientWidth;
         const height = Math.round(width / aspect);
-
 
         // https://chartio.com/resources/tutorials/how-to-resize-an-svg-when-the-window-is-resized-in-d3-js/
         this.svgContainer = select(this.shadowRoot)
