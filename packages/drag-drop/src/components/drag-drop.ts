@@ -44,6 +44,7 @@ export class DragDrop extends ComponentBase<string[]> {
     }
     private onDragStart(event: DragEvent) {
         if ((event.target as HTMLElement).className === 'option-item') {
+            event.dataTransfer.effectAllowed = 'move';
             this.offsetX = event.x - (event.target as HTMLElement).offsetLeft;
             this.offsetY = event.y - (event.target as HTMLElement).offsetTop;
             let type: string;
@@ -71,7 +72,6 @@ export class DragDrop extends ComponentBase<string[]> {
         if (event.target != this) {
             event.preventDefault();
             event.stopPropagation();
-            // event.dataTransfer.dropEffect = 'move';
             (event.target as HTMLElement).classList.add('highlight');
         }
     }
@@ -79,10 +79,8 @@ export class DragDrop extends ComponentBase<string[]> {
         (event.target as HTMLElement).classList.remove('highlight');
     }
     private onDragEnd(event: DragEvent) {
-        // event.preventDefault();
         event.stopPropagation();
         (event.target as HTMLElement).classList.remove('hide');
-        console.log(event.dataTransfer);
     }
 
     private onDrop(event: DragEvent) {
