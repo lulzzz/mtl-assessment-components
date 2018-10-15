@@ -16,6 +16,9 @@
         -moz-transform: translateY(-2px);
         transform: translateY(-2px);
     }
+    &.hide {
+        display: none;
+    }
 }
 [sticky] > * {
     position: absolute;
