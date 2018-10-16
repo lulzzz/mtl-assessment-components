@@ -8,6 +8,7 @@
                 "api": "no-cache, private"
             },
             "defaultClientContentPath": "index.html",
+            "importMap": "import-map.json",
             "port": 3000,
             "staticContentMaxAge": 0,
             "staticFolderMapping": {

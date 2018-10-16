@@ -12,6 +12,7 @@
         "@material/textfield": "/node_modules/@material/textfield/index.js",
         "@material/base/component": "/node_modules/@material/base/component.js",
         "@material/ripple/index": "/node_modules/@material/ripple/index.js",
+        "@material/base/foundation": "/node_modules/@material/base/foundation.js",
         "@material/ripple/util": "/node_modules/@material/ripple/util.js",
         "@material/line-ripple/index": "/node_modules/@material/line-ripple/index.js",
         "@material/floating-label/index": "/node_modules/@material/floating-label/index.js",
