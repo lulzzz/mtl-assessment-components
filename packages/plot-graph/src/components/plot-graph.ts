@@ -1,22 +1,7 @@
 import { html, TemplateResult, property, ComponentBase, CoordinateSystem } from '@hmh/component-base';
-import { line, curveMonotoneX } from 'd3-shape';
-import { range } from 'd3-array';
 import { select } from 'd3-selection';
-import { axisBottom, axisLeft } from 'd3-axis';
-import { Line } from 'd3-shape';
-import { scaleLinear } from 'd3-scale';
+import { color } from 'd3-color';
 import { _3d } from 'd3-3d/index.js'
-
-// This is a mock
-function prepareValue(equation: HTMLElement, x: string): number {
-    return eval(equation.innerHTML.replace('x', x));
-}
-
-enum Direction {
-    X = 'X',
-    Y = 'Y',
-    Z = 'Z'
-}
 
 /**
  * `<plot-graph>`
@@ -68,36 +53,6 @@ export class PlotGraph extends ComponentBase<any> {
     }
 
     /**
-     * Return a d3.scale function
-     *
-     * @param  {Direction} axis X or Y
-     * @returns d3.ScaleLinear
-     */
-    private scale(axis: Direction, min: number, max: number, size: number): d3.ScaleLinear<number, number> {
-        const domain = [min, max];
-        const range = axis === Direction.X ? [0, size] : [size, 0];
-        return scaleLinear()
-            .domain(domain) // input
-            .range(range); // output
-    }
-
-    /**
-     * @param  {d3.ScaleLinear<number, number>} xScale
-     * @param  {d3.ScaleLinear<number, number>} yScale
-     * @returns Returns a D3 line defined by xScale and yScale
-     */
-    private drawLine(xScale: d3.ScaleLinear<number, number>, yScale: d3.ScaleLinear<number, number>): Line<any> {
-        return line()
-            .x(function(d: any, i: any) {
-                return xScale(i);
-            }) // set the x values for the line generator
-            .y(function(d: any) {
-                return yScale(d.y);
-            }) // set the y values for the line generator
-            .curve(curveMonotoneX); // apply smoothing to the line
-    }
-
-    /**
      * A Coordinate System contains axis
      *
      * @param  {Event} event
@@ -120,11 +75,13 @@ export class PlotGraph extends ComponentBase<any> {
     }
 
     private drawGrid(): void {
-        
         const aspect = 1;
         const canvas = this.shadowRoot.getElementById('canvas');
         const width = canvas.clientWidth;
         const height = Math.round(width / aspect);
+        const data = [[{x:-1,y:-1,z:-1},{x:0,y:1,z:0},{x:1,y:-1,z:-1}],[{x:-1,y:-1,z:1},{x:0,y:1,z:0},{x:1,y:-1,z:1}],[{x:-1,y:-1,z:1},{x:0,y:1,z:0},{x:-1,y:-1,z:-1}],[{x:1,y:-1,z:1},{x:0,y:1,z:0},{x:1,y:-1,z:-1}]]
+        const origin = [480, 250];
+        const startAngle = Math.PI/8;
 
         this.svgContainer = select(this.shadowRoot)
             .select('#canvas')
@@ -136,95 +93,44 @@ export class PlotGraph extends ComponentBase<any> {
             .style('height', '100%')
             .append('g');
 
-            var data3D = [ [[0,-1,0],[-1,1,0],[1,1,0]] ];
+            console.log('_3d(): ', _3d());
 
-            var triangles3D = _3d()
-                .scale(100)
-                .origin([480, 250])
-                .shape('TRIANGLE');
+            console.log('threeDeee scale: ', _3d().scale(2));
+            // console.log('threeDeee distance: ', threeDeee.distance(3));
+            // console.log('threeDeee projection: ', threeDeee.projection('persp'));
+            console.log('threeDeee rotateY: ', _3d().rotateY(startAngle));
+            console.log('threeDeee origin: ', _3d().origin(origin));
+            // console.log('threeDeee primitiveType: ', threeDeee.primitiveType('TRIANGLES'));
+
+            const threeD = _3d()
+                .scale(100)                         
+               // .distance(3)                      //distance function is missing from 3d.js
+               // .projection('persp')              //projection function is missing from 3d.js
+                .rotateY(startAngle)
+                .origin(origin)
+               // .primitiveType('TRIANGLES');      //primitiveType function is missing from 3d.js
             
-            var projectedData = triangles3D(data3D);
-            var triangles = this.svgContainer.selectAll('path').data(projectedData);
+            const data3D = threeD(data);
 
-            // triangles3D.draw(triangles);
+            const processData = (data: object) => {
+                const triangles = this.svgContainer.selectAll('path').data(data);
 
-            this.svgContainer
+                triangles
+                    .enter()
+                    .append('path')
+                    .merge(triangles)
+                    .attr('stroke', color('black'))
+                    .attr('fill', 'none')
+                    .attr('d', _3d.draw);
+
+                triangles.exit().remove();
+
+                this.svgContainer
                 .append('path')
-                .datum(triangles) // inds data to the line
-                .attr('class', 'line') // Assign a class for styling
-                .style('stroke', 'red');
+                .datum(triangles) // inds data to the line;
+            }
 
-            // this.svgContainer.append(triangles);
-            // add your logic here...   
-		//lines.exit().remove();
-    }
-
-    /**
-     * Draws an svg graph using d3, CoordinateSystem to define the axes and equation-items for the equations.
-     * The SVG is attached to the 'canvas' element
-     * @returns void
-     */
-    private drawGraph(): void {
-        const aspect = 1;
-        const canvas = this.shadowRoot.getElementById('canvas');
-        const width = canvas.clientWidth;
-        const height = Math.round(width / aspect);
-
-        // https://chartio.com/resources/tutorials/how-to-resize-an-svg-when-the-window-is-resized-in-d3-js/
-        this.svgContainer = select(this.shadowRoot)
-            .select('#canvas')
-            .append('svg')
-            .attr('preserveAspectRatio', 'xMinYMin meet')
-            .attr('viewBox', `0 0 ${width} ${height}`)
-            .classed('svg-content', true)
-            .style('width', '100%')
-            .style('height', '100%')
-            .append('g');
-
-        // plot a line for each equation
-        this.equationItems.forEach(equation => {
-            const equationXmin = parseInt(equation.getAttribute('equation-xmin'));
-            const equationXmax = parseInt(equation.getAttribute('equation-xmax'));
-            const equationYmin = parseInt(equation.getAttribute('equation-ymin'));
-            const equationYmax = parseInt(equation.getAttribute('equation-ymax'));
-            const step = parseInt(equation.getAttribute('step'));
-            const xScale = this.scale(Direction.X, equationXmin, equationXmax, width);
-            const yScale = this.scale(Direction.Y, equationYmin, equationYmax, height);
-            const numberPoints = equationXmax - equationXmin / step;
-
-            // get Y for each X (apply equation)
-            const dataset = range(numberPoints).map(function(x: any) {
-                return { y: prepareValue(equation, x) };
-            });
-
-            // Append the path, bind the data, and call the line generator
-            this.svgContainer
-                .append('path')
-                .datum(dataset) // inds data to the line
-                .attr('class', 'line') // Assign a class for styling
-                .attr('d', this.drawLine(xScale, yScale)) // Calls the line generator
-                .style('stroke', equation.getAttribute('color'));
-        });
-
-        const axisOffset: number = 20;
-        // trans X and Y of bottom axis
-        const translationX = 'translate(0,' + (height - axisOffset) + ')';
-        // trans X and Y of left axis
-        const translationY = 'translate(' + axisOffset + ',0)';
-
-        //draw the axes (assuming any have been added)
-        this.axes.forEach(axis => {
-            const isDirectionX = axis.getAttribute('direction').toLowerCase() === Direction.X.toString().toLowerCase();
-            const min = axis.getAttribute('min');
-            const max = axis.getAttribute('max');
-            const scale = this.scale(axis.direction, parseInt(min), parseInt(max), isDirectionX ? width : height);
-            
-            this.svgContainer
-                .append('g')
-                .attr('class', isDirectionX ? 'x-axis' : 'y-axis')
-                .attr('transform', isDirectionX ? translationX : translationY)
-                .call(isDirectionX ? axisBottom(scale) : axisLeft(scale));
-        });
+            processData(data3D);
     }
 }
 
