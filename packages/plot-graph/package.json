@@ -14,7 +14,7 @@
         "watch": "npm run build; npm run sass; concurrently --names 'build,sass' -c 'bgBlue,bgMagenta' 'npm run build -- -w' 'npm run sass -- -w' 'npm-watch'",
         "test": "lit-element-tester dist/components/*.js",
         "test-dev": "lit-element-tester -d",
-        "map": "nodejs-base-server dist/*.js -M",
+        "map": "nodejs-base-server dist/*.js node_modules/@polymer/iron-component-page/iron-component-page.js -M",
         "_generateDocs": "polymer analyze ./dist/components/plot-graph.js > ./dist/components/analysis.json"
     },
     "keywords": [],
