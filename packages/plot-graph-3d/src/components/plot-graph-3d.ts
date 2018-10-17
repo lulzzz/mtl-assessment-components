@@ -1,4 +1,11 @@
 import { html, TemplateResult, property, ComponentBase, CoordinateSystem } from '@hmh/component-base';
+import { range } from 'd3-array';
+
+// This is a mock
+function prepareValue(equation: HTMLElement, x: string): number {
+    return eval(equation.innerHTML.replace('x', x));
+}
+
 
 /**
  * `<plot-graph-3d>`
@@ -46,7 +53,7 @@ export class PlotGraph3D extends ComponentBase<any> {
             );
 
             this.equationItems = equationItems;
-           // this.drawGraph();     
+            this.drawGraph();     
         }
     }
 
@@ -69,7 +76,7 @@ export class PlotGraph3D extends ComponentBase<any> {
             );
         }
         // in case axes are added after the equations
-        this.drawGraph();
+        // this.drawGraph();
     }
 
     /**
@@ -84,10 +91,22 @@ export class PlotGraph3D extends ComponentBase<any> {
             canvas.removeChild(canvas.firstChild);
         }
 
-        var options = {
-            start: '2014-06-10',
-            end: '2014-06-18'
-        };
+       // this.equationItems
+        const equation = this.equationItems[0];
+
+        const equationXmin = parseInt(equation.getAttribute('equation-xmin'));
+        const equationXmax = parseInt(equation.getAttribute('equation-xmax'));
+        const equationYmin = parseInt(equation.getAttribute('equation-ymin'));
+        const equationYmax = parseInt(equation.getAttribute('equation-ymax'));
+        const step = parseInt(equation.getAttribute('step'));
+        const numberPoints = equationXmax - equationXmin / step;
+        
+        // get Y for each X (apply equation)
+        const dataset = range(numberPoints).map(function(x: any) {
+            return { x: x,  y: prepareValue(equation, x) };
+        });
+
+        console.log('dataset:', dataset);
 
         const items = [
             {x: '2014-06-11', y: 10},
@@ -99,7 +118,7 @@ export class PlotGraph3D extends ComponentBase<any> {
           ];
 
 
-        const graph2d = new vis.Graph2d(canvas, new vis.DataSet(items), options);
+        const graph2d = new vis.Graph2d(canvas, new vis.DataSet(dataset));
     }
 }
 
