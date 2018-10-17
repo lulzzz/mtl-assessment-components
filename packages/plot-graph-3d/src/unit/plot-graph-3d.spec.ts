@@ -1,4 +1,4 @@
-import { PlotGraph3d } from '../components/plot-graph-3d.js';
+import { PlotGraph3D } from '../components/plot-graph-3d.js';
 import { checkComponentDOM } from './test-helpers.js';
 import { scaleLinear } from 'd3-scale';
 const tagName: string = 'plot-graph-3d';
@@ -7,7 +7,7 @@ const expect: any = chai.expect;
 describe(`<${tagName}>`, (): void => {
     it('should render default state', async (): Promise<void> => {
         withSnippet('default');
-        const el: PlotGraph3d = document.querySelector(tagName) as any;
+        const el: PlotGraph3D = document.querySelector(tagName) as any;
         // @ts-ignore
         await el.updateComplete;
         checkComponentDOM(el);
@@ -15,7 +15,7 @@ describe(`<${tagName}>`, (): void => {
 
     it('should update equations from slot elements', async (): Promise<void> => {
         withSnippet('default');
-        const el: PlotGraph3d = document.querySelector(tagName) as any;
+        const el: PlotGraph3D = document.querySelector(tagName) as any;
         await el.updateComplete;
         // @ts-ignore
         const equation = el.equationItems[0];
@@ -24,7 +24,7 @@ describe(`<${tagName}>`, (): void => {
 
     it('should render a line per equation', async (): Promise<void> => {
         withSnippet('three-equations');
-        const el: PlotGraph3d = document.querySelector(tagName) as any;
+        const el: PlotGraph3D = document.querySelector(tagName) as any;
         var lineCount: number = 0;
         // @ts-ignore
         el.drawLine = function (xScale: d3.ScaleLinear<number, number>, yScale: d3.ScaleLinear<number, number>): d3.Line<any> {
@@ -38,7 +38,7 @@ describe(`<${tagName}>`, (): void => {
 
     it('should set equations in response to a slot change event', async (): Promise<void> => {
         withSnippet('no-equations');
-        const el: PlotGraph3d = document.querySelector(tagName) as any;
+        const el: PlotGraph3D = document.querySelector(tagName) as any;
         const equation: string = 'Math.sin(x/30)';
         const optionElement: HTMLElement = document.createElement('div');
         optionElement.setAttribute('slot', 'equation-items');
@@ -53,7 +53,7 @@ describe(`<${tagName}>`, (): void => {
 
     it('should set coordinate system axis in response to a slot change event', async (): Promise<void> => {
         withSnippet('no-axis');
-        const el: PlotGraph3d = document.querySelector(tagName) as any;
+        const el: PlotGraph3D = document.querySelector(tagName) as any;
         const expectedInnerHTML = '<p>i am the expected axis</p>'
         const axisElement: HTMLElement = document.createElement('div');
         axisElement.setAttribute('slot', 'axis');
@@ -84,7 +84,7 @@ describe(`<${tagName}>`, (): void => {
             .domain(domain) // input
             .range(range); // output
 
-        const el: PlotGraph3d = document.querySelector(tagName) as any;
+        const el: PlotGraph3D = document.querySelector(tagName) as any;
         await el.updateComplete;
 
         // @ts-ignore
@@ -98,7 +98,7 @@ describe(`<${tagName}>`, (): void => {
     it('scale should return domain and range', async (): Promise<void> => {
         withSnippet('no-equations');
 
-        const el: PlotGraph3d = document.querySelector(tagName) as any;
+        const el: PlotGraph3D = document.querySelector(tagName) as any;
         await el.updateComplete;
 
         // @ts-ignore

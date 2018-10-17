@@ -26,7 +26,7 @@ enum Direction {
  * @demo ./demo/index.html
  *
  */
-export class PlotGraph3d extends ComponentBase<any> {
+export class PlotGraph3D extends ComponentBase<any> {
     private axes: any[] = [];
     protected svgContainer: any = null;
     @property({ type: Array })
@@ -187,4 +187,4 @@ export class PlotGraph3d extends ComponentBase<any> {
     }
 }
 
-customElements.define('plot-graph-3d', PlotGraph3d);
+customElements.define('plot-graph-3d', PlotGraph3D);
