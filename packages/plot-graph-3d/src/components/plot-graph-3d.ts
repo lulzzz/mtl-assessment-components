@@ -1,10 +1,10 @@
 import { html, TemplateResult, property, ComponentBase, CoordinateSystem } from '@hmh/component-base';
 import { line, curveMonotoneX } from 'd3-shape';
 import { range } from 'd3-array';
-import { select } from 'd3-selection';
 import { axisBottom, axisLeft } from 'd3-axis';
 import { Line } from 'd3-shape';
 import { scaleLinear } from 'd3-scale';
+import { Graph2d, DataSet } from 'vis/dist/vis.js';
 
 // This is a mock
 function prepareValue(equation: HTMLElement, x: string): number {
@@ -130,15 +130,24 @@ export class PlotGraph3D extends ComponentBase<any> {
 
 
         // https://chartio.com/resources/tutorials/how-to-resize-an-svg-when-the-window-is-resized-in-d3-js/
-        this.svgContainer = select(this.shadowRoot)
-            .select('#canvas')
-            .append('svg')
-            .attr('preserveAspectRatio', 'xMinYMin meet')
-            .attr('viewBox', `0 0 ${width} ${height}`)
-            .classed('svg-content', true)
-            .style('width', '100%')
-            .style('height', '100%')
-            .append('g');
+        canvas.setAttribute('width', '100%')
+        canvas.setAttribute('height', '100%');
+
+        /*
+        var items = [
+            {x: '2014-06-11', y: 10},
+            {x: '2014-06-12', y: 25},
+            {x: '2014-06-13', y: 30},
+            {x: '2014-06-14', y: 10},
+            {x: '2014-06-15', y: 15},
+            {x: '2014-06-16', y: 30}
+          ];
+        
+;
+          var options = {
+            start: '2014-06-10',
+            end: '2014-06-18'
+        };*/
 
         // plot a line for each equation
         this.equationItems.forEach(equation => {
@@ -152,17 +161,11 @@ export class PlotGraph3D extends ComponentBase<any> {
             const numberPoints = equationXmax - equationXmin / step;
 
             // get Y for each X (apply equation)
-            const dataset = range(numberPoints).map(function(x: any) {
+            const data = range(numberPoints).map(function(x: any) {
                 return { y: prepareValue(equation, x) };
             });
 
-            // Append the path, bind the data, and call the line generator
-            this.svgContainer
-                .append('path')
-                .datum(dataset) // inds data to the line
-                .attr('class', 'line') // Assign a class for styling
-                .attr('d', this.drawLine(xScale, yScale)) // Calls the line generator
-                .style('stroke', equation.getAttribute('color'));
+            const graph2d = new Graph2d(canvas, new DataSet(data));
         });
 
         const axisOffset: number = 20;

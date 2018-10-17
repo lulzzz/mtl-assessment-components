@@ -24,7 +24,9 @@
         "@hmh/component-base": "latest",
         "@material/button": "latest",
         "@material/textfield": "latest",
-        "d3": "^5.7.0"
+        "@types/vis": "^4.21.8",
+        "d3": "^5.7.0",
+        "vis": "^4.21.0"
     },
     "devDependencies": {
         "@hmh/lit-element-tester": "latest",
