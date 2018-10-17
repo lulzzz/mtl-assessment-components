@@ -1,5 +1,5 @@
 import { html, TemplateResult, property, ComponentBase, CoordinateSystem } from '@hmh/component-base';
-import { range } from 'd3-array';
+// import { range } from 'd3-array';
 
 // This is a mock
 function prepareValue(equation: HTMLElement, x: string): number {
@@ -57,7 +57,6 @@ export class PlotGraph3D extends ComponentBase<any> {
         }
     }
 
-
     /**
      * A Coordinate System contains axis
      *
@@ -91,34 +90,36 @@ export class PlotGraph3D extends ComponentBase<any> {
             canvas.removeChild(canvas.firstChild);
         }
 
-       // this.equationItems
-        const equation = this.equationItems[0];
-
-        const equationXmin = parseInt(equation.getAttribute('equation-xmin'));
-        const equationXmax = parseInt(equation.getAttribute('equation-xmax'));
-        const equationYmin = parseInt(equation.getAttribute('equation-ymin'));
-        const equationYmax = parseInt(equation.getAttribute('equation-ymax'));
-        const step = parseInt(equation.getAttribute('step'));
-        const numberPoints = equationXmax - equationXmin / step;
-        
-        // get Y for each X (apply equation)
-        const dataset = range(numberPoints).map(function(x: any) {
-            return { x: x,  y: prepareValue(equation, x) };
-        });
+        // Create and populate a data table.
+        var dataset = new vis.DataSet();
+        // create some nice looking data with sin/cos
+        var counter = 0;
+        var steps = 50;  // number of datapoints will be steps*steps
+        var axisMax = 314;
+        var axisStep = axisMax / steps;
+        for (var x = 0; x < axisMax; x+=axisStep) {
+            for (var y = 0; y < axisMax; y+=axisStep) {
+                var value = (Math.sin(x/50) * Math.cos(y/50) * 50 + 50);
+                dataset.add({id:counter++,x:x,y:y,z:value,style:value});
+            }
+        }
 
         console.log('dataset:', dataset);
 
-        const items = [
-            {x: '2014-06-11', y: 10},
-            {x: '2014-06-12', y: 25},
-            {x: '2014-06-13', y: 30},
-            {x: '2014-06-14', y: 10},
-            {x: '2014-06-15', y: 15},
-            {x: '2014-06-16', y: 30}
-          ];
+        // specify options
+        var options = {
+            width:  '500px',
+            height: '500px',
+            style: 'surface',
+            showPerspective: true,
+            showGrid: true,
+            showShadow: false,
+            keepAspectRatio: true,
+            verticalRatio: 0.5
+        };
 
 
-        const graph2d = new vis.Graph2d(canvas, new vis.DataSet(dataset));
+        const graph3d = new vis.Graph3d(canvas, dataset, options);
     }
 }
 
