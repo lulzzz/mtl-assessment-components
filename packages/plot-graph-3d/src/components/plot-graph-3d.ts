@@ -2,10 +2,13 @@ import { html, TemplateResult, property, ComponentBase, CoordinateSystem } from 
 // import { range } from 'd3-array';
 
 // This is a mock
-function prepareValue(equation: HTMLElement, x: string): number {
+function prepareValueY(equation: HTMLElement, x: string): number {
     return eval(equation.innerHTML.replace('x', x));
 }
 
+function prepareValueZ(x: number, y: number): number {
+    return (Math.sin(x/50) * Math.cos(y/50) * 50 + 50);
+}
 
 /**
  * `<plot-graph-3d>`
@@ -90,24 +93,29 @@ export class PlotGraph3D extends ComponentBase<any> {
             canvas.removeChild(canvas.firstChild);
         }
 
+        const equation = this.equationItems[0];
+
+        const equationXmin = parseInt(equation.getAttribute('equation-xmin'));
+        const equationXmax = parseInt(equation.getAttribute('equation-xmax'));
+        const equationYmin = parseInt(equation.getAttribute('equation-ymin'));
+        const equationYmax = parseInt(equation.getAttribute('equation-ymax'));
+        const step = parseInt(equation.getAttribute('step'));
+        // const numberPoints = equationXmax - equationXmin / step;
+
         // Create and populate a data table.
-        var dataset = new vis.DataSet();
-        // create some nice looking data with sin/cos
-        var counter = 0;
-        var steps = 50;  // number of datapoints will be steps*steps
-        var axisMax = 314;
-        var axisStep = axisMax / steps;
-        for (var x = 0; x < axisMax; x+=axisStep) {
-            for (var y = 0; y < axisMax; y+=axisStep) {
-                var value = (Math.sin(x/50) * Math.cos(y/50) * 50 + 50);
-                dataset.add({id:counter++,x:x,y:y,z:value,style:value});
+        const dataset = new vis.DataSet();
+
+        for (let x = equationXmin; x < equationXmax; x+=step) {
+            for (let y = equationYmin; y < equationYmax; y+=step) {
+                let z = prepareValueZ(x, y);
+                dataset.add({x:x,y:y,z:z});
             }
         }
 
         console.log('dataset:', dataset);
 
         // specify options
-        var options = {
+        const options = {
             width:  '500px',
             height: '500px',
             style: 'surface',
@@ -117,7 +125,6 @@ export class PlotGraph3D extends ComponentBase<any> {
             keepAspectRatio: true,
             verticalRatio: 0.5
         };
-
 
         const graph3d = new vis.Graph3d(canvas, dataset, options);
     }
