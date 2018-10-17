@@ -6,12 +6,11 @@
     "module": "dist/index.js",
     "types": "dist/index.d.ts",
     "scripts": {
-        "start": "polyserve -o",
+        "map": "nodejs-base-server -c ../../server-config.json -M dist/*.js",
         "build": "tsc -p src",
         "prepubishOnly": "npm run build",
         "watch": "npm run build; npm run build -- -w",
-        "test": "lit-element-tester dist/components/*.js dist/mixins/*.js",
-        "map": "nodejs-base-server dist/*.js -M"
+        "test": "lit-element-tester dist/components/*.js dist/mixins/*.js"
     },
     "keywords": [],
     "author": "Dominique Rochefort <dominique.rochefort@hmhco.com>",
