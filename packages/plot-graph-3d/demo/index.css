@@ -1,0 +1,13 @@
+* {
+    font-family: Roboto, sans-serif;
+}
+
+[slot] {
+    display: none;
+}
+
+.demo-container {
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+}

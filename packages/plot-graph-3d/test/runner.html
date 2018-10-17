@@ -1,0 +1,70 @@
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <!-- encoding must be set for mocha's special characters to render properly -->
+    <link rel="stylesheet" href="../node_modules/mocha/mocha.css" />
+    <link rel="stylesheet" href="runner.css">
+
+    <script src="../node_modules/@hmh/lit-element-tester/dist/browser/util.js"></script>
+    <script src="../node_modules/source-map-support/browser-source-map-support.js"></script>
+    <script src="../node_modules/mocha/mocha.js"></script>
+    <script src="../node_modules/chai/chai.js"></script>
+    <script>
+        /* global mocha, sourceMapSupport */
+        sourceMapSupport.install();
+        mocha.setup('bdd');
+    </script>
+    <script type="module" src="../dist/components/plot-graph-3d.js"></script>
+</head>
+
+<body>
+    <!-- test fixtures -->
+    <template id="no-equations">
+        <plot-graph-3d>
+        </plot-graph-3d>
+    </template>
+
+    <template id="no-axis">
+            <plot-graph-3d>
+                <div slot="equation-items" class="equation-item" color="red" equation-xmin="0" equation-xmax="360" equation-ymin="-10" equation-ymax="10" step="1">Math.sin(x/30)</div>
+            </plot-graph-3d>
+    </template>
+
+    <template id="default">
+        <plot-graph-3d>
+            <coordinate-system slot="graph-axis">
+                <div slot="axis" color="red" direction="x" min="-5" max="5" axis-visibility="visible" scale-visibility="visible" other-axes-crossing-point="0">some label</div>
+                <div slot="axis" color="green" direction="y" min="-5" max="5" axis-visibility="visible" scale-visibility="visible" other-axes-crossing-point="0">some label</div>
+            </coordinate-system>
+    
+            <div slot="equation-items" class="equation-item" color="red" equation-xmin="0" equation-xmax="360" equation-ymin="-10" equation-ymax="10" step="1">Math.sin(x/30)</div>
+    
+        </plot-graph-3d>
+    </template>
+
+    <template id="three-equations">
+        <plot-graph-3d>
+            <coordinate-system slot="graph-axis">
+                    <div slot="axis" color="red" direction="x" min="-5" max="5" axis-visibility="visible" scale-visibility="visible" other-axes-crossing-point="0">some label</div>
+                    <div slot="axis" color="green" direction="y" min="-5" max="5" axis-visibility="visible" scale-visibility="visible" other-axes-crossing-point="0">some label</div>
+            </coordinate-system>
+
+            <div slot="equation-items" class="equation-item" color="red" equation-xmin="0" equation-xmax="360" equation-ymin="-10" equation-ymax="10" step="1">Math.sin(x/30)</div>
+            <div slot="equation-items" class="equation-item" color="blue" equation-xmin="0" equation-xmax="360" equation-ymin="-10" equation-ymax="10" step="1">Math.cos(x/30)</div>
+            <div slot="equation-items" class="equation-item" color="green" equation-xmin="0" equation-xmax="360" equation-ymin="-10" equation-ymax="10" step="1">Math.tan(x/30)</div>
+        </plot-graph-3d>
+    </template>
+
+    <div id="mocha">
+        <!-- test results are displayed here -->
+    </div>
+
+    <div id="stage">
+        <!-- elements under tests are displayed here -->
+    </div>
+
+    <script type="module" src="../dist/unit/plot-graph-3d.spec.js"></script>
+</body>
+
+</html>
