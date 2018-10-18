@@ -1,21 +1,16 @@
-import { html, TemplateResult, property, ComponentBase, CoordinateSystem } from '@hmh/component-base';
-// import { range } from 'd3-array';
+import { html, TemplateResult, property, ComponentBase } from '@hmh/component-base';
 
 // This is a mock
-function prepareValueY(equation: HTMLElement, x: string): number {
-    return eval(equation.innerHTML.replace('x', x));
-}
-
-function prepareValueZ(x: number, y: number): number {
-    return (Math.sin(x/50) * Math.cos(y/50) * 50 + 50);
+function prepareValue(equation: HTMLElement, x: string, y: string): number {
+    return eval(equation.innerHTML.replace('x', x).replace('y', y));
 }
 
 /**
  * `<plot-graph-3d>`
- * Plot a graph 3d using component-base CoordinateSystem to define the axes and equation-items for the equations
+ * Plot a graph in 3d. The equation should specficy values for x and y and will be solved for z.
  *
- * equationXmin etc are variables the bound the range of the equations (independently of the axis dimensions)
- * step - the intervals at which points are plotted along the equation graphs
+ * equationXmin etc are variables that bound the range of the equations.
+ * step - the intervals at which points are plotted along the equation graphs.
  * @demo ./demo/index.html
  *
  */
@@ -34,7 +29,6 @@ export class PlotGraph3D extends ComponentBase<any> {
             <div id="canvas"></div>
         </div>
 
-        <slot hidden name="graph-axis" @slotchange=${(evt: Event) => this._onCoordSystemAdded(evt)}> </slot>
         <slot hidden name="equation-items" class="equations" @slotchange=${(evt: Event) => this._onSlotChanged(evt)}> </slot>
         `;
     }
@@ -61,27 +55,6 @@ export class PlotGraph3D extends ComponentBase<any> {
     }
 
     /**
-     * A Coordinate System contains axis
-     *
-     * @param  {Event} event
-     * @returns void
-     */
-    private _onCoordSystemAdded(event: Event): void {
-        const slot: HTMLSlotElement = event.srcElement as HTMLSlotElement;
-        if (slot) {
-            slot.assignedNodes().forEach(
-                (coordSystem: CoordinateSystem): void => {
-                    coordSystem.getValue().forEach((axis: any) => {
-                        this.axes.push(axis);
-                    });
-                }
-            );
-        }
-        // in case axes are added after the equations
-        // this.drawGraph();
-    }
-
-    /**
      * Draws an svg graph using d3, CoordinateSystem to define the axes and equation-items for the equations.
      * The SVG is attached to the 'canvas' element
      * @returns void
@@ -100,24 +73,18 @@ export class PlotGraph3D extends ComponentBase<any> {
         const equationYmin = parseInt(equation.getAttribute('equation-ymin'));
         const equationYmax = parseInt(equation.getAttribute('equation-ymax'));
         const step = parseInt(equation.getAttribute('step'));
-        // const numberPoints = equationXmax - equationXmin / step;
 
         // Create and populate a data table.
         const dataset = new vis.DataSet();
-
         for (let x = equationXmin; x < equationXmax; x+=step) {
             for (let y = equationYmin; y < equationYmax; y+=step) {
-                let z = prepareValueZ(x, y);
-                dataset.add({x:x,y:y,z:z});
+                dataset.add({x:x,y:y,z:prepareValue(equation, x.toString(), y.toString())});
             }
         }
 
-        console.log('dataset:', dataset);
-
-        // specify options
         const options = {
-            width:  '500px',
-            height: '500px',
+            width:  '100%',
+            height: '100%',
             style: 'surface',
             showPerspective: true,
             showGrid: true,
@@ -126,7 +93,7 @@ export class PlotGraph3D extends ComponentBase<any> {
             verticalRatio: 0.5
         };
 
-        const graph3d = new vis.Graph3d(canvas, dataset, options);
+        new vis.Graph3d(canvas, dataset, options);
     }
 }
 

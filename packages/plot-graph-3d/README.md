@@ -5,13 +5,7 @@
 ```html
 <!-- basic usage -->
     <plot-graph-3d>
-        <coordinate-system slot="graph-axis">
-            <div slot="axis" color="red" direction="x" min="-5" max="5" axis-visibility="visible" scale-visibility="visible" other-axes-crossing-point="0">some label</div>
-            <div slot="axis" color="green" direction="y" min="-5" max="5" axis-visibility="visible" scale-visibility="visible" other-axes-crossing-point="0">some label</div>
-        </coordinate-system>
-
-        <div slot="equation-items" class="equation-item" color="red" equation-xmin="0" equation-xmax="360" equation-ymin="-10" equation-ymax="10" step="1">Math.sin(x/30)</div>
-        <div slot="equation-items" class="equation-item" color="blue" equation-xmin="0" equation-xmax="360" equation-ymin="-10" equation-ymax="10" step="1">Math.cos(x/30)</div>
+        <div slot="equation-items" class="equation-item" equation-xmin="0" equation-xmax="360" equation-ymin="0" equation-ymax="360" step="1">Math.sin(x/50) * Math.cos(y/50) * 50 + 50</div>
     </plot-graph-3d>
 ```
 
