@@ -7,10 +7,11 @@
         "clean": "lerna clean --yes; rm -rf packages/*/dist",
         "link-all": "lerna link --force-local",
         "list": "lerna ls",
+        "map": "lerna run map",
         "publish": "lerna publish --registry http://npm.tribalnova.com --no-verify-access",
         "test": "lerna run test --concurrency 1",
         "watch": "lerna run watch --parallel",
-        "init": "npm run clean && npm run bootstrap && npm run link-all && lerna run --scope @hmh/component-base build && npm run build"
+        "init": "npm run clean && npm run bootstrap && npm run link-all && lerna run --scope @hmh/component-base build && npm run build && npm run map"
     },
     "devDependencies": {
         "lerna": "latest",

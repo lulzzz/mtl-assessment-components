@@ -42,6 +42,8 @@ This is an interactive command line tool that lets you choose which version you 
 
 
 ```shell
+# generate module import maps for the server
+npm run map
 # list all available packages
 npm run list
 # run unit tests for all packages

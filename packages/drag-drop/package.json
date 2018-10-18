@@ -3,9 +3,11 @@
     "version": "0.4.0",
     "description": "Assessment System Drag&Drop Component",
     "main": "dist/index.js",
+    "module": "dist/index.js",
     "types": "dist/index.d.ts",
     "scripts": {
-        "start": "nodejs-base-server -c ../../server-config.json",
+        "start": "nodejs-base-server -c ../../server-config.json -M dist/*.js node_modules/@polymer/iron-component-page/iron-component-page.js -s",
+        "map": "nodejs-base-server -c ../../server-config.json -M dist/*.js node_modules/@polymer/iron-component-page/iron-component-page.js",
         "build": "tsc -p src",
         "prepubishOnly": "npm run build; npm run sass",
         "sass": "node-sass src/sass -r -o dist/css",
