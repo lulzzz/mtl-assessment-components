@@ -60,7 +60,7 @@ export class DropContainer extends ComponentBase<string[]> implements Feedback {
         `;
     }
 
-    private _onSlotChanged(event: Event): void {
+    protected _onSlotChanged(event: Event): void {
         const items: string[] = [];
         const slot: HTMLSlotElement = event.srcElement as HTMLSlotElement;
         if (slot) {

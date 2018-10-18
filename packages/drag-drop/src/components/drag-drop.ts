@@ -1,6 +1,8 @@
 import { applyMixins, ComponentBase, Feedback, html, TemplateResult, property } from '@hmh/component-base';
 import { DragContainer } from './drag-container.js';
 import { DropContainer } from './drop-container.js';
+import './sortable-drop-container';
+import { SortableDropContainer } from './sortable-drop-container';
 
 /**
  * `<drag-drop>`
@@ -14,7 +16,7 @@ export class DragDrop extends ComponentBase<string[]> {
     map: Map<string, Set<string>> = new Map();
     offsetX: number;
     offsetY: number;
-
+    currentElement: HTMLElement;
     constructor() {
         super();
         if (!this.id) {
@@ -65,6 +67,7 @@ export class DragDrop extends ComponentBase<string[]> {
             event.dataTransfer.setData('source_type', type);
             event.dataTransfer.setData('index', index.toString());
             event.dataTransfer.setData('parent-id', this.id);
+            this.currentElement = event.target as HTMLElement;
         }
     }
 
@@ -72,7 +75,16 @@ export class DragDrop extends ComponentBase<string[]> {
         if (event.target != this) {
             event.preventDefault();
             event.stopPropagation();
-            (event.target as HTMLElement).classList.add('highlight');
+            if ((event.target as HTMLElement).classList.contains('option-item')) {
+                if (this.swappable) {
+                    (event.target as HTMLElement).classList.add('highlight');
+                }
+
+                if ((event.target as HTMLElement).parentElement instanceof SortableDropContainer) {
+                    //  console.log(event.target, event.dataTransfer.getData('source_id'));
+                    ((event.target as HTMLElement).parentElement as SortableDropContainer).push(event.target as HTMLElement, this.currentElement);
+                }
+            } else (event.target as HTMLElement).classList.add('highlight');
         }
     }
     private onDragLeave(event: DragEvent) {
