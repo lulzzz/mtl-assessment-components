@@ -66,7 +66,6 @@ export class PlotGraph3D extends ComponentBase<any> {
         }
 
         const equation = this.equationItems[0];
-
         const equationXmin = parseInt(equation.getAttribute('equation-xmin'));
         const equationXmax = parseInt(equation.getAttribute('equation-xmax'));
         const equationYmin = parseInt(equation.getAttribute('equation-ymin'));
@@ -74,6 +73,7 @@ export class PlotGraph3D extends ComponentBase<any> {
         const equationZmin = parseInt(equation.getAttribute('equation-zmin'));
         const equationZmax = parseInt(equation.getAttribute('equation-zmax'));
         const step = parseInt(equation.getAttribute('step'));
+        const style = equation.getAttribute('render-style');
 
         // Create and populate a data table.
         const dataset = new vis.DataSet();
@@ -86,7 +86,7 @@ export class PlotGraph3D extends ComponentBase<any> {
         const options: any = {
             width:  '100%',
             height: '100%',
-            style: 'surface',
+            style: 'surface', // default
             showPerspective: true,
             showGrid: true,
             showShadow: false,
@@ -100,6 +100,10 @@ export class PlotGraph3D extends ComponentBase<any> {
             
         if (!Number.isNaN(equationZmax)) {
             options['zMax'] = equationZmax;
+        }
+
+        if (style) {
+            options['style'] = style;
         }   
 
         new vis.Graph3d(canvas, dataset, options);
