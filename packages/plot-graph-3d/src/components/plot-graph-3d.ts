@@ -1,10 +1,8 @@
 import { html, TemplateResult, property, ComponentBase } from '@hmh/component-base';
 
 // This is a mock
-function prepareValue(equation: string, x: string, y: string, min: number, max: number): number {
-    const result = eval(equation.replace('x', x).replace('y', y));
-
-    return (result >= min && result <= max) ? result: Number.POSITIVE_INFINITY;
+function prepareValue(equation: string, x: number, y: number): number {
+    return eval(equation.replace('x', x.toString()).replace('y', y.toString()));
 }
 
 /**
@@ -17,7 +15,6 @@ function prepareValue(equation: string, x: string, y: string, min: number, max: 
  *
  */
 export class PlotGraph3D extends ComponentBase<any> {
-    private axes: any[] = [];
     protected svgContainer: any = null;
     @property({ type: Array })
     protected equationItems: HTMLElement[] = [];
@@ -76,22 +73,17 @@ export class PlotGraph3D extends ComponentBase<any> {
         const equationYmax = parseInt(equation.getAttribute('equation-ymax'));
         const equationZmin = parseInt(equation.getAttribute('equation-zmin'));
         const equationZmax = parseInt(equation.getAttribute('equation-zmax'));
-        const equationText: string =  equation.innerText;
-
         const step = parseInt(equation.getAttribute('step'));
 
         // Create and populate a data table.
         const dataset = new vis.DataSet();
         for (let x = equationXmin; x < equationXmax; x+=step) {
             for (let y = equationYmin; y < equationYmax; y+=step) {       
-                const z = prepareValue(equationText, x.toString(), y.toString(), equationZmin, equationZmax);
-                if (z != Number.POSITIVE_INFINITY) {
-                    dataset.add({x:x,y:y,z:z});
-                }
+                dataset.add({x:x,y:y,z:prepareValue(equation.innerText, x, y)});
             }
         }
-
-        const options = {
+        
+        const options: any = {
             width:  '100%',
             height: '100%',
             style: 'surface',
@@ -101,6 +93,16 @@ export class PlotGraph3D extends ComponentBase<any> {
             keepAspectRatio: true,
             verticalRatio: 0.5
         };
+
+        if (!Number.isNaN(equationZmin)) {
+            options['zMin'] = equationZmin;
+        }     
+            
+        if (!Number.isNaN(equationZmax)) {
+            options['zMax'] = equationZmax;
+        }   
+
+
 
         new vis.Graph3d(canvas, dataset, options);
     }
