@@ -82,7 +82,7 @@ export class PlotGraph3D extends ComponentBase<any> {
                 dataset.add({x:x,y:y,z:prepareValue(equation.innerText, x, y)});
             }
         }
-        
+
         const options: any = {
             width:  '100%',
             height: '100%',
@@ -101,8 +101,6 @@ export class PlotGraph3D extends ComponentBase<any> {
         if (!Number.isNaN(equationZmax)) {
             options['zMax'] = equationZmax;
         }   
-
-
 
         new vis.Graph3d(canvas, dataset, options);
     }
