@@ -1,8 +1,10 @@
 import { html, TemplateResult, property, ComponentBase } from '@hmh/component-base';
 
 // This is a mock
-function prepareValue(equation: HTMLElement, x: string, y: string): number {
-    return eval(equation.innerHTML.replace('x', x).replace('y', y));
+function prepareValue(equation: string, x: string, y: string, min: number, max: number): number {
+    const result = eval(equation.replace('x', x).replace('y', y));
+
+    return (result >= min && result <= max) ? result: Number.POSITIVE_INFINITY;
 }
 
 /**
@@ -72,13 +74,20 @@ export class PlotGraph3D extends ComponentBase<any> {
         const equationXmax = parseInt(equation.getAttribute('equation-xmax'));
         const equationYmin = parseInt(equation.getAttribute('equation-ymin'));
         const equationYmax = parseInt(equation.getAttribute('equation-ymax'));
+        const equationZmin = parseInt(equation.getAttribute('equation-zmin'));
+        const equationZmax = parseInt(equation.getAttribute('equation-zmax'));
+        const equationText: string =  equation.innerText;
+
         const step = parseInt(equation.getAttribute('step'));
 
         // Create and populate a data table.
         const dataset = new vis.DataSet();
         for (let x = equationXmin; x < equationXmax; x+=step) {
-            for (let y = equationYmin; y < equationYmax; y+=step) {
-                dataset.add({x:x,y:y,z:prepareValue(equation, x.toString(), y.toString())});
+            for (let y = equationYmin; y < equationYmax; y+=step) {       
+                const z = prepareValue(equationText, x.toString(), y.toString(), equationZmin, equationZmax);
+                if (z != Number.POSITIVE_INFINITY) {
+                    dataset.add({x:x,y:y,z:z});
+                }
             }
         }
 
