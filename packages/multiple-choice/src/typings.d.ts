@@ -6,3 +6,4 @@ declare const withSnippet: any;
 declare module '@material/form-field/index';
 declare module '@material/radio/index';
 declare module '@material/checkbox/index';
+declare module '@polymer/iron-component-page';

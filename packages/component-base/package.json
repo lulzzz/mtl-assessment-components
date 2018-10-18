@@ -6,7 +6,7 @@
     "module": "dist/index.js",
     "types": "dist/index.d.ts",
     "scripts": {
-        "map": "nodejs-base-server -c ../../server-config.json -M dist/*.js",
+        "map": "nodejs-base-server -Mc ../../server-config.json",
         "build": "tsc -p src",
         "prepubishOnly": "npm run build",
         "watch": "npm run build; npm run build -- -w",
