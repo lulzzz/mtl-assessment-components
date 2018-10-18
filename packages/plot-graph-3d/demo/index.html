@@ -11,7 +11,13 @@
         <h2>Plot Graph 3D Demo</h2>
         <span class='demo-container'>
             <plot-graph-3d>
-                <span slot="equation-items" class="equation-item" equation-xmin="0" equation-xmax="360" equation-ymin="0" equation-ymax="360" equation-zmin="0" equation-zmax="100" step="1" render-style="dot">Math.sin(x/50) * Math.cos(y/50) * 50 + 50</span>
+                <coordinate-system slot="graph-axis">
+                        <div slot="axis" color="red" direction="x" min="0" max="360" axis-visibility="visible" scale-visibility="visible">label x</div>
+                        <div slot="axis" color="green" direction="y" min="0" max="360" axis-visibility="visible" scale-visibility="visible">label y</div>
+                        <div slot="axis" color="blue" direction="z" min="0" max="360" axis-visibility="visible" scale-visibility="visible">label z</div>
+                </coordinate-system>
+
+                <span slot="equation-items" class="equation-item" equation-xmin="0" equation-xmax="360" equation-ymin="0" equation-ymax="360" step="1" render-style="dot">Math.sin(x/50) * Math.cos(y/50) * 50 + 50</span>
             </plot-graph-3d>
         </span>
     </body>

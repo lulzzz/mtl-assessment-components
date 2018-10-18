@@ -1,9 +1,15 @@
-import { html, TemplateResult, property, ComponentBase } from '@hmh/component-base';
+import { html, TemplateResult, property, ComponentBase, CoordinateSystem } from '@hmh/component-base';
 
 // This is a mock
 function prepareValue(equation: string, x: number, y: number): number {
     return eval(equation.replace('x', x.toString()).replace('y', y.toString()));
 }
+/*
+enum Direction {
+    X = 'X',
+    Y = 'Y',
+    Z = 'Z'
+}*/
 
 /**
  * `<plot-graph-3d>`
@@ -15,7 +21,7 @@ function prepareValue(equation: string, x: number, y: number): number {
  *
  */
 export class PlotGraph3D extends ComponentBase<any> {
-    protected svgContainer: any = null;
+    private axes: any[] = [];
     @property({ type: Array })
     protected equationItems: HTMLElement[] = [];
 
@@ -23,7 +29,8 @@ export class PlotGraph3D extends ComponentBase<any> {
         return html`
         <link rel="stylesheet" type="text/css" href="/css/plot-graph-3d.css">
         <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/vis/4.16.1/vis.css">
-        
+        <slot hidden name="graph-axis" @slotchange=${(evt: Event) => this._onCoordSystemAdded(evt)}> </slot>
+
         <span class="container">
             <span id="canvas"></span>
         </span>
@@ -54,11 +61,39 @@ export class PlotGraph3D extends ComponentBase<any> {
     }
 
     /**
+     * A Coordinate System contains axis
+     *
+     * @param  {Event} event
+     * @returns void
+     */
+    private _onCoordSystemAdded(event: Event): void {
+
+        const slot: HTMLSlotElement = event.srcElement as HTMLSlotElement;
+        if (slot) {
+            slot.assignedNodes().forEach(
+                (coordSystem: CoordinateSystem): void => {
+                    coordSystem.getValue().forEach((axis: any) => {
+                        this.axes.push(axis);
+                    });
+                }
+            );
+        }
+        
+        // in case axes are added after the equations
+       // this.drawGraph();
+    }
+
+    /**
      * Draws an svg graph using d3, CoordinateSystem to define the axes and equation-items for the equations.
      * The SVG is attached to the 'canvas' element
      * @returns void
      */
     private drawGraph(): void {
+
+        if (this.equationItems.length <= 0) {
+            return;
+        }
+
         const canvas = this.shadowRoot.getElementById('canvas');
 
         while (canvas.firstChild) {
@@ -66,12 +101,12 @@ export class PlotGraph3D extends ComponentBase<any> {
         }
 
         const equation = this.equationItems[0];
+        
         const equationXmin = parseInt(equation.getAttribute('equation-xmin'));
         const equationXmax = parseInt(equation.getAttribute('equation-xmax'));
         const equationYmin = parseInt(equation.getAttribute('equation-ymin'));
         const equationYmax = parseInt(equation.getAttribute('equation-ymax'));
-        const equationZmin = parseInt(equation.getAttribute('equation-zmin'));
-        const equationZmax = parseInt(equation.getAttribute('equation-zmax'));
+
         const step = parseInt(equation.getAttribute('step'));
         const style = equation.getAttribute('render-style');
 
@@ -94,17 +129,39 @@ export class PlotGraph3D extends ComponentBase<any> {
             verticalRatio: 0.5
         };
 
-        if (!Number.isNaN(equationZmin)) {
-            options['zMin'] = equationZmin;
-        }     
-            
-        if (!Number.isNaN(equationZmax)) {
-            options['zMax'] = equationZmax;
-        }
-
         if (style) {
             options['style'] = style;
         }   
+        
+        if (this.axes.length > 0) {
+            console.log('axis!')
+            this.axes.forEach((axis) => {
+                const direction = axis.getAttribute('direction');
+                // const min = axis.getAttribute('min'); 
+                // const max = axis.getAttribute('max');
+                const label = axis.innerText;
+
+                if (direction && label) {
+                    options[[direction.toLowerCase(), 'Label'].join('').trim()] = label;
+                }
+
+                // set axis min and max values if specified
+                /* TODO: not sure why this breaks rendering
+
+                if (min && direction) {
+                    options[[direction.toLowerCase(), 'Min'].join('').trim()] = Number.parseInt(min);
+                }
+
+                if (max && direction) {
+                    options[[direction.toLowerCase(), 'Max'].join('').trim()] = Number.parseInt(max);
+                }*/
+            })
+
+
+
+
+
+        }
 
         new vis.Graph3d(canvas, dataset, options);
     }
