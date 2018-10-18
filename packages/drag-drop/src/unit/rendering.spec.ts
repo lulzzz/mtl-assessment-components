@@ -110,7 +110,9 @@ export default () => {
             const element: DragDrop = document.querySelector(basicTagName) as any;
             await element.updateComplete;
 
+            // @ts-ignore Access private member
             expect(element.dragContainers[0].getElementsByTagName('div').length).to.equal(5);
+            // @ts-ignore Access private member
             expect(element.dragContainers[0].options.length).to.equal(5);
         });
         it('should  not be able to drop unsupported elements', async (): Promise<void> => {
@@ -118,7 +120,9 @@ export default () => {
             const element: DragDrop = document.querySelector(basicTagName) as any;
             await element.updateComplete;
 
+            // @ts-ignore Access private member
             let dragSource = element.dragContainers[0];
+            // @ts-ignore Access private member
             const dropTarget = element.dropContainers[1];
             const dataTransfer = new DataTransfer();
             const dragEvent: Event = new DragEvent('dragstart', { bubbles: true, dataTransfer: dataTransfer });
@@ -134,7 +138,9 @@ export default () => {
             const element: DragDrop = document.querySelector(basicTagName) as any;
             await element.updateComplete;
 
+            // @ts-ignore Access private member
             let dragSource = element.dragContainers[0].getElement('000-1');
+            // @ts-ignore Access private member
             const dropTarget = element.dropContainers[1];
             const dataTransfer = new DataTransfer();
             const dragEvent: Event = new DragEvent('dragstart', { bubbles: true, dataTransfer: dataTransfer });
@@ -145,6 +151,7 @@ export default () => {
             dropTarget.dispatchEvent(dropEvent);
             await element.updateComplete;
 
+            // @ts-ignore Access private member
             dragSource = element.dragContainers[0].getElement('000-2');
             dragSource.dispatchEvent(dragEvent);
 
@@ -159,7 +166,9 @@ export default () => {
             const element: DragDrop = document.querySelector(basicTagName) as any;
             await element.updateComplete;
 
+            // @ts-ignore Access private member
             let dragSource = element.dragContainers[0].getElement('000-1');
+            // @ts-ignore Access private member
             const dropTarget = element.dropContainers[1];
             const dataTransfer = new DataTransfer();
             const dragEvent: Event = new DragEvent('dragstart', { bubbles: true, dataTransfer: dataTransfer });
@@ -169,9 +178,11 @@ export default () => {
             await element.updateComplete;
 
             dropTarget.getElement('000-1').dispatchEvent(dragEvent);
+            // @ts-ignore Access private member
             element.dragContainers[0].dispatchEvent(dropEvent);
             await element.updateComplete;
 
+            // @ts-ignore Access private member
             expect(element.dragContainers[0].getElement('000-1')).to.equal(dragSource);
         });
     });

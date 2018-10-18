@@ -11,12 +11,11 @@ import { SortableDropContainer } from './sortable-drop-container';
 export class DragDrop extends ComponentBase<string[]> {
     @property({ type: Boolean })
     public swappable: boolean = false;
-    dragContainers: DragContainer[] = [];
-    dropContainers: DropContainer[] = [];
-    map: Map<string, Set<string>> = new Map();
-    offsetX: number;
-    offsetY: number;
-    currentElement: HTMLElement;
+    private dragContainers: DragContainer[] = [];
+    private dropContainers: DropContainer[] = [];
+    private offsetX: number;
+    private offsetY: number;
+    private currentElement: HTMLElement;
     constructor() {
         super();
         if (!this.id) {

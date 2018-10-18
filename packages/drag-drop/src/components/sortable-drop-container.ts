@@ -17,13 +17,13 @@ export class SortableDropContainer extends DropContainer {
         return response.length === expected.length && expected.every((answer: string) => response[expected.indexOf(answer)] === answer);
     }
     public push(hoveredElement: HTMLElement, hiddenElement: HTMLElement): void {
-        if (this.isbefore(hoveredElement, hiddenElement)) {
+        if (this.isBefore(hoveredElement, hiddenElement)) {
             this.insertBefore(hiddenElement, hoveredElement);
         } else {
             this.insertBefore(hiddenElement, hoveredElement.nextElementSibling);
         }
     }
-    private isbefore(node1: Node, node2: Node): boolean {
+    private isBefore(node1: Node, node2: Node): boolean {
         for (let cur = node2; cur; cur = cur.previousSibling) {
             if (cur === node1) {
                 return true;

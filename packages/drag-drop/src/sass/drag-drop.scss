@@ -34,10 +34,8 @@
     outline: 2px solid yellow;
 }
 sortable-drop-container {
-    counter-reset: slides;
+    counter-reset: options;
     padding: 3rem 1rem 1rem 2rem;
-    height: 100%;
-
     > * {
         width: 90%;
         background: linear-gradient(#444, #111);
@@ -51,8 +49,8 @@ sortable-drop-container {
             position: sticky;
             top: 0;
             right: 100%;
-            counter-increment: slides;
-            content: counter(slides);
+            counter-increment: options;
+            content: counter(options);
             padding-right: 0.35rem;
             color: #546;
             line-height: normal;
