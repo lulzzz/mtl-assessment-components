@@ -4,12 +4,6 @@ import { html, TemplateResult, property, ComponentBase, CoordinateSystem } from 
 function prepareValue(equation: string, x: number, y: number): number {
     return eval(equation.replace('x', x.toString()).replace('y', y.toString()));
 }
-/*
-enum Direction {
-    X = 'X',
-    Y = 'Y',
-    Z = 'Z'
-}*/
 
 /**
  * `<plot-graph-3d>`
@@ -23,11 +17,14 @@ enum Direction {
 export class PlotGraph3D extends ComponentBase<any> {
     private axes: any[] = [];
     @property({ type: Array })
-    protected equationItems: HTMLElement[] = [];
+    protected equationItems : HTMLElement[] = [];
+    @property({ type: String, attribute: 'axes-color'})
+    protected axesColor: string;
 
     protected render(): TemplateResult {
         return html`
         <link rel="stylesheet" type="text/css" href="/css/plot-graph-3d.css">
+        <!-- TODO: get css from node module -->
         <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/vis/4.16.1/vis.css">
         <slot hidden name="graph-axis" @slotchange=${(evt: Event) => this._onCoordSystemAdded(evt)}> </slot>
 
@@ -134,27 +131,39 @@ export class PlotGraph3D extends ComponentBase<any> {
         }   
         
         if (this.axes.length > 0) {
-            console.log('axis!')
             this.axes.forEach((axis) => {
                 const direction = axis.getAttribute('direction');
-                // const min = axis.getAttribute('min'); 
-                // const max = axis.getAttribute('max');
+                const visibleVal = axis.getAttribute('axis-visibility');
                 const label = axis.innerText;
 
-                if (direction && label) {
-                    options[[direction.toLowerCase(), 'Label'].join('').trim()] = label;
+                if (this.axesColor) {
+                    options['axisColor'] = this.axesColor;
                 }
 
-                // set axis min and max values if specified
-                /* TODO: not sure why this breaks rendering
+                if (direction) {
+                    if (label) {
+                        options[[direction.toLowerCase(), 'Label'].join('').trim()] = label;
+                    }
 
-                if (min && direction) {
-                    options[[direction.toLowerCase(), 'Min'].join('').trim()] = Number.parseInt(min);
+                    if (visibleVal) {
+                        options[['show', direction.toUpperCase(), 'Axis'].join('').trim()] = (visibleVal === 'visible');
+                    }
+
+
+                    /* TODO: not sure why this breaks rendering
+                    const min = axis.getAttribute('min'); 
+                    const max = axis.getAttribute('max');
+
+                    // set axis min and max values if specified
+                    if (min) {
+                        options[[direction.toLowerCase(), 'Min'].join('').trim()] = Number.parseInt(min);
+                    }
+
+                    if (max) {
+                        options[[direction.toLowerCase(), 'Max'].join('').trim()] = Number.parseInt(max);
+                    }
+                    */
                 }
-
-                if (max && direction) {
-                    options[[direction.toLowerCase(), 'Max'].join('').trim()] = Number.parseInt(max);
-                }*/
             })
 
 
