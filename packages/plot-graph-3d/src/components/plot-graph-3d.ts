@@ -27,9 +27,9 @@ export class PlotGraph3D extends ComponentBase<any> {
         <link rel="stylesheet" type="text/css" href="/css/plot-graph-3d.css">
         <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/vis/4.16.1/vis.css">
         
-        <div class="container">
-            <div id="canvas"></div>
-        </div>
+        <span class="container">
+            <span id="canvas"></span>
+        </span>
 
         <slot hidden name="equation-items" class="equations" @slotchange=${(evt: Event) => this._onSlotChanged(evt)}> </slot>
         `;
