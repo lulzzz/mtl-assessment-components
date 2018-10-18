@@ -1,0 +1,38 @@
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="index.css">
+    <link rel="stylesheet" href="/node_modules/@material/button/dist/mdc.button.css">
+    <link rel="stylesheet" href="/css/drag-drop.css">
+    <script type="module" src="/components/drag-drop.js"></script>
+    <script type="module" src="../node_modules/@hmh/component-base/dist/components/response-validation.js"></script>
+</head>
+
+<body>
+    <h3>A drop container</h3>
+    <sortable-drop-container id="sorting">
+        <div slot="options" id="1">1</div>
+        <div slot="options" id="2">2</div>
+        <div slot="options" id="3">3</div>
+        <div slot="options" id="4">4</div>
+        <div slot="options" id="5">5</div>
+        <response-validation hidden slot="feedback" expected="1|2|3|4|5" score="10">
+            <span>Perfect</span>
+        </response-validation>
+        <response-validation hidden slot="feedback" expected="1|2|3|5|4" score="5" feedback-type="neutral">
+            <span>Not bad</span>
+        </response-validation>
+
+        <response-validation hidden slot="feedback" score="0" feedback-type="negative">
+            <span>Try again</span>
+            <span>Still not good</span>
+            <span>Wrong answer</span>
+        </response-validation>
+
+    </sortable-drop-container>
+
+</body>
+
+
+</html>

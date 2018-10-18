@@ -2,8 +2,8 @@ import { DropContainer } from './drop-container';
 import { ResponseValidation } from '@hmh/component-base';
 
 /**
- * `<sortable-drag-container>`
- * @demo ./demo/index-sortable-drag-container.html
+ * `<sortable-drop-container>`
+ * @demo ./demo/index-sortable-drop-container.html
  */
 export class SortableDropContainer extends DropContainer {
     public get value(): string[] {
@@ -16,12 +16,6 @@ export class SortableDropContainer extends DropContainer {
         const expected: string[] = el.expected.split('|');
         return response.length === expected.length && expected.every((answer: string) => response[expected.indexOf(answer)] === answer);
     }
-
-    public add(element: HTMLElement, x: number, y: number): void {
-        element.style.left = x.toString();
-        element.style.top = y.toString();
-        this.appendChild(element);
-    }
     public push(hoveredElement: HTMLElement, hiddenElement: HTMLElement): void {
         if (this.isbefore(hoveredElement, hiddenElement)) {
             this.insertBefore(hiddenElement, hoveredElement);
@@ -29,7 +23,7 @@ export class SortableDropContainer extends DropContainer {
             this.insertBefore(hiddenElement, hoveredElement.nextElementSibling);
         }
     }
-    isbefore(node1: Node, node2: Node): boolean {
+    private isbefore(node1: Node, node2: Node): boolean {
         for (let cur = node2; cur; cur = cur.previousSibling) {
             if (cur === node1) {
                 return true;
@@ -44,15 +38,13 @@ export class SortableDropContainer extends DropContainer {
         if (slot) {
             slot.assignedNodes().forEach(
                 (el: HTMLElement): void => {
-                    el.classList.add('option-item');
+                    if (!el.classList.contains('option-item')) el.classList.add('option-item');
                     el.draggable = true;
-                    if (el.classList.contains('option-item')) {
-                        items.push(el.id);
-                    }
+                    items.push(el.id);
                 }
             );
         }
-        this.addedItems = items; //TODO: Add index somehow
+        this.addedItems = items;
     }
 }
 

@@ -77,7 +77,6 @@ export class DragDrop extends ComponentBase<string[]> {
             event.stopPropagation();
             if (!(event.target as HTMLElement).classList.contains('option-item') || this.swappable) (event.target as HTMLElement).classList.add('highlight');
             else {
-                //If dragging over an option
                 const sortableDrop: SortableDropContainer = (event.target as HTMLElement).parentElement as SortableDropContainer;
                 if (sortableDrop instanceof SortableDropContainer) {
                     sortableDrop.push(event.target as HTMLElement, this.currentElement);
