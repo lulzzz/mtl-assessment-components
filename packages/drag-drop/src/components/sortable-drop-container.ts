@@ -1,25 +1,20 @@
 import { DropContainer } from './drop-container';
-import { ResponseValidation, Strategy } from '@hmh/component-base';
+import { ResponseValidation } from '@hmh/component-base';
 
 /**
  * `<sortable-drag-container>`
  * @demo ./demo/index-sortable-drag-container.html
  */
 export class SortableDropContainer extends DropContainer {
+    public get value(): string[] {
+        return this.addedItems;
+    }
     public match(el: ResponseValidation, response: string[]): boolean {
         if (!el.expected) {
-            // catch-all clausec
             return true;
         }
         const expected: string[] = el.expected.split('|');
-
-        switch (el.strategy) {
-            case Strategy.CONTAINS:
-                return expected.some((answer: string) => response.includes(answer));
-            case Strategy.EXACT_MATCH:
-            default:
-                return response.length === expected.length && expected.every((answer: string) => response.includes(answer));
-        }
+        return response.length === expected.length && expected.every((answer: string) => response[expected.indexOf(answer)] === answer);
     }
 
     public add(element: HTMLElement, x: number, y: number): void {

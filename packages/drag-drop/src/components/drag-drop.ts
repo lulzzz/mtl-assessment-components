@@ -41,7 +41,7 @@ export class DragDrop extends ComponentBase<string[]> {
         </div>
         `;
     }
-    private isSwappable(element: HTMLElement): boolean {
+    private isOptionSwappable(element: HTMLElement): boolean {
         return element.classList.contains('option-item') && element.parentElement instanceof DropContainer && this.swappable;
     }
     private onDragStart(event: DragEvent) {
@@ -72,19 +72,17 @@ export class DragDrop extends ComponentBase<string[]> {
     }
 
     private onDragOver(event: DragEvent) {
-        if (event.target != this) {
+        if (event.target != this && this.currentElement) {
             event.preventDefault();
             event.stopPropagation();
-            if ((event.target as HTMLElement).classList.contains('option-item')) {
-                if (this.swappable) {
-                    (event.target as HTMLElement).classList.add('highlight');
+            if (!(event.target as HTMLElement).classList.contains('option-item') || this.swappable) (event.target as HTMLElement).classList.add('highlight');
+            else {
+                //If dragging over an option
+                const sortableDrop: SortableDropContainer = (event.target as HTMLElement).parentElement as SortableDropContainer;
+                if (sortableDrop instanceof SortableDropContainer) {
+                    sortableDrop.push(event.target as HTMLElement, this.currentElement);
                 }
-
-                if ((event.target as HTMLElement).parentElement instanceof SortableDropContainer) {
-                    //  console.log(event.target, event.dataTransfer.getData('source_id'));
-                    ((event.target as HTMLElement).parentElement as SortableDropContainer).push(event.target as HTMLElement, this.currentElement);
-                }
-            } else (event.target as HTMLElement).classList.add('highlight');
+            }
         }
     }
     private onDragLeave(event: DragEvent) {
@@ -93,6 +91,7 @@ export class DragDrop extends ComponentBase<string[]> {
     private onDragEnd(event: DragEvent) {
         event.stopPropagation();
         (event.target as HTMLElement).classList.remove('hide');
+        this.currentElement = null;
     }
 
     private onDrop(event: DragEvent) {
@@ -116,7 +115,7 @@ export class DragDrop extends ComponentBase<string[]> {
             }
             if (dataElement && (target instanceof DragContainer || target instanceof DropContainer) && target.isDropAllowed()) {
                 target.add(dataElement, event.x - this.offsetX, event.y - this.offsetY);
-            } else if (this.isSwappable(event.srcElement as HTMLElement)) {
+            } else if (this.isOptionSwappable(event.srcElement as HTMLElement)) {
                 // if dispenser, modifying a copy has no impact
                 const placeHolder: string = dataElement.innerHTML;
                 dataElement.innerHTML = event.srcElement.innerHTML;
