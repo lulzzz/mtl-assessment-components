@@ -103,7 +103,7 @@ export class DropDown extends MultipleChoice {
                 )}
             </div>
 
-            <span class="feedback-message ${this._getFeedbackClass(feedbackMessage, true)}">${feedbackMessage ? feedbackMessage.message : ''}</span>
+            <span class="feedback-message ${this._getFeedbackClass(feedbackMessage, true)}">${feedbackMessage ? unsafeHTML(feedbackMessage.message) : ''}</span>
 
         </div>
 

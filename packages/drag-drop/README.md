@@ -18,7 +18,7 @@
                 <span>Almost</span>
             </response-validation>
 
-            <response-validation hidden slot="feedback" score="0" feedback="negative">
+            <response-validation hidden slot="feedback" score="0" feedback-type="negative">
                 <span>Try again</span>
                 <span>Still not good</span>
                 <span>Wrong answer</span>
@@ -34,7 +34,7 @@
                 <span>Almost</span>
             </response-validation>
 
-            <response-validation hidden slot="feedback" score="0" feedback="negative">
+            <response-validation hidden slot="feedback" score="0" feedback-type="negative">
                 <span>Try again</span>
                 <span>Still not good</span>
                 <span>Wrong answer</span>
@@ -46,7 +46,7 @@
                 <span>Perfect</span>
             </response-validation>
 
-            <response-validation hidden slot="feedback" score="0" feedback="negative">
+            <response-validation hidden slot="feedback" score="0" feedback-type="negative">
                 <span>Try again</span>
                 <span>Still not good</span>
                 <span>Wrong answer</span>
