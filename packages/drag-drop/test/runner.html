@@ -19,6 +19,7 @@
     <script type="module" src="../dist/components/drag-drop.js"></script>
     <script type="module" src="../dist/components/drag-container.js"></script>
     <script type="module" src="../dist/components/drop-container.js"></script>
+    <script type="module" src="../dist/components/sortable-drop-container.js"></script>
     <script type="module" src="../node_modules/@hmh/component-base/dist/components/response-validation.js"></script>
 </head>
 
@@ -32,6 +33,9 @@
     </template>
     <template id="drop-container">
         <drop-container></drop-container>
+    </template>
+    <template id="sortable-drop-container">
+        <sortable-drop-container></sortable-drop-container>
     </template>
     <template id="basic">
         <drag-drop>
@@ -51,7 +55,7 @@
                 <div slot="options" id="4">4</div>
             </drag-container>
 
-            <drop-container maxItems="4">
+            <drop-container max-items="4">
 
                 <response-validation hidden slot="feedback" expected="000-1|000-5" score="10">
                     <span>Perfect</span>
@@ -68,7 +72,7 @@
                 </response-validation>
             </drop-container>
 
-            <drop-container maxItems="1">
+            <drop-container max-items="1">
                 <response-validation hidden slot="feedback" expected="4" score="10">
                     <span>Perfect</span>
                 </response-validation>
@@ -83,10 +87,61 @@
                     <span>Wrong answer</span>
                 </response-validation>
             </drop-container>
-
+            <drag-container trash>
+            </drag-container>
         </drag-drop>
     </template>
+    <template id="swappable">
+        <drag-drop swappable>
+            <drop-container max-items="10">
+                <response-validation hidden slot="feedback" expected="000-1|000-5" score="10">
+                    <span>Perfect</span>
+                </response-validation>
 
+                <response-validation hidden slot="feedback" expected="000-1|000-5" score="5" strategy="contains" feedback-type="neutral">
+                    <span>Almost</span>
+                </response-validation>
+
+                <response-validation hidden slot="feedback" score="0" feedback-type="negative">
+                    <span>Try again</span>
+                    <span>Still not good</span>
+                    <span>Wrong answer</span>
+                </response-validation>
+            </drop-container>
+            <drag-container dispenser>
+                <div slot="options" id="1">cm</div>
+                <div slot="options" id="2">in</div>
+                <div slot="options" id="3">lbs</div>
+                <div slot="options" id="4">kg</div>
+            </drag-container>
+            <drag-container id="trash" max-items="1" trash></drag-container>
+        </drag-drop>
+    </template>
+    <template id="sortable">
+        <drag-drop>
+            <h3>Sort These Items</h3>
+            <sortable-drop-container id="sorting">
+                <div slot="options" id="1">1</div>
+                <div slot="options" id="2">2</div>
+                <div slot="options" id="3">3</div>
+                <div slot="options" id="4">4</div>
+                <div slot="options" id="5">5</div>
+                <response-validation hidden slot="feedback" expected="1|2|3|4|5" score="10">
+                    <span>Perfect</span>
+                </response-validation>
+                <response-validation hidden slot="feedback" expected="1|2|3|5|4" score="5" feedback-type="neutral">
+                    <span>Not bad</span>
+                </response-validation>
+
+                <response-validation hidden slot="feedback" score="0" feedback-type="negative">
+                    <span>Try again</span>
+                    <span>Still not good</span>
+                    <span>Wrong answer</span>
+                </response-validation>
+
+            </sortable-drop-container>
+        </drag-drop>
+    </template>
 
 
 
