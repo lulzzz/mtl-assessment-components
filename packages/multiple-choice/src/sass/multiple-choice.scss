@@ -2,6 +2,7 @@ main {
   display: flex;
   flex-direction: var(--align-options, column);
   flex-flow: var(--align-options, column) wrap;
+  justify-content: var(--justify-content, flex-start);
 }
 
 .positive {
