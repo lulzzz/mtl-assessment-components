@@ -11,7 +11,7 @@ function prepareValue(equation: string, x: number, y: number): number {
  *
  * equationXmin etc are variables that bound the range of the equations.
  * step - the intervals at which points are plotted along the equation graphs.
- * @demo ./demo/index.html
+ * @demo ./demo/plot-graph-3d.html
  *
  */
 export class PlotGraph3D extends ComponentBase<any> {
@@ -23,9 +23,9 @@ export class PlotGraph3D extends ComponentBase<any> {
 
     protected render(): TemplateResult {
         return html`
-        <link rel="stylesheet" type="text/css" href="/css/plot-graph-3d.css">
+        <link rel="stylesheet" type="text/css" href="/css/plot-graph.css">
         <!-- TODO: get css from node module -->
-        <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/vis/4.16.1/vis.css">
+        <link rel="stylesheet" type="text/css" href="vis/dist/vis.min.css">
         <slot hidden name="graph-axis" @slotchange=${(evt: Event) => this._onCoordSystemAdded(evt)}> </slot>
 
         <span class="container">
@@ -75,9 +75,6 @@ export class PlotGraph3D extends ComponentBase<any> {
                 }
             );
         }
-        
-        // in case axes are added after the equations
-       // this.drawGraph();
     }
 
     /**
@@ -165,11 +162,6 @@ export class PlotGraph3D extends ComponentBase<any> {
                     */
                 }
             })
-
-
-
-
-
         }
 
         new vis.Graph3d(canvas, dataset, options);
