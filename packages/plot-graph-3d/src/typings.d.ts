@@ -4,3 +4,4 @@ declare const it: any;
 declare const mocha: any;
 declare const withSnippet: any;
 declare const vis: any;
+declare module '@polymer/iron-component-page';
