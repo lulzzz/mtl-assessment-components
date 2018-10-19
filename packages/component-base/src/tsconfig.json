@@ -24,7 +24,7 @@
             "@hmh/*": ["node_modules/@hmh/*"],
             "@material/*": ["node_modules/@material/*"],
             "@polymer/*": ["node_modules/@polymer/*"],
-            "lit-html/*": ["node_modules/lit-html/*"],
+            "lit-html/*": ["node_modules/@polymer/lit-element/node_modules/lit-html/*"],
             "sinon/*": ["node_modules/sinon/*"]
         },
         "plugins": [
