@@ -1,7 +1,7 @@
 {
     "name": "@hmh/plot-graph",
-    "version": "0.4.0",
-    "description": "Assessment System Graph Components",
+    "version": "0.4.2",
+    "description": "Assessment System Graph Component",
     "main": "dist/index.js",
     "module": "dist/index.js",
     "types": "dist/index.d.ts",
