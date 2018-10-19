@@ -34,7 +34,7 @@ export abstract class Feedback {
                 return el.getFeedback();
             }
         }
-        throw new Error('missing default response-validation');
+        return null;
     }
 
     public _onFeedbackSlotChanged(evt: Event): void {

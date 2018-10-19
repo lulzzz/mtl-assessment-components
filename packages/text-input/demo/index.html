@@ -20,15 +20,14 @@
         <text-input>
 
             <response-validation slot="feedback" expected="smile" score="4" strategy="fuzzyMatch">
-                <span>Good</span>
-                <span>Wooot!</span>
+                <span>Good job <b>boy</b>!</span>
             </response-validation>
 
             <response-validation slot="feedback" expected="grin" score="1" feedback-type="neutral" strategy="exactMatch">
                 <span>Almost</span>
             </response-validation>
 
-            <response-validation slot="feedback" score="0" feedback="negative" strategy="exactMatch">
+            <response-validation slot="feedback" score="0" feedback-type="negative" strategy="exactMatch">
                 <span>Try again</span>
                 <span>Oups, still not good</span>
                 <span>Too bad!</span>
