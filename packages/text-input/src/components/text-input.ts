@@ -1,4 +1,4 @@
-import { applyMixins, ComponentBase, Feedback, FeedbackMessage, Strategy, html, property, TemplateResult, ResponseValidation } from '@hmh/component-base';
+import { applyMixins, ComponentBase, Feedback, FeedbackMessage, Strategy, html, property, TemplateResult, ResponseValidation, unsafeHTML } from '@hmh/component-base';
 import { MDCTextField } from '@material/textfield';
 
 /**
@@ -39,7 +39,7 @@ export class TextInput extends ComponentBase<string> implements Feedback {
         const feedbackBanner: TemplateResult =
             feedbackMessage && feedbackMessage.message
                 ? html`<div class="feedback-message">
-                    <div>${feedbackMessage.message}<div>
+                    <div>${unsafeHTML(feedbackMessage.message)}<div>
                 </div>`
                 : html``;
 

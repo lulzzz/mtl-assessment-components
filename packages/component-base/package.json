@@ -1,17 +1,16 @@
 {
     "name": "@hmh/component-base",
-    "version": "0.4.0",
+    "version": "0.4.1",
     "description": "Assessment System Component Base Classes",
     "main": "dist/index.js",
     "module": "dist/index.js",
     "types": "dist/index.d.ts",
     "scripts": {
-        "start": "polyserve -o",
+        "map": "nodejs-base-server -Mc ../../server-config.json",
         "build": "tsc -p src",
         "prepubishOnly": "npm run build",
         "watch": "npm run build; npm run build -- -w",
-        "test": "lit-element-tester dist/components/*.js dist/mixins/*.js",
-        "map": "nodejs-base-server dist/*.js -M"
+        "test": "lit-element-tester dist/components/*.js dist/mixins/*.js"
     },
     "keywords": [],
     "author": "Dominique Rochefort <dominique.rochefort@hmhco.com>",
