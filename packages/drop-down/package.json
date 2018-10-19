@@ -1,6 +1,6 @@
 {
     "name": "@hmh/drop-down",
-    "version": "0.4.1",
+    "version": "0.4.2",
     "description": "Assessment System Drop Down Component",
     "main": "dist/index.js",
     "module": "dist/index.js",
