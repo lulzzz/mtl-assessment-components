@@ -1,19 +1,19 @@
 {
     "name": "@hmh/text-input",
-    "version": "0.4.0",
+    "version": "0.4.1",
     "description": "Assessment System Text Input Component",
     "main": "dist/index.js",
     "module": "dist/index.js",
     "types": "dist/index.d.ts",
     "scripts": {
-        "start": "nodejs-base-server -c ../../server-config.json",
+        "start": "nodejs-base-server -Msc ../../server-config.json",
+        "map": "nodejs-base-server -Mc ../../server-config.json",
         "build": "tsc -p src",
         "prepubishOnly": "npm run build; npm run sass",
         "sass": "node-sass src/sass -r -o dist/css",
         "sass-watch": "node-sass src/sass -r -o dist/css -w",
         "watch": "npm run build; npm run sass; concurrently --names 'build,sass' -c 'bgBlue,bgMagenta' 'npm run build -- -w' 'npm run sass -- -w' 'npm-watch'",
         "test": "lit-element-tester dist/components/*.js",
-        "map": "nodejs-base-server dist/*.js node_modules/@polymer/iron-component-page/iron-component-page.js -M",
         "_generateDocs": "polymer analyze ./dist/components/text-input.js > ./dist/components/analysis.json"
     },
     "keywords": [],
