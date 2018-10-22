@@ -1,5 +1,6 @@
 import { DropContainer } from './drop-container';
 import { ResponseValidation } from '@hmh/component-base';
+export { DropContainer } from './drop-container';
 
 /**
  * `<sortable-drop-container>`
