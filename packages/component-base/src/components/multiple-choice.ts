@@ -1,5 +1,5 @@
 import { ResponseValidation } from './response-validation.js';
-import { ComponentBase, property, TemplateResult } from './base.js';
+import { ComponentBase, html, property, TemplateResult } from './base.js';
 import { Feedback, FeedbackMessage, Strategy } from '../mixins/feedback.js';
 import { applyMixins } from '../util.js';
 
