@@ -1,6 +1,6 @@
 {
     "name": "@hmh/text-input",
-    "version": "0.4.3",
+    "version": "0.4.4",
     "description": "Assessment System Text Input Component",
     "main": "dist/index.js",
     "module": "dist/index.js",
