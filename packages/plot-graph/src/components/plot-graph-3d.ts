@@ -24,7 +24,6 @@ export class PlotGraph3D extends ComponentBase<any> {
     protected render(): TemplateResult {
         return html`
         <link rel="stylesheet" type="text/css" href="/css/plot-graph.css">
-        <!-- TODO: get css from node module -->
         <link rel="stylesheet" type="text/css" href="vis/dist/vis.min.css">
         <slot hidden name="graph-axis" @slotchange=${(evt: Event) => this._onCoordSystemAdded(evt)}> </slot>
 
@@ -64,7 +63,6 @@ export class PlotGraph3D extends ComponentBase<any> {
      * @returns void
      */
     private _onCoordSystemAdded(event: Event): void {
-
         const slot: HTMLSlotElement = event.srcElement as HTMLSlotElement;
         if (slot) {
             slot.assignedNodes().forEach(
@@ -107,7 +105,7 @@ export class PlotGraph3D extends ComponentBase<any> {
         // Create and populate a data table.
         const dataset = new vis.DataSet();
         for (let x = equationXmin; x < equationXmax; x+=step) {
-            for (let y = equationYmin; y < equationYmax; y+=step) {       
+            for (let y = equationYmin; y < equationYmax; y+=step) {     
                 dataset.add({x:x,y:y,z:prepareValue(equation.innerText, x, y)});
             }
         }
@@ -145,7 +143,6 @@ export class PlotGraph3D extends ComponentBase<any> {
                     if (visibleVal) {
                         options[['show', direction.toUpperCase(), 'Axis'].join('').trim()] = (visibleVal === 'visible');
                     }
-
 
                     /* TODO: not sure why this breaks rendering
                     const min = axis.getAttribute('min'); 
