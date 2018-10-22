@@ -70,6 +70,7 @@
         "lit-html/lib/shady-render": "/node_modules/@hmh/component-base/node_modules/lit-html/lib/shady-render.js",
         "lit-html/lit-html": "/node_modules/@hmh/component-base/node_modules/lit-html/lit-html.js",
         "marked/lib/marked.js": "/node_modules/marked/lib/marked.js",
-        "prismjs/prism.js": "/node_modules/prismjs/prism.js"
+        "prismjs/prism.js": "/node_modules/prismjs/prism.js",
+        "vis/dist/vis.min.css": "/node_modules/vis/dist/vis.min.css"
     }
 }

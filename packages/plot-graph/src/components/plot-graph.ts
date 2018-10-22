@@ -23,7 +23,7 @@ enum Direction {
  *
  * equationXmin etc are variables the bound the range of the equations (independently of the axis dimensions)
  * step - the intervals at which points are plotted along the equation graphs
- * @demo ./demo/index.html
+ * @demo ./demo/plot-graph.html
  *
  */
 export class PlotGraph extends ComponentBase<any> {

@@ -15,16 +15,16 @@
         "watch": "npm run build; npm run sass; concurrently --names 'build,sass' -c 'bgBlue,bgMagenta' 'npm run build -- -w' 'npm run sass -- -w' 'npm-watch'",
         "test": "lit-element-tester dist/components/*.js",
         "test-dev": "lit-element-tester -d",
-        "_generateDocs": "polymer analyze ./dist/components/plot-graph.js > ./dist/components/analysis.json"
+        "_generateDocs": "polymer analyze ./dist/components/{plot-graph.js,plot-graph-3d.js} > ./dist/components/analysis.json"
     },
     "keywords": [],
     "author": "Christopher Morris <christopher.morris@hmhco.com>",
     "license": "ISC",
     "dependencies": {
         "@hmh/component-base": "latest",
-        "@material/button": "latest",
-        "@material/textfield": "latest",
-        "d3": "^5.7.0"
+        "d3": "^5.7.0",
+        "@types/vis": "^4.21.8",
+        "vis": "^4.21.0"
     },
     "devDependencies": {
         "@hmh/lit-element-tester": "latest",
