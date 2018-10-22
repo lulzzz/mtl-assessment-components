@@ -5,8 +5,7 @@ import { DropContainer } from '../components/drop-container';
 import { SortableDropContainer } from '../components/sortable-drop-container';
 
 export default () => {
-    function dispatchDragEvent(eventType: string, element: HTMLElement) {
-        const dataTransfer = new DataTransfer();
+    function dispatchDragEvent(eventType: string, element: HTMLElement, dataTransfer: DataTransfer) {
         element.dispatchEvent(new DragEvent(eventType, { bubbles: true, dataTransfer: dataTransfer }));
     }
     describe(`<${basicTagName}> default`, (): void => {
@@ -143,14 +142,15 @@ export default () => {
             let dragSource = element.dragContainers[0];
             // @ts-ignore Access private member
             const dropTarget = element.dropContainers[1];
-            dispatchDragEvent('dragstart', dragSource);
-            dispatchDragEvent('drop', dropTarget);
+            const dataTransfer = new DataTransfer();
+            dispatchDragEvent('dragstart', dragSource, dataTransfer);
+            dispatchDragEvent('drop', dropTarget, dataTransfer);
 
             await element.updateComplete;
 
             expect(dropTarget.addedItems.length).to.equal(0);
         });
-        it.only('should respect the maximum number of items', async (): Promise<void> => {
+        it('should respect the maximum number of items', async (): Promise<void> => {
             withSnippet('basic');
             const element: DragDrop = document.querySelector(basicTagName) as any;
             await element.updateComplete;
@@ -160,33 +160,17 @@ export default () => {
             // @ts-ignore Access private member
             const dropTarget = element.dropContainers[1];
             const dataTransfer = new DataTransfer();
-            const dragEvent: Event = new DragEvent('dragstart', { bubbles: true, dataTransfer: dataTransfer });
-            const dragOverEvent: Event = new DragEvent('dragover', { bubbles: true, dataTransfer: dataTransfer });
-            const dropEvent: Event = new DragEvent('drop', { bubbles: true, dataTransfer: dataTransfer });
-            dispatchDragEvent('dragstart', dragSource);
+            dispatchDragEvent('dragstart', dragSource, dataTransfer);
             await element.updateComplete;
-
-            dispatchDragEvent('dragover', dragSource);
+            dispatchDragEvent('drop', dropTarget, dataTransfer);
             await element.updateComplete;
-
-            dispatchDragEvent('drop', dropTarget);
-            dispatchDragEvent('dragend', dropTarget);
-            await element.updateComplete;
+            expect(dropTarget.addedItems.length).to.equal(1);
 
             // @ts-ignore Access private member
             dragSource = element.dragContainers[0].getElement('000-2');
-
-            // dragSource.dispatchEvent(dragEvent);
-            //dispatchDragEvent('dragstart', dragSource);
-
+            dispatchDragEvent('dragstart', dragSource, dataTransfer);
             await element.updateComplete;
-            //   dropTarget.dispatchEvent(dropEvent);
-            // dispatchDragEvent('dragover', dragSource);
-
-            // dispatchDragEvent('drop', dropTarget);
-
-            await element.updateComplete;
-
+            dispatchDragEvent('drop', dropTarget, dataTransfer);
             expect(dropTarget.addedItems.length).to.equal(1);
         });
         it('element should be hidden when drag in process', async (): Promise<void> => {
@@ -196,8 +180,8 @@ export default () => {
             // @ts-ignore Access private member
             let dragSource = element.dragContainers[0].getElement('000-1');
             const dataTransfer = new DataTransfer();
-            const dragEvent: Event = new DragEvent('dragstart', { bubbles: true, dataTransfer: dataTransfer });
-            dragSource.dispatchEvent(dragEvent);
+            dispatchDragEvent('dragstart', dragSource, dataTransfer);
+            dispatchDragEvent('dragend', dragSource, dataTransfer);
             await element.updateComplete;
 
             setTimeout(function() {
@@ -212,16 +196,19 @@ export default () => {
             // @ts-ignore Access private member
             let dragSource = element.dragContainers[0].getElement('000-1');
             const dataTransfer = new DataTransfer();
-            const dragEvent: Event = new DragEvent('dragstart', { bubbles: true, dataTransfer: dataTransfer });
-            const dropEvent: Event = new DragEvent('drop', { bubbles: true, dataTransfer: dataTransfer });
-
-            dragSource.dispatchEvent(dragEvent);
+            dispatchDragEvent('dragstart', dragSource, dataTransfer);
             await element.updateComplete;
+            setTimeout(function() {
+                expect(dragSource.classList.contains('hide')).to.be.true;
+            }, 0);
+
             // @ts-ignore Access private member
-            element.dragContainers[1].dispatchEvent(dropEvent);
-            await element.updateComplete;
+            dispatchDragEvent('dragend', dragSource, dataTransfer);
 
-            expect(dragSource.classList.contains('hide')).to.be.false;
+            await element.updateComplete;
+            setTimeout(function() {
+                expect(dragSource.classList.contains('hide')).to.be.false;
+            }, 0);
         });
         it('should be able to move from drop container to drag zone', async (): Promise<void> => {
             withSnippet('basic');
