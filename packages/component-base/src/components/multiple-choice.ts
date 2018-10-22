@@ -1,5 +1,5 @@
 import { ResponseValidation } from './response-validation.js';
-import { ComponentBase, property } from './base.js';
+import { ComponentBase, property, TemplateResult } from './base.js';
 import { Feedback, FeedbackMessage, Strategy } from '../mixins/feedback.js';
 import { applyMixins } from '../util.js';
 
@@ -14,6 +14,33 @@ export abstract class MultipleChoice extends ComponentBase<string[]> implements 
     // @mixin: Feedback
     computeFeedback: (value: string[]) => FeedbackMessage;
     _onFeedbackSlotChanged: (evt: Event) => void;
+
+    public get commonStyles(): TemplateResult {
+        return html`<style>
+        main {
+        display: flex;
+        flex-direction: var(--align-options, column);
+        flex-flow: var(--align-options, column) wrap;
+        justify-content: var(--justify-content, flex-start);
+        }
+
+        .positive {
+        outline: 2px solid var(--positive-color, green);
+        }
+
+        .negative {
+        outline: 2px solid var(--negative-color, red);
+        }
+
+        .neutral {
+        outline: 2px solid var(--neutral-color, yellow);
+        }
+
+        .mdc-form-field {
+        flex-basis: var(--option-width, content);
+        }
+        </style>`;
+    }
 
     /**
      * @param  {ResponseValidation} el - the element containing an expected value and a strategy
