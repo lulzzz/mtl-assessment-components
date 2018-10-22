@@ -1,6 +1,6 @@
 {
     "name": "@hmh/multiple-choice",
-    "version": "0.4.2",
+    "version": "0.4.3",
     "description": "Assessment System Multiple Choice Component",
     "main": "dist/index.js",
     "module": "dist/index.js",

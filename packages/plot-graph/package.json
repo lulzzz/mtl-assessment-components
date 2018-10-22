@@ -1,6 +1,6 @@
 {
     "name": "@hmh/plot-graph",
-    "version": "0.4.2",
+    "version": "0.4.3",
     "description": "Assessment System Graph Component",
     "main": "dist/index.js",
     "module": "dist/index.js",
@@ -22,8 +22,8 @@
     "license": "ISC",
     "dependencies": {
         "@hmh/component-base": "latest",
-        "d3": "^5.7.0",
         "@types/vis": "^4.21.8",
+        "d3": "^5.7.0",
         "vis": "^4.21.0"
     },
     "devDependencies": {
