@@ -6,6 +6,22 @@ Assessment Web Components are built using Shadow DOM which guarantees CSS styles
 
 For example, we'd like to apply grade-specific fonts and colors to a set of problems.
 
+## Definitions
+
+### Theme
+
+A theme is a set of styles that apply to all problems, or a whole lesson. A math lesson for grade K will most likely have a different **theme** than a math lesson for grade 9.
+
+* Different colors
+* Different set of fonts
+* Different font sizes
+* Different button styles
+* etc.
+
+### Style
+
+A *style* typically applies to a specific element, or a specific group of elements. For example, in a given problem with 2 multiple choice elements, the first one may be styles inline with options aligned horizontally, while the second element is styles as a block element, with options layed out in 2 columns.
+
 ## Solution 1: CSS variables
 
 CSS variables can pierce the shadow root to override custom styles. They are the recommended approach for custom elements styling.
@@ -41,6 +57,8 @@ text-input {
     --neutral-color: #D4AB27;
 }
 ```
+
+CSS variables are pretty handy for **styling**, but not for **theming**.
 
 ## Solution 2: Stylesheet injection
 

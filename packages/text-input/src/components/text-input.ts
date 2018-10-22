@@ -47,6 +47,10 @@ export class TextInput extends ComponentBase<string> implements Feedback {
         <link rel="stylesheet" href="@material/textfield/dist/mdc.textfield.css">
         <link rel="stylesheet" href="/css/text-input.css">
         <style>
+        .mdc-text-field {
+            height: 1.5em;
+        }
+
         .mdc-text-field--upgraded:not(.mdc-text-field--fullwidth):not(.mdc-text-field--box) {
             margin-top: 0px;
         }
@@ -62,6 +66,7 @@ export class TextInput extends ComponentBase<string> implements Feedback {
             justify-content: center;
             align-items: center;
             width: 100%;
+            border-radius: 0 4px 4px 0;
         }
         </style>
         ${this._feedbackStyle(feedbackMessage)}
