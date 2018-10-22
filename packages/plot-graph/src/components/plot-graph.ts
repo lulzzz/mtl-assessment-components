@@ -75,16 +75,10 @@ export class PlotGraph extends ComponentBase<any> {
     private scale(axis: Direction, min: number, max: number, size: number): d3.ScaleLinear<number, number> {
         const domain = [min, max];
         const range = axis === Direction.X ? [0, size] : [size, 0];
-
-        /* istanbul ignore next */
-        const getResult = () => {
-            /* istanbul ignore next */
-            return scaleLinear()
-                .domain(domain) // input
-                .range(range); // output            
-        };
-        /* istanbul ignore next: tired of writing tests */
-        return getResult(); /* istanbul ignore next: tired of writing tests */
+        
+        return scaleLinear()
+        .domain(domain) // input
+        .range(range); // output       
     }
 
     /**
