@@ -28,6 +28,43 @@ enum Direction {
  */
 export class PlotGraph extends ComponentBase<any> {
     private axes: any[] = [];
+    private readonly styles: TemplateResult = html`<style>
+            .line-description {
+                text-align: center;
+            }
+
+            /* Style the lines by removing the fill and applying a stroke */
+            .line {
+                fill: none;
+                stroke: black;
+                stroke-width: 3;
+            }
+            
+            .grid .tick {
+                stroke: lightgrey;
+                opacity: 0.7;
+            }
+
+            .grid path {
+                stroke-width: 0;
+            }
+
+            .container {
+                display: inline-block;
+                position: relative;
+                width: 100%;
+                padding-bottom: 100%;
+                overflow: hidden;    
+            }
+
+            .svg-content {
+                display: inline-block;
+                position: absolute;
+                top: 0;
+                left: 0;
+            }
+            </style>`;
+
     protected svgContainer: any = null;
     @property({ type: Array })
     protected equationItems: HTMLElement[] = [];
@@ -35,6 +72,7 @@ export class PlotGraph extends ComponentBase<any> {
     protected render(): TemplateResult {
         return html`
         <link rel="stylesheet" type="text/css" href="/css/plot-graph.css">
+        ${this.styles}
 
         <div class="container">
             <div id="canvas"></div>
@@ -62,7 +100,7 @@ export class PlotGraph extends ComponentBase<any> {
             );
 
             this.equationItems = equationItems;
-            this.drawGraph();     
+            this.drawGraph();
         }
     }
 
@@ -128,7 +166,6 @@ export class PlotGraph extends ComponentBase<any> {
         const width = canvas.clientWidth;
         const height = Math.round(width / aspect);
 
-
         // https://chartio.com/resources/tutorials/how-to-resize-an-svg-when-the-window-is-resized-in-d3-js/
         this.svgContainer = select(this.shadowRoot)
             .select('#canvas')
@@ -177,7 +214,7 @@ export class PlotGraph extends ComponentBase<any> {
             const min = axis.getAttribute('min');
             const max = axis.getAttribute('max');
             const scale = this.scale(axis.direction, parseInt(min), parseInt(max), isDirectionX ? width : height);
-            
+
             this.svgContainer
                 .append('g')
                 .attr('class', isDirectionX ? 'x-axis' : 'y-axis')
