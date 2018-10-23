@@ -99,6 +99,42 @@
         </drag-container>
     </drag-drop>
 
+    <drag-drop>
+        <h3>Sort These Items</h3>
+        <sortable-drop-container id="sorting">
+            <div slot="options" id="1">1</div>
+            <div slot="options" id="2">2</div>
+            <div slot="options" id="3">3</div>
+            <div slot="options" id="4">4</div>
+            <div slot="options" id="5">5</div>
+            <response-validation hidden slot="feedback" expected="1|2|3|4|5" score="10">
+                <span>Perfect</span>
+            </response-validation>
+            <response-validation hidden slot="feedback" expected="1|2|3|5|4" score="5" feedback-type="neutral">
+                <span>Not bad</span>
+            </response-validation>
+
+            <response-validation hidden slot="feedback" score="0" feedback-type="negative">
+                <span>Try again</span>
+                <span>Still not good</span>
+                <span>Wrong answer</span>
+            </response-validation>
+
+        </sortable-drop-container>
+    </drag-drop>
+    <!--drag-drop>
+        <h3>Sort These Items</h3>
+        <sortable-drop-container id="sorting">
+            <div slot="options" id="1">Akufen</div>
+            <div slot="options" id="2">Nur Jaber</div>
+            <div slot="options" id="3">Monika Ross</div>
+            <div slot="options" id="4">Ron Trent</div>
+            <div slot="options" id="5">Waajeed</div>
+            <div slot="options" id="6">DIY</div>
+            <div slot="options" id="7">Fanon Flowers</div>
+        </sortable-drop-container>
+    </drag-drop-->
+
     <button id="button" class="mdc-button">Validate</button>
 
     <script>
