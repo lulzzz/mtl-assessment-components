@@ -27,8 +27,8 @@ A **style** typically applies to a specific object, or a specific group of objec
 **As an author** I want the ability to:
 
 * Apply a set of common styles that apply across a lesson/test. We will call this a **theme**.
-    * If a problem 1 is used in test A, it must inherit test A styles.
-    * If a problem 1 is used in test B, it must inherit test B styles.
+    * If problem 1 is used in test A, it must inherit test A styles.
+    * If problem 1 is used in test B, it must inherit test B styles.
 * Customize certain aspects of the theme according to given context parameters. A typical example is **grade-banding** where we have slight differences between school grades.
 * Apply **problem styles**. These styles must not change whether a problem is used within test A or B. These styles are carried over with the problem. Examples are: 
     * whether MCQ options are layed-out horizontally or vertically
@@ -41,6 +41,20 @@ These are different from *element styles* which are encapsulated in the shadow r
 
 * Use a CSS processor **Sass** or **PostCSS** to better organize my styles across HMH products. Using *Sass* will also help ensuring consistency within a specific product. **Sass** is preferred here due to legacy and widespread knowledge across HMH, and because it is a mature toolchain and it is easy to set up.
 
+### Notes on Problem Styles
+
+*Feedback from Scott and Max*
+
+It may not be desirable to keep a stylesheet along with each problem.
+Styles enumerated above as examples for **problem styles**, could probably be exposed more safely using either CSS variables or custom element attributes.
+
+* MCQ layout could be done by setting attributes on the `<multiple-choice>` element.
+* Drop zone position can be achieved via either exposed CSS variables or element attributes.
+* Not sure about responsiveness though.
+
+
+
+
 ## Proposed Approach
 
 I propose that:
@@ -52,10 +66,9 @@ I propose that:
     * One separate css file for each interaction with the same name as the component HTML tag is used to **theme** interaction shadow DOMs: 
         * e.g. `<text-input>` => `/css/text-input.css`.
         * e.g. `<plot-graph>` => `/css/plot-graph.css`.
-* **Problem styles** are stored along with the Problem on the database, and are delivered by the server when the problem is loaded.
+* ~~**Problem styles** are stored along with the Problem on the database, and are delivered by the server when the problem is loaded.~~
+* **Problem styles** could be addressed using either exposed CSS variables or element attributes.
 * Interaction specific **element styles** uses inline styles within the interaction template. When the web components are consumed via NPM, the server doesn't know how to properly resolve the external stylesheets (TODO: investigate further).
-    * In this context, and for additional flexibility, CSS variables can be used to modify specifically exposed style attributes, e.g. feeback colors, MCQ answer options layout.
-
 
 ## Technical details
 
@@ -98,4 +111,14 @@ CSS variables are pretty handy for **styling**, but not for **theming**.
 
 ### Stylesheet injection
 
-The idea here is to inject a custom stylesheet in the Shadow Root of the element. This should provide enough flexibility for theming.
+The idea here is to inject a custom stylesheet in the Shadow Root of the element at runtime. 
+
+We add a link tag to the element's template:
+
+```html
+<link rel="stylesheet" href="/css/text-input.css" />
+```
+
+And we have the server resolve the `/css` path to a central location where we make the stylesheet avaible.
+
+Whenever the custom element renders its shadow DOM, it will load this CSS file in the shadow DOM.
