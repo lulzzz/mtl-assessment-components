@@ -92,7 +92,7 @@
         </drag-drop>
     </template>
     <template id="swappable">
-        <drag-drop swappable>
+        <drag-drop swappable id="an-id">
             <drop-container max-items="10">
                 <response-validation hidden slot="feedback" expected="000-1|000-5" score="10">
                     <span>Perfect</span>
@@ -108,11 +108,16 @@
                     <span>Wrong answer</span>
                 </response-validation>
             </drop-container>
-            <drag-container dispenser>
+            <drag-container>
                 <div slot="options" id="1">cm</div>
                 <div slot="options" id="2">in</div>
                 <div slot="options" id="3">lbs</div>
                 <div slot="options" id="4">kg</div>
+            </drag-container>
+            <drag-container dispenser>
+                <div slot="options" id="one">one</div>
+                <div slot="options" id="two">two</div>
+
             </drag-container>
             <drag-container id="trash" max-items="1" trash></drag-container>
         </drag-drop>

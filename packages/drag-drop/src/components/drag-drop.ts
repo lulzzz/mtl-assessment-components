@@ -43,28 +43,28 @@ export class DragDrop extends ComponentBase<string[]> {
     }
     private onDragStart(event: DragEvent) {
         if ((event.target as HTMLElement).className === 'option-item') {
+            this.currentElement = event.target as HTMLElement;
             event.dataTransfer.effectAllowed = 'move';
-            this.offsetX = event.x - (event.target as HTMLElement).offsetLeft;
-            this.offsetY = event.y - (event.target as HTMLElement).offsetTop;
+            this.offsetX = event.x - this.currentElement.offsetLeft;
+            this.offsetY = event.y - this.currentElement.offsetTop;
             let type: string;
             let index: number = -1;
-            if ((event.target as HTMLElement).parentElement instanceof DragContainer) {
+            if (this.currentElement.parentElement instanceof DragContainer) {
                 type = 'drag-container';
-                index = this.dragContainers.indexOf((event.target as HTMLElement).parentElement as DragContainer);
-            } else if ((event.target as HTMLElement).parentElement instanceof DropContainer) {
+                index = this.dragContainers.indexOf(this.currentElement.parentElement as DragContainer);
+            } else {
                 type = 'drop-container';
-                index = this.dropContainers.indexOf((event.target as HTMLElement).parentElement as DropContainer);
+                index = this.dropContainers.indexOf(this.currentElement.parentElement as DropContainer);
             }
-            if (!((event.target as HTMLElement).parentElement as DragContainer).dispenser) {
+            if (!(this.currentElement.parentElement as DragContainer).dispenser) {
                 setTimeout(function() {
                     (event.target as HTMLElement).classList.add('hide');
                 }, 0);
             }
-            event.dataTransfer.setData('source_id', (event.target as HTMLElement).id);
+            event.dataTransfer.setData('source_id', this.currentElement.id);
             event.dataTransfer.setData('source_type', type);
             event.dataTransfer.setData('index', index.toString());
             event.dataTransfer.setData('parent-id', this.id);
-            this.currentElement = event.target as HTMLElement;
         }
     }
 
@@ -104,6 +104,7 @@ export class DragDrop extends ComponentBase<string[]> {
         let container: DragContainer | DropContainer;
         container = type === 'drop-container' ? this.dropContainers[index] : this.dragContainers[index];
         if (this.id === parentId) {
+            /* istanbul ignore next */
             if (container) {
                 dataElement = (container as DragContainer).dispenser
                     ? (container.getElement(sourceId).cloneNode(true) as HTMLElement)
