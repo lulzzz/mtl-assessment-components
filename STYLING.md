@@ -62,7 +62,8 @@ I propose that:
 * theming stylesheets are sourced from a central location on the server `/css`. This ensure stylesheets are kept separate from the content, and can be modified without have to touch the content.
 * CSS is built from Sass so we can share Sass partials.
 * CSS files follow a strict naming convention:
-    * `theme.css` delivers the overall **theme**. It won't apply to interactions due to shadow boundaries.
+    * `/css/custom-fonts.css` that loads custom fonts via `@font-face`. It's important to note that `@font-face` is not supported within a Shadow DOM, therefore, this file must be loaded at the HTML top level.
+    * `/css/theme.css` delivers the overall **theme**. It won't apply to interactions due to shadow boundaries.
     * One separate css file for each interaction with the same name as the component HTML tag is used to **theme** interaction shadow DOMs: 
         * e.g. `<text-input>` => `/css/text-input.css`.
         * e.g. `<plot-graph>` => `/css/plot-graph.css`.
