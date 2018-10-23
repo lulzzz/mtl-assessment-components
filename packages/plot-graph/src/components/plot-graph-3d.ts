@@ -42,7 +42,6 @@ export class PlotGraph3D extends ComponentBase<any> {
      * @param {Event} event
      */
     protected _onSlotChanged(event: Event): void {
-        console.log('_onSlotChanged');
         const slot: HTMLSlotElement = event.srcElement as HTMLSlotElement;
 
         const equationItems: HTMLElement[] = [];
@@ -68,16 +67,13 @@ export class PlotGraph3D extends ComponentBase<any> {
         const axesItems: HTMLElement[] = [];
         slot.assignedNodes().forEach(
             (coordSystem: CoordinateSystem): void => {
-                console.log('coord system found');
                 coordSystem.getValue().forEach((axis: any) => {
-                    console.log('pushing to axes');
                     axesItems.push(axis);
                 });
             }
         );
 
         this.axes = axesItems;
-        console.log('_on coord system added calling drawGraph');
         this.drawGraph();
     }
 
@@ -87,12 +83,9 @@ export class PlotGraph3D extends ComponentBase<any> {
      * @returns void
      */
     private drawGraph(): void {
-        console.log('drawGraph')
         if (this.equationItems.length <= 0) {
-            console.log('drawGraph return');
             return;
         }
-        console.log('drawGraph 2')
         const canvas = this.shadowRoot.getElementById('canvas');
 
         while (canvas.firstChild) {
@@ -112,7 +105,7 @@ export class PlotGraph3D extends ComponentBase<any> {
         // Create and populate a data table.
         const dataset = new vis.DataSet();
         for (let x = equationXmin; x < equationXmax; x+=step) {
-            for (let y = equationYmin; y < equationYmax; y+=step) {     
+            for (let y = equationYmin; y < equationYmax; y+=step) {
                 dataset.add({x:x,y:y,z:prepareValue(equation.innerText, x, y)});
             }
         }
@@ -132,24 +125,18 @@ export class PlotGraph3D extends ComponentBase<any> {
             options['style'] = style;
         }   
         
-        console.log('this.axes.length: ', this.axes.length);
-
         if (this.axes.length > 0) {
-            console.log('drawGraph 3')
             this.axes.forEach((axis) => {
                 const direction = axis.getAttribute('direction');
                 const visibleVal = axis.getAttribute('axis-visibility');
                 const label = axis.innerText;
-                console.log('label val:', label);
 
                 if (this.axesColor) {
                     options['axisColor'] = this.axesColor;
                 }
 
                 if (direction) {
-                    console.log('drawGraph 4')
                     if (label) {
-                        console.log('LABEL!');
                         options[[direction.toLowerCase(), 'Label'].join('').trim()] = label;
                     }
 

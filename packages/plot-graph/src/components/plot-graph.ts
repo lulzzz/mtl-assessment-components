@@ -76,7 +76,7 @@ export class PlotGraph extends ComponentBase<any> {
         
         return scaleLinear()
         .domain(domain) // input
-        .range(range); // output       
+        .range(range); // output
     }
 
     /**
