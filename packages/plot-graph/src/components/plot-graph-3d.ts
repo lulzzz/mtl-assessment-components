@@ -16,9 +16,10 @@ function prepareValue(equation: string, x: number, y: number): number {
  */
 export class PlotGraph3D extends ComponentBase<any> {
     private axes: any[] = [];
+
     @property({ type: Array })
-    protected equationItems : HTMLElement[] = [];
-    @property({ type: String, attribute: 'axes-color'})
+    protected equationItems: HTMLElement[] = [];
+    @property({ type: String, attribute: 'axes-color' })
     protected axesColor: string;
 
     protected render(): TemplateResult {
@@ -53,7 +54,7 @@ export class PlotGraph3D extends ComponentBase<any> {
             );
 
             this.equationItems = equationItems;
-            this.drawGraph();     
+            this.drawGraph();
         }
     }
 
@@ -64,7 +65,6 @@ export class PlotGraph3D extends ComponentBase<any> {
      * @returns void
      */
     private _onCoordSystemAdded(event: Event): void {
-
         const slot: HTMLSlotElement = event.srcElement as HTMLSlotElement;
         if (slot) {
             slot.assignedNodes().forEach(
@@ -83,7 +83,6 @@ export class PlotGraph3D extends ComponentBase<any> {
      * @returns void
      */
     private drawGraph(): void {
-
         if (this.equationItems.length <= 0) {
             return;
         }
@@ -95,7 +94,7 @@ export class PlotGraph3D extends ComponentBase<any> {
         }
 
         const equation = this.equationItems[0];
-        
+
         const equationXmin = parseInt(equation.getAttribute('equation-xmin'));
         const equationXmax = parseInt(equation.getAttribute('equation-xmax'));
         const equationYmin = parseInt(equation.getAttribute('equation-ymin'));
@@ -106,14 +105,14 @@ export class PlotGraph3D extends ComponentBase<any> {
 
         // Create and populate a data table.
         const dataset = new vis.DataSet();
-        for (let x = equationXmin; x < equationXmax; x+=step) {
-            for (let y = equationYmin; y < equationYmax; y+=step) {       
-                dataset.add({x:x,y:y,z:prepareValue(equation.innerText, x, y)});
+        for (let x = equationXmin; x < equationXmax; x += step) {
+            for (let y = equationYmin; y < equationYmax; y += step) {
+                dataset.add({ x: x, y: y, z: prepareValue(equation.innerText, x, y) });
             }
         }
 
         const options: any = {
-            width:  '100%',
+            width: '100%',
             height: '100%',
             style: 'surface', // default
             showPerspective: true,
@@ -125,10 +124,10 @@ export class PlotGraph3D extends ComponentBase<any> {
 
         if (style) {
             options['style'] = style;
-        }   
-        
+        }
+
         if (this.axes.length > 0) {
-            this.axes.forEach((axis) => {
+            this.axes.forEach(axis => {
                 const direction = axis.getAttribute('direction');
                 const visibleVal = axis.getAttribute('axis-visibility');
                 const label = axis.innerText;
@@ -143,9 +142,8 @@ export class PlotGraph3D extends ComponentBase<any> {
                     }
 
                     if (visibleVal) {
-                        options[['show', direction.toUpperCase(), 'Axis'].join('').trim()] = (visibleVal === 'visible');
+                        options[['show', direction.toUpperCase(), 'Axis'].join('').trim()] = visibleVal === 'visible';
                     }
-
 
                     /* TODO: not sure why this breaks rendering
                     const min = axis.getAttribute('min'); 
@@ -161,7 +159,7 @@ export class PlotGraph3D extends ComponentBase<any> {
                     }
                     */
                 }
-            })
+            });
         }
 
         new vis.Graph3d(canvas, dataset, options);
