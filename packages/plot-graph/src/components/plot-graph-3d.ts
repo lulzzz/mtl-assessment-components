@@ -25,7 +25,6 @@ export class PlotGraph3D extends ComponentBase<any> {
     protected render(): TemplateResult {
         return html`
         <link rel="stylesheet" type="text/css" href="/css/plot-graph.css">
-        <!-- TODO: get css from node module -->
         <link rel="stylesheet" type="text/css" href="vis/dist/vis.min.css">
         <slot hidden name="graph-axis" @slotchange=${(evt: Event) => this._onCoordSystemAdded(evt)}> </slot>
 
@@ -45,17 +44,16 @@ export class PlotGraph3D extends ComponentBase<any> {
      */
     protected _onSlotChanged(event: Event): void {
         const slot: HTMLSlotElement = event.srcElement as HTMLSlotElement;
-        if (slot) {
-            const equationItems: HTMLElement[] = [];
-            slot.assignedNodes().forEach(
-                (el: HTMLElement): void => {
-                    equationItems.push(el);
-                }
-            );
 
-            this.equationItems = equationItems;
-            this.drawGraph();
-        }
+        const equationItems: HTMLElement[] = [];
+        slot.assignedNodes().forEach(
+            (el: HTMLElement): void => {
+                equationItems.push(el);
+            }
+        );
+
+        this.equationItems = equationItems;
+        this.drawGraph();
     }
 
     /**
@@ -66,15 +64,18 @@ export class PlotGraph3D extends ComponentBase<any> {
      */
     private _onCoordSystemAdded(event: Event): void {
         const slot: HTMLSlotElement = event.srcElement as HTMLSlotElement;
-        if (slot) {
-            slot.assignedNodes().forEach(
-                (coordSystem: CoordinateSystem): void => {
-                    coordSystem.getValue().forEach((axis: any) => {
-                        this.axes.push(axis);
-                    });
-                }
-            );
-        }
+        
+        const axesItems: HTMLElement[] = [];
+        slot.assignedNodes().forEach(
+            (coordSystem: CoordinateSystem): void => {
+                coordSystem.getValue().forEach((axis: any) => {
+                    axesItems.push(axis);
+                });
+            }
+        );
+
+        this.axes = axesItems;
+        this.drawGraph();
     }
 
     /**
@@ -86,7 +87,6 @@ export class PlotGraph3D extends ComponentBase<any> {
         if (this.equationItems.length <= 0) {
             return;
         }
-
         const canvas = this.shadowRoot.getElementById('canvas');
 
         while (canvas.firstChild) {
@@ -105,9 +105,9 @@ export class PlotGraph3D extends ComponentBase<any> {
 
         // Create and populate a data table.
         const dataset = new vis.DataSet();
-        for (let x = equationXmin; x < equationXmax; x += step) {
-            for (let y = equationYmin; y < equationYmax; y += step) {
-                dataset.add({ x: x, y: y, z: prepareValue(equation.innerText, x, y) });
+        for (let x = equationXmin; x < equationXmax; x+=step) {
+            for (let y = equationYmin; y < equationYmax; y+=step) {
+                dataset.add({x:x,y:y,z:prepareValue(equation.innerText, x, y)});
             }
         }
 

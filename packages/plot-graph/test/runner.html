@@ -16,7 +16,9 @@
         mocha.setup('bdd');
     </script>
     <script src="../node_modules/d3/dist/d3.min.js"></script>
+    <script src="../node_modules/vis/dist/vis.min.js"></script>
     <script type="module" src="../dist/components/plot-graph.js"></script>
+    <script type="module" src="../dist/components/plot-graph-3d.js"></script>
 </head>
 
 <body>
@@ -27,9 +29,9 @@
     </template>
 
     <template id="no-axis">
-            <plot-graph>
-                <div slot="equation-items" class="equation-item" color="red" equation-xmin="0" equation-xmax="360" equation-ymin="-10" equation-ymax="10" step="1">Math.sin(x/30)</div>
-            </plot-graph>
+        <plot-graph>
+            <div slot="equation-items" class="equation-item" color="red" equation-xmin="0" equation-xmax="360" equation-ymin="-10" equation-ymax="10" step="1">Math.sin(x/30)</div>
+        </plot-graph>
     </template>
 
     <template id="default">
@@ -40,7 +42,6 @@
             </coordinate-system>
     
             <div slot="equation-items" class="equation-item" color="red" equation-xmin="0" equation-xmax="360" equation-ymin="-10" equation-ymax="10" step="1">Math.sin(x/30)</div>
-    
         </plot-graph>
     </template>
 
@@ -55,6 +56,34 @@
             <div slot="equation-items" class="equation-item" color="blue" equation-xmin="0" equation-xmax="360" equation-ymin="-10" equation-ymax="10" step="1">Math.cos(x/30)</div>
             <div slot="equation-items" class="equation-item" color="green" equation-xmin="0" equation-xmax="360" equation-ymin="-10" equation-ymax="10" step="1">Math.tan(x/30)</div>
         </plot-graph>
+    </template>
+
+    <template id="default-3d">
+        <plot-graph-3d axes-color="red">
+            <coordinate-system slot="graph-axis">
+                <div slot="axis" color="red" direction="x" min="0" max="360" axis-visibility="visible">label x</div>
+                <div slot="axis" color="green" direction="y" min="0" max="360" axis-visibility="visible">label y</div>
+                <div slot="axis" color="blue" direction="z" min="0" max="360" axis-visibility="visible">label z</div>
+            </coordinate-system>
+
+            <span slot="equation-items" class="equation-item" equation-xmin="0" equation-xmax="360" equation-ymin="0" equation-ymax="360" step="10" render-style="surface">Math.sin(x/50) * Math.cos(y/50) * 50 + 50</span>
+        </plot-graph-3d>
+    </template>
+
+    <template id="3d-no-equations">
+        <plot-graph-3d>
+            <coordinate-system slot="graph-axis">
+                <div slot="axis" color="red" direction="x" min="0" max="360" axis-visibility="visible">label x</div>
+                <div slot="axis" color="green" direction="y" min="0" max="360" axis-visibility="visible">label y</div>
+                <div slot="axis" color="blue" direction="z" min="0" max="360" axis-visibility="visible">label z</div>
+            </coordinate-system>
+        </plot-graph-3d>
+    </template>
+
+    <template id="3d-no-axis">
+        <plot-graph-3d>
+            <span slot="equation-items" class="equation-item" equation-xmin="0" equation-xmax="360" equation-ymin="0" equation-ymax="360" step="10" render-style="surface">Math.sin(x/50) * Math.cos(y/50) * 50 + 50</span>
+        </plot-graph-3d>
     </template>
 
     <div id="mocha">
