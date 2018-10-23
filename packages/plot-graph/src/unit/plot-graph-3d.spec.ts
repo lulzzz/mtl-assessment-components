@@ -61,6 +61,5 @@ export default () => {
             await el.updateComplete;
             expect(canvas.firstChild).to.not.be.null;
         });
-
     });
 }

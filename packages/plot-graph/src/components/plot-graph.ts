@@ -53,7 +53,6 @@ export class PlotGraph extends ComponentBase<any> {
      */
     protected _onSlotChanged(event: Event): void {
         const slot: HTMLSlotElement = event.srcElement as HTMLSlotElement;
-        if (slot) {
             const equationItems: HTMLElement[] = [];
             slot.assignedNodes().forEach(
                 (el: HTMLElement): void => {
@@ -63,7 +62,6 @@ export class PlotGraph extends ComponentBase<any> {
 
             this.equationItems = equationItems;
             this.drawGraph();     
-        }
     }
 
     /**
