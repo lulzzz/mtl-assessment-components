@@ -122,3 +122,8 @@ We add a link tag to the element's template:
 And we have the server resolve the `/css` path to a central location where we make the stylesheet avaible.
 
 Whenever the custom element renders its shadow DOM, it will load this CSS file in the shadow DOM.
+
+### Shadow DOM limitations
+
+> If you want to add custom fonts to your elements within the Shadow DOM, load the font-face into the Light DOM and then apply the font styles to the Shadow DOM (loading @font-face directly into Shadow DOM will NOT work!).
+https://medium.com/rate-engineering/winning-the-war-of-css-conflicts-through-the-shadow-dom-de6c797b5cba
