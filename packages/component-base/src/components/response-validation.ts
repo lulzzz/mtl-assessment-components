@@ -23,10 +23,12 @@ export class ResponseValidation extends ComponentBase<string> {
 
         this.attempts++;
         let message: string = '';
-        if (this.attempts >= this.feedbackItems.length) {
-            message = this.feedbackItems[this.feedbackItems.length - 1].innerHTML;
-        } else {
-            message = this.feedbackItems[this.attempts - 1].innerHTML;
+        if (this.feedbackItems.length > 0) {
+            if (this.attempts >= this.feedbackItems.length) {
+                message = this.feedbackItems[this.feedbackItems.length - 1].innerHTML;
+            } else {
+                message = this.feedbackItems[this.attempts - 1].innerHTML;
+            }
         }
 
         return { type, message, score };

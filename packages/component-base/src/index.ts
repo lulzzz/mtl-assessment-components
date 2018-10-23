@@ -1,4 +1,4 @@
-export { ComponentBase, html, Mode, property, repeat, TemplateResult, unsafeHTML } from './components/base';
+export { ComponentBase, ifDefined, html, Mode, property, repeat, TemplateResult, unsafeHTML } from './components/base';
 export { Feedback, FeedbackType, FeedbackMessage, Strategy } from './mixins/feedback';
 export { MultipleChoice } from './components/multiple-choice';
 export { ResponseValidation } from './components/response-validation';

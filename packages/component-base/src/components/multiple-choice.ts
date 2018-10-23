@@ -80,6 +80,9 @@ export abstract class MultipleChoice extends ComponentBase<string[]> implements 
         if (slot) {
             slot.assignedNodes().forEach(
                 (el: HTMLElement, index: number): void => {
+                    if (!(el instanceof HTMLSpanElement)) {
+                        console.warn('It is recommendeded to use <span> for options:', el);
+                    }
                     el.setAttribute('index', String(index));
                     el.setAttribute('tabindex', String(index + 1));
                     el.setAttribute('role', 'button');

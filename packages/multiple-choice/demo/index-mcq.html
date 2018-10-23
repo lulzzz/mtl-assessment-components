@@ -4,8 +4,20 @@
     <meta charset="utf-8">
     <link rel="stylesheet" href="index.css">
     <link rel="stylesheet" href="/node_modules/@material/button/dist/mdc.button.css">
-    <script type="module" src="/components/multiple-response-question.js"></script>
     <script type="module" src="/components/multiple-choice-question.js"></script>
+    <style>
+        [slot] {
+            display: none;
+        }
+
+        multiple-choice-question {
+            --align-options: row;
+            --option-width: 50%;
+            --positive-color: #46AB3B;
+            --negative-color: #D90719;
+            --neutral-color: #D4AB27;
+        }
+    </style>
 </head>
 
 <body>
@@ -13,11 +25,11 @@
     <!-- basic usage -->
     <h4>How many fingers do you have?</h4>
     <multiple-choice-question id="multiple1">
-        <div hidden slot="options" id="000-1">three</div>
-        <div hidden slot="options" id="000-2">
+        <span hidden slot="options" id="000-1">three</span>
+        <span hidden slot="options" id="000-2">
             <a href="https://www.w3schools.com/html/">Visit our HTML tutorial</a>
-        </div>
-        <div hidden slot="options" id="000-3">
+        </span>
+        <span slot="options" id="000-3">
             <table style="width:100%" alt="A table">
                 <tr>
                     <th>Firstname</th>
@@ -35,21 +47,21 @@
                     <td>94</td>
                 </tr>
             </table>
-        </div>
-        <div hidden slot="options" id="000-4">eleven
+        </span>
+        <span slot="options" id="000-4">eleven
             <img src="https://upload.wikimedia.org/wikipedia/commons/a/ac/Approve_icon.svg" alt="Check image" style="width:42px;height:42px;border:0;">
-        </div>
+        </span>
 
-        <response-validation hidden slot="feedback" expected="000-1" score="4" strategy="exactMatch">
+        <response-validation slot="feedback" expected="000-1" score="4" strategy="exactMatch">
             <span>Good</span>
             <span>Wooot!</span>
         </response-validation>
 
-        <response-validation hidden slot="feedback" expected="000-3" score="1" feedback-type="neutral" strategy="exactMatch">
+        <response-validation slot="feedback" expected="000-3" score="1" feedback-type="neutral" strategy="exactMatch">
             <span>Almost</span>
         </response-validation>
 
-        <response-validation hidden slot="feedback" score="0" feedback="negative" strategy="exactMatch">
+        <response-validation hidden slot="feedback" score="0" feedback-type="negative" strategy="exactMatch">
             <span>Try again</span>
             <span>Oups, still not good</span>
             <span>Too bad!</span>

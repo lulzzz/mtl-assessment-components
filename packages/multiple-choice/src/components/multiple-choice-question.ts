@@ -18,14 +18,14 @@ export class MultipleChoiceQuestion extends MultipleChoice {
         <link rel="stylesheet" href="@material/radio/dist/mdc.radio.css">
         <link rel="stylesheet" href="@material/form-field/dist/mdc.form-field.css">
         <link rel="stylesheet" href="/css/multiple-choice.css">
-        <div class=${feedbackMessage ? feedbackMessage.type : ''}>
+        <main class=${feedbackMessage ? feedbackMessage.type : ''}>
         ${repeat(
             items,
             (item: HTMLElement) => item.id,
             (item: HTMLElement) => html`
                 <div hidden class="mdc-form-field">
-                    <div class="mdc-radio" tabindex="0" @click=${(evt: Event) => this._onItemClicked(evt, item.id, false)}>
-                        <input type="radio" class="mdc-radio__native-control"  aria-checked="false"  id=${item.id} name="options" />
+                    <div class="mdc-radio" @click=${(evt: Event) => this._onItemClicked(evt, item.id, false)}>
+                        <input type="radio" class="mdc-radio__native-control"  id=${item.id} name="options" />
                         <div class="mdc-radio__background">
                         <div class="mdc-radio__outer-circle"></div>
                         <div class="mdc-radio__inner-circle"></div>
@@ -36,7 +36,7 @@ export class MultipleChoiceQuestion extends MultipleChoice {
         )}
             <slot name="options" @slotchange=${(e: Event) => this._onSlotChanged(e)}></slot>
             <slot name="feedback" @slotchange=${(e: Event) => this._onFeedbackSlotChanged(e)}></slot>
-        </div>
+        </main>
         `;
     }
 }
