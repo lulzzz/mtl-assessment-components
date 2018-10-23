@@ -93,7 +93,7 @@ export class PlotGraph3D extends ComponentBase<any> {
         }
 
         const equation = this.equationItems[0];
-        
+
         const equationXmin = parseInt(equation.getAttribute('equation-xmin'));
         const equationXmax = parseInt(equation.getAttribute('equation-xmax'));
         const equationYmin = parseInt(equation.getAttribute('equation-ymin'));

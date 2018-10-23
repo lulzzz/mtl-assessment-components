@@ -26,7 +26,7 @@ export default () => {
             withSnippet('3d-no-equations');
             const el: PlotGraph3D = document.querySelector(tagName) as any;
             const equation: string = 'Math.sin(x/30)';
-            addEquation(el, equation, [{key :'equation-xmin', value : '0'}, {key :'equation-xmax', value : '360'}, {key :'equation-ymin', value : '0'}, {key :'equation-ymax', value : '360'},{key :'step', value : '10'},]);
+            addEquation(el, equation, [{'equation-xmin': '0'}, {'equation-xmax' : '360'}, {'equation-ymin' : '0'}, {'equation-ymax': '360'},{'step': '10'}]);
             // @ts-ignore
             await el.updateComplete;
             // @ts-ignore
@@ -38,7 +38,7 @@ export default () => {
             const el: PlotGraph3D = document.querySelector(tagName) as any;
             const coordSystemElem: HTMLElement = document.createElement('coordinate-system');
             coordSystemElem.setAttribute('slot', 'graph-axis');
-            addAxis(coordSystemElem, 'x', [{key :'color', value : 'red'}, {key :'direction', value : 'x'}, {key :'min', value : '0'}, {key :'max', value : '360'}]);
+            addAxis(coordSystemElem, 'x', [{color: 'red'}, {direction: 'x'}, {min : '0'}, {max :'360'}]);
             await el.updateComplete;
             // @ts-ignore
             el.appendChild(coordSystemElem);

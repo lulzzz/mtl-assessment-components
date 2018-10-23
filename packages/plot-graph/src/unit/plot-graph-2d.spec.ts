@@ -42,7 +42,7 @@ export default () => {
             const el: PlotGraph = document.querySelector(tagName) as any;
             const equation: string = 'Math.sin(x/30)';
 
-            addEquation(el, equation, );
+            addEquation(el, equation);
             // @ts-ignore
             await el.updateComplete;
             // @ts-ignore
@@ -57,7 +57,7 @@ export default () => {
             coordSystemElem.setAttribute('slot', 'graph-axis');
             coordSystemElem.appendChild(axisElement);
 
-            addAxis(coordSystemElem, 'x', [{key :'color', value : 'red'}, {key :'direction', value : 'x'}, {key :'min', value : '0'}, {key :'max', value : '360'}]);
+            addAxis(coordSystemElem, 'x', [{color: 'red'}, {direction : 'x'}, {min: '0'}, {max : '360'}]);
             // @ts-ignore
             await el.updateComplete;
             // @ts-ignore
