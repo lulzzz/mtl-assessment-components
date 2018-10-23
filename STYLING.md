@@ -39,7 +39,22 @@ These are different from *element styles* which are encapsulated in the shadow r
 
 **As a developer** I want to:
 
-* Use a CSS processor **Sass** or **PostCSS** to better organize styles across HMH products. **Sass** is preferred here due to legacy and widespread knowledge across HMH, and because it is a mature toolchain and it is easy to set up.
+* Use a CSS processor **Sass** or **PostCSS** to better organize my styles across HMH products. Using *Sass* will also help ensuring consistency within a specific product. **Sass** is preferred here due to legacy and widespread knowledge across HMH, and because it is a mature toolchain and it is easy to set up.
+
+## Proposed Approach
+
+I propose that:
+
+* theming stylesheets are sourced from a central location on the server `/css`. This ensure stylesheets are kept separate from the content, and can be modified without have to touch the content.
+* CSS is built from Sass so we can share Sass partials.
+* CSS files follow a strict naming convention:
+    * `theme.css` delivers the overall **theme**. It won't apply to interactions due to shadow boundaries.
+    * One separate css file for each interaction with the same name as the component HTML tag is used to **theme** interaction shadow DOMs: 
+        * e.g. `<text-input>` => `/css/text-input.css`.
+        * e.g. `<plot-graph>` => `/css/plot-graph.css`.
+* **Problem styles** are stored along with the Problem on the database, and are delivered by the server when the problem is loaded.
+* Interaction specific **element styles** uses inline styles within the interaction template. When the web components are consumed via NPM, the server doesn't know how to properly resolve the external stylesheets (TODO: investigate further).
+    * In this context, and for additional flexibility, CSS variables can be used to modify specifically exposed style attributes, e.g. feeback colors, MCQ answer options layout.
 
 
 ## Technical details
