@@ -53,7 +53,6 @@ export class PlotGraph extends ComponentBase<any> {
      */
     protected _onSlotChanged(event: Event): void {
         const slot: HTMLSlotElement = event.srcElement as HTMLSlotElement;
-        if (slot) {
             const equationItems: HTMLElement[] = [];
             slot.assignedNodes().forEach(
                 (el: HTMLElement): void => {
@@ -63,7 +62,6 @@ export class PlotGraph extends ComponentBase<any> {
 
             this.equationItems = equationItems;
             this.drawGraph();     
-        }
     }
 
     /**
@@ -75,9 +73,10 @@ export class PlotGraph extends ComponentBase<any> {
     private scale(axis: Direction, min: number, max: number, size: number): d3.ScaleLinear<number, number> {
         const domain = [min, max];
         const range = axis === Direction.X ? [0, size] : [size, 0];
+        
         return scaleLinear()
-            .domain(domain) // input
-            .range(range); // output
+        .domain(domain) // input
+        .range(range); // output
     }
 
     /**
