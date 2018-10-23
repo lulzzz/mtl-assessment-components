@@ -59,7 +59,11 @@ export abstract class ComponentBase<T> extends LitElement {
     }
 
     public getFeedback(): FeedbackMessage {
-        return this.feedbackMessage;
+        if (typeof this.computeFeedback === 'function') {
+            return this.computeFeedback(this.value);
+        } else {
+            return null;
+        }
     }
 
     public getValue(): T {
