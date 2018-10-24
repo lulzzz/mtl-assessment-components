@@ -87,6 +87,45 @@ export default () => {
             expect(() => element._onSlotChanged(new Event('slotchange'))).not.to.throw();
         });
     });
+
+    describe(`<${dropContainerTagName}> sticky drop container`, (): void => {
+        it('default should render as expected', (): void => {
+            withSnippet(`sticky-${dropContainerTagName}`);
+            const value: boolean = true;
+            expect(value).to.be.true;
+        });
+        it('should be able to add options programmatically', async (): Promise<void> => {
+            withSnippet(`sticky-${dropContainerTagName}`);
+            const element: DropContainer = document.querySelector(dropContainerTagName) as any;
+            await element.updateComplete;
+            let div: HTMLDivElement = document.createElement('div');
+
+            div.slot = 'options';
+            div.id = '1';
+            div.className = 'option-item';
+            div.innerText = 'Option 1';
+            element.appendChild(div);
+            await element.updateComplete;
+            expect(element.getElement(div.id)).to.equal(div);
+
+            div = document.createElement('div');
+            div.slot = 'options';
+            div.className = 'other';
+            div.id = '2';
+            div.innerText = 'Option 2';
+            element.appendChild(div);
+            await element.updateComplete;
+
+            expect(element.getElement(div.id)).to.not.equal(div);
+        });
+        it('should not throw is there is no options slot', async (): Promise<void> => {
+            withSnippet(`sticky-${dropContainerTagName}`);
+            const element: DropContainer = document.querySelector(dropContainerTagName) as any;
+            // @ts-ignore : access to protected member
+            expect(() => element._onSlotChanged(new Event('slotchange'))).not.to.throw();
+        });
+    });
+
     describe(`<${sortableDropContainerTagName}> default sortable drop container`, (): void => {
         it('default should render as expected', (): void => {
             withSnippet(sortableDropContainerTagName);
