@@ -2,11 +2,36 @@
 
 This reporistory contains features that are shared amongst all web components.
 
-| ComponentBase | A base class to implement common features inherited by all components |
-|---------------|-----------------------------------------------------------------------|
-| Feedback      | A mixin that implements feedback-related methods and properties       |
+## Installation
 
-## Demo page
+```shell
+npm install @hmh/component-base --save
+```
+
+## Usage
+
+From your HTML page:
+
+```html
+<script type="module" src="/node_modules/@hmh/component-base/dist/index.js">
+```
+
+From Javascript:
+
+```javascript
+import '@hmh/component-base';
+```
+
+## Build the code
+
+```shell
+# build
+npm run build
+# watch for changes
+npm run watch
+```
+
+## Documentation and demo page
 
 ```shell
 npm start
