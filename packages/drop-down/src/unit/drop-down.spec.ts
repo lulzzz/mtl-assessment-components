@@ -79,9 +79,9 @@ describe(`<${tagName}>`, (): void => {
         const options = getOptions(el);
         await selectOptions(options, [0]);
         await selectOptions(options, [1]);
-        expect(options[0].classList.contains('selected')).to.equal(false);
-        expect(options[1].classList.contains('selected')).to.equal(true);
-        expect(options[2].classList.contains('selected')).to.equal(false);
+        expect(options[0].classList.contains('selected')).to.be.false;
+        expect(options[1].classList.contains('selected')).to.be.true;
+        expect(options[2].classList.contains('selected')).to.be.false;
     });
 
     it('should set selected class correctly when selections are made in multiple mode', async (): Promise<void> => {
@@ -92,9 +92,9 @@ describe(`<${tagName}>`, (): void => {
         await sleep();
         const options = getOptions(el);
         await selectOptions(options, [1, 2]);
-        expect(options[0].classList.contains('selected')).to.equal(false);
-        expect(options[1].classList.contains('selected')).to.equal(true);
-        expect(options[2].classList.contains('selected')).to.equal(true);
+        expect(options[0].classList.contains('selected')).to.be.false;
+        expect(options[1].classList.contains('selected')).to.be.true;
+        expect(options[2].classList.contains('selected')).to.be.true;
     });
 
     it('should deselect an item when the item is clicked twice in multiple mode', async (): Promise<void> => {
@@ -107,11 +107,11 @@ describe(`<${tagName}>`, (): void => {
         clickElement(options[0]);
         // @ts-ignore
         await el.updateComplete;
-        expect(options[0].classList.contains('selected')).to.equal(true);
+        expect(options[0].classList.contains('selected')).to.be.true;
         clickElement(options[0]);
         // @ts-ignore
         await el.updateComplete;
-        expect(options[0].classList.contains('selected')).to.equal(false);
+        expect(options[0].classList.contains('selected')).to.be.false;
     });
 
     it('should change value when a selection is made', async (): Promise<void> => {
@@ -167,8 +167,8 @@ describe(`<${tagName}>`, (): void => {
         await el.updateComplete;
         await sleep();
         const options = getOptions(el);
-        expect(options[0].innerHTML.includes('https://ebird.org/content/atlasva/wp-content/uploads/sites/68/Picture-286-1024x768.jpg')).to.equal(true);
-        expect(options[1].innerHTML.includes('<b>')).to.equal(true);
+        expect(options[0].innerHTML.includes('https://ebird.org/content/atlasva/wp-content/uploads/sites/68/Picture-286-1024x768.jpg')).to.be.true;
+        expect(options[1].innerHTML.includes('<b>')).to.be.true;
     });
 
     it('should dispatch change event when a selection is made', async (): Promise<void> => {
@@ -196,22 +196,22 @@ describe(`<${tagName}>`, (): void => {
         await sleep();
         await triggerValidation(el, 0);
         const feedbackMessage = el.shadowRoot.querySelector('.feedback-message');
-        expect(feedbackMessage.classList.contains('feedback-positive-background')).to.equal(true);
+        expect(feedbackMessage.classList.contains('feedback-positive-background')).to.be.true;
         const container = el.shadowRoot.querySelector('.container');
-        expect(container.classList.contains('feedback-positive-border')).to.equal(true);
+        expect(container.classList.contains('feedback-positive-border')).to.be.true;
     });
 
-    it('should display correct feedback on correct answer with strategy fuzzyMatch', async (): Promise<void> => {
-        withSnippet('feedback-fuzzy-stategy');
+    it('should display correct feedback on correct answer with strategy contains', async (): Promise<void> => {
+        withSnippet('feedback-contains-stategy');
         let el: DropDown = document.querySelector('drop-down') as any;
         // @ts-ignore
         await el.updateComplete;
         await sleep();
         await triggerValidation(el, 0);
         const feedbackMessage = el.shadowRoot.querySelector('.feedback-message');
-        expect(feedbackMessage.classList.contains('feedback-positive-background')).to.equal(true);
+        expect(feedbackMessage.classList.contains('feedback-positive-background')).to.be.true;
         const container = el.shadowRoot.querySelector('.container');
-        expect(container.classList.contains('feedback-positive-border')).to.equal(true);
+        expect(container.classList.contains('feedback-positive-border')).to.be.true;
     });
 
     it('should display neutral feedback on neutral (almost correct) answer', async (): Promise<void> => {
@@ -222,9 +222,9 @@ describe(`<${tagName}>`, (): void => {
         await sleep();
         await triggerValidation(el, 1);
         const feedbackMessage = el.shadowRoot.querySelector('.feedback-message');
-        expect(feedbackMessage.classList.contains('feedback-neutral-background')).to.equal(true);
+        expect(feedbackMessage.classList.contains('feedback-neutral-background')).to.be.true;
         const container = el.shadowRoot.querySelector('.container');
-        expect(container.classList.contains('feedback-neutral-border')).to.equal(true);
+        expect(container.classList.contains('feedback-neutral-border')).to.be.true;
     });
 
     it('should display incorrect feedback on incorrect answer', async (): Promise<void> => {
@@ -235,9 +235,9 @@ describe(`<${tagName}>`, (): void => {
         await sleep();
         await triggerValidation(el, 2);
         const feedbackMessage = el.shadowRoot.querySelector('.feedback-message');
-        expect(feedbackMessage.classList.contains('feedback-negative-background')).to.equal(true);
+        expect(feedbackMessage.classList.contains('feedback-negative-background')).to.be.true;
         const container = el.shadowRoot.querySelector('.container');
-        expect(container.classList.contains('feedback-negative-border')).to.equal(true);
+        expect(container.classList.contains('feedback-negative-border')).to.be.true;
     });
 
     it('match should default to false when no strategy with an implememtation is set', async (): Promise<void> => {
@@ -251,7 +251,7 @@ describe(`<${tagName}>`, (): void => {
         rv.strategy = Strategy.MATH_EQUIVALENT;
         //@ts-ignore
         rv.expected = '1';
-        expect(el.match(rv, ['3'])).to.equal(false);
+        expect(el.match(rv, ['3'])).to.be.false;
     });
 
     it('should set _responseValidationElements in response to feedback slot change event', async (): Promise<void> => {

@@ -94,17 +94,17 @@
         </drop-down>
     </template>
 
-    <template id="feedback-fuzzy-stategy">
+    <template id="feedback-contains-stategy">
         <drop-down>
             <span slot="options" class="option-item" id="one">
                 one
-            </div>
+            </span>
             <span slot="options" class="option-item" id="two" >
                 two
-            </div>
+            </span>
             <span slot="options" class="option-item" id="three">
                 three
-            </div>
+            </span>
 
             <response-validation slot="feedback" expected="one" score="4" strategy="contains">
                 <span>Correct</span>
@@ -117,13 +117,13 @@
         <drop-down>
             <span slot="options" class="option-item" id="one">
                 one
-            </div>
+            </span>
             <span slot="options" class="option-item" id="two">
                 two
-            </div>
+            </span>
             <span slot="options" class="option-item" id="three">
                 three
-            </div>
+            </span>
 
             <response-validation class='target' slot="feedback" expected="one" score="4">
                 <span>Correct</span>
