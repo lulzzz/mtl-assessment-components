@@ -24,7 +24,7 @@ export class DropDown extends MultipleChoice {
 
     private defaultTitle = 'Select an option';
 
-    private readonly styles: TemplateResult = html`
+    protected readonly styles: TemplateResult = html`
     <style>
         .body {
             font-family: var(--font-family,Roboto);

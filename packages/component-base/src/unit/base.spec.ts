@@ -1,5 +1,6 @@
 import { BaseElement } from './fixture-elements';
 import { fake } from 'sinon/pkg/sinon-esm';
+import { FeedbackMessage, FeedbackType } from '../mixins/feedback';
 
 const expect: any = chai.expect;
 
@@ -38,11 +39,20 @@ export default function() {
             expect(() => el.showFeedback()).not.to.throw();
         });
 
-        it('should return undefined on getFeedback', async (): Promise<void> => {
+        it('should return null on getFeedback', async (): Promise<void> => {
             withSnippet('base');
             const el: BaseElement = document.querySelector('base-element') as any;
             await el.updateComplete;
-            expect(el.getFeedback()).to.be.undefined;
+            expect(el.getFeedback()).to.be.null;
+        });
+
+        it('should return feedback on getFeedback', async (): Promise<void> => {
+            withSnippet('base');
+            const el: BaseElement = document.querySelector('base-element') as any;
+            await el.updateComplete;
+            const msg: FeedbackMessage = { type: FeedbackType.POSITIVE, message: 'msg', score: 4 };
+            el.computeFeedback = () => msg;
+            expect(el.getFeedback()).to.deep.equal(msg);
         });
 
         it('should return current value on getValue', async (): Promise<void> => {

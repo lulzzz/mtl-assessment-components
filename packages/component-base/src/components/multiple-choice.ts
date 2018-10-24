@@ -11,12 +11,7 @@ export abstract class MultipleChoice extends ComponentBase<string[]> implements 
     @property({ type: Array })
     protected items: HTMLElement[] = [];
 
-    // @mixin: Feedback
-    computeFeedback: (value: string[]) => FeedbackMessage;
-    _onFeedbackSlotChanged: (evt: Event) => void;
-
-    public get commonStyles(): TemplateResult {
-        return html`<style>
+    protected readonly styles: TemplateResult = html`<style>
         main {
         display: flex;
         flex-direction: var(--align-options, column);
@@ -40,7 +35,12 @@ export abstract class MultipleChoice extends ComponentBase<string[]> implements 
         flex-basis: var(--option-width, content);
         }
         </style>`;
-    }
+
+    // @mixin: Feedback
+    computeFeedback: (value: string[]) => FeedbackMessage;
+    _onFeedbackSlotChanged: (evt: Event) => void;
+
+
 
     /**
      * @param  {ResponseValidation} el - the element containing an expected value and a strategy
@@ -107,6 +107,7 @@ export abstract class MultipleChoice extends ComponentBase<string[]> implements 
         if (slot) {
             slot.assignedNodes().forEach(
                 (el: HTMLElement, index: number): void => {
+                    /* istanbul ignore if */
                     if (!(el instanceof HTMLSpanElement)) {
                         console.warn('It is recommendeded to use <span> for options:', el);
                     }
