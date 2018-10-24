@@ -14,6 +14,19 @@ export class DragDrop extends ComponentBase<string[]> {
     private offsetX: number;
     private offsetY: number;
     private currentElement: HTMLElement;
+
+    private readonly styles: TemplateResult = html`
+    <style>
+        .option-item {
+            cursor: grab;
+        }
+
+        .hide {
+            visibility: hidden;
+        }
+    </style>
+    `;
+
     constructor() {
         super();
         if (!this.id) {
@@ -32,12 +45,13 @@ export class DragDrop extends ComponentBase<string[]> {
 
     protected render(): TemplateResult {
         return html`
-        <link rel="stylesheet" href="/css/drag-drop.css">
-        <div>
-            <slot @slotchange=${(e: Event) => this._onSlotChanged(e)}></slot>
-        </div>
+         <link rel="stylesheet" href="/css/drag-drop.css">
+        ${this.styles}
+        <slot @slotchange=${(e: Event) => this._onSlotChanged(e)}></slot>
+
         `;
     }
+
     private isOptionSwappable(element: HTMLElement): boolean {
         return element.classList.contains('option-item') && element.parentElement instanceof DropContainer && this.swappable;
     }

@@ -24,7 +24,6 @@ export class DragContainer extends ComponentBase<string> {
 
     protected render(): TemplateResult {
         return html`
-        <link rel="stylesheet"href="/css/drag-drop.css">
         <slot name="options" @slotchange=${(e: Event) => this._onSlotChanged(e)} ></slot>
         `;
     }

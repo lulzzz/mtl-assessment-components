@@ -53,10 +53,8 @@ export class DropContainer extends ComponentBase<string[]> implements Feedback {
         this.className = this.feedbackMessage ? this.feedbackMessage.type : '';
 
         return html`
-        <link rel="stylesheet" href="/css/drag-drop.css">
         <slot name="feedback" @slotchange=${(e: Event) => this._onFeedbackSlotChanged(e)}></slot>
         <slot name="options" @slotchange=${(e: Event) => this._onSlotChanged(e)} ></slot>
-
         `;
     }
 
@@ -67,6 +65,9 @@ export class DropContainer extends ComponentBase<string[]> implements Feedback {
             slot.assignedNodes().forEach(
                 (el: HTMLElement): void => {
                     if (el.classList.contains('option-item')) {
+                        if (this.sticky){
+                            el.style.position = 'absolute';
+                        }
                         items.push(el.id);
                     }
                 }
