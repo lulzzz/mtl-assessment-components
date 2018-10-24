@@ -6,17 +6,6 @@ import { axisBottom, axisLeft } from 'd3-axis';
 import { Line } from 'd3-shape';
 import { scaleLinear } from 'd3-scale';
 
-// This is a mock
-function prepareValue(equation: HTMLElement, x: string): number {
-    return eval(equation.innerHTML.replace('x', x));
-}
-
-enum Direction {
-    X = 'X',
-    Y = 'Y',
-    Z = 'Z'
-}
-
 /**
  * `<plot-graph>`
  * Plot a graph using component-base CoordinateSystem to define the axes and equation-items for the equations
@@ -91,15 +80,15 @@ export class PlotGraph extends ComponentBase<any> {
      */
     protected _onSlotChanged(event: Event): void {
         const slot: HTMLSlotElement = event.srcElement as HTMLSlotElement;
-            const equationItems: HTMLElement[] = [];
-            slot.assignedNodes().forEach(
-                (el: HTMLElement): void => {
-                    equationItems.push(el);
-                }
-            );
+        const equationItems: HTMLElement[] = [];
+        slot.assignedNodes().forEach(
+            (el: HTMLElement): void => {
+                equationItems.push(el);
+            }
+        );
 
-            this.equationItems = equationItems;
-            this.drawGraph();     
+        this.equationItems = equationItems;
+        this.drawGraph();
     }
 
     /**
@@ -111,10 +100,10 @@ export class PlotGraph extends ComponentBase<any> {
     private scale(axis: Direction, min: number, max: number, size: number): d3.ScaleLinear<number, number> {
         const domain = [min, max];
         const range = axis === Direction.X ? [0, size] : [size, 0];
-        
+
         return scaleLinear()
-        .domain(domain) // input
-        .range(range); // output
+            .domain(domain) // input
+            .range(range); // output
     }
 
     /**
@@ -141,15 +130,15 @@ export class PlotGraph extends ComponentBase<any> {
      */
     private _onCoordSystemAdded(event: Event): void {
         const slot: HTMLSlotElement = event.srcElement as HTMLSlotElement;
-        if (slot) {
-            slot.assignedNodes().forEach(
-                (coordSystem: CoordinateSystem): void => {
-                    coordSystem.getValue().forEach((axis: any) => {
-                        this.axes.push(axis);
-                    });
-                }
-            );
-        }
+
+        slot.assignedNodes().forEach(
+            (coordSystem: CoordinateSystem): void => {
+                coordSystem.getValue().forEach((axis: any) => {
+                    this.axes.push(axis);
+                });
+            }
+        );
+
         // in case axes are added after the equations
         this.drawGraph();
     }
@@ -212,15 +201,26 @@ export class PlotGraph extends ComponentBase<any> {
             const isDirectionX = axis.getAttribute('direction').toLowerCase() === Direction.X.toString().toLowerCase();
             const min = axis.getAttribute('min');
             const max = axis.getAttribute('max');
-            const scale = this.scale(axis.direction, parseInt(min), parseInt(max), isDirectionX ? width : height);
+            const scale = this.scale(axis.direction, parseInt(min), parseInt(max), /* istanbul ignore next */ isDirectionX ? width : height);
 
             this.svgContainer
                 .append('g')
-                .attr('class', isDirectionX ? 'x-axis' : 'y-axis')
-                .attr('transform', isDirectionX ? translationX : translationY)
-                .call(isDirectionX ? axisBottom(scale) : axisLeft(scale));
+                .attr('class', /* istanbul ignore next */ isDirectionX ? 'x-axis' : 'y-axis')
+                .attr('transform', /* istanbul ignore next */ isDirectionX ? translationX : translationY)
+                .call(/* istanbul ignore next */ isDirectionX ? axisBottom(scale) : axisLeft(scale));
         });
     }
 }
 
 customElements.define('plot-graph', PlotGraph);
+
+// This is a mock
+function prepareValue(equation: HTMLElement, x: string): number {
+    return eval(equation.innerHTML.replace('x', x));
+}
+
+enum Direction {
+    X = 'X',
+    Y = 'Y',
+    Z = 'Z'
+}
