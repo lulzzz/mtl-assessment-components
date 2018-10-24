@@ -51,10 +51,6 @@
         "@polymer/prism-element/prism-theme-default.js": "/node_modules/@polymer/prism-element/prism-theme-default.js",
         "@webcomponents/shadycss/entrypoints/apply-shim.js": "/node_modules/@webcomponents/shadycss/entrypoints/apply-shim.js",
         "@webcomponents/shadycss/entrypoints/custom-style-interface.js": "/node_modules/@webcomponents/shadycss/entrypoints/custom-style-interface.js",
-        "clone": "/node_modules/clone/clone.js",
-        "deep-equal": "/node_modules/deep-equal/index.js",
-        "eventemitter3": "/node_modules/quill/node_modules/eventemitter3/index.js",
-        "extend": "/node_modules/extend/index.js",
         "lit-html": "/node_modules/lit-html/lit-html.js",
         "lit-html/directives/if-defined.js": "/node_modules/lit-html/directives/if-defined.js",
         "lit-html/directives/repeat.js": "/node_modules/lit-html/directives/repeat.js",
@@ -62,11 +58,7 @@
         "lit-html/lib/shady-render": "/node_modules/lit-html/lib/shady-render.js",
         "lit-html/lit-html": "/node_modules/lit-html/lit-html.js",
         "marked/lib/marked.js": "/node_modules/marked/lib/marked.js",
-        "parchment": "/node_modules/parchment/dist/parchment.js",
         "prismjs/prism.js": "/node_modules/prismjs/prism.js",
-        "quill-delta": "/node_modules/quill-delta/lib/delta.js",
-        "quill-delta/lib/op": "/node_modules/quill-delta/lib/op.js",
-        "quill/core": "/node_modules/quill/core.js",
         "quill/dist/quill.core.css": "/node_modules/quill/dist/quill.core.css",
         "quill/dist/quill.snow.css": "/node_modules/quill/dist/quill.snow.css"
     }
