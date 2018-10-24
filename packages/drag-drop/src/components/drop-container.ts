@@ -65,7 +65,7 @@ export class DropContainer extends ComponentBase<string[]> implements Feedback {
             slot.assignedNodes().forEach(
                 (el: HTMLElement): void => {
                     if (el.classList.contains('option-item')) {
-                        if (this.sticky){
+                        if (this.sticky) {
                             el.style.position = 'absolute';
                         }
                         items.push(el.id);
@@ -79,4 +79,7 @@ export class DropContainer extends ComponentBase<string[]> implements Feedback {
 }
 applyMixins(DropContainer, [Feedback]);
 
-customElements.define('drop-container', DropContainer);
+/* istanbul ignore else */
+if (!customElements.get('drop-container')) {
+    customElements.define('drop-container', DropContainer);
+}

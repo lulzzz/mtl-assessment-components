@@ -54,4 +54,7 @@ export class SortableDropContainer extends DropContainer {
     }
 }
 
-customElements.define('sortable-drop-container', SortableDropContainer);
+/* istanbul ignore else */
+if (!customElements.get('sortable-drop-container')) {
+    customElements.define('sortable-drop-container', SortableDropContainer);
+}
