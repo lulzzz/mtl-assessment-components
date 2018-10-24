@@ -7,6 +7,18 @@ import { ComponentBase, html, TemplateResult } from '@hmh/component-base';
 export class ShortText extends ComponentBase<string> {
     public value: string = '';
     private quill: any;
+    private formats: string[] =  ['header','bold','italic','underline','strike','blockquote','list','bullet','indent','link','image','formula'];
+    private modules: object = { formula: true,
+        toolbar: [
+            [{ header: [1, 2, false] }],
+            [
+                'bold', 'italic', 'underline', 'strike', 'blockquote'],
+            [{ list: 'ordered' }, { list: 'bullet' }, { indent: '-1' }, { indent: '+1' }],
+            ['link', 'image'],
+            ['clean'],
+            ['formula',]
+            ]
+        };
 
     /**
      * @returns TemplateResult
@@ -22,21 +34,34 @@ export class ShortText extends ComponentBase<string> {
 
     protected firstUpdated(): void {
         this.quill = new Quill(this.shadowRoot.querySelector('.editor-container'), {
-            formula: true,
-            debug: 'warn',
-            modules: { toolbar: [ ['formula']]},
-            theme: 'snow'
-        });
+            theme: 'snow',
+            modules: this.modules,
+            formats: this.formats
+          });
         
-        this.quill.on('text-change', () => {
-            const contents = this.quill.getContents();
-            // set value to the last formula entered
-            contents.ops.forEach((el: any) => {
-                this.value = el.insert.formula ? el.insert.formula : this.value;
-            });
-    
-            console.log('value:', this.value);       
+        this.quill.on('text-change', this._textChanged.bind(this));
+    }
+
+    private _textChanged(): void {
+        const deltas = this.quill.getContents();
+        console.log('deltas: ', deltas);
+
+        // update value each time and I suppose embed formulas in a tag (getText() does not include formulas)
+        deltas.ops.forEach((delta: any) => {
+            this.value += delta.insert.formula ? `<formula> ${delta.insert.formula} </formula>` : delta.insert;;
         });
+
+        console.log('value:', this.value);
+
+        dispatchEvent(
+            new CustomEvent('change', {
+                bubbles: true,
+                composed: true,
+                detail: {
+                    value: this.value
+                }
+            }
+        ));    
     }
 }
 
