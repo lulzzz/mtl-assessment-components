@@ -19,8 +19,6 @@ export class PlotGraph3D extends ComponentBase<any> {
 
     @property({ type: Array })
     protected equationItems: HTMLElement[] = [];
-    @property({ type: String, attribute: 'axes-color' })
-    protected axesColor: string;
 
     protected render(): TemplateResult {
         return html`
@@ -64,7 +62,7 @@ export class PlotGraph3D extends ComponentBase<any> {
      */
     private _onCoordSystemAdded(event: Event): void {
         const slot: HTMLSlotElement = event.srcElement as HTMLSlotElement;
-        
+
         const axesItems: HTMLElement[] = [];
         slot.assignedNodes().forEach(
             (coordSystem: CoordinateSystem): void => {
@@ -105,9 +103,9 @@ export class PlotGraph3D extends ComponentBase<any> {
 
         // Create and populate a data table.
         const dataset = new vis.DataSet();
-        for (let x = equationXmin; x < equationXmax; x+=step) {
-            for (let y = equationYmin; y < equationYmax; y+=step) {
-                dataset.add({x:x,y:y,z:prepareValue(equation.innerText, x, y)});
+        for (let x = equationXmin; x < equationXmax; x += step) {
+            for (let y = equationYmin; y < equationYmax; y += step) {
+                dataset.add({ x: x, y: y, z: prepareValue(equation.innerText, x, y) });
             }
         }
 
@@ -128,24 +126,21 @@ export class PlotGraph3D extends ComponentBase<any> {
 
         if (this.axes.length > 0) {
             this.axes.forEach(axis => {
-                const direction = axis.getAttribute('direction');
-                const visibleVal = axis.getAttribute('axis-visibility');
-                const label = axis.innerText;
+                /* istanbul ignore if */
+                const direction: string = axis.getAttribute('direction') || 'x';
+                /* istanbul ignore if */
+                const visibleVal: string = axis.getAttribute('axis-visibility') || 'hidden';
+                const label: string = axis.innerText;
 
-                if (this.axesColor) {
-                    options['axisColor'] = this.axesColor;
+                options['axisColor'] = axis.getAttribute('color');
+
+                options[[direction.toLowerCase(), 'Label'].join('').trim()] = label;
+
+                if (visibleVal) {
+                    options[['show', direction.toUpperCase(), 'Axis'].join('').trim()] = visibleVal === 'visible';
                 }
 
-                if (direction) {
-                    if (label) {
-                        options[[direction.toLowerCase(), 'Label'].join('').trim()] = label;
-                    }
-
-                    if (visibleVal) {
-                        options[['show', direction.toUpperCase(), 'Axis'].join('').trim()] = visibleVal === 'visible';
-                    }
-
-                    /* TODO: not sure why this breaks rendering
+                /* TODO: not sure why this breaks rendering
                     const min = axis.getAttribute('min'); 
                     const max = axis.getAttribute('max');
 
@@ -158,7 +153,6 @@ export class PlotGraph3D extends ComponentBase<any> {
                         options[[direction.toLowerCase(), 'Max'].join('').trim()] = Number.parseInt(max);
                     }
                     */
-                }
             });
         }
 
