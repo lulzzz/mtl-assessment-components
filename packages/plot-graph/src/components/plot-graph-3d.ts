@@ -126,19 +126,14 @@ export class PlotGraph3D extends ComponentBase<any> {
 
         if (this.axes.length > 0) {
             this.axes.forEach(axis => {
-                /* istanbul ignore if */
+                /* istanbul ignore next */
                 const direction: string = axis.getAttribute('direction') || 'x';
-                /* istanbul ignore if */
                 const visibleVal: string = axis.getAttribute('axis-visibility') || 'hidden';
                 const label: string = axis.innerText;
 
                 options['axisColor'] = axis.getAttribute('color');
-
                 options[[direction.toLowerCase(), 'Label'].join('').trim()] = label;
-
-                if (visibleVal) {
-                    options[['show', direction.toUpperCase(), 'Axis'].join('').trim()] = visibleVal === 'visible';
-                }
+                options[['show', direction.toUpperCase(), 'Axis'].join('').trim()] = visibleVal === 'visible';
 
                 /* TODO: not sure why this breaks rendering
                     const min = axis.getAttribute('min'); 
@@ -152,7 +147,7 @@ export class PlotGraph3D extends ComponentBase<any> {
                     if (max) {
                         options[[direction.toLowerCase(), 'Max'].join('').trim()] = Number.parseInt(max);
                     }
-                    */
+                */
             });
         }
 
