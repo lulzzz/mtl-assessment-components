@@ -20,10 +20,6 @@ export class DragDrop extends ComponentBase<string[]> {
         .option-item {
             cursor: grab;
         }
-
-        .hide {
-            visibility: hidden;
-        }
     </style>
     `;
 
@@ -72,7 +68,8 @@ export class DragDrop extends ComponentBase<string[]> {
             }
             if (!(this.currentElement.parentElement as DragContainer).dispenser) {
                 setTimeout(function() {
-                    (event.target as HTMLElement).classList.add('hide');
+                    // switch to global scope
+                    (event.target as HTMLElement).style.visibility = 'hidden';
                 }, 0);
             }
             event.dataTransfer.setData('source_id', this.currentElement.id);
@@ -100,7 +97,8 @@ export class DragDrop extends ComponentBase<string[]> {
     }
     private onDragEnd(event: DragEvent) {
         event.stopPropagation();
-        (event.target as HTMLElement).classList.remove('hide');
+        // console.log('TARGET', event.target);
+        (event.target as HTMLElement).style.visibility = 'visible';
         this.currentElement = null;
     }
 
@@ -117,6 +115,7 @@ export class DragDrop extends ComponentBase<string[]> {
         let dataElement: HTMLElement;
         let container: DragContainer | DropContainer;
         container = type === 'drop-container' ? this.dropContainers[index] : this.dragContainers[index];
+
         if (this.id === parentId) {
             /* istanbul ignore next */
             if (container) {
@@ -124,6 +123,8 @@ export class DragDrop extends ComponentBase<string[]> {
                     ? (container.getElement(sourceId).cloneNode(true) as HTMLElement)
                     : container.getElement(sourceId);
             }
+            console.log('CONDITIONS', dataElement);
+
             if (dataElement && (target instanceof DragContainer || target instanceof DropContainer) && target.isDropAllowed()) {
                 target.add(dataElement, event.x - this.offsetX, event.y - this.offsetY);
             } else if (this.isOptionSwappable(event.srcElement as HTMLElement)) {

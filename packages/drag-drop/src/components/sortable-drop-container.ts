@@ -39,8 +39,13 @@ export class SortableDropContainer extends DropContainer {
         if (slot) {
             slot.assignedNodes().forEach(
                 (el: HTMLElement): void => {
-                    if (!el.draggable) el.draggable = true;
-                    if (!el.classList.contains('option-item')) el.classList.add('option-item');
+                    if (!el.draggable) {
+                        el.draggable = true;
+                    }
+                    if (!el.classList.contains('option-item')) {
+                        el.classList.add('option-item');
+                    }
+                    el.style.cursor = 'grab';
                     items.push(el.id);
                 }
             );

@@ -34,8 +34,14 @@ export class DragContainer extends ComponentBase<string> {
         if (slot) {
             slot.assignedNodes().forEach(
                 (el: HTMLElement): void => {
-                    if (!el.draggable) el.draggable = true;
-                    if (!el.classList.contains('option-item')) el.classList.add('option-item');
+                    if (!el.draggable) {
+                        el.draggable = true;
+                    }
+                    if (!el.classList.contains('option-item')) {
+                        el.classList.add('option-item');
+                    }
+                    el.style.position = 'initial';
+                    el.style.cursor = 'grab';
                     if (this.isTrash) el.remove();
                     else items.push(el.id);
                 }
