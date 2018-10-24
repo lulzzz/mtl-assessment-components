@@ -14,14 +14,16 @@
         "sass-watch": "node-sass src/sass -r -o dist/css -w",
         "watch": "npm run build; npm run sass; concurrently --names 'build,sass' -c 'bgBlue,bgMagenta' 'npm run build -- -w' 'npm run sass -- -w' 'npm-watch'",
         "test": "lit-element-tester dist/components/*.js",
-        "_generateDocs": "polymer analyze ./dist/components/short-text.js > ./dist/components/analysis.json"
+        "_generateDocs": "polymer analyze ./dist/components/*.js > ./dist/components/analysis.json"
     },
     "keywords": [],
     "author": "Christopher Morris <christopher.morris@hmhco.com>",
     "license": "ISC",
     "dependencies": {
         "@hmh/component-base": "latest",
-        "nyc": "^13.0.1"
+        "@types/quill": "^2.0.1",
+        "nyc": "^13.0.1",
+        "quill": "^1.3.6"
     },
     "devDependencies": {
         "@hmh/lit-element-tester": "latest",
