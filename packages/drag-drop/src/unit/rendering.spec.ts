@@ -1,4 +1,4 @@
-import { expect, basicTagName, dropContainerTagName, dragContainerTagName, sortableDropContainerTagName } from './constants.spec';
+import { expect, basicTagName, dropContainerTagName, dragContainerTagName, sleep, sortableDropContainerTagName } from './constants.spec';
 import { DragDrop } from '../components/drag-drop';
 import { DragContainer } from '../components/drag-container';
 import { DropContainer } from '../components/drop-container';
@@ -215,15 +215,19 @@ export default () => {
             await element.updateComplete;
 
             // @ts-ignore Access private member
-            let dragSource = element.dragContainers[0].getElement('000-1');
+            const dragSource = element.dragContainers[0].getElement('000-1');
+            console.log('DRAG SOURCE', dragSource);
             const dataTransfer = new DataTransfer();
             dispatchDragEvent('dragstart', dragSource, dataTransfer);
             dispatchDragEvent('dragend', dragSource, dataTransfer);
             await element.updateComplete;
-            setTimeout(function() {
-                expect(dragSource.style.visibility).to.equal('hidden');
-            }, 0);
+            await sleep(0);
+
+            // @ts-ignore Access private member
+            expect(dragSource).not.to.be.null;
+            expect(dragSource.style.visibility).to.equal('hidden');
         });
+
         it('element should be reappear after drag end', async (): Promise<void> => {
             withSnippet('basic');
             const element: DragDrop = document.querySelector(basicTagName) as any;
@@ -234,14 +238,12 @@ export default () => {
             const dataTransfer = new DataTransfer();
             dispatchDragEvent('dragstart', dragSource, dataTransfer);
             await element.updateComplete;
-            setTimeout(function() {
-                expect(dragSource.style.visibility).to.equal('hidden');
-                // @ts-ignore Access private member
-                dispatchDragEvent('dragend', dragSource, dataTransfer);
-                setTimeout(function() {
-                    expect(dragSource.style.visibility).not.to.equal('hidden');
-                }, 0);
-            }, 0);
+            await sleep(0);
+            expect(dragSource.style.visibility).to.equal('hidden');
+            // @ts-ignore Access private member
+            dispatchDragEvent('dragend', dragSource, dataTransfer);
+            await sleep(0);
+            expect(dragSource.style.visibility).not.to.equal('hidden');
         });
         it('element should be highlighted on drag over ', async (): Promise<void> => {
             withSnippet('basic');

@@ -28,11 +28,11 @@ export class DragDrop extends ComponentBase<string[]> {
         if (!this.id) {
             this.id = 'drag-drop' + Math.random().toString(16);
         }
-        this.addEventListener('drop', this.onDrop);
-        this.addEventListener('dragover', this.onDragOver);
-        this.addEventListener('dragstart', this.onDragStart);
-        this.addEventListener('dragleave', this.onDragLeave);
-        this.addEventListener('dragend', this.onDragEnd);
+        this.addEventListener('drop', this.onDrop.bind(this));
+        this.addEventListener('dragover', this.onDragOver.bind(this));
+        this.addEventListener('dragstart', this.onDragStart.bind(this));
+        this.addEventListener('dragleave', this.onDragLeave.bind(this));
+        this.addEventListener('dragend', this.onDragEnd.bind(this));
     }
 
     public showFeedback(): void {
@@ -51,9 +51,10 @@ export class DragDrop extends ComponentBase<string[]> {
     private isOptionSwappable(element: HTMLElement): boolean {
         return element.classList.contains('option-item') && element.parentElement instanceof DropContainer && this.swappable;
     }
-    private onDragStart(event: DragEvent) {
+    private async onDragStart(event: DragEvent) {
         if ((event.target as HTMLElement).className === 'option-item') {
-            this.currentElement = event.target as HTMLElement;
+            const current: HTMLElement = event.target as HTMLElement;
+            this.currentElement = current;
             event.dataTransfer.effectAllowed = 'move';
             this.offsetX = event.x - this.currentElement.offsetLeft;
             this.offsetY = event.y - this.currentElement.offsetTop;
@@ -67,9 +68,9 @@ export class DragDrop extends ComponentBase<string[]> {
                 index = this.dropContainers.indexOf(this.currentElement.parentElement as DropContainer);
             }
             if (!(this.currentElement.parentElement as DragContainer).dispenser) {
-                setTimeout(function() {
+                setTimeout(() => {
                     // switch to global scope
-                    (event.target as HTMLElement).style.visibility = 'hidden';
+                    current.style.visibility = 'hidden';
                 }, 0);
             }
             event.dataTransfer.setData('source_id', this.currentElement.id);
