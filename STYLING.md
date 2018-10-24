@@ -128,3 +128,7 @@ Whenever the custom element renders its shadow DOM, it will load this CSS file i
 
 > If you want to add custom fonts to your elements within the Shadow DOM, load the font-face into the Light DOM and then apply the font styles to the Shadow DOM (loading @font-face directly into Shadow DOM will NOT work!).
 https://medium.com/rate-engineering/winning-the-war-of-css-conflicts-through-the-shadow-dom-de6c797b5cba
+
+## CSS variables
+
+https://medium.freecodecamp.org/everything-you-need-to-know-about-css-variables-c74d922ea855
