@@ -221,7 +221,7 @@ export default () => {
             dispatchDragEvent('dragend', dragSource, dataTransfer);
             await element.updateComplete;
             setTimeout(function() {
-                expect(dragSource.classList.contains('hide')).to.be.true;
+                expect(dragSource.style.visibility).to.equal('hidden');
             }, 0);
         });
         it('element should be reappear after drag end', async (): Promise<void> => {
@@ -235,11 +235,11 @@ export default () => {
             dispatchDragEvent('dragstart', dragSource, dataTransfer);
             await element.updateComplete;
             setTimeout(function() {
-                expect(dragSource.classList.contains('hide')).to.be.true;
+                expect(dragSource.style.visibility).to.equal('hidden');
                 // @ts-ignore Access private member
                 dispatchDragEvent('dragend', dragSource, dataTransfer);
                 setTimeout(function() {
-                    expect(dragSource.classList.contains('hide')).to.be.false;
+                    expect(dragSource.style.visibility).not.to.equal('hidden');
                 }, 0);
             }, 0);
         });
@@ -375,7 +375,6 @@ export default () => {
                 dispatchDragEvent('drop', dropTarget, dataTransfer);
                 await element.updateComplete;
                 expect(dropTarget.addedItems.length).to.equal(2);
-                console.log('here', secondElement.parentElement);
 
                 const innerHtmlFirstElement: string = firstElement.innerHTML;
                 dispatchDragEvent('dragstart', firstElement, dataTransfer);

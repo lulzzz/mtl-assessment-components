@@ -126,3 +126,13 @@ sortable-drop-container>*:before {
     line-height: normal;
     font-size: 1rem;
 }
+
+.positive {
+    outline: 2px solid green;
+}
+.negative {
+    outline: 2px solid red;
+}
+.neutral {
+    outline: 2px solid yellow;
+}

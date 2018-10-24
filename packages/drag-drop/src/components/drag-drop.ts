@@ -97,7 +97,6 @@ export class DragDrop extends ComponentBase<string[]> {
     }
     private onDragEnd(event: DragEvent) {
         event.stopPropagation();
-        // console.log('TARGET', event.target);
         (event.target as HTMLElement).style.visibility = 'visible';
         this.currentElement = null;
     }
@@ -123,7 +122,6 @@ export class DragDrop extends ComponentBase<string[]> {
                     ? (container.getElement(sourceId).cloneNode(true) as HTMLElement)
                     : container.getElement(sourceId);
             }
-            console.log('CONDITIONS', dataElement);
 
             if (dataElement && (target instanceof DragContainer || target instanceof DropContainer) && target.isDropAllowed()) {
                 target.add(dataElement, event.x - this.offsetX, event.y - this.offsetY);
