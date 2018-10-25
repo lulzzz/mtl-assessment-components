@@ -1,5 +1,5 @@
 import { ResponseValidation } from './response-validation.js';
-import { ComponentBase, property } from './base.js';
+import { ComponentBase, html, property, TemplateResult } from './base.js';
 import { Feedback, FeedbackMessage, Strategy } from '../mixins/feedback.js';
 import { applyMixins } from '../util.js';
 
@@ -11,9 +11,36 @@ export abstract class MultipleChoice extends ComponentBase<string[]> implements 
     @property({ type: Array })
     protected items: HTMLElement[] = [];
 
+    protected readonly styles: TemplateResult = html`<style>
+        main {
+        display: flex;
+        flex-direction: var(--align-options, column);
+        flex-flow: var(--align-options, column) wrap;
+        justify-content: var(--justify-content, flex-start);
+        }
+
+        .positive {
+        outline: 2px solid var(--positive-color, green);
+        }
+
+        .negative {
+        outline: 2px solid var(--negative-color, red);
+        }
+
+        .neutral {
+        outline: 2px solid var(--neutral-color, yellow);
+        }
+
+        .mdc-form-field {
+        flex-basis: var(--option-width, content);
+        }
+        </style>`;
+
     // @mixin: Feedback
     computeFeedback: (value: string[]) => FeedbackMessage;
     _onFeedbackSlotChanged: (evt: Event) => void;
+
+
 
     /**
      * @param  {ResponseValidation} el - the element containing an expected value and a strategy
@@ -80,6 +107,7 @@ export abstract class MultipleChoice extends ComponentBase<string[]> implements 
         if (slot) {
             slot.assignedNodes().forEach(
                 (el: HTMLElement, index: number): void => {
+                    /* istanbul ignore if */
                     if (!(el instanceof HTMLSpanElement)) {
                         console.warn('It is recommendeded to use <span> for options:', el);
                     }

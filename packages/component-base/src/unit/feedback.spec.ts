@@ -15,11 +15,11 @@ export default function() {
             expect(el._responseValidationElements.length).to.equal(0);
         });
 
-        it('should throw an error when trying to compute feedback without any validation element defined', async (): Promise<void> => {
+        it('should not throw an error when trying to compute feedback without any validation element defined', async (): Promise<void> => {
             withSnippet('base-with-feedback-empty-slot');
             const el: BaseElementFeedback = document.querySelector('base-element-feedback') as any;
             await el.updateComplete;
-            expect(() => el.computeFeedback('hello')).to.throw(Error, 'missing default response-validation');
+            expect(() => el.computeFeedback('hello')).not.to.throw();
         });
 
         it('should handle response-validation children', async (): Promise<void> => {

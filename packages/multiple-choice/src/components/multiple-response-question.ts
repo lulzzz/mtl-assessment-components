@@ -13,11 +13,12 @@ export class MultipleResponseQuestion extends MultipleChoice {
     public items: HTMLElement[] = [];
 
     protected render(): TemplateResult {
-        const { items, feedbackMessage }: MultipleResponseQuestion = this;
+        const { styles, items, feedbackMessage }: MultipleResponseQuestion = this;
         return html`
         <link rel="stylesheet" href="@material/form-field/dist/mdc.form-field.css">
         <link rel="stylesheet" href="@material/checkbox/dist/mdc.checkbox.css">
         <link rel="stylesheet" href="/css/multiple-choice.css">
+        ${styles}
         <main class=${feedbackMessage ? feedbackMessage.type : ''}>
             ${repeat(
                 items,

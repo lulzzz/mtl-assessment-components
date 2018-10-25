@@ -5,7 +5,6 @@
     <!-- encoding must be set for mocha's special characters to render properly -->
     <link rel="stylesheet" href="../node_modules/mocha/mocha.css" />
     <link rel="stylesheet" href="runner.css">
-    <link rel="stylesheet" href="../dist/css/drag-drop.css">
 
     <script src="../node_modules/@hmh/lit-element-tester/dist/browser/util.js"></script>
     <script src="../node_modules/source-map-support/browser-source-map-support.js"></script>
@@ -33,6 +32,9 @@
     </template>
     <template id="drop-container">
         <drop-container></drop-container>
+    </template>
+    <template id="sticky-drop-container">
+        <drop-container sticky></drop-container>
     </template>
     <template id="sortable-drop-container">
         <sortable-drop-container></sortable-drop-container>

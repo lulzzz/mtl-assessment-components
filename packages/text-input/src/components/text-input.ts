@@ -46,6 +46,29 @@ export class TextInput extends ComponentBase<string> implements Feedback {
         return html`
         <link rel="stylesheet" href="@material/textfield/dist/mdc.textfield.css">
         <link rel="stylesheet" href="/css/text-input.css">
+        <style>
+        .mdc-text-field {
+            height: 1.5em;
+        }
+
+        .mdc-text-field--upgraded:not(.mdc-text-field--fullwidth):not(.mdc-text-field--box) {
+            margin-top: 0px;
+        }
+
+        .mdc-text-field--outlined {
+            margin-top: 0px;
+            margin-bottom: 0px;
+        }
+
+        .feedback-message {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            border-radius: 0 4px 4px 0;
+        }
+        </style>
         ${this._feedbackStyle(feedbackMessage)}
         <div class="mdc-text-field mdc-text-field--outlined ${disabled ? 'mdc-text-field--disabled' : ''}">
             <input

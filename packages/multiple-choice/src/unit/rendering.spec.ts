@@ -11,20 +11,21 @@ export default () => {
             await element.updateComplete;
             expect(element.shadowRoot).not.to.be.undefined;
         });
+        
         it('should be able to add options programmatically', async (): Promise<void> => {
             withSnippet('single-default');
 
             const element: HTMLElement = document.querySelector(mcqTagName);
             // @ts-ignore renderComplete is a protected member
             await element.updateComplete;
-            const div: HTMLDivElement = document.createElement('div');
-            div.slot = 'options';
-            div.id = '1';
-            div.hidden = true;
-            div.innerText = 'Option 1';
-            element.appendChild(div);
-            const divTest: HTMLDivElement = document.getElementById('1') as HTMLDivElement;
-            expect(divTest).to.equal(div);
+            const span: HTMLSpanElement = document.createElement('span');
+            span.slot = 'options';
+            span.id = '1';
+            span.hidden = true;
+            span.innerText = 'Option 1';
+            element.appendChild(span);
+            const spanTest: HTMLSpanElement = document.getElementById('1') as HTMLSpanElement;
+            expect(spanTest).to.equal(span);
         });
 
         it('should be able to click added option', async (): Promise<void> => {
@@ -32,14 +33,14 @@ export default () => {
             const element: HTMLElement = document.querySelector(mcqTagName) as HTMLElement;
             // @ts-ignore renderComplete is a protected member
             await element.updateComplete;
-            const div: HTMLDivElement = document.createElement('div');
-            div.slot = 'options';
-            div.id = '1';
-            div.hidden = true;
-            div.innerText = 'Option 1';
-            element.appendChild(div);
-            const divTest: HTMLDivElement = document.getElementById('1') as HTMLDivElement;
-            expect(divTest).to.equal(div);
+            const span: HTMLSpanElement = document.createElement('span');
+            span.slot = 'options';
+            span.id = '1';
+            span.hidden = true;
+            span.innerText = 'Option 1';
+            element.appendChild(span);
+            const spanTest: HTMLSpanElement = document.getElementById('1') as HTMLSpanElement;
+            expect(spanTest).to.equal(span);
             // @ts-ignore renderComplete is a protected member
             await element.updateComplete;
             await sleep();
@@ -67,30 +68,31 @@ export default () => {
             const element: HTMLElement = document.querySelector(mrqTagName);
             // @ts-ignore renderComplete is a protected member
             await element.updateComplete;
-            const div: HTMLDivElement = document.createElement('div');
-            div.slot = 'options';
-            div.id = '1';
-            div.hidden = true;
-            div.innerText = 'Option 1';
-            element.appendChild(div);
+            const span: HTMLSpanElement = document.createElement('span');
+            span.slot = 'options';
+            span.id = '1';
+            span.hidden = true;
+            span.innerText = 'Option 1';
+            element.appendChild(span);
             // @ts-ignore renderComplete is a protected member
             await element.updateComplete;
-            const divTest: HTMLDivElement = document.getElementById('1') as HTMLDivElement;
-            expect(divTest).to.equal(div);
+            const spanTest: HTMLSpanElement = document.getElementById('1') as HTMLSpanElement;
+            expect(spanTest).to.equal(span);
         });
+
         it('should be able to check added option', async (): Promise<void> => {
             withSnippet('multiple-default');
             const element: HTMLElement = document.querySelector(mrqTagName) as HTMLElement;
             // @ts-ignore renderComplete is a protected member
             await element.updateComplete;
-            const div: HTMLDivElement = document.createElement('div');
-            div.slot = 'options';
-            div.id = '1';
-            div.hidden = true;
-            div.innerText = 'Option 1';
-            element.appendChild(div);
-            const divTest: HTMLDivElement = document.getElementById('1') as HTMLDivElement;
-            expect(divTest).to.equal(div);
+            const span: HTMLSpanElement = document.createElement('span');
+            span.slot = 'options';
+            span.id = '1';
+            span.hidden = true;
+            span.innerText = 'Option 1';
+            element.appendChild(span);
+            const spanTest: HTMLSpanElement = document.getElementById('1') as HTMLSpanElement;
+            expect(spanTest).to.equal(span);
             // @ts-ignore renderComplete is a protected member
             await element.updateComplete;
             await sleep();
@@ -106,19 +108,20 @@ export default () => {
 
             expect(checkbox.checked).to.be.true;
         });
+
         it('should be able to uncheck added option', async (): Promise<void> => {
             withSnippet('multiple-default');
             const element: HTMLElement = document.querySelector(mrqTagName) as HTMLElement;
             // @ts-ignore renderComplete is a protected member
             await element.updateComplete;
-            const div: HTMLDivElement = document.createElement('div');
-            div.slot = 'options';
-            div.id = '1';
-            div.hidden = true;
-            div.innerText = 'Option 1';
-            element.appendChild(div);
-            const divTest: HTMLDivElement = document.getElementById('1') as HTMLDivElement;
-            expect(divTest).to.equal(div);
+            const span: HTMLSpanElement = document.createElement('span');
+            span.slot = 'options';
+            span.id = '1';
+            span.hidden = true;
+            span.innerText = 'Option 1';
+            element.appendChild(span);
+            const spanTest: HTMLDivElement = document.getElementById('1') as HTMLDivElement;
+            expect(spanTest).to.equal(span);
             // @ts-ignore renderComplete is a protected member
             await element.updateComplete;
             await sleep();

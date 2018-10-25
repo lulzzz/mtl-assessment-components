@@ -28,54 +28,54 @@
 
     <template id="values-one-two-three">
         <drop-down>
-            <div slot="options" class="option-item" id="one">
+            <span slot="options" class="option-item" id="one">
                 one
-            </div>
-            <div slot="options" class="option-item" id="two">
+            </span>
+            <span slot="options" class="option-item" id="two">
                 two
-            </div>
-            <div slot="options" class="option-item" id="three">
+            </span>
+            <span slot="options" class="option-item" id="three">
                 three
-            </div>
+            </span>
         </drop-down>
     </template>
 
     <template id="values-one-two-three-multiple">
             <drop-down multiple>
-                <div slot="options" class="option-item" id="one">
+                <span slot="options" class="option-item" id="one">
                     one
-                </div>
-                <div slot="options" class="option-item" id="two">
+                </span>
+                <span slot="options" class="option-item" id="two">
                     two
-                </div>
-                <div slot="options" class="option-item" id="three">
+                </span>
+                <span slot="options" class="option-item" id="three">
                     three
-                </div>
+                </span>
             </drop-down>
     </template>
 
     <template id="html">
         <drop-down>
-            <div slot="options" class="option-item" id="one">
+            <span slot="options" class="option-item" id="one">
                 <img src="https://ebird.org/content/atlasva/wp-content/uploads/sites/68/Picture-286-1024x768.jpg" alt="owl face" height="42" width="42">
-            </div>
-            <div slot="options" class="option-item" two="two">
+            </span>
+            <span slot="options" class="option-item" two="two">
                 <b>two</b>
-            </div>
+            </span>
         </drop-down>
     </template>
     
     <template id="feedback">
         <drop-down>
-            <div slot="options" class="option-item" id="one">
+            <span slot="options" class="option-item" id="one">
                 one
-            </div>
-            <div slot="options" class="option-item" id="two">
+            </span>
+            <span slot="options" class="option-item" id="two">
                 two
-            </div>
-            <div slot="options" class="option-item" id="three">
+            </span>
+            <span slot="options" class="option-item" id="three">
                 three
-            </div>
+            </span>
 
             <response-validation slot="feedback" expected="one" score="4" strategy="exactMatch">
                 <span>Correct</span>
@@ -94,17 +94,17 @@
         </drop-down>
     </template>
 
-    <template id="feedback-fuzzy-stategy">
+    <template id="feedback-contains-stategy">
         <drop-down>
-            <div slot="options" class="option-item" id="one">
+            <span slot="options" class="option-item" id="one">
                 one
-            </div>
-            <div slot="options" class="option-item" id="two" >
+            </span>
+            <span slot="options" class="option-item" id="two" >
                 two
-            </div>
-            <div slot="options" class="option-item" id="three">
+            </span>
+            <span slot="options" class="option-item" id="three">
                 three
-            </div>
+            </span>
 
             <response-validation slot="feedback" expected="one" score="4" strategy="contains">
                 <span>Correct</span>
@@ -115,15 +115,15 @@
 
     <template id="feedback-no-strategy">
         <drop-down>
-            <div slot="options" class="option-item" id="one">
+            <span slot="options" class="option-item" id="one">
                 one
-            </div>
-            <div slot="options" class="option-item" id="two">
+            </span>
+            <span slot="options" class="option-item" id="two">
                 two
-            </div>
-            <div slot="options" class="option-item" id="three">
+            </span>
+            <span slot="options" class="option-item" id="three">
                 three
-            </div>
+            </span>
 
             <response-validation class='target' slot="feedback" expected="one" score="4">
                 <span>Correct</span>

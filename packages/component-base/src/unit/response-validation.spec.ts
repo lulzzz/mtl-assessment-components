@@ -19,6 +19,9 @@ export default function() {
             // @ts-ignore : private function
             expect(typeof el._onSlotChanged).to.equal('function');
             expect(el._responseValidationElements.length).to.equal(0);
+
+            let msg: FeedbackMessage = el.getFeedback();
+            expect(msg).to.deep.equal({ type: 'negative', message: '', score: 0 });
         });
 
         it('should display message according to user attempts', async (): Promise<void> => {

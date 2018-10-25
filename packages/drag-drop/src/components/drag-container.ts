@@ -24,7 +24,6 @@ export class DragContainer extends ComponentBase<string> {
 
     protected render(): TemplateResult {
         return html`
-        <link rel="stylesheet"href="/css/drag-drop.css">
         <slot name="options" @slotchange=${(e: Event) => this._onSlotChanged(e)} ></slot>
         `;
     }
@@ -35,8 +34,14 @@ export class DragContainer extends ComponentBase<string> {
         if (slot) {
             slot.assignedNodes().forEach(
                 (el: HTMLElement): void => {
-                    if (!el.draggable) el.draggable = true;
-                    if (!el.classList.contains('option-item')) el.classList.add('option-item');
+                    if (!el.draggable) {
+                        el.draggable = true;
+                    }
+                    if (!el.classList.contains('option-item')) {
+                        el.classList.add('option-item');
+                    }
+                    el.style.position = 'initial';
+                    el.style.cursor = 'grab';
                     if (this.isTrash) el.remove();
                     else items.push(el.id);
                 }

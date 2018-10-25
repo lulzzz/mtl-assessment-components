@@ -14,16 +14,25 @@ export class DragDrop extends ComponentBase<string[]> {
     private offsetX: number;
     private offsetY: number;
     private currentElement: HTMLElement;
+
+    private readonly styles: TemplateResult = html`
+    <style>
+        .option-item {
+            cursor: grab;
+        }
+    </style>
+    `;
+
     constructor() {
         super();
         if (!this.id) {
             this.id = 'drag-drop' + Math.random().toString(16);
         }
-        this.addEventListener('drop', this.onDrop);
-        this.addEventListener('dragover', this.onDragOver);
-        this.addEventListener('dragstart', this.onDragStart);
-        this.addEventListener('dragleave', this.onDragLeave);
-        this.addEventListener('dragend', this.onDragEnd);
+        this.addEventListener('drop', this.onDrop.bind(this));
+        this.addEventListener('dragover', this.onDragOver.bind(this));
+        this.addEventListener('dragstart', this.onDragStart.bind(this));
+        this.addEventListener('dragleave', this.onDragLeave.bind(this));
+        this.addEventListener('dragend', this.onDragEnd.bind(this));
     }
 
     public showFeedback(): void {
@@ -32,18 +41,20 @@ export class DragDrop extends ComponentBase<string[]> {
 
     protected render(): TemplateResult {
         return html`
-        <link rel="stylesheet" href="/css/drag-drop.css">
-        <div>
-            <slot @slotchange=${(e: Event) => this._onSlotChanged(e)}></slot>
-        </div>
+         <link rel="stylesheet" href="/css/drag-drop.css">
+        ${this.styles}
+        <slot @slotchange=${(e: Event) => this._onSlotChanged(e)}></slot>
+
         `;
     }
+
     private isOptionSwappable(element: HTMLElement): boolean {
         return element.classList.contains('option-item') && element.parentElement instanceof DropContainer && this.swappable;
     }
-    private onDragStart(event: DragEvent) {
+    private async onDragStart(event: DragEvent) {
         if ((event.target as HTMLElement).className === 'option-item') {
-            this.currentElement = event.target as HTMLElement;
+            const current: HTMLElement = event.target as HTMLElement;
+            this.currentElement = current;
             event.dataTransfer.effectAllowed = 'move';
             this.offsetX = event.x - this.currentElement.offsetLeft;
             this.offsetY = event.y - this.currentElement.offsetTop;
@@ -57,8 +68,9 @@ export class DragDrop extends ComponentBase<string[]> {
                 index = this.dropContainers.indexOf(this.currentElement.parentElement as DropContainer);
             }
             if (!(this.currentElement.parentElement as DragContainer).dispenser) {
-                setTimeout(function() {
-                    (event.target as HTMLElement).classList.add('hide');
+                setTimeout(() => {
+                    // switch to global scope
+                    current.style.visibility = 'hidden';
                 }, 0);
             }
             event.dataTransfer.setData('source_id', this.currentElement.id);
@@ -86,7 +98,7 @@ export class DragDrop extends ComponentBase<string[]> {
     }
     private onDragEnd(event: DragEvent) {
         event.stopPropagation();
-        (event.target as HTMLElement).classList.remove('hide');
+        (event.target as HTMLElement).style.visibility = 'visible';
         this.currentElement = null;
     }
 
@@ -103,6 +115,7 @@ export class DragDrop extends ComponentBase<string[]> {
         let dataElement: HTMLElement;
         let container: DragContainer | DropContainer;
         container = type === 'drop-container' ? this.dropContainers[index] : this.dragContainers[index];
+
         if (this.id === parentId) {
             /* istanbul ignore next */
             if (container) {
@@ -110,6 +123,7 @@ export class DragDrop extends ComponentBase<string[]> {
                     ? (container.getElement(sourceId).cloneNode(true) as HTMLElement)
                     : container.getElement(sourceId);
             }
+
             if (dataElement && (target instanceof DragContainer || target instanceof DropContainer) && target.isDropAllowed()) {
                 target.add(dataElement, event.x - this.offsetX, event.y - this.offsetY);
             } else if (this.isOptionSwappable(event.srcElement as HTMLElement)) {
