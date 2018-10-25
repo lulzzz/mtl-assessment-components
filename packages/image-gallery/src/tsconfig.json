@@ -1,0 +1,32 @@
+{
+    "compileOnSave": true,
+    "compilerOptions": {
+        "baseUrl": "../",
+        "declaration": true,
+        "rootDir": "./",
+        "outDir": "../dist",
+        "target": "esnext",
+        "module": "esnext",
+        "moduleResolution": "node",
+        "experimentalDecorators": true,
+        "emitDecoratorMetadata": true,
+        "noImplicitAny": true,
+        "noImplicitReturns": true,
+        "noUnusedLocals": true,
+        "noUnusedParameters": false,
+        "removeComments": false,
+        "skipLibCheck": true,
+        "preserveConstEnums": true,
+        "sourceMap": true,
+        "pretty": true,
+        "lib": ["esnext", "dom"],
+        "plugins": [
+            {
+                "name": "typescript-styled-plugin",
+                "validate": false
+            }
+        ]
+    },
+    "include": ["../src/**/*.ts", "../typings.d.ts"],
+    "exclude": ["node_modules"]
+}
