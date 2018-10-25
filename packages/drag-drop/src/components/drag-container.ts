@@ -42,12 +42,25 @@ export class DragContainer extends ComponentBase<string> {
                 }
                 el.style.position = 'initial';
                 el.style.cursor = 'grab';
+                this.lockInternalBlockElements(el);
                 if (this.isTrash) el.remove();
                 else items.push(el.id);
             }
         );
 
         this.options = items;
+    }
+
+    /**
+     * The purpose of this function is to make sure internal block-level HTML elements
+     * are not draggable on their own.
+     *
+     * e.g. internal images
+     *
+     * @param el
+     */
+    private lockInternalBlockElements(el: HTMLElement) {
+        el.querySelectorAll('*').forEach((el: HTMLElement) => el.setAttribute('draggable', 'false'));
     }
 }
 
