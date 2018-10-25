@@ -13,9 +13,9 @@
         "sass": "node-sass src/sass -r -o dist/css",
         "sass-watch": "node-sass src/sass -r -o dist/css -w",
         "watch": "npm run build; npm run sass; concurrently --names 'build,sass' -c 'bgBlue,bgMagenta' 'npm run build -- -w' 'npm run sass -- -w' 'npm-watch'",
-        "test": "lit-element-tester dist/components/{drag-drop.js,drop-container.js,drag-container.js,sortable-drop-container.js}",
+        "test": "lit-element-tester dist/components/*.js",
         "test-dev": "lit-element-tester -d",
-        "_generateDocs": "polymer analyze ./dist/components/{drag-drop.js,drop-container.js,drag-container.js,sortable-drop-container.js} > ./dist/components/analysis.json"
+        "_generateDocs": "polymer analyze ./dist/components/*.js > ./dist/components/analysis.json"
     },
     "keywords": [],
     "author": "Alexandra Djamen <alexandra.djamen@hmhco.com>",

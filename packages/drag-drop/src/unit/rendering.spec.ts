@@ -43,7 +43,6 @@ export default () => {
 
             expect(element.getElement(div.id)).to.not.equal(div);
         });
-
     });
     describe(`<${dropContainerTagName}> default drop container`, (): void => {
         it('default should render as expected', (): void => {
@@ -75,7 +74,6 @@ export default () => {
 
             expect(element.getElement(div.id)).to.not.equal(div);
         });
-
     });
 
     describe(`<${dropContainerTagName}> sticky drop container`, (): void => {
@@ -133,7 +131,7 @@ export default () => {
             div.innerText = 'Option 1';
             element.appendChild(div);
         });
- 
+
         it('should  have the correct amount of initial options', async (): Promise<void> => {
             withSnippet('basic');
             const element: DragDrop = document.querySelector(basicTagName) as any;
@@ -351,6 +349,30 @@ export default () => {
                 expect(sortable.firstElementChild).to.equal(hoveredElement);
             });
         });
+
+        describe(`<${basicTagName}> sortable drag drop with HTML options`, (): void => {
+            it('should lock html elements within option items', async (): Promise<void> => {
+                withSnippet('sortable-html-options');
+                const element: DragDrop = document.querySelector(basicTagName) as any;
+                await element.updateComplete;
+                // @ts-ignore Access private member
+                const sortable: SortableDropContainer = element.dropContainers[0];
+
+                const optionsItems: HTMLElement[] = Array.from(sortable.querySelectorAll('.option-item'));
+
+                expect(optionsItems.length).to.equal(3);
+
+                optionsItems.forEach((option: HTMLElement) => {
+                    expect(option.draggable).to.be.true;
+                    const internals: HTMLElement[] = Array.from(option.querySelectorAll('*'));
+                    expect(internals.length).to.equal(3);
+                    internals.forEach((el: HTMLElement) => {
+                        expect(el.draggable).to.be.false;
+                    });
+                });
+            });
+        });
+
         describe(`<${basicTagName}> swappable drag drop`, (): void => {
             it('should be able to swap options ', async (): Promise<void> => {
                 withSnippet('swappable');
