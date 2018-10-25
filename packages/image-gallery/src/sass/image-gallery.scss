@@ -1,0 +1,32 @@
+// image-gallery styling
+$default-stage-height: 320px;
+$default-stage-width: 640px;
+
+h3,
+nav {
+    margin: 0.5em 0;
+    text-align: center;
+    width: var(--stage-width, $default-stage-width);
+}
+
+.carousel {
+    align-items: center;
+    display: flex;
+    transition: margin-left 1s ease-in-out;
+}
+
+.stage {
+    ::slotted(figure) {
+        height: var(--stage-height, $default-stage-height);
+        margin: 0;
+        min-width: var(--stage-width, $default-stage-width);
+        overflow: hidden;
+        padding: auto;
+        text-align: center;
+    }
+    background: var(--stage-background, transparent);
+    border: var(--stage-border, 1px solid gray);
+    height: var(--stage-height, $default-stage-height);
+    overflow: hidden;
+    width: var(--stage-width, $default-stage-width);
+}
