@@ -51,6 +51,7 @@
         "@polymer/prism-element/prism-theme-default.js": "/node_modules/@polymer/prism-element/prism-theme-default.js",
         "@webcomponents/shadycss/entrypoints/apply-shim.js": "/node_modules/@webcomponents/shadycss/entrypoints/apply-shim.js",
         "@webcomponents/shadycss/entrypoints/custom-style-interface.js": "/node_modules/@webcomponents/shadycss/entrypoints/custom-style-interface.js",
+        "katex/dist/katex.min.css": "/node_modules/katex/dist/katex.min.css",
         "lit-html": "/node_modules/lit-html/lit-html.js",
         "lit-html/directives/if-defined.js": "/node_modules/lit-html/directives/if-defined.js",
         "lit-html/directives/repeat.js": "/node_modules/lit-html/directives/repeat.js",

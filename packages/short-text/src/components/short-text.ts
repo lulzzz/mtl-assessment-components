@@ -26,6 +26,7 @@ export class ShortText extends ComponentBase<string> {
     protected render(): TemplateResult {
         return html`
         <link rel="stylesheet" type="text/css" href="/css/short-text.css">
+        <link rel="stylesheet" type="text/css" href="katex/dist/katex.min.css">
         <link rel="stylesheet" type="text/css" href="quill/dist/quill.core.css">
         <link rel="stylesheet" type="text/css" href="quill/dist/quill.snow.css">
         <span class='editor-container'> </span>
@@ -34,6 +35,7 @@ export class ShortText extends ComponentBase<string> {
 
     protected firstUpdated(): void {
         this.quill = new Quill(this.shadowRoot.querySelector('.editor-container'), {
+            debug: 'error',
             theme: 'snow',
             modules: this.modules,
             formats: this.formats
@@ -44,14 +46,15 @@ export class ShortText extends ComponentBase<string> {
 
     private _textChanged(): void {
         const deltas = this.quill.getContents();
-        console.log('deltas: ', deltas);
+        
 
         // update value each time and I suppose embed formulas in a tag (getText() does not include formulas)
         deltas.ops.forEach((delta: any) => {
             this.value += delta.insert.formula ? `<formula> ${delta.insert.formula} </formula>` : delta.insert;;
         });
 
-        console.log('value:', this.value);
+        // console.log('deltas: ', deltas);
+        // console.log('value:', this.value);
 
         dispatchEvent(
             new CustomEvent('change', {
