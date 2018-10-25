@@ -61,7 +61,6 @@ export class DropContainer extends ComponentBase<string[]> implements Feedback {
     protected _onSlotChanged(event: Event): void {
         const items: string[] = [];
         const slot: HTMLSlotElement = event.srcElement as HTMLSlotElement;
-        if (slot) {
             slot.assignedNodes().forEach(
                 (el: HTMLElement): void => {
                     if (el.classList.contains('option-item')) {
@@ -72,7 +71,7 @@ export class DropContainer extends ComponentBase<string[]> implements Feedback {
                     }
                 }
             );
-        }
+        
 
         this.addedItems = items;
     }

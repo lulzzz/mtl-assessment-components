@@ -31,22 +31,22 @@ export class DragContainer extends ComponentBase<string> {
     private _onSlotChanged(event: Event): void {
         const items: string[] = [];
         const slot: HTMLSlotElement = event.srcElement as HTMLSlotElement;
-        if (slot) {
-            slot.assignedNodes().forEach(
-                (el: HTMLElement): void => {
-                    if (!el.draggable) {
-                        el.draggable = true;
-                    }
-                    if (!el.classList.contains('option-item')) {
-                        el.classList.add('option-item');
-                    }
-                    el.style.position = 'initial';
-                    el.style.cursor = 'grab';
-                    if (this.isTrash) el.remove();
-                    else items.push(el.id);
+
+        slot.assignedNodes().forEach(
+            (el: HTMLElement): void => {
+                if (!el.draggable) {
+                    el.draggable = true;
                 }
-            );
-        }
+                if (!el.classList.contains('option-item')) {
+                    el.classList.add('option-item');
+                }
+                el.style.position = 'initial';
+                el.style.cursor = 'grab';
+                if (this.isTrash) el.remove();
+                else items.push(el.id);
+            }
+        );
+
         this.options = items;
     }
 }
