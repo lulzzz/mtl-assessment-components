@@ -45,6 +45,8 @@ export class SortableDropContainer extends DropContainer {
                     el.classList.add('option-item');
                 }
                 el.style.cursor = 'grab';
+                // make sure internal block elements are not draggable on their own
+                el.querySelectorAll('*').forEach((el: HTMLElement) => el.setAttribute('draggable', 'false'));
                 items.push(el.id);
             }
         );
