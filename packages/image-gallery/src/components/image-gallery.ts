@@ -6,7 +6,7 @@ const DEFAULT_STAGE_WIDTH: string = '640px';
  * `<image-gallery>`
  * @demo ./demo/index.html
  */
-export class ImageGallery extends ComponentBase<null> {
+export class ImageGallery extends ComponentBase<number> {
     @property({ type: Boolean })
     public autoPlay: boolean = false;
     @property({ type: String, attribute: 'activity-title' })
@@ -23,6 +23,9 @@ export class ImageGallery extends ComponentBase<null> {
 
     public get styles(): TemplateResult {
         return html`.carousel { margin-left: ${-this.position * parseInt(this.stageWidth)}px; }`;
+    }
+    get value(): number {
+        return this.position;
     }
 
     /**
