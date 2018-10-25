@@ -42,6 +42,9 @@ export class DragContainer extends ComponentBase<string> {
                 }
                 el.style.position = 'initial';
                 el.style.cursor = 'grab';
+                // make sure internal block elements are not draggable on their own
+                el.querySelectorAll('*').forEach((el: HTMLElement) => el.setAttribute('draggable', 'false'));
+
                 if (this.isTrash) el.remove();
                 else items.push(el.id);
             }
@@ -49,6 +52,8 @@ export class DragContainer extends ComponentBase<string> {
 
         this.options = items;
     }
+
+
 }
 
 customElements.define('drag-container', DragContainer);

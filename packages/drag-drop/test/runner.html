@@ -153,6 +153,30 @@
         </drag-drop>
     </template>
 
+    <template id="sortable-html-options">
+        <drag-drop>
+            <h3>Sort These Items</h3>
+            <sortable-drop-container id="sorting">
+                <div slot="options" id="1">
+                    <figure><img src="images/img1.svg" />
+                        <figcaption>Image 1</figcaption>
+                    </figure>
+                </div>
+                <div slot="options" id="2">
+                    <figure><img src="images/img1.svg" />
+                        <figcaption>Image 1</figcaption>
+                    </figure>
+                </div>
+                <div slot="options" id="3">
+                    <figure><img src="images/img1.svg" />
+                        <figcaption>Image 1</figcaption>
+                    </figure>
+                </div>
+
+            </sortable-drop-container>
+        </drag-drop>
+    </template>
+
     <template id="nested-containers">
         <drag-drop id="animals">
             <p>Associate each animal with its name.</p>
