@@ -15,14 +15,6 @@ export class DragDrop extends ComponentBase<string[]> {
     private offsetY: number;
     private currentElement: HTMLElement;
 
-    private readonly styles: TemplateResult = html`
-    <style>
-        .option-item {
-            cursor: grab;
-        }
-    </style>
-    `;
-
     constructor() {
         super();
         if (!this.id) {
@@ -42,7 +34,6 @@ export class DragDrop extends ComponentBase<string[]> {
     protected render(): TemplateResult {
         return html`
          <link rel="stylesheet" href="/css/drag-drop.css">
-        ${this.styles}
         <slot @slotchange=${(e: Event) => this._onSlotChanged(e)}></slot>
 
         `;
