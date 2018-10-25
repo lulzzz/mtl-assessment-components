@@ -1,6 +1,6 @@
 {
     "name": "@hmh/drag-drop",
-    "version": "0.4.14",
+    "version": "0.4.15",
     "description": "Assessment System Drag&Drop Component",
     "main": "dist/index.js",
     "module": "dist/index.js",
