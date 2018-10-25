@@ -97,9 +97,11 @@ export class PlotGraph extends ComponentBase<any> {
      * @param  {Direction} axis X or Y
      * @returns d3.ScaleLinear
      */
-    private scale(axis: Direction, min: number, max: number, size: number): d3.ScaleLinear<number, number> {
+    private scale(isDirectionX: boolean, min: number, max: number, size: number): d3.ScaleLinear<number, number> {
+        console.log(`scale isDirectionX: ${isDirectionX} min: ${min} max: ${max} size: ${size}`);
+
         const domain = [min, max];
-        const range = axis === Direction.X ? [0, size] : [size, 0];
+        const range = isDirectionX ? [0, size] : [size, 0];
 
         return scaleLinear()
             .domain(domain) // input
@@ -173,8 +175,8 @@ export class PlotGraph extends ComponentBase<any> {
             const equationYmax = parseInt(equation.getAttribute('equation-ymax'));
             const step = parseInt(equation.getAttribute('step'));
             console.log('PARAMETERS', { equationXmin, equationXmax, equationYmin, equationYmax, step });
-            const xScale: d3.ScaleLinear<number, number> = this.scale(Direction.X, equationXmin, equationXmax, width);
-            const yScale: d3.ScaleLinear<number, number> = this.scale(Direction.Y, equationYmin, equationYmax, height);
+            const xScale: d3.ScaleLinear<number, number> = this.scale(true, equationXmin, equationXmax, width);
+            const yScale: d3.ScaleLinear<number, number> = this.scale(false, equationYmin, equationYmax, height);
             const numberPoints: number = (equationXmax - equationXmin) / step;
 
             // get Y for each X (apply equation)
@@ -205,7 +207,12 @@ export class PlotGraph extends ComponentBase<any> {
             const isDirectionX = axis.getAttribute('direction').toLowerCase() === Direction.X.toString().toLowerCase();
             const min = axis.getAttribute('min');
             const max = axis.getAttribute('max');
-            const scale = this.scale(axis.direction, parseInt(min), parseInt(max), /* istanbul ignore next */ isDirectionX ? width : height);
+
+            console.log('isDirectionX: ', isDirectionX);
+            console.log('min: ', min);
+            console.log('max:', max);
+
+            const scale = this.scale(isDirectionX, parseInt(min), parseInt(max), /* istanbul ignore next */ isDirectionX ? width : height);
 
             this.svgContainer
                 .append('g')
