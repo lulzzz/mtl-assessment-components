@@ -43,12 +43,7 @@ export default () => {
 
             expect(element.getElement(div.id)).to.not.equal(div);
         });
-        it('should not throw is there is no options slot', async (): Promise<void> => {
-            withSnippet(dragContainerTagName);
-            const element: DragContainer = document.querySelector(dragContainerTagName) as any;
-            // @ts-ignore : access to protected member
-            expect(() => element._onSlotChanged(new Event('slotchange'))).not.to.throw();
-        });
+
     });
     describe(`<${dropContainerTagName}> default drop container`, (): void => {
         it('default should render as expected', (): void => {
@@ -80,12 +75,7 @@ export default () => {
 
             expect(element.getElement(div.id)).to.not.equal(div);
         });
-        it('should not throw is there is no options slot', async (): Promise<void> => {
-            withSnippet(dropContainerTagName);
-            const element: DropContainer = document.querySelector(dropContainerTagName) as any;
-            // @ts-ignore : access to protected member
-            expect(() => element._onSlotChanged(new Event('slotchange'))).not.to.throw();
-        });
+
     });
 
     describe(`<${dropContainerTagName}> sticky drop container`, (): void => {
@@ -118,12 +108,6 @@ export default () => {
 
             expect(element.getElement(div.id)).to.not.equal(div);
         });
-        it('should not throw is there is no options slot', async (): Promise<void> => {
-            withSnippet(`sticky-${dropContainerTagName}`);
-            const element: DropContainer = document.querySelector(dropContainerTagName) as any;
-            // @ts-ignore : access to protected member
-            expect(() => element._onSlotChanged(new Event('slotchange'))).not.to.throw();
-        });
     });
 
     describe(`<${sortableDropContainerTagName}> default sortable drop container`, (): void => {
@@ -131,13 +115,6 @@ export default () => {
             withSnippet(sortableDropContainerTagName);
             const value: boolean = true;
             expect(value).to.be.true;
-        });
-
-        it('should not throw is there is no options slot', async (): Promise<void> => {
-            withSnippet(sortableDropContainerTagName);
-            const element: SortableDropContainer = document.querySelector(sortableDropContainerTagName) as any;
-            // @ts-ignore : access to protected member
-            expect(() => element._onSlotChanged(new Event('slotchange'))).not.to.throw();
         });
     });
     describe(`<${basicTagName}> basic`, (): void => {
@@ -156,12 +133,7 @@ export default () => {
             div.innerText = 'Option 1';
             element.appendChild(div);
         });
-        it('should not throw is there is no options slot', async (): Promise<void> => {
-            withSnippet('basic');
-            const element: DragDrop = document.querySelector(basicTagName) as any;
-            // @ts-ignore : access to protected member
-            expect(() => element._onSlotChanged(new Event('slotchange'))).not.to.throw();
-        });
+ 
         it('should  have the correct amount of initial options', async (): Promise<void> => {
             withSnippet('basic');
             const element: DragDrop = document.querySelector(basicTagName) as any;
@@ -172,6 +144,29 @@ export default () => {
             // @ts-ignore Access private member
             expect(element.dragContainers[0].options.length).to.equal(5);
         });
+
+        it('should  have the correct amount of drag and drop containers', async (): Promise<void> => {
+            withSnippet('basic');
+            const element: DragDrop = document.querySelector(basicTagName) as any;
+            await element.updateComplete;
+
+            // @ts-ignore Access private member
+            expect(element.dragContainers.length).to.equal(3);
+            // @ts-ignore Access private member
+            expect(element.dropContainers.length).to.equal(2);
+        });
+
+        it('should  have the correct amount of drag and drop containers when nested', async (): Promise<void> => {
+            withSnippet('nested-containers');
+            const element: DragDrop = document.querySelector(basicTagName) as any;
+            await element.updateComplete;
+
+            // @ts-ignore Access private member
+            expect(element.dragContainers.length).to.equal(1);
+            // @ts-ignore Access private member
+            expect(element.dropContainers.length).to.equal(3);
+        });
+
         it('should  not be able to drop unsupported elements', async (): Promise<void> => {
             withSnippet('basic');
             const element: DragDrop = document.querySelector(basicTagName) as any;

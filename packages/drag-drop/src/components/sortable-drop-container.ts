@@ -36,20 +36,18 @@ export class SortableDropContainer extends DropContainer {
     protected _onSlotChanged(event: Event): void {
         const items: string[] = [];
         const slot: HTMLSlotElement = event.srcElement as HTMLSlotElement;
-        if (slot) {
-            slot.assignedNodes().forEach(
-                (el: HTMLElement): void => {
-                    if (!el.draggable) {
-                        el.draggable = true;
-                    }
-                    if (!el.classList.contains('option-item')) {
-                        el.classList.add('option-item');
-                    }
-                    el.style.cursor = 'grab';
-                    items.push(el.id);
+        slot.assignedNodes().forEach(
+            (el: HTMLElement): void => {
+                if (!el.draggable) {
+                    el.draggable = true;
                 }
-            );
-        }
+                if (!el.classList.contains('option-item')) {
+                    el.classList.add('option-item');
+                }
+                el.style.cursor = 'grab';
+                items.push(el.id);
+            }
+        );
         this.addedItems = items;
     }
 }

@@ -47,7 +47,8 @@
                 <div slot="options" id="000-3">f(x)</div>
                 <div slot="options" id="000-4">4</div>
                 <div slot="options" id="000-5">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/a/ac/Approve_icon.svg" alt="Check image" style="width:42px;height:42px;border:0;">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/a/ac/Approve_icon.svg" alt="Check image"
+                        style="width:42px;height:42px;border:0;">
                 </div>
             </drag-container>
             <drag-container>
@@ -63,7 +64,8 @@
                     <span>Perfect</span>
                 </response-validation>
 
-                <response-validation hidden slot="feedback" expected="000-1|000-5" score="5" strategy="contains" feedback-type="neutral">
+                <response-validation hidden slot="feedback" expected="000-1|000-5" score="5" strategy="contains"
+                    feedback-type="neutral">
                     <span>Almost</span>
                 </response-validation>
 
@@ -100,7 +102,8 @@
                     <span>Perfect</span>
                 </response-validation>
 
-                <response-validation hidden slot="feedback" expected="000-1|000-5" score="5" strategy="contains" feedback-type="neutral">
+                <response-validation hidden slot="feedback" expected="000-1|000-5" score="5" strategy="contains"
+                    feedback-type="neutral">
                     <span>Almost</span>
                 </response-validation>
 
@@ -150,6 +153,34 @@
         </drag-drop>
     </template>
 
+    <template id="nested-containers">
+        <drag-drop id="animals">
+            <p>Associate each animal with its name.</p>
+
+            <article id="drop-zone">
+                <section>
+                    <drop-container id="container1" max-items="1">
+                    </drop-container>
+                </section>
+                <section>
+                    <drop-container id="container2" max-items="1">
+                    </drop-container>
+                </section>
+                <section>
+                    <drop-container id="container3" max-items="1">
+                    </drop-container>
+                </section>
+            </article>
+            <section id="draggable-area">
+                <drag-container>
+                    <div slot="options" id="monkey">Monkey</div>
+                    <div slot="options" id="frog">Frog</div>
+                    <div slot="options" id="mouse">Mouse</div>
+                    <div slot="options" id="rabbit">Mouse</div>
+                </drag-container>
+            </section>
+        </drag-drop>
+    </template>
 
 
     <div id="mocha">
