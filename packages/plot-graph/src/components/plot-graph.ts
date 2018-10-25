@@ -172,14 +172,18 @@ export class PlotGraph extends ComponentBase<any> {
             const equationYmin = parseInt(equation.getAttribute('equation-ymin'));
             const equationYmax = parseInt(equation.getAttribute('equation-ymax'));
             const step = parseInt(equation.getAttribute('step'));
-            const xScale = this.scale(Direction.X, equationXmin, equationXmax, width);
-            const yScale = this.scale(Direction.Y, equationYmin, equationYmax, height);
-            const numberPoints = equationXmax - equationXmin / step;
+            console.log('PARAMETERS', { equationXmin, equationXmax, equationYmin, equationYmax, step });
+            const xScale: d3.ScaleLinear<number, number> = this.scale(Direction.X, equationXmin, equationXmax, width);
+            const yScale: d3.ScaleLinear<number, number> = this.scale(Direction.Y, equationYmin, equationYmax, height);
+            const numberPoints: number = (equationXmax - equationXmin) / step;
 
             // get Y for each X (apply equation)
-            const dataset = range(numberPoints).map(function(x: any) {
-                return { y: prepareValue(equation, x) };
+            const dataset = range(numberPoints).map(function(n: number) {
+                const x = (equationXmin + n) / step;
+                return { x, y: prepareValue(equation, x) };
             });
+
+            console.log('DATASET', dataset);
 
             // Append the path, bind the data, and call the line generator
             this.svgContainer
@@ -215,8 +219,8 @@ export class PlotGraph extends ComponentBase<any> {
 customElements.define('plot-graph', PlotGraph);
 
 // This is a mock
-function prepareValue(equation: HTMLElement, x: string): number {
-    return eval(equation.innerHTML.replace('x', x));
+function prepareValue(equation: HTMLElement, x: number): number {
+    return eval(equation.innerHTML.replace('x', String(x)));
 }
 
 enum Direction {
